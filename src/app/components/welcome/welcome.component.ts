@@ -6,8 +6,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   template: `
     <md-card>
       <md-card-title>Welcome to the Walkypet</md-card-title>
-      <md-card-content>Walkypet is a new platform...</md-card-content>
-      <img md-card-image src="../../../assets/welcome.jpg">
+      <img md-card-image src="../../../assets/welcome_new.jpeg">
     </md-card>
   `,
   styles: [`
