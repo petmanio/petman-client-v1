@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <md-card>
-      <md-card-title>Welcome to the Walkypet</md-card-title>
+      <md-card-title>Welcome</md-card-title>
       <img md-card-image src="../../../assets/welcome_new.jpeg">
     </md-card>
   `,
