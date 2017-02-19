@@ -6,6 +6,12 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 
+export interface IAppComponent {
+  closeSidenav(): void,
+  openSidenav($event: Event): void,
+  onClick($event: Event): void
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,22 +28,16 @@ export class AppComponent {
     this.showSidenav$ = this.store.select(fromRoot.getShowSidenav);
   }
 
-  closeSidenav() {
-    /**
-     * All state updates are handled through dispatched actions in 'container'
-     * components. This provides a clear, reproducible history of state
-     * updates and user interaction through the life of our
-     * application.
-     */
+  closeSidenav(): void {
     this.store.dispatch(new layout.CloseSidenavAction());
   }
 
-  openSidenav($event) {
+  openSidenav($event: Event): void {
     $event.stopPropagation();
     this.store.dispatch(new layout.OpenSidenavAction());
   }
 
-  onClick($event) {
+  onClick($event: Event): void {
     $event.stopPropagation();
     this.store.dispatch(new layout.CloseSidenavAction());
   }

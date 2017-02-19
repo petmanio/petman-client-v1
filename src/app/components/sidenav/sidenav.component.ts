@@ -1,7 +1,14 @@
 import { Component, Input } from '@angular/core';
 
+interface ISidenavComponent {
+  onClick($event: Event): void
+}
+
 @Component({
   selector: 'app-sidenav',
+  host: {
+    '(click)': 'onClick($event)',
+  },
   template: `
     <md-sidenav [opened]="open">
       <md-nav-list>
@@ -17,4 +24,8 @@ import { Component, Input } from '@angular/core';
 })
 export class SidenavComponent {
   @Input() open = false;
+
+  onClick($event: Event): void {
+    $event.stopPropagation();
+  }
 }
