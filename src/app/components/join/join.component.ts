@@ -15,13 +15,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
               <md-input-container>
                 <input mdInput placeholder="Password">
               </md-input-container>
-              <button md-raised-button color="primary">Login In</button>     
+              <md-card-actions>
+                <button md-raised-button color="primary">Login In</button><button md-raised-button color="primary">Login with facebook</button>
+              </md-card-actions> 
             </form>
-          </md-card-content>
-        </md-card>
-        <md-card>
-          <md-card-content>
-            <button md-raised-button color="primary">Login with facebook</button>
           </md-card-content>
         </md-card>        
       </md-tab>
@@ -35,11 +32,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     </md-tab-group>
   `,
   styles: [`
-    md-card-title {
-      display: flex;
-      justify-content: center;
-    }
-    md-card-content {
+    md-card-title, md-card-content, md-card-actions {
       display: flex;
       justify-content: center;
     }
