@@ -1,7 +1,7 @@
 <app-layout>
   <app-sidenav [open]="showSidenav$ | async">
-    <app-nav-item (activate)="closeSidenav()" routerLink="/login" icon="input" hint="Log in">
-      Log in
+    <app-nav-item (activate)="closeSidenav()" routerLink="/join" icon="input">
+      Join
     </app-nav-item>
   </app-sidenav>
   <app-toolbar (openMenu)="openSidenav($event)">
