@@ -1,0 +1,11 @@
+<app-layout>
+  <app-sidenav [open]="showSidenav$ | async">
+    <app-nav-item (activate)="closeSidenav()" icon="input" hint="Log in">
+      Log in
+    </app-nav-item>
+  </app-sidenav>
+  <app-toolbar (openMenu)="openSidenav($event)">
+    Walkypet
+  </app-toolbar>
+  <router-outlet></router-outlet>
+</app-layout>

@@ -4,7 +4,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
   selector: 'app-toolbar',
   template: `
     <md-toolbar color="primary">
-      <button md-icon-button (click)="openMenu.emit()">
+      <button md-icon-button (click)="openMenu.emit($event)">
         <md-icon>menu</md-icon>
       </button>
       <ng-content></ng-content>
