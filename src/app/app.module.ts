@@ -18,6 +18,7 @@ import { NavItemComponent } from './components/nav-item/nav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { LoginComponent } from './components/login/login.component';
 
 import { reducer } from './store';
 
@@ -25,6 +26,10 @@ const appRoutes: Routes = [
   {
     path: '',
     component: WelcomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
 ];
 
@@ -37,6 +42,7 @@ const appRoutes: Routes = [
     SidenavComponent,
     ToolbarComponent,
     WelcomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
