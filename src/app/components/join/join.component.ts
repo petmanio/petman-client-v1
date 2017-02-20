@@ -16,7 +16,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
                 <input mdInput placeholder="Password">
               </md-input-container>
               <md-card-actions>
-                <button md-raised-button color="primary">Login In</button><button md-raised-button color="primary">Login with facebook</button>
+                <button md-raised-button color="primary">Login In</button><button md-raised-button color="primary">Login with Facebook</button>
               </md-card-actions> 
             </form>
           </md-card-content>
@@ -24,10 +24,30 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       </md-tab>
       <md-tab label="Register">
         <md-card>
-          <md-card-title>
-            Register
-          </md-card-title>
-        </md-card>
+          <md-card-content>
+            <form>
+              <div>
+                <md-input-container>
+                  <input mdInput placeholder="First name">
+                </md-input-container>
+                 <md-input-container>
+                  <input mdInput placeholder="Last name">
+                </md-input-container>
+              </div>
+              <div>
+                <md-input-container>
+                  <input mdInput placeholder="Email">
+                </md-input-container>
+                <md-input-container>
+                  <input mdInput placeholder="Password">
+                </md-input-container>
+              </div>
+              <md-card-actions>
+                <button md-raised-button color="primary">Sign Up</button><button md-raised-button color="primary">Sign Up with Facebook</button>
+              </md-card-actions> 
+            </form>
+          </md-card-content>
+        </md-card>  
       </md-tab>
     </md-tab-group>
   `,
@@ -38,6 +58,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     }
     form {
       text-align: center;
+    }
+    md-card {
+    min-height: 180px;
     }
   `]
 })
