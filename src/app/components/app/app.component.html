@@ -1,11 +1,15 @@
 <app-layout>
   <app-sidenav [open]="showSidenav$ | async">
-    <app-nav-item (activate)="closeSidenav()" routerLink="/join" icon="input">
-      Join
+    <app-nav-item (activate)="closeSidenav()">
+      About Us
     </app-nav-item>
   </app-sidenav>
   <app-toolbar (openMenu)="openSidenav($event)">
     <span class="home" routerLink="/">Walkypet</span>
+    <span class="toolbar-spacer"></span>
+    <button md-raised-button color="primary" routerLink="/join">
+      Join
+    </button>
   </app-toolbar>
   <router-outlet></router-outlet>
 </app-layout>

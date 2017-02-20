@@ -3,4 +3,7 @@ app-toolbar {
     cursor: pointer;
     padding: 5px;
   }
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
 }

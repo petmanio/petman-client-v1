@@ -50,7 +50,7 @@ const appRoutes: Routes = [
     HttpModule,
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     MaterialModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
