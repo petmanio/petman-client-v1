@@ -36,6 +36,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
       display: flex;
       justify-content: center;
     }
+    form {
+      text-align: center;
+    }
   `]
 })
 export class JoinComponent {
