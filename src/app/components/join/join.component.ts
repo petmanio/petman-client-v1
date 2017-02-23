@@ -1,4 +1,9 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from '../../store';
+import * as authAction from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-welcome',
@@ -16,7 +21,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
                 <input mdInput placeholder="Password">
               </md-input-container>
               <md-card-actions>
-                <button md-raised-button color="primary">Login In</button><button md-raised-button color="primary">Login with Facebook</button>
+                <button md-raised-button color="primary">Login In</button>
+                <button md-raised-button color="primary" (click)="fbLogin()">Login with Facebook</button>
               </md-card-actions> 
             </form>
           </md-card-content>
@@ -43,7 +49,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
                 </md-input-container>
               </div>
               <md-card-actions>
-                <button md-raised-button color="primary">Sign Up</button><button md-raised-button color="primary">Sign Up with Facebook</button>
+                <button md-raised-button color="primary">Sign Up</button>
+                <button md-raised-button color="primary" (click)="fbLogin()">Sign Up with Facebook</button>
               </md-card-actions> 
             </form>
           </md-card-content>
@@ -65,7 +72,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   `]
 })
 export class JoinComponent {
-  constructor() {
+  constructor(private store: Store<fromRoot.State>) {
+  }
 
+  fbLogin() {
+    this.store.dispatch(new authAction.FbLoginAction());
   }
 }

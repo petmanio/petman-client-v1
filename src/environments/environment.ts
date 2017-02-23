@@ -4,5 +4,10 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiEndpoint: 'http://localhost:1227',
+  fb: {
+    appId: '782744788540027',
+    scope: 'public_profile,email'
+  }
 };

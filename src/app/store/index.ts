@@ -40,15 +40,16 @@ import { combineReducers } from '@ngrx/store';
  * notation packages up all of the exports into a single object.
  */
 import * as fromLayout from './layout/layout.reducer';
-
+import * as fromAuth from './auth/auth.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface State {
-  layout: fromLayout.State;
-  router: fromRouter.RouterState;
+  auth: fromAuth.State,
+  layout: fromLayout.State,
+  router: fromRouter.RouterState,
 }
 
 
@@ -60,6 +61,7 @@ export interface State {
  * the result from right to left.
  */
 const reducers = {
+  auth: fromAuth.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -76,6 +78,34 @@ export function reducer(state: any, action: any) {
     return developmentReducer(state, action);
   }
 }
+
+export const getAuthState = (state: State) => state.auth;
+
+/**
+ * Every reducer module exports selector functions, however child reducers
+ * have no knowledge of the overall state tree. To make them useable, we
+ * need to make new selectors that wrap them.
+ *
+ * Once again our compose function comes in handy. From right to left, we
+ * first select the auth state then we pass the state to the book
+ * reducer's getAuth selector, finally returning an observable
+ * of search results.
+ *
+ * Share memoizes the selector functions and publishes the result. This means
+ * every time you call the selector, you will get back the same result
+ * observable. Each subscription to the resultant observable
+ * is shared across all subscribers.
+ */
+
+/**
+ * Auth Reducers
+ */
+export const getAuthLogin = createSelector(getAuthState, fromAuth.getLogin);
+export const getAuthLoginData = createSelector(getAuthLogin, fromAuth.getLoginData);
+export const getAuthLoginError = createSelector(getAuthLogin, fromAuth.getLoginError);
+export const getAuthFbLogin = createSelector(getAuthState, fromAuth.getFbLogin);
+export const getAuthFbLoginData = createSelector(getAuthLogin, fromAuth.getFbLoginData);
+export const getAuthFbLoginError = createSelector(getAuthLogin, fromAuth.getFbLoginError);
 
 /**
  * Layout Reducers

@@ -20,6 +20,10 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { JoinComponent } from './components/join/join.component';
 
+import { AuthService } from './services/auth/auth.service';
+import { UtilService } from "./services/util/util.service";
+import { AuthEffects } from "./store/auth/auth.effects";
+
 import { reducer } from './store';
 
 const appRoutes: Routes = [
@@ -55,11 +59,14 @@ const appRoutes: Routes = [
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
-    // EffectsModule.run(BookEffects),
+    EffectsModule.run(AuthEffects),
     // EffectsModule.run(CollectionEffects),
     // DBModule.provideDB(schema),
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    UtilService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

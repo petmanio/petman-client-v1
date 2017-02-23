@@ -2,6 +2,7 @@ import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { UtilService } from "../../services/util/util.service";
 
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
@@ -24,7 +25,8 @@ export interface IAppComponent {
 export class AppComponent {
   showSidenav$: Observable<boolean>;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>, private utilsService: UtilService) {
+    UtilService.initScripts();
     this.showSidenav$ = this.store.select(fromRoot.getShowSidenav);
   }
 
