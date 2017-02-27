@@ -25,7 +25,11 @@ export const ActionTypes = {
   FB_LOGIN_COMPLETE: type('[Auth] Fb Login Complete'),
   FB_LOGIN_ERROR: type('[Auth] Fb Login Error'),
 
-  GET_CURRENT_USER_COMPLETE: type('[Auth] Get Current User Complete')
+  GET_CURRENT_USER_COMPLETE: type('[Auth] Get Current User Complete'),
+
+  LOGOUT: type('[Auth] Logout'),
+  LOGOUT_COMPLETE: type('[Auth] Logout Complete'),
+  LOGOUT_ERROR: type('[Auth] Logout Error'),
 };
 
 /**
@@ -77,6 +81,25 @@ export class GetCurrentUserCompleteAction implements Action {
   constructor(public payload: IAuthCurrentUserRequest) { }
 }
 
+export class LogoutAction implements Action {
+  type = ActionTypes.LOGOUT;
+
+  constructor() { }
+}
+
+export class LogoutCompleteAction implements Action {
+  type = ActionTypes.LOGOUT_COMPLETE;
+
+  constructor() { }
+}
+
+export class LogoutErrorAction implements Action {
+  type = ActionTypes.LOGOUT_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -88,4 +111,7 @@ export type Actions
   | FbLoginAction
   | FbLoginCompleteAction
   | FbLoginErrorAction
-  | GetCurrentUserCompleteAction;
+  | GetCurrentUserCompleteAction
+  | LogoutAction
+  | LogoutCompleteAction
+  | LogoutErrorAction;

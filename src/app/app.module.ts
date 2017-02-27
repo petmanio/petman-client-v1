@@ -37,7 +37,8 @@ const appRoutes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     data: {
-      auth: true
+      auth: true,
+      toolbarRightButtons: ['ACTIONS']
     }
   },
   {
@@ -45,7 +46,8 @@ const appRoutes: Routes = [
     component: WelcomeComponent,
     canActivate: [AuthGuard],
     data: {
-      auth: false
+      auth: false,
+      toolbarRightButtons: ['JOIN']
     }
   },
   {

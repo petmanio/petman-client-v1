@@ -9,6 +9,7 @@ import {ILoginResponse, ILoginRequest, IAuthCurrentUserRequest, IAuthCurrentUser
 export interface IAuthService {
   fbLogin(): Observable<any>,
   login(options: ILoginRequest): Observable<ILoginResponse>,
+  logout(): Observable<boolean>,
   getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse>
 }
 
@@ -48,7 +49,12 @@ export class AuthService implements IAuthService {
       })
   }
 
-  public getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse> {
+  logout(): Observable<boolean> {
+    localStorage.removeItem('token');
+    return Observable.of(true);
+  }
+
+  getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse> {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('x-auth-token', localStorage.getItem('token'));

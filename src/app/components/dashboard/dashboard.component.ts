@@ -9,7 +9,7 @@ export interface IDashboardComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <md-card>
-      <md-card-title>Dashoard</md-card-title>
+      <md-card-title>Dashboard</md-card-title>
     </md-card>
   `,
   styles: [`

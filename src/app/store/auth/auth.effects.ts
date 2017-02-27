@@ -34,6 +34,7 @@ interface IAuthEffects {
   fbLogin$: Observable<Action>,
   fbLoginComplete$: Observable<void>,
   login$: Observable<Action>
+  logout$: Observable<Action>
 }
 
 @Injectable()
@@ -64,5 +65,14 @@ export class AuthEffects implements IAuthEffects {
       return this.authService.login(options)
         .map(response => new authAction.LoginCompleteAction(response))
         .catch(err => of(new authAction.LoginErrorAction(err)))
+    });
+
+  @Effect()
+  public logout$: Observable<Action> = this.actions$
+    .ofType(authAction.ActionTypes.LOGOUT)
+    // .map((action: authAction.LogoutAction) => action.payload)
+    .switchMap(() => {
+      return this.authService.logout()
+        .map(result => new authAction.LogoutCompleteAction());
     });
 }

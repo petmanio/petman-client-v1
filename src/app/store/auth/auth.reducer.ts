@@ -40,6 +40,10 @@ export function reducer(state = initialState, action: authAction.Actions): State
       return Object.assign({}, {login: state.login, user: res});
     }
 
+    case authAction.ActionTypes.LOGOUT_COMPLETE: {
+      return {};
+    }
+
     default: {
       return state;
     }
