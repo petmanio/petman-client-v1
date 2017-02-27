@@ -18,22 +18,43 @@ import { NavItemComponent } from './components/nav-item/nav-item.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { JoinComponent } from './components/join/join.component';
+import { EllipsisPipe } from './pipes/ellipsis/ellipsis.pipe';
+import { KeysPipe } from './pipes/keys/keys.pipe';
+import { KeysOrderPipe } from './pipes/keys-order/keys-oder.pipe';
 
 import { AuthService } from './services/auth/auth.service';
-import { UtilService } from "./services/util/util.service";
-import { AuthEffects } from "./store/auth/auth.effects";
+import { UtilService } from './services/util/util.service';
+import { AuthEffects } from './store/auth/auth.effects';
+import { AuthGuard } from './guards/auth.guard';
 
 import { reducer } from './store';
 
 const appRoutes: Routes = [
   {
     path: '',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true
+    }
+  },
+  {
+    path: 'welcome',
     component: WelcomeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: false
+    }
   },
   {
     path: 'join',
     component: JoinComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: false
+    }
   },
 ];
 
@@ -46,7 +67,11 @@ const appRoutes: Routes = [
     SidenavComponent,
     ToolbarComponent,
     WelcomeComponent,
+    DashboardComponent,
     JoinComponent,
+    EllipsisPipe,
+    KeysPipe,
+    KeysOrderPipe,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +89,7 @@ const appRoutes: Routes = [
     // DBModule.provideDB(schema),
   ],
   providers: [
+    AuthGuard,
     AuthService,
     UtilService
   ],

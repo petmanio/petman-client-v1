@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'http://localhost:1227',
+  apiEndpoint: 'http://localhost:1337',
   fb: {
     appId: '782744788540027',
     scope: 'public_profile,email'

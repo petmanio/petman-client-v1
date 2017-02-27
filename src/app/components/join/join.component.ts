@@ -1,9 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
+import { Router } from "@angular/router";
 
 import * as fromRoot from '../../store';
 import * as authAction from '../../store/auth/auth.actions';
+
+export interface IJoinComponent {
+  fbLogin(): void
+}
 
 @Component({
   selector: 'app-welcome',
@@ -15,13 +20,13 @@ import * as authAction from '../../store/auth/auth.actions';
           <md-card-content>
             <form>
               <md-input-container>
-                <input mdInput placeholder="Email">
+                <input mdInput placeholder="Email" disabled>
               </md-input-container>
               <md-input-container>
-                <input mdInput placeholder="Password">
+                <input mdInput placeholder="Password" disabled>
               </md-input-container>
               <md-card-actions>
-                <button md-raised-button color="primary">Login In</button>
+                <button md-raised-button color="primary" disabled mdTooltip="Currently unavailable">Login In</button>
                 <button md-raised-button color="primary" (click)="fbLogin()">Login with Facebook</button>
               </md-card-actions> 
             </form>
@@ -71,11 +76,25 @@ import * as authAction from '../../store/auth/auth.actions';
     }
   `]
 })
-export class JoinComponent {
-  constructor(private store: Store<fromRoot.State>) {
+export class JoinComponent implements OnInit, IJoinComponent {
+  public authLoginState$: Observable<any>;
+  public errorMessage: string = null;
+
+  constructor(private store: Store<fromRoot.State>, private router: Router) {
+    this.authLoginState$ = store.select(fromRoot.getAuthLogin);
   }
 
-  fbLogin() {
+  public ngOnInit(): void {
+    this.authLoginState$.subscribe((event) => {
+      if (event.error) {
+        this.errorMessage = event.error;
+      } else if (event.data) {
+        this.router.navigate(['/'])
+      }
+    });
+  }
+
+  fbLogin(): void {
     this.store.dispatch(new authAction.FbLoginAction());
   }
 }

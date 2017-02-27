@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { ILoginResponse } from '../../models/api';
+import { ILoginResponse, IAuthCurrentUserResponse } from '../../models/api';
 import * as authAction from './auth.actions';
 
 export interface State {
@@ -7,10 +7,7 @@ export interface State {
     data: ILoginResponse,
     error?: any
   },
-  fbLogin?: {
-    data: ILoginResponse,
-    error?: any
-  },
+  user?: IAuthCurrentUserResponse
 }
 
 let initialState: State = {
@@ -18,10 +15,7 @@ let initialState: State = {
     data: null,
     error: null
   },
-  fbLogin: {
-    data: null,
-    error: null
-  },
+  user: null
 };
 
 export function reducer(state = initialState, action: authAction.Actions): State {
@@ -41,19 +35,9 @@ export function reducer(state = initialState, action: authAction.Actions): State
       };
     }
 
-    case authAction.ActionTypes.FB_LOGIN: {
+    case authAction.ActionTypes.GET_CURRENT_USER_COMPLETE: {
       const res: any = action.payload;
-      //FIXME: why right interface gives an error
-      return {
-        fbLogin: { data: Object.assign({}, state.fbLogin.data, res) },
-      };
-    }
-
-    case authAction.ActionTypes.FB_LOGIN_COMPLETE: {
-      const error: any = action.payload;
-      return {
-        fbLogin: { data: null, error: error.status || 'UNKNOWN_ERROR' },
-      };
+      return Object.assign({}, {login: state.login, user: res});
     }
 
     default: {
@@ -74,7 +58,4 @@ export function reducer(state = initialState, action: authAction.Actions): State
 export const getLogin = (state: State) => state.login;
 export const getLoginData = login => login.data;
 export const getLoginError = login => login.error;
-
-export const getFbLogin = (state: State) => state.fbLogin;
-export const getFbLoginData = fbLogin => fbLogin.data;
-export const getFbLoginError = fbLogin => fbLogin.error;
+export const getCurrentUser = (state: State) => state.user;

@@ -51,10 +51,10 @@ export class AuthEffects implements IAuthEffects {
     });
 
   @Effect()
-  public fbLoginComplete$: Observable<void> = this.actions$
+  public fbLoginComplete$: Observable<any> = this.actions$
     .ofType(authAction.ActionTypes.FB_LOGIN_COMPLETE)
     .map((action: authAction.FbLoginCompleteAction) => action.payload)
-    .map(options => this.store.dispatch(new authAction.LoginAction(options)));
+    .switchMap((options: any) => of(new authAction.LoginAction({fb: options})));
 
   @Effect()
   public login$: Observable<Action> = this.actions$

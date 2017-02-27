@@ -103,9 +103,8 @@ export const getAuthState = (state: State) => state.auth;
 export const getAuthLogin = createSelector(getAuthState, fromAuth.getLogin);
 export const getAuthLoginData = createSelector(getAuthLogin, fromAuth.getLoginData);
 export const getAuthLoginError = createSelector(getAuthLogin, fromAuth.getLoginError);
-export const getAuthFbLogin = createSelector(getAuthState, fromAuth.getFbLogin);
-export const getAuthFbLoginData = createSelector(getAuthLogin, fromAuth.getFbLoginData);
-export const getAuthFbLoginError = createSelector(getAuthLogin, fromAuth.getFbLoginError);
+export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurrentUser);
+
 
 /**
  * Layout Reducers

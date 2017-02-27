@@ -5,11 +5,20 @@
     </app-nav-item>
   </app-sidenav>
   <app-toolbar (openMenu)="openSidenav($event)">
-    <span class="home" routerLink="/">Walkypet</span>
+    <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Walkypet</span>
     <span class="toolbar-spacer"></span>
-    <button md-raised-button color="primary" routerLink="/join">
+    <button md-raised-button color="primary" routerLink="/join" *ngIf="!(currentUser$ | async)">
       Join
     </button>
+    <button md-icon-button [mdMenuTriggerFor]="menu" *ngIf="currentUser$ | async">
+      <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #menu="mdMenu">
+      <button md-menu-item>
+        <md-icon>account_circle</md-icon>
+        <span>Account</span>
+      </button>
+    </md-menu>
   </app-toolbar>
   <router-outlet></router-outlet>
 </app-layout>

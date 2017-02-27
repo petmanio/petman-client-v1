@@ -4,11 +4,12 @@ import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
-import {ILoginResponse, ILoginRequest} from "../../models/api";
+import {ILoginResponse, ILoginRequest, IAuthCurrentUserRequest, IAuthCurrentUserResponse} from "../../models/api";
 
 export interface IAuthService {
-  fbLogin(): Observable<any>
-  login(options: ILoginRequest): Observable<ILoginResponse>
+  fbLogin(): Observable<any>,
+  login(options: ILoginRequest): Observable<ILoginResponse>,
+  getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse>
 }
 
 @Injectable()
@@ -40,7 +41,21 @@ export class AuthService implements IAuthService {
         options,
         { headers, withCredentials: true }
       )
-      .map(response => response);
+      .map(response => response.json())
+      .map(body => {
+        localStorage.setItem('token', body.token);
+        return body;
+      })
+  }
+
+  public getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this.http
+      .get(`${environment.apiEndpoint}/api/auth/current-user`, { headers, withCredentials: true })
+      .map(response => response.json());
   }
 
 }
