@@ -8,7 +8,6 @@
     <!--TODO: use route config for main route-->
     <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Walkypet</span>
     <span class="toolbar-spacer"></span>
-    {{a}}
     <button md-raised-button
             color="primary"
             routerLink="/join"

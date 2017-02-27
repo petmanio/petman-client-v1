@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
-import {Router , NavigationStart, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Router , NavigationStart, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UtilService } from "../../services/util/util.service";
 
@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, IAppComponent {
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private ref: ChangeDetectorRef,
+              private zone: NgZone,
               private utilsService: UtilService) {
     UtilService.initScripts();
     this.showSidenav$ = this.store.select(fromRoot.getShowSidenav);
@@ -47,8 +48,11 @@ export class AppComponent implements OnInit, IAppComponent {
       if (event instanceof NavigationStart) {
 
       } else if (event instanceof NavigationEnd) {
-        this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
-        this.ref.markForCheck();
+        this.zone.run(() => {
+          this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
+          this.ref.markForCheck();
+        })
+
       }
     });
   }
