@@ -75,9 +75,9 @@ export class AppComponent implements OnInit, IAppComponent {
     // this.store.dispatch(new auth.LogoutAction());
     //TODO: use complete action
     //TODO: use dispatch
-    // this.router.navigate(['/welcome']);
     localStorage.removeItem('token');
-    location.href = '/';
+    setTimeout(() => this.router.navigate(['/welcome']), 300);
+    // location.href = '/';
   }
 
   private getRouteDataByKey(key: string): any {
