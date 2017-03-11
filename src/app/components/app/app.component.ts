@@ -120,7 +120,9 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   closeSidenav(): void {
-    this.store.dispatch(new layout.CloseSidenavAction());
+    if (UtilService.getCurrentDevice() === 'MOBILE') {
+      this.store.dispatch(new layout.CloseSidenavAction());
+    }
   }
 
   toggleSidenav($event: Event): void {
