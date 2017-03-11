@@ -18,8 +18,59 @@ export interface IAppComponent {
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  template: `
+    <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
+    <app-layout>
+      <app-sidenav [open]="showSidenav$ | async">
+        <app-nav-item (activate)="closeSidenav()" icon="info_outline">
+          About Us
+        </app-nav-item>
+      </app-sidenav>
+      <app-toolbar (openMenu)="openSidenav($event)">
+        <!--TODO: use route config for main route-->
+        <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Walkypet</span>
+        <span class="toolbar-spacer"></span>
+        <button md-raised-button
+                color="primary"
+                routerLink="/join"
+                *ngIf="toolbarRightButtons.indexOf('JOIN') !== -1">
+          Join
+        </button>
+        <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1">
+          <button md-icon-button
+                  [mdMenuTriggerFor]="menu">
+            <md-icon>more_vert</md-icon>
+          </button>
+          <md-menu #menu="mdMenu">
+            <button md-menu-item>
+              <md-icon>account_circle</md-icon>
+              <span>Account</span>
+            </button>
+            <button md-menu-item (click)="logOut()">
+              <md-icon>power_settings_new</md-icon>
+              <span>Log out</span>
+            </button>
+          </md-menu>
+        </div>
+      </app-toolbar>
+      <router-outlet></router-outlet>
+    </app-layout>
+  `,
+  styles: [`
+    .home {
+      cursor: pointer;
+      padding: 5px;
+    }
+    .toolbar-spacer {
+      flex: 1 1 auto;
+    }
+    
+    md-progress-bar {
+      position: fixed;
+      z-index: 10;
+    }
+
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '(click)': 'onClick($event)',
