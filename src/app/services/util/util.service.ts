@@ -1,5 +1,7 @@
 import { Injectable, Component, Compiler, NgModule, Input, ComponentFactory } from '@angular/core';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from '../../../environments/environment'
+
 export interface IUtilService {
 
 }
@@ -23,5 +25,25 @@ export class UtilService implements IUtilService {
       js.src = "//connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+  }
+
+  static XHRListener(): Observable<boolean> {
+    const subject = new ReplaySubject(1);
+    const proxied = window['XMLHttpRequest'].prototype.send;
+    window['XMLHttpRequest'].prototype.send = function() {
+      subject.next(true);
+      let pointer = this;
+      let intervalId = setInterval(() => {
+        if(pointer.readyState !== 4) {
+          return;
+        }
+        subject.next(false);
+        clearInterval(intervalId);
+
+      }, 1);
+      return proxied.apply(this, [].slice.call(arguments));
+    };
+
+    return subject;
   }
 }

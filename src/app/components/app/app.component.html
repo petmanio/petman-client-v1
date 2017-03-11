@@ -1,3 +1,4 @@
+<md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
 <app-layout>
   <app-sidenav [open]="showSidenav$ | async">
     <app-nav-item (activate)="closeSidenav()" icon="info_outline">

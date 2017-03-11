@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, IAppComponent {
   //TODO: import model
   currentUser$: Observable<any>;
   toolbarRightButtons: string[] = [];
+  xhrListener: Observable<boolean> = UtilService.XHRListener();
 
   constructor(private store: Store<fromRoot.State>,
               private activatedRoute: ActivatedRoute,

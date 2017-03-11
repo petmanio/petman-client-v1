@@ -7,3 +7,8 @@ app-toolbar {
     flex: 1 1 auto;
   }
 }
+
+md-progress-bar {
+  position: fixed;
+  z-index: 10;
+}
