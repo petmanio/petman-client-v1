@@ -49,7 +49,8 @@ export interface IAppComponent {
           </md-menu>
         </div>
       </app-toolbar>
-      <app-sidenav [open]="currentSideNavState" (onItemActivate)="closeSidenav()" [mode]="sideNavMode">
+      <!--TODO: pass items-->
+      <app-sidenav [open]="currentSideNavState" (onItemActivate)="closeSidenav()" [mode]="sideNavMode" [currentUser]="currentUser$ | async">
         <router-outlet></router-outlet>
       </app-sidenav>
     </app-layout>
@@ -141,7 +142,10 @@ export class AppComponent implements OnInit, IAppComponent {
     //TODO: use complete action
     //TODO: use dispatch
     localStorage.removeItem('token');
-    setTimeout(() => this.router.navigate(['/welcome']), 300);
+    setTimeout(() => {
+      this.router.navigate(['/welcome']);
+      this.store.dispatch(new auth.LogoutCompleteAction());
+    }, 300);
     // location.href = '/';
   }
 

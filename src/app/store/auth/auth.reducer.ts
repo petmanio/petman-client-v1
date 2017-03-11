@@ -41,7 +41,13 @@ export function reducer(state = initialState, action: authAction.Actions): State
     }
 
     case authAction.ActionTypes.LOGOUT_COMPLETE: {
-      return {};
+      return {
+        login: {
+          data: null,
+          error: null
+        },
+        user: null
+      };
     }
 
     default: {
