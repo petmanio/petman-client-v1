@@ -49,7 +49,7 @@ export interface IAppComponent {
           </md-menu>
         </div>
       </app-toolbar>
-      <app-sidenav [open]="showSidenav$ | async" (onItemActivate)="closeSidenav()" [mode]="sideNavMode">
+      <app-sidenav [open]="currentSideNavState" (onItemActivate)="closeSidenav()" [mode]="sideNavMode">
         <router-outlet></router-outlet>
       </app-sidenav>
     </app-layout>
