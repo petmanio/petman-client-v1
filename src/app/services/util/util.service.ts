@@ -46,4 +46,17 @@ export class UtilService implements IUtilService {
 
     return subject;
   }
+
+  static getCurrentDevice(): 'MOBILE' | 'TABLET' | 'DESKTOP' {
+    let type;
+    if (window.matchMedia("(max-width: 480px)").matches) {
+      type = 'MOBILE';
+    } else if (window.matchMedia("(max-width: 1024px)").matches) {
+      type = 'TABLET';
+    } else {
+      type = 'DESKTOP';
+    }
+
+    return type;
+  }
 }

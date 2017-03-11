@@ -4,7 +4,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
   selector: 'app-toolbar',
   template: `
     <md-toolbar color="primary">
-      <button md-icon-button (click)="openMenu.emit($event)">
+      <button md-icon-button (click)="toggleMenu.emit($event)">
         <md-icon>menu</md-icon>
       </button>
       <ng-content></ng-content>
@@ -12,5 +12,5 @@ import { Component, Output, EventEmitter } from '@angular/core';
   `
 })
 export class ToolbarComponent {
-  @Output() openMenu = new EventEmitter();
+  @Output() toggleMenu = new EventEmitter();
 }

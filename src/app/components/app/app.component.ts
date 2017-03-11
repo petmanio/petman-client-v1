@@ -11,8 +11,8 @@ import * as auth from '../../store/auth/auth.actions';
 
 export interface IAppComponent {
   closeSidenav(): void,
-  openSidenav($event: Event): void,
-  onClick($event: Event): void,
+  toggleSidenav($event: Event): void,
+  // onClick($event: Event): void,
   logOut(): void
 }
 
@@ -21,12 +21,8 @@ export interface IAppComponent {
   template: `
     <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
     <app-layout>
-      <app-sidenav [open]="showSidenav$ | async">
-        <app-nav-item (activate)="closeSidenav()" icon="info_outline">
-          About Us
-        </app-nav-item>
-      </app-sidenav>
-      <app-toolbar (openMenu)="openSidenav($event)">
+    <!--TODO: update layout, sideNav components component-->
+      <app-toolbar (toggleMenu)="toggleSidenav($event)">
         <!--TODO: use route config for main route-->
         <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Walkypet</span>
         <span class="toolbar-spacer"></span>
@@ -53,11 +49,13 @@ export interface IAppComponent {
           </md-menu>
         </div>
       </app-toolbar>
-      <router-outlet></router-outlet>
+      <app-sidenav [open]="showSidenav$ | async" (onItemActivate)="closeSidenav()" [mode]="sideNavMode">
+        <router-outlet></router-outlet>
+      </app-sidenav>
     </app-layout>
   `,
   styles: [`
-    .home {
+   .home {
       cursor: pointer;
       padding: 5px;
     }
@@ -73,7 +71,7 @@ export interface IAppComponent {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '(click)': 'onClick($event)',
+    // '(click)': 'onClick($event)',
   }
 })
 export class AppComponent implements OnInit, IAppComponent {
@@ -81,6 +79,8 @@ export class AppComponent implements OnInit, IAppComponent {
   //TODO: import model
   currentUser$: Observable<any>;
   toolbarRightButtons: string[] = [];
+  sideNavMode: string = 'side';
+  currentSideNavState: boolean;
   xhrListener: Observable<boolean> = UtilService.XHRListener();
 
   constructor(private store: Store<fromRoot.State>,
@@ -107,21 +107,34 @@ export class AppComponent implements OnInit, IAppComponent {
 
       }
     });
+
+    if (UtilService.getCurrentDevice() === 'MOBILE') {
+      this.store.dispatch(new layout.CloseSidenavAction());
+      this.sideNavMode = 'push';
+    } else {
+      this.store.dispatch(new layout.OpenSidenavAction());
+    }
+
+    this.showSidenav$.subscribe((event) => this.currentSideNavState = event);
   }
 
   closeSidenav(): void {
     this.store.dispatch(new layout.CloseSidenavAction());
   }
 
-  openSidenav($event: Event): void {
+  toggleSidenav($event: Event): void {
     $event.stopPropagation();
-    this.store.dispatch(new layout.OpenSidenavAction());
+    if (this.currentSideNavState) {
+      this.store.dispatch(new layout.CloseSidenavAction());
+    } else {
+      this.store.dispatch(new layout.OpenSidenavAction());
+    }
   }
 
-  onClick($event: Event): void {
-    $event.stopPropagation();
-    this.store.dispatch(new layout.CloseSidenavAction());
-  }
+  // onClick($event: Event): void {
+  //   $event.stopPropagation();
+  //   this.store.dispatch(new layout.CloseSidenavAction());
+  // }
 
   logOut(): void {
     // this.store.dispatch(new auth.LogoutAction());
