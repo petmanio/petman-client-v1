@@ -10,7 +10,7 @@ import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
 
 export interface IAppComponent {
-  closeSidenav(): void,
+  closeSidenav(force: boolean): void,
   toggleSidenav($event: Event): void,
   // onClick($event: Event): void,
   logOut(): void
@@ -50,7 +50,12 @@ export interface IAppComponent {
         </div>
       </app-toolbar>
       <!--TODO: pass items-->
-      <app-sidenav [open]="currentSideNavState" (onItemActivate)="closeSidenav()" [mode]="sideNavMode" [currentUser]="currentUser$ | async">
+      <app-sidenav [open]="currentSideNavState" 
+        (onItemActivate)="closeSidenav()"
+        (onClose)="closeSidenav(true)"
+        (onItemActivate)="closeSidenav()"
+        [mode]="sideNavMode" 
+        [currentUser]="currentUser$ | async">
         <router-outlet></router-outlet>
       </app-sidenav>
     </app-layout>
@@ -119,8 +124,8 @@ export class AppComponent implements OnInit, IAppComponent {
     this.showSidenav$.subscribe((event) => this.currentSideNavState = event);
   }
 
-  closeSidenav(): void {
-    if (UtilService.getCurrentDevice() === 'MOBILE') {
+  closeSidenav(force: boolean): void {
+    if (force || UtilService.getCurrentDevice() === 'MOBILE') {
       this.store.dispatch(new layout.CloseSidenavAction());
     }
   }

@@ -11,7 +11,7 @@ interface ISidenavComponent {
   },
   template: `
     <md-sidenav-container>
-      <md-sidenav [opened]="open" [mode]="mode" color="primary">
+      <md-sidenav [opened]="open" [mode]="mode" color="primary" (close)="onClose.emit()">
         <md-nav-list>
           <app-nav-item (activate)="onItemActivate.emit()" icon="home">Home</app-nav-item>    
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="place">Pets friendly cafes</app-nav-item>
@@ -43,6 +43,7 @@ export class SidenavComponent implements ISidenavComponent {
   @Input() mode: string;
   @Input() currentUser;
   @Output() onItemActivate = new EventEmitter();
+  @Output() onClose = new EventEmitter();
 
   onClick($event: Event): void {
     $event.stopPropagation();
