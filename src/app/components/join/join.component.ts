@@ -72,7 +72,7 @@ export interface IJoinComponent {
       text-align: center;
     }
     md-card {
-    min-height: 180px;
+      min-height: 180px;
     }
   `]
 })

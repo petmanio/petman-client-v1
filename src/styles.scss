@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "../node_modules/bulma/sass/utilities/all";
+//TODO: use material ui grid system for mobile
+//@import "../node_modules/bulma/sass/base/all";
+@import "../node_modules/bulma/sass/grid/all";
 :focus { outline:none; }
 ::-moz-focus-inner { border:0; }
+
+.columns {
+  margin: 0 !important;
+}
