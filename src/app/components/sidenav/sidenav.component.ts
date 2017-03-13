@@ -13,12 +13,12 @@ interface ISidenavComponent {
     <md-sidenav-container>
       <md-sidenav [opened]="open" [mode]="mode" color="primary" (close)="onClose.emit()">
         <md-nav-list>
-          <app-nav-item (activate)="onItemActivate.emit()" icon="home">Home</app-nav-item>    
+          <app-nav-item (activate)="onItemActivate.emit()" icon="home" routerLink="/">Home</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="place">Pets friendly cafes</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="shopping_basket">Pets shops</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="pets">Pets beauty salon</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="pets">Walks</app-nav-item>          
-          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="public">Pets blog</app-nav-item>
+          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog">Blog</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item>                  
           <app-nav-item (activate)="onItemActivate.emit()" icon="help">Help</app-nav-item>

@@ -19,6 +19,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { BlogComponent } from './components/blog/blog.component';
 import { JoinComponent } from './components/join/join.component';
 import { EllipsisPipe } from './pipes/ellipsis/ellipsis.pipe';
 import { KeysPipe } from './pipes/keys/keys.pipe';
@@ -35,6 +36,15 @@ const appRoutes: Routes = [
   {
     path: '',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS']
+    }
+  },
+  {
+    path: 'blog',
+    component: BlogComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
@@ -70,6 +80,7 @@ const appRoutes: Routes = [
     ToolbarComponent,
     WelcomeComponent,
     DashboardComponent,
+    BlogComponent,
     JoinComponent,
     EllipsisPipe,
     KeysPipe,
