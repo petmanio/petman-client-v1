@@ -24,10 +24,13 @@ import { JoinComponent } from './components/join/join.component';
 import { EllipsisPipe } from './pipes/ellipsis/ellipsis.pipe';
 import { KeysPipe } from './pipes/keys/keys.pipe';
 import { KeysOrderPipe } from './pipes/keys-order/keys-oder.pipe';
+import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 
 import { AuthService } from './services/auth/auth.service';
+import { BlogService } from './services/blog/blog.service';
 import { UtilService } from './services/util/util.service';
 import { AuthEffects } from './store/auth/auth.effects';
+import { BlogEffects } from './store/blog/blog.effects';
 import { AuthGuard } from './guards/auth.guard';
 
 import { reducer } from './store';
@@ -85,6 +88,7 @@ const appRoutes: Routes = [
     EllipsisPipe,
     KeysPipe,
     KeysOrderPipe,
+    ChunkPipe
   ],
   imports: [
     BrowserModule,
@@ -98,12 +102,13 @@ const appRoutes: Routes = [
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(AuthEffects),
-    // EffectsModule.run(CollectionEffects),
+    EffectsModule.run(BlogEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
     AuthGuard,
     AuthService,
+    BlogService,
     UtilService
   ],
   bootstrap: [AppComponent]

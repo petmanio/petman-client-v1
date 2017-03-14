@@ -4,7 +4,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
-import {ILoginResponse, ILoginRequest, IAuthCurrentUserRequest, IAuthCurrentUserResponse} from "../../models/api";
+import { ILoginResponse, ILoginRequest, IAuthCurrentUserRequest, IAuthCurrentUserResponse } from "../../models/api";
 
 export interface IAuthService {
   fbLogin(): Observable<any>,

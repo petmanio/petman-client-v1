@@ -41,6 +41,7 @@ import { combineReducers } from '@ngrx/store';
  */
 import * as fromLayout from './layout/layout.reducer';
 import * as fromAuth from './auth/auth.reducer';
+import * as fromBlog from './blog/blog.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -48,6 +49,7 @@ import * as fromAuth from './auth/auth.reducer';
  */
 export interface State {
   auth: fromAuth.State,
+  blog: fromBlog.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -62,6 +64,7 @@ export interface State {
  */
 const reducers = {
   auth: fromAuth.reducer,
+  blog: fromBlog.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -110,5 +113,13 @@ export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurre
  * Layout Reducers
  */
 export const getLayoutState = (state: State) => state.layout;
-
 export const getShowSidenav = createSelector(getLayoutState, fromLayout.getShowSidenav);
+
+
+/**
+ * Blog Reducers
+ */
+export const getBlogState = (state: State) => state.blog;
+export const getBlogList = createSelector(getBlogState, fromBlog.getList);
+export const getBlogListData = createSelector(getBlogList, fromBlog.getListData);
+export const getBlogListError = createSelector(getBlogList, fromBlog.getListError);
