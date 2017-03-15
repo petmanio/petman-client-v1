@@ -22,7 +22,7 @@ export function reducer(state = initialState, action: blogAction.Actions): State
       const res: IBlogListResponse[] = action.payload;
       //use object assign
       return {
-        list: { data: res },
+        list: { data: state.list.data.concat(res) },
       };
     }
 

@@ -34,8 +34,18 @@ interface ISidenavComponent {
       background-color: #f8f8f8 !important;
     }
     md-sidenav-container {
-      min-height: calc(100% - 56px);
+      height: calc(100% - 64px);
+      height: -webkit-calc(100% - 64px);
+      height: -moz-calc(100% - 64px);
+      overflow: hidden;
     }
+    @media (max-width: 600px) and (orientation: portrait) {
+      md-sidenav-container {
+        height: calc(100% - 56px);
+        height: -webkit-calc(100% - 56px);
+        height: -moz-calc(100% - 56px);
+      }
+    }    
   `]
 })
 export class SidenavComponent implements ISidenavComponent {

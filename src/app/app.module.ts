@@ -11,6 +11,7 @@ import { DBModule } from '@ngrx/db';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 import { AppComponent } from './components/app/app.component';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -101,6 +102,7 @@ const appRoutes: Routes = [
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    InfiniteScrollModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     // DBModule.provideDB(schema),
