@@ -49,12 +49,9 @@ export class BlogComponent implements OnInit, IBlogComponent {
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.blogListData$ = store.select(fromRoot.getBlogListData);
-    this.blogListData$.subscribe(event => {
-      if (event.length === 0) this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
-    });
   }
 
   public ngOnInit(): void {
-
+    this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
   }
 }

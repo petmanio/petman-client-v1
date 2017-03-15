@@ -32,7 +32,7 @@ export class ListAction implements Action {
 export class ListCompleteAction implements Action {
   type = ActionTypes.LIST_COMPLETE;
 
-  constructor(public payload: IBlogListResponse) { }
+  constructor(public payload: IBlogListResponse[]) { }
 }
 
 export class ListErrorAction implements Action {

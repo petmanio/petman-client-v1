@@ -7,7 +7,7 @@ import { UtilService } from '../util/util.service';
 import { IBlogListRequest, IBlogListResponse } from "../../models/api";
 
 export interface IBlogService {
-  list(options: IBlogListRequest): Observable<IBlogListResponse>
+  list(options: IBlogListRequest): Observable<IBlogListResponse[]>
 }
 
 @Injectable()
@@ -17,7 +17,7 @@ export class BlogService implements IBlogService {
 
   }
 
-  list(options: IBlogListRequest): Observable<IBlogListResponse> {
+  list(options: IBlogListRequest): Observable<IBlogListResponse[]> {
     let headers = new Headers();
     let params: URLSearchParams = new URLSearchParams();
 
