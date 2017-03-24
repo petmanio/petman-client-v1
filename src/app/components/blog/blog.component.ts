@@ -19,7 +19,7 @@ export interface IBlogComponent {
             [infiniteScrollDistance]="2"
             [infiniteScrollThrottle]="300"
             [scrollWindow]="false">
-      <div class="columns" *ngFor="let blogRow of blogListData$ | async | chunk">
+      <div class="columns" *ngFor="let blogRow of (blogListData$ | async)?.list | chunk">
         <div class="column" *ngFor="let blog of blogRow">
           <md-card>
             <md-card-header>
@@ -65,6 +65,7 @@ export class BlogComponent implements OnInit, IBlogComponent {
   public blogListData$: Observable<any>;
   private _skip: number = 0;
   private _limit: number = 9;
+  private _count: number = null;
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.blogListData$ = store.select(fromRoot.getBlogListData);
@@ -72,13 +73,18 @@ export class BlogComponent implements OnInit, IBlogComponent {
 
   public ngOnInit(): void {
     let listener = this.blogListData$.subscribe((event) => {
-      if (!event.length) this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
-      if (listener) listener.unsubscribe();
+      if (event.count === null) {
+        this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+      } else {
+        this._count = event.count;
+      }
     });
   }
 
   public onScroll(): void {
-    this._skip += this._limit;
-    this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+    if (this._skip + this._limit < this._count) {
+      this._skip += this._limit;
+      this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+    }
   }
 }

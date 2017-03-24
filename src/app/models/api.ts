@@ -62,6 +62,7 @@ export interface IBlogListRequest {
   limit: number
 }
 
-export interface IBlogListResponse extends IBlog {
-
+export interface IBlogListResponse {
+  list: IBlog[],
+  count: number
 }

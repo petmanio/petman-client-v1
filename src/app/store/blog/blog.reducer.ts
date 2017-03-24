@@ -4,14 +4,17 @@ import * as blogAction from './blog.actions';
 
 export interface State {
   list?: {
-    data: IBlogListResponse[],
+    data?: IBlogListResponse,
     error?: any
   }
 }
 
 let initialState: State = {
   list: {
-    data: [],
+    data: {
+      list: [],
+      count: null
+    },
     error: null
   }
 };
@@ -19,10 +22,15 @@ let initialState: State = {
 export function reducer(state = initialState, action: blogAction.Actions): State {
   switch (action.type) {
     case blogAction.ActionTypes.LIST_COMPLETE: {
-      const res: IBlogListResponse[] = action.payload;
+      const res: IBlogListResponse = action.payload;
       //use object assign
       return {
-        list: { data: state.list.data.concat(res) },
+        list: {
+          data: {
+            list: state.list.data.list.concat(res.list),
+            count: res.count
+          }
+        },
       };
     }
 
