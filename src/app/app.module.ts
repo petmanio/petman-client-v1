@@ -12,38 +12,53 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-
-import { AppComponent } from './components/app/app.component';
-import { LayoutComponent } from './components/layout/layout.component';
-import { NavItemComponent } from './components/nav-item/nav-item.component';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { WelcomeComponent } from './components/welcome/welcome.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { BlogComponent } from './components/blog/blog.component';
-import { JoinComponent } from './components/join/join.component';
-import { EllipsisPipe } from './pipes/ellipsis/ellipsis.pipe';
-import { KeysPipe } from './pipes/keys/keys.pipe';
-import { KeysOrderPipe } from './pipes/keys-order/keys-oder.pipe';
-import { ChunkPipe } from './pipes/chunk/chunk.pipe';
-
-import { AuthService } from './services/auth/auth.service';
-import { BlogService } from './services/blog/blog.service';
-import { UtilService } from './services/util/util.service';
-import { AuthEffects } from './store/auth/auth.effects';
-import { BlogEffects } from './store/blog/blog.effects';
-import { AuthGuard } from './guards/auth.guard';
+import {
+  AppComponent,
+  LayoutComponent,
+  NavItemComponent,
+  SidenavComponent,
+  ToolbarComponent,
+  WelcomeComponent,
+  DashboardComponent,
+  BlogComponent,
+  JoinComponent,
+  ShopsComponent
+} from './components';
+import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
+import { AuthService, BlogService, UtilService } from './services';
+import { AuthEffects, BlogEffects } from './store';
+import { AuthGuard } from './guards';
 
 import { reducer } from './store';
 
 const appRoutes: Routes = [
+  {
+    path: 'welcome',
+    component: WelcomeComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: false,
+      toolbarRightButtons: ['JOIN'],
+      showSidenav: false
+    }
+  },
+  {
+    path: 'join',
+    component: JoinComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: false,
+      showSidenav: false
+    }
+  },
   {
     path: '',
     component: DashboardComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
-      toolbarRightButtons: ['ACTIONS']
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
     }
   },
   {
@@ -52,26 +67,20 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     data: {
       auth: true,
-      toolbarRightButtons: ['ACTIONS']
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
     }
   },
   {
-    path: 'welcome',
-    component: WelcomeComponent,
+    path: 'shops',
+    component: ShopsComponent,
     canActivate: [AuthGuard],
     data: {
-      auth: false,
-      toolbarRightButtons: ['JOIN']
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
     }
-  },
-  {
-    path: 'join',
-    component: JoinComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: false
-    }
-  },
+  }
 ];
 
 
@@ -86,6 +95,7 @@ const appRoutes: Routes = [
     DashboardComponent,
     BlogComponent,
     JoinComponent,
+    ShopsComponent,
     EllipsisPipe,
     KeysPipe,
     KeysOrderPipe,

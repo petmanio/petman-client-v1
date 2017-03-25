@@ -10,7 +10,7 @@ import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
 
 export interface IAppComponent {
-  closeSidenav(force: boolean): void,
+  closeSidenav(): void,
   toggleSidenav($event: Event): void,
   // onClick($event: Event): void,
   logOut(): void
@@ -51,9 +51,7 @@ export interface IAppComponent {
       </app-toolbar>
       <!--TODO: pass items-->
       <app-sidenav [open]="currentSideNavState" 
-        (onItemActivate)="closeSidenav()"
-        (onClose)="closeSidenav(true)"
-        (onItemActivate)="closeSidenav()"
+        (onClose)="closeSidenav()"
         [mode]="sideNavMode" 
         [currentUser]="currentUser$ | async">
         <router-outlet></router-outlet>
@@ -100,7 +98,7 @@ export class AppComponent implements OnInit, IAppComponent {
     this.currentUser$ = this.store.select(fromRoot.getAuthCurrentUser);
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     //FIXME: find better way
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
@@ -108,6 +106,14 @@ export class AppComponent implements OnInit, IAppComponent {
       } else if (event instanceof NavigationEnd) {
         this.zone.run(() => {
           this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
+          let showSideNav = this.getRouteDataByKey('showSidenav');
+          if (typeof showSideNav !== 'undefined') {
+            if (showSideNav && UtilService.getCurrentDevice() !== 'MOBILE') {
+              this.store.dispatch(new layout.OpenSidenavAction());
+            } else {
+              this.store.dispatch(new layout.CloseSidenavAction());
+            }
+          }
           this.ref.markForCheck();
         })
 
@@ -115,19 +121,14 @@ export class AppComponent implements OnInit, IAppComponent {
     });
 
     if (UtilService.getCurrentDevice() === 'MOBILE') {
-      this.store.dispatch(new layout.CloseSidenavAction());
       this.sideNavMode = 'push';
-    } else {
-      this.store.dispatch(new layout.OpenSidenavAction());
     }
 
     this.showSidenav$.subscribe((event) => this.currentSideNavState = event);
   }
 
-  closeSidenav(force: boolean): void {
-    if (force || UtilService.getCurrentDevice() === 'MOBILE') {
-      this.store.dispatch(new layout.CloseSidenavAction());
-    }
+  closeSidenav(): void {
+    this.store.dispatch(new layout.CloseSidenavAction());
   }
 
   toggleSidenav($event: Event): void {

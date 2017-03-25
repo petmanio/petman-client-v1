@@ -1,3 +1,6 @@
+export { BlogEffects } from './blog/blog.effects';
+export { AuthEffects } from './auth/auth.effects';
+
 import { EffectsModule } from '@ngrx/effects';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { createSelector } from 'reselect';

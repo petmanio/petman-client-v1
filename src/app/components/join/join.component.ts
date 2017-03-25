@@ -11,7 +11,7 @@ export interface IJoinComponent {
 }
 
 @Component({
-  selector: 'app-welcome',
+  selector: 'app-join',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <md-tab-group>
