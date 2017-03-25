@@ -12,6 +12,8 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { AgmCoreModule } from 'angular2-google-maps/core';
+import { environment } from '../environments/environment';
 import {
   AppComponent,
   LayoutComponent,
@@ -109,6 +111,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
     MaterialModule,
+    AgmCoreModule.forRoot({apiKey : environment.mapApiKey}),
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),

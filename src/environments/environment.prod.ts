@@ -4,5 +4,6 @@ export const environment = {
   fb: {
     appId: '1352754344791293',
     scope: 'public_profile,email'
-  }
+  },
+  mapApiKey: 'AIzaSyCjMDwYXmx_jeTJ2Ha2rM7_V2YBxcA7Gv4'
 };

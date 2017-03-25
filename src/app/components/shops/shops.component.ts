@@ -1,19 +1,24 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Router } from "@angular/router";
-
+import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
+import { mapStyles } from '../../../util';
 
-export interface IShopsComponent {
-
-}
+export interface IShopsComponent {}
 
 @Component({
   selector: 'app-shops',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <md-tab-group>
+      <md-tab label="Map view">
+        <md-card>
+          <md-card-content>
+            <sebm-google-map [latitude]="51" [longitude]="7" [styles]="mapStyles"></sebm-google-map>
+          </md-card-content>
+        </md-card>
+      </md-tab>
       <md-tab label="List view">
         <md-card>
           <md-card-content>
@@ -184,26 +189,28 @@ export interface IShopsComponent {
           </md-card-content>
         </md-card>        
       </md-tab>
-      <md-tab label="Map view">
-        <md-card>
-          <md-card-content>
-            
-          </md-card-content>
-        </md-card>  
-      </md-tab>
     </md-tab-group>
   `,
   styles: [`
     md-card {
-      min-height: 180px;
+      /*min-height: 700px;*/
     }
     :host /deep/ .mat-tab-labels {
-      justify-content: center;
+      /*justify-content: center;*/
+    }
+    .sebm-google-map-container {
+      height: 600px;
+    }
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      .sebm-google-map-container {
+        height: 300px;
+      }
     }
   `]
 })
 export class ShopsComponent implements OnInit, IShopsComponent {
-
+  public mapStyles = mapStyles;
   constructor(private store: Store<fromRoot.State>, private router: Router) {
   }
 
