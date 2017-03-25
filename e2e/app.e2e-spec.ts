@@ -1,6 +1,6 @@
 import { WalkypetPage } from './app.po';
 
-describe('walkypet App', () => {
+describe('petman client App', () => {
   let page: WalkypetPage;
 
   beforeEach(() => {

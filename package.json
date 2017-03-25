@@ -1,5 +1,5 @@
 {
-  "name": "walkypet",
+  "name": "petman-client",
   "version": "0.1.18",
   "license": "MIT",
   "angular-cli": {},
@@ -12,7 +12,7 @@
   },
   "author": "Andranik Antonyan",
   "repository": {
-    "url": "git@bitbucket.org:andantonyan/walkypet.git"
+    "url": "git@bitbucket.org:andantonyan/petman-client.git"
   },
   "private": true,
   "dependencies": {

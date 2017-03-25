@@ -4,7 +4,7 @@ rm -rf ./dist/
 ./node_modules/.bin/ng build --prod
 cd ./dist/
 echo "{\
-  \"name\": \"walkypet\",\
+  \"name\": \"petman-client\",\
   \"version\": \"0.0.0\",\
   \"scripts\": {\
     \"start\": \"http-server\"\
@@ -15,7 +15,7 @@ echo "{\
 }\
 " > package.json
 git init;
-git remote add heroku https://git.heroku.com/walkypet.git
+git remote add heroku https://git.heroku.com/petman.git
 git add --all
 git commit -m "build"
 git push heroku master -f
