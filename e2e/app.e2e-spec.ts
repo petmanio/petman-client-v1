@@ -1,10 +1,10 @@
-import { WalkypetPage } from './app.po';
+import { PetmanPage } from './app.po';
 
 describe('petman client App', () => {
-  let page: WalkypetPage;
+  let page: PetmanPage;
 
   beforeEach(() => {
-    page = new WalkypetPage();
+    page = new PetmanPage();
   });
 
   it('should display message saying app works', () => {
