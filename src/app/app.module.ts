@@ -27,8 +27,8 @@ import {
   ShopsComponent
 } from './components';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService } from './services';
-import { AuthEffects, BlogEffects } from './store';
+import { AuthService, BlogService, ShopService, UtilService } from './services';
+import { AuthEffects, BlogEffects, ShopEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -118,12 +118,14 @@ const appRoutes: Routes = [
     InfiniteScrollModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
+    EffectsModule.run(ShopEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
     AuthGuard,
     AuthService,
     BlogService,
+    ShopService,
     UtilService
   ],
   bootstrap: [AppComponent]

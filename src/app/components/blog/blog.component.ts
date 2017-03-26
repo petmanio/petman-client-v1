@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Router } from "@angular/router";
-
+import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as blogAction from '../../store/blog/blog.actions';
 
@@ -63,25 +62,28 @@ export interface IBlogComponent {
 })
 export class BlogComponent implements OnInit, IBlogComponent {
   public blogListData$: Observable<any>;
-  private _skip: number = 0;
-  private _limit: number = 9;
+  private _skip = 0;
+  private _limit = 9;
   private _count: number = null;
 
   constructor(private store: Store<fromRoot.State>, private router: Router) {
     this.blogListData$ = store.select(fromRoot.getBlogListData);
   }
 
-  public ngOnInit(): void {
-    let listener = this.blogListData$.subscribe((event) => {
+  ngOnInit(): void {
+    const listener = this.blogListData$.subscribe((event) => {
       if (event.count === null) {
         this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+        if (listener) {
+          listener.unsubscribe();
+        }
       } else {
         this._count = event.count;
       }
     });
   }
 
-  public onScroll(): void {
+  onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
       this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));

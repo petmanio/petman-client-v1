@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
-import { IBlogListRequest, IBlogListResponse } from '../../models/api';
-import * as blogAction from './blog.actions';
+import { IShopListRequest, IShopListResponse } from '../../models/api';
+import * as shopAction from './shop.actions';
 
 export interface State {
   list?: {
-    data?: IBlogListResponse,
+    data?: IShopListResponse,
     error?: any
   }
 }
@@ -19,11 +19,11 @@ const initialState: State = {
   }
 };
 
-export function reducer(state = initialState, action: blogAction.Actions): State {
+export function reducer(state = initialState, action: shopAction.Actions): State {
   switch (action.type) {
-    case blogAction.ActionTypes.LIST_COMPLETE: {
-      const res: IBlogListResponse = action.payload;
-      //use object assign
+    case shopAction.ActionTypes.LIST_COMPLETE: {
+      const res: IShopListResponse = action.payload;
+      //TODO: use object assign
       return {
         list: {
           data: {
@@ -34,7 +34,7 @@ export function reducer(state = initialState, action: blogAction.Actions): State
       };
     }
 
-    case blogAction.ActionTypes.LIST_ERROR: {
+    case shopAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
       return {
         list: { data: { count: null, list: [] }, error: error.status || 'UNKNOWN_ERROR' },

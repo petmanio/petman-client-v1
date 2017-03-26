@@ -1,5 +1,6 @@
-export { BlogEffects } from './blog/blog.effects';
 export { AuthEffects } from './auth/auth.effects';
+export { BlogEffects } from './blog/blog.effects';
+export { ShopEffects } from './shop/shop.effects';
 
 import { EffectsModule } from '@ngrx/effects';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -45,6 +46,7 @@ import { combineReducers } from '@ngrx/store';
 import * as fromLayout from './layout/layout.reducer';
 import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
+import * as fromShop from './shop/shop.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -53,6 +55,7 @@ import * as fromBlog from './blog/blog.reducer';
 export interface State {
   auth: fromAuth.State,
   blog: fromBlog.State,
+  shop: fromShop.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -68,6 +71,7 @@ export interface State {
 const reducers = {
   auth: fromAuth.reducer,
   blog: fromBlog.reducer,
+  shop: fromShop.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -79,8 +83,7 @@ const productionReducer: ActionReducer<State> = combineReducers(reducers);
 export function reducer(state: any, action: any) {
   if (environment.production) {
     return productionReducer(state, action);
-  }
-  else {
+  } else {
     return developmentReducer(state, action);
   }
 }
@@ -118,7 +121,6 @@ export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurre
 export const getLayoutState = (state: State) => state.layout;
 export const getShowSidenav = createSelector(getLayoutState, fromLayout.getShowSidenav);
 
-
 /**
  * Blog Reducers
  */
@@ -126,3 +128,11 @@ export const getBlogState = (state: State) => state.blog;
 export const getBlogList = createSelector(getBlogState, fromBlog.getList);
 export const getBlogListData = createSelector(getBlogList, fromBlog.getListData);
 export const getBlogListError = createSelector(getBlogList, fromBlog.getListError);
+
+/**
+ * Shop Reducers
+ */
+export const getShopState = (state: State) => state.shop;
+export const getShopList = createSelector(getShopState, fromShop.getList);
+export const getShopListData = createSelector(getShopList, fromShop.getListData);
+export const getShopListError = createSelector(getShopList, fromShop.getListError);

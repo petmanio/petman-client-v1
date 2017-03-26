@@ -25,6 +25,17 @@ export interface IBlog {
   link: string,
   thumbnail: string,
   date: string,
+  lang: string
+}
+
+export interface IShop {
+  id: number,
+  description: string,
+  link: string,
+  thumbnail: string,
+  lat: number,
+  lng: number
+  lang: string
 }
 
 /**
@@ -64,5 +75,18 @@ export interface IBlogListRequest {
 
 export interface IBlogListResponse {
   list: IBlog[],
+  count: number
+}
+
+/**
+ * Blog
+ */
+export interface IShopListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IShopListResponse {
+  list: IShop[],
   count: number
 }
