@@ -29,6 +29,7 @@ export interface IBlog {
 }
 
 export interface IShop {
+  name: string,
   id: number,
   description: string,
   link: string,

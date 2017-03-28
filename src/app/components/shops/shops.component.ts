@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as shopAction from '../../store/shop/shop.actions';
 import { mapStyles } from '../../../util';
-import { SebmGoogleMap } from 'angular2-google-maps/core';
+import { SebmGoogleMap, LatLngBounds } from 'angular2-google-maps/core';
+import { Subject } from 'rxjs/Subject';
+import { UtilService } from '../../services/util/util.service';
 
 export interface IShopsComponent {}
 
 @Component({
   selector: 'app-shops',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <md-tab-group (selectChange)="tabSelectChange()">
       <md-tab label="List view">
@@ -46,11 +47,9 @@ export interface IShopsComponent {}
         <md-card>
           <md-card-content>
             <sebm-google-map [styles]="mapStyles"
-                             [latitude]="41" 
-                             [longitude]="44" [zoom]="10">
+                             [fitBounds]="mapFitBounds">
               <sebm-google-map-marker *ngFor="let shop of (shopListData$ | async)?.list"
-                                      [latitude]="shop.lat" [longitude]="shop.lng">
-              </sebm-google-map-marker>
+                                      [latitude]="shop.lat" [longitude]="shop.lng"></sebm-google-map-marker>
             </sebm-google-map>
           </md-card-content>
         </md-card>
@@ -59,7 +58,9 @@ export interface IShopsComponent {}
   `,
   styles: [`
     .sebm-google-map-container {
-      height: 600px;
+      height: calc(100vh - 162px);
+      height: -webkit-calc(100vh - 162px);
+      height: -moz-calc(100vh - 162px);
     }
     md-card-title {
       display: flex;
@@ -73,7 +74,9 @@ export interface IShopsComponent {}
     }
     @media (max-width: 600px) and (orientation: portrait) {
       .sebm-google-map-container {
-        height: 300px;
+        height: calc(100vh - 168px);
+        height: -webkit-calc(100vh - 168px);
+        height: -moz-calc(100vh - 168px);
       }
       .shop-list {
         height: calc(100vh - 108px);
@@ -87,17 +90,20 @@ export class ShopsComponent implements OnInit, IShopsComponent {
   @ViewChild(SebmGoogleMap) sebmGoogleMap;
   public mapStyles = mapStyles;
   public shopListData$: Observable<any>;
+  public mapFitBounds: LatLngBounds;
   private _skip = 0;
   private _limit = 12;
   private _count: number = null;
-  constructor(private store: Store<fromRoot.State>, private router: Router) {
-    this.shopListData$ = store.select(fromRoot.getShopListData);
+  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
+    this.shopListData$ = _store.select(fromRoot.getShopListData);
   }
 
   ngOnInit(): void {
     const listener = this.shopListData$.subscribe((event) => {
+      this._utilService.getLatLngBound(event.list.map(shop => { return { latitude: shop.lat, longitude: shop.lng } }))
+        .subscribe(bounds => this.mapFitBounds = bounds);
       if (event.count === null) {
-        this.store.dispatch(new shopAction.ListAction({ limit: this._limit, skip: this._skip }));
+        this._store.dispatch(new shopAction.ListAction({ limit: this._limit, skip: this._skip }));
         if (listener) {
           listener.unsubscribe();
         }
@@ -110,11 +116,12 @@ export class ShopsComponent implements OnInit, IShopsComponent {
   onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
-      this.store.dispatch(new shopAction.ListAction({ limit: this._limit, skip: this._skip }));
+      this._store.dispatch(new shopAction.ListAction({ limit: this._limit, skip: this._skip }));
     }
   }
 
   tabSelectChange(): void {
     this.sebmGoogleMap.triggerResize();
+    setTimeout(() => this.sebmGoogleMap._fitBounds(this.mapFitBounds));
   }
 }
