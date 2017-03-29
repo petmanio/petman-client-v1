@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment'
 declare var google: any;
 
 export interface IUtilService {
-  getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
+  // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
 @Injectable()
@@ -61,19 +61,34 @@ export class UtilService implements IUtilService {
     return type;
   }
 
-  constructor(private _mapsAPILoader: MapsAPILoader) {}
-
-  getLatLngBound(coordinates: Coordinates[]): Subject<any> {
-    const boundsSubject: Subject<any> = new Subject();
-    this._mapsAPILoader.load().then(() => {
-      const bounds: LatLngBounds = new google.maps.LatLngBounds();
-      for (const coordinate of coordinates) {
-        const point: LatLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
-        bounds.extend(point);
-      }
-      boundsSubject.next(bounds);
-    });
-
-    return boundsSubject;
+  static uuid(): string {
+    return Math.random().toString(36).substring(7);
   }
+
+  static randomHtmlId(len: number = 5): string {
+    let text = '';
+    const possible = '_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+    for ( let i = 0; i < len; i++ ) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return text;
+  }
+
+  constructor() {}
+
+  // getLatLngBound(coordinates: Coordinates[]): Subject<any> {
+  //   const boundsSubject: Subject<any> = new Subject();
+  //   this._mapsAPILoader.load().then(() => {
+  //     const bounds: LatLngBounds = new google.maps.LatLngBounds();
+  //     for (const coordinate of coordinates) {
+  //       const point: LatLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
+  //       bounds.extend(point);
+  //     }
+  //     boundsSubject.next(bounds);
+  //   });
+  //
+  //   return boundsSubject;
+  // }
 }

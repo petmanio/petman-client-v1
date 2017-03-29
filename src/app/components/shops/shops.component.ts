@@ -2,14 +2,16 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ViewChild } from
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { UtilService } from '../../services/util/util.service';
 import * as fromRoot from '../../store';
 import * as shopAction from '../../store/shop/shop.actions';
 import { mapStyles } from '../../../util';
-import { SebmGoogleMap, LatLngBounds } from 'angular2-google-maps/core';
-import { Subject } from 'rxjs/Subject';
-import { UtilService } from '../../services/util/util.service';
+import { MapComponent } from '../map/map.component';
 
-export interface IShopsComponent {}
+export interface IShopsComponent {
+  tabSelectChange(): void,
+  onScroll(): void
+}
 
 @Component({
   selector: 'app-shops',
@@ -46,18 +48,15 @@ export interface IShopsComponent {}
       <md-tab label="Map view">
         <md-card>
           <md-card-content>
-            <sebm-google-map [styles]="mapStyles"
-                             [fitBounds]="mapFitBounds">
-              <sebm-google-map-marker *ngFor="let pin of shopPins$ | async"
-                                      [latitude]="pin.lat" [longitude]="pin.lng"></sebm-google-map-marker>
-            </sebm-google-map>
+            <app-map [pins]="shopPins$ | async" [fitBounds]="true" [options]="mapOptions"></app-map>
           </md-card-content>
         </md-card>
       </md-tab>
     </md-tab-group>
   `,
   styles: [`
-    .sebm-google-map-container {
+    app-map {
+      display: block;
       height: calc(100vh - 162px);
       height: -webkit-calc(100vh - 162px);
       height: -moz-calc(100vh - 162px);
@@ -74,7 +73,7 @@ export interface IShopsComponent {}
       height: -moz-calc(100vh - 116px);
     }
     @media (max-width: 600px) and (orientation: portrait) {
-      .sebm-google-map-container {
+      app-map {
         height: calc(100vh - 168px);
         height: -webkit-calc(100vh - 168px);
         height: -moz-calc(100vh - 168px);
@@ -88,11 +87,13 @@ export interface IShopsComponent {}
   `]
 })
 export class ShopsComponent implements OnInit, IShopsComponent {
-  @ViewChild(SebmGoogleMap) sebmGoogleMap;
+  @ViewChild(MapComponent) map;
   public mapStyles = mapStyles;
   public shopList$: Observable<any>;
   public shopPins$: Observable<any>;
-  public mapFitBounds: LatLngBounds;
+  public mapOptions = {
+    styles: mapStyles,
+};
   private _skip = 0;
   private _limit = 12;
   private _count: number = null;
@@ -114,8 +115,6 @@ export class ShopsComponent implements OnInit, IShopsComponent {
     });
 
     const pinsListener = this.shopPins$.subscribe((event) => {
-      this._utilService.getLatLngBound(event.map(shop => { return { latitude: shop.lat, longitude: shop.lng } }))
-        .subscribe(bounds => this.mapFitBounds = bounds);
       this._store.dispatch(new shopAction.PinsAction({}));
       if (pinsListener) {
         pinsListener.unsubscribe();
@@ -131,7 +130,6 @@ export class ShopsComponent implements OnInit, IShopsComponent {
   }
 
   tabSelectChange(): void {
-    this.sebmGoogleMap.triggerResize();
-    setTimeout(() => this.sebmGoogleMap._fitBounds(this.mapFitBounds));
+    this.map.triggerResize();
   }
 }

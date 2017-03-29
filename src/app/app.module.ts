@@ -12,7 +12,6 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { AgmCoreModule, GoogleMapsAPIWrapper } from 'angular2-google-maps/core';
 import { environment } from '../environments/environment';
 import {
   AppComponent,
@@ -24,7 +23,8 @@ import {
   DashboardComponent,
   BlogComponent,
   JoinComponent,
-  ShopsComponent
+  ShopsComponent,
+  MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
@@ -99,6 +99,7 @@ const appRoutes: Routes = [
     BlogComponent,
     JoinComponent,
     ShopsComponent,
+    MapComponent,
     FitContentsDirective,
     EllipsisPipe,
     KeysPipe,
@@ -113,7 +114,6 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
     MaterialModule,
-    AgmCoreModule.forRoot({apiKey : environment.mapApiKey}),
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
@@ -128,8 +128,7 @@ const appRoutes: Routes = [
     AuthService,
     BlogService,
     ShopService,
-    UtilService,
-    GoogleMapsAPIWrapper
+    UtilService
   ],
   bootstrap: [AppComponent]
 })

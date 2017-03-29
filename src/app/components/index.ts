@@ -8,3 +8,4 @@ export { ShopsComponent } from './shops/shops.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
 export { WelcomeComponent } from './welcome/welcome.component';
+export { MapComponent } from './map/map.component';
