@@ -113,7 +113,7 @@ export const getAuthLogin = createSelector(getAuthState, fromAuth.getLogin);
 export const getAuthLoginData = createSelector(getAuthLogin, fromAuth.getLoginData);
 export const getAuthLoginError = createSelector(getAuthLogin, fromAuth.getLoginError);
 export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurrentUser);
-
+// TODO: remove error from state
 
 /**
  * Layout Reducers
@@ -128,11 +128,11 @@ export const getBlogState = (state: State) => state.blog;
 export const getBlogList = createSelector(getBlogState, fromBlog.getList);
 export const getBlogListData = createSelector(getBlogList, fromBlog.getListData);
 export const getBlogListError = createSelector(getBlogList, fromBlog.getListError);
+// TODO: remove error from state
 
 /**
  * Shop Reducers
  */
 export const getShopState = (state: State) => state.shop;
 export const getShopList = createSelector(getShopState, fromShop.getList);
-export const getShopListData = createSelector(getShopList, fromShop.getListData);
-export const getShopListError = createSelector(getShopList, fromShop.getListError);
+export const getShopPins = createSelector(getShopState, fromShop.getPins);

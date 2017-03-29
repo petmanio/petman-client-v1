@@ -21,7 +21,7 @@ export interface IShopsComponent {}
              [infiniteScrollDistance]="2"
              [infiniteScrollThrottle]="300"
              [scrollWindow]="false">
-          <div class="columns" *ngFor="let shopRow of (shopListData$ | async)?.list | chunk:4">
+          <div class="columns" *ngFor="let shopRow of (shopList$ | async)?.list | chunk:4">
             <div class="column" *ngFor="let shop of shopRow">
               <md-card>
                 <md-card-header>
@@ -48,8 +48,8 @@ export interface IShopsComponent {}
           <md-card-content>
             <sebm-google-map [styles]="mapStyles"
                              [fitBounds]="mapFitBounds">
-              <sebm-google-map-marker *ngFor="let shop of (shopListData$ | async)?.list"
-                                      [latitude]="shop.lat" [longitude]="shop.lng"></sebm-google-map-marker>
+              <sebm-google-map-marker *ngFor="let pin of shopPins$ | async"
+                                      [latitude]="pin.lat" [longitude]="pin.lng"></sebm-google-map-marker>
             </sebm-google-map>
           </md-card-content>
         </md-card>
@@ -67,7 +67,8 @@ export interface IShopsComponent {}
       justify-content: center;
     }
     .shop-list {
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       height: calc(100vh - 116px);
       height: -webkit-calc(100vh - 116px);
       height: -moz-calc(100vh - 116px);
@@ -89,26 +90,35 @@ export interface IShopsComponent {}
 export class ShopsComponent implements OnInit, IShopsComponent {
   @ViewChild(SebmGoogleMap) sebmGoogleMap;
   public mapStyles = mapStyles;
-  public shopListData$: Observable<any>;
+  public shopList$: Observable<any>;
+  public shopPins$: Observable<any>;
   public mapFitBounds: LatLngBounds;
   private _skip = 0;
   private _limit = 12;
   private _count: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
-    this.shopListData$ = _store.select(fromRoot.getShopListData);
+    this.shopList$ = _store.select(fromRoot.getShopList);
+    this.shopPins$ = _store.select(fromRoot.getShopPins);
   }
 
   ngOnInit(): void {
-    const listener = this.shopListData$.subscribe((event) => {
-      this._utilService.getLatLngBound(event.list.map(shop => { return { latitude: shop.lat, longitude: shop.lng } }))
-        .subscribe(bounds => this.mapFitBounds = bounds);
+    const listListener = this.shopList$.subscribe((event) => {
       if (event.count === null) {
         this._store.dispatch(new shopAction.ListAction({ limit: this._limit, skip: this._skip }));
-        if (listener) {
-          listener.unsubscribe();
+        if (listListener) {
+          listListener.unsubscribe();
         }
       } else {
         this._count = event.count;
+      }
+    });
+
+    const pinsListener = this.shopPins$.subscribe((event) => {
+      this._utilService.getLatLngBound(event.map(shop => { return { latitude: shop.lat, longitude: shop.lng } }))
+        .subscribe(bounds => this.mapFitBounds = bounds);
+      this._store.dispatch(new shopAction.PinsAction({}));
+      if (pinsListener) {
+        pinsListener.unsubscribe();
       }
     });
   }

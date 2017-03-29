@@ -91,3 +91,7 @@ export interface IShopListResponse {
   list: IShop[],
   count: number
 }
+
+export interface IShopPinsRequest {}
+
+export interface IShopPinsResponse extends IShop {}

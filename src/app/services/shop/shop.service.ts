@@ -4,10 +4,11 @@ import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
-import { IShopListRequest, IShopListResponse } from '../../models/api';
+import { IShopListRequest, IShopListResponse, IShopPinsRequest, IShopPinsResponse } from '../../models/api';
 
 export interface IShopService {
   list(options: IShopListRequest): Observable<IShopListResponse>
+  pins(options: IShopPinsRequest): Observable<IShopPinsResponse[]>
 }
 
 @Injectable()
@@ -30,6 +31,19 @@ export class ShopService implements IShopService {
     return this.http
       .get(`${environment.apiEndpoint}/api/shop/list`,
         { headers, withCredentials: true, search: params }
+      )
+      .map(response => response.json());
+  }
+
+  pins(options: IShopPinsRequest): Observable<IShopPinsResponse[]> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this.http
+      .get(`${environment.apiEndpoint}/api/shop/pins`,
+        { headers, withCredentials: true }
       )
       .map(response => response.json());
   }

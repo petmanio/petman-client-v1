@@ -30,7 +30,8 @@ import * as shopAction from '../../store/shop/shop.actions';
  */
 
 interface IShopEffects {
-  list$: Observable<Action>
+  list$: Observable<Action>,
+  pins$: Observable<Action>
 }
 
 @Injectable()
@@ -45,5 +46,15 @@ export class ShopEffects implements IShopEffects {
       return this.shopService.list(options)
         .map(response => new shopAction.ListCompleteAction(response))
         .catch(err => of(new shopAction.ListErrorAction(err)))
+    });
+
+  @Effect()
+  public pins$: Observable<Action> = this.actions$
+    .ofType(shopAction.ActionTypes.PINS)
+    .map((action: shopAction.PinsAction) => action.payload)
+    .switchMap(options => {
+      return this.shopService.pins(options)
+        .map(response => new shopAction.PinsCompleteAction(response))
+        .catch(err => of(new shopAction.PinsErrorAction(err)))
     });
 }

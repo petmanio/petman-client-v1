@@ -1,43 +1,59 @@
 import { createSelector } from 'reselect';
-import { IShopListRequest, IShopListResponse } from '../../models/api';
+import { IShopListRequest, IShopListResponse, IShopPinsResponse } from '../../models/api';
 import * as shopAction from './shop.actions';
 
 export interface State {
-  list?: {
-    data?: IShopListResponse,
-    error?: any
-  }
+  list?: IShopListResponse
+  pins?: IShopPinsResponse[]
 }
 
 const initialState: State = {
   list: {
-    data: {
-      list: [],
-      count: null
-    },
-    error: null
-  }
+    list: [],
+    count: null
+  },
+  pins: []
 };
 
 export function reducer(state = initialState, action: shopAction.Actions): State {
   switch (action.type) {
     case shopAction.ActionTypes.LIST_COMPLETE: {
       const res: IShopListResponse = action.payload;
-      //TODO: use object assign
+      // TODO: use object assign
       return {
         list: {
-          data: {
-            list: state.list.data.list.concat(res.list),
-            count: res.count
-          }
+          list: state.list.list.concat(res.list),
+          count: res.count
         },
+        pins: state.pins
       };
     }
 
     case shopAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
       return {
-        list: { data: { count: null, list: [] }, error: error.status || 'UNKNOWN_ERROR' },
+        list: {
+          list: [],
+          count: null
+        },
+        pins: state.pins
+      };
+    }
+
+    case shopAction.ActionTypes.PINS_COMPLETE: {
+      const res: IShopPinsResponse[] = action.payload;
+      // TODO: use object assign
+      return {
+        list: state.list,
+        pins: res
+      };
+    }
+
+    case shopAction.ActionTypes.PINS_ERROR: {
+      const error: any = action.payload;
+      return {
+        list: state.list,
+        pins: []
       };
     }
 
@@ -57,5 +73,5 @@ export function reducer(state = initialState, action: shopAction.Actions): State
  */
 
 export const getList = (state: State) => state.list;
-export const getListData = list => list.data;
-export const getListError = list => list.error;
+export const getPins = (state: State) => state.pins;
+

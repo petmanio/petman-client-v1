@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { IShopListRequest, IShopListResponse } from '../../models/api';
+import { IShopListRequest, IShopListResponse, IShopPinsRequest, IShopPinsResponse } from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -14,6 +14,10 @@ export const ActionTypes = {
   LIST: type('[Shop] List'),
   LIST_COMPLETE: type('[Shop] List Complete'),
   LIST_ERROR: type('[Shop] List Error'),
+
+  PINS: type('[Shop] Pins'),
+  PINS_COMPLETE: type('[Shop] Pins Complete'),
+  PINS_ERROR: type('[Shop] Pins Error')
 };
 
 /**
@@ -41,6 +45,24 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class PinsAction implements Action {
+  type = ActionTypes.PINS;
+
+  constructor(public payload: IShopPinsRequest) { }
+}
+
+export class PinsCompleteAction implements Action {
+  type = ActionTypes.PINS_COMPLETE;
+
+  constructor(public payload: IShopPinsResponse[]) { }
+}
+
+export class PinsErrorAction implements Action {
+  type = ActionTypes.PINS_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 
 /**
  * Export a type alias of all actions in this action group
@@ -49,4 +71,7 @@ export class ListErrorAction implements Action {
 export type Actions
   = ListAction
   | ListCompleteAction
-  | ListErrorAction;
+  | ListErrorAction
+  | PinsAction
+  | PinsCompleteAction
+  | PinsErrorAction
