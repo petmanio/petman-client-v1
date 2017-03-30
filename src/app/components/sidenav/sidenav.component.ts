@@ -12,10 +12,10 @@ interface ISidenavComponent {
       <md-sidenav [opened]="open" [mode]="mode" color="primary" (close)="onClose.emit()">
         <md-nav-list>
           <app-nav-item (activate)="onItemActivate.emit()" icon="home" routerLink="" [activeClass]="[isHomeActive]">Home</app-nav-item>
-          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="place">Pets friendly cafes</app-nav-item>
+          <!--<app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="place">Pets friendly cafes</app-nav-item>-->
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="shopping_basket" routerLink="/shops" 
                         routerLinkActive="is-active">Shops</app-nav-item>
-          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="pets">Pets beauty salon</app-nav-item>
+          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="pets">Pet care</app-nav-item>
           <!--<app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="pets">Walks</app-nav-item> -->
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
                         routerLinkActive="is-active">Blog</app-nav-item>

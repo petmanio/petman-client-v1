@@ -22,8 +22,10 @@ import {
   WelcomeComponent,
   DashboardComponent,
   BlogComponent,
+  BlogItemComponent,
   JoinComponent,
   ShopsComponent,
+  ShopItemComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -97,8 +99,10 @@ const appRoutes: Routes = [
     WelcomeComponent,
     DashboardComponent,
     BlogComponent,
+    BlogItemComponent,
     JoinComponent,
     ShopsComponent,
+    ShopItemComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,

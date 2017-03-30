@@ -25,22 +25,7 @@ export interface IShopsComponent {
              [scrollWindow]="false">
           <div class="columns" *ngFor="let shopRow of (shopList$ | async)?.list | chunk:4">
             <div class="column" *ngFor="let shop of shopRow">
-              <md-card>
-                <md-card-header>
-                  <md-card-title>{{shop.source}}</md-card-title>
-                  <!--<md-card-subtitle>{{shop.date | date: 'dd/MM/yyyy'}}</md-card-subtitle>-->
-                </md-card-header>
-                <img md-card-image [src]="shop.thumbnail">
-                <!--<a [href]="shop.link" target="_blank"><img md-card-image [src]="shop.thumbnail"></a>-->
-                <md-card-content>
-                  <p>{{shop.description}}</p>
-                </md-card-content>
-                <md-card-actions>
-                  <button md-button>LIKE</button>
-                  <button md-button>SHARE</button>
-                  <!--<a md-button [href]="shop.link" target="_blank">READ</a>-->
-                </md-card-actions>
-              </md-card>
+              <app-shop-item [shop]="shop"></app-shop-item>
             </div>
           </div>
         </div>     
@@ -93,6 +78,11 @@ export class ShopsComponent implements OnInit, IShopsComponent {
   public shopPins$: Observable<any>;
   public mapOptions = {
     styles: mapStyles,
+    center: {
+      lat: 0,
+      lng: 0
+    },
+    zoom: 4
 };
   private _skip = 0;
   private _limit = 12;
