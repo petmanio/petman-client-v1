@@ -1,6 +1,7 @@
 export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
 export { ShopEffects } from './shop/shop.effects';
+export { PetCareEffects } from './petCare/petCare.effects';
 
 import { EffectsModule } from '@ngrx/effects';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -47,6 +48,7 @@ import * as fromLayout from './layout/layout.reducer';
 import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromShop from './shop/shop.reducer';
+import * as fromPetCare from './petCare/petCare.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -56,6 +58,7 @@ export interface State {
   auth: fromAuth.State,
   blog: fromBlog.State,
   shop: fromShop.State,
+  petCare: fromPetCare.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -72,6 +75,7 @@ const reducers = {
   auth: fromAuth.reducer,
   blog: fromBlog.reducer,
   shop: fromShop.reducer,
+  petCare: fromPetCare.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -136,3 +140,10 @@ export const getBlogListError = createSelector(getBlogList, fromBlog.getListErro
 export const getShopState = (state: State) => state.shop;
 export const getShopList = createSelector(getShopState, fromShop.getList);
 export const getShopPins = createSelector(getShopState, fromShop.getPins);
+
+/**
+ * PetCare Reducers
+ */
+export const getPetCareState = (state: State) => state.petCare;
+export const getPetCareList = createSelector(getPetCareState, fromPetCare.getList);
+export const getPetCarePins = createSelector(getPetCareState, fromPetCare.getPins);

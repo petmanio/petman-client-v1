@@ -2,7 +2,6 @@ import { Injectable, Component, Compiler, NgModule, Input, ComponentFactory } fr
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { LatLngBounds, LatLng, MapsAPILoader } from 'angular2-google-maps/core';
 import { environment } from '../../../environments/environment'
-declare var google: any;
 
 export interface IUtilService {
   // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
@@ -91,4 +90,8 @@ export class UtilService implements IUtilService {
   //
   //   return boundsSubject;
   // }
+}
+
+export enum PetCareFilterEnum {
+  ALL
 }

@@ -12,7 +12,6 @@ import * as auth from '../../store/auth/auth.actions';
 export interface IAppComponent {
   closeSidenav(): void,
   toggleSidenav($event: Event): void,
-  // onClick($event: Event): void,
   logOut(): void
 }
 
@@ -73,17 +72,14 @@ export interface IAppComponent {
     }
 
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    // '(click)': 'onClick($event)',
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
-  //TODO: import model
+  // TODO: import model
   currentUser$: Observable<any>;
   toolbarRightButtons: string[] = [];
-  sideNavMode: string = 'side';
+  sideNavMode = 'side';
   currentSideNavState: boolean;
   xhrListener: Observable<boolean> = UtilService.XHRListener();
 
@@ -99,14 +95,14 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   ngOnInit(): void {
-    //FIXME: find better way
+    // FIXME: find better way
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
 
       } else if (event instanceof NavigationEnd) {
         this.zone.run(() => {
           this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
-          let showSideNav = this.getRouteDataByKey('showSidenav');
+          const showSideNav = this.getRouteDataByKey('showSidenav');
           if (typeof showSideNav !== 'undefined') {
             if (showSideNav && UtilService.getCurrentDevice() !== 'MOBILE') {
               this.store.dispatch(new layout.OpenSidenavAction());
@@ -140,15 +136,10 @@ export class AppComponent implements OnInit, IAppComponent {
     }
   }
 
-  // onClick($event: Event): void {
-  //   $event.stopPropagation();
-  //   this.store.dispatch(new layout.CloseSidenavAction());
-  // }
-
   logOut(): void {
     // this.store.dispatch(new auth.LogoutAction());
-    //TODO: use complete action
-    //TODO: use dispatch
+    // TODO: use complete action
+    // TODO: use dispatch
     localStorage.removeItem('token');
     setTimeout(() => {
       this.router.navigate(['/welcome']);

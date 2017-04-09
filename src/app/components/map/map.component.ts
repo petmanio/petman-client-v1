@@ -1,4 +1,4 @@
-import { Component, AfterViewChecked, Input } from '@angular/core';
+import { Component, AfterViewChecked, Input, OnChanges, SimpleChanges } from '@angular/core';
 const GoogleMapsLoader = require('google-maps');
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
@@ -7,7 +7,8 @@ GoogleMapsLoader.KEY = environment.mapApiKey;
 export interface IMapComponent {
   triggerResize(): void,
   addMarker(pin: any): void
-  addMarkers(pins: any): void
+  addMarkers(pins: any): void,
+  clearMap(): void,
 }
 
 @Component({
@@ -19,10 +20,19 @@ export interface IMapComponent {
     .map {
       height: 100%;
     }
+    :host { 
+      display: block;
+    }
   `]
 })
-export class MapComponent implements AfterViewChecked, IMapComponent {
-  @Input() options: any = {};
+export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent {
+  @Input() options: any = {
+    center: {
+      lat: 0,
+      lng: 0
+    },
+    zoom: 4
+  };
   @Input() pins: {
     lat: number,
     lng: number
@@ -39,19 +49,16 @@ export class MapComponent implements AfterViewChecked, IMapComponent {
 
   }
 
-  ngAfterViewChecked(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.el = document.getElementById(this.mapId);
     if (this.el) {
-      if (this._initialized) {
-        return;
-      }
       GoogleMapsLoader.load((google) => {
-        this._initialized = true;
         this.google = google;
         this.map = new google.maps.Map(this.el, this.options);
         if (this.fitBounds) {
           this.latlngbounds = new google.maps.LatLngBounds();
         }
+
         this.addMarkers(this.pins);
         this.triggerResize();
         if (this.fitBounds) {
@@ -59,6 +66,29 @@ export class MapComponent implements AfterViewChecked, IMapComponent {
         }
       });
     }
+  }
+
+  ngAfterViewChecked(): void {
+    // this.el = document.getElementById(this.mapId);
+    // if (this.el) {
+    //   // TODO: fix this hack
+    //   if (this._initialized) {
+    //     return;
+    //   }
+    //   GoogleMapsLoader.load((google) => {
+    //     this._initialized = true;
+    //     this.google = google;
+    //     this.map = new google.maps.Map(this.el, this.options);
+    //     if (this.fitBounds) {
+    //       this.latlngbounds = new google.maps.LatLngBounds();
+    //     }
+    //     this.addMarkers(this.pins);
+    //     this.triggerResize();
+    //     if (this.fitBounds) {
+    //       this.map.fitBounds(this.latlngbounds);
+    //     }
+    //   });
+    // }
   }
 
   addMarkers(pins: any): void {
@@ -84,6 +114,14 @@ export class MapComponent implements AfterViewChecked, IMapComponent {
   triggerResize(): void {
     if (this.map) {
       this.google.maps.event.trigger(this.map, 'resize');
+    }
+  }
+
+  clearMap(): void {
+    if (this.markers) {
+      while (this.markers.length) {
+        this.markers.pop().setMap(null);
+      }
     }
   }
 }

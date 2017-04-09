@@ -18,17 +18,16 @@ export interface IBlogItemComponent {
       <md-card-content>
         <p>{{blog.description}}</p>
       </md-card-content>
-      <!--<md-card-actions>-->
+      <md-card-actions>
         <!--<button md-button>LIKE</button>-->
         <!--<button md-button>SHARE</button>-->
-        <!--<a md-button [href]="blog.link" target="_blank">READ</a>-->
-      <!--</md-card-actions>-->
+        <a md-button [href]="blog.link" target="_blank">READ</a>
+      </md-card-actions>
     </md-card>
   `,
   styles: [`
-    md-card-title {
-      text-transform: capitalize;
-    }
+    md-card-title { text-transform: lowercase; }
+    md-card-title:first-letter { text-transform: uppercase; }
   `]
 })
 export class BlogItemComponent implements IBlogItemComponent {

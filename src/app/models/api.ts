@@ -39,6 +39,17 @@ export interface IShop {
   lang: string
 }
 
+export interface IPetCare {
+  name: string,
+  id: number,
+  description: string,
+  link: string,
+  thumbnail: string,
+  lat: number,
+  lng: number,
+  lang: string,
+  type: string
+}
 /**
  * Auth
  */
@@ -95,3 +106,23 @@ export interface IShopListResponse {
 export interface IShopPinsRequest {}
 
 export interface IShopPinsResponse extends IShop {}
+
+/**
+ * PetCare
+ */
+export interface IPetCareListRequest {
+  skip: number,
+  limit: number,
+  type?: string
+}
+
+export interface IPetCareListResponse {
+  list: IPetCare[],
+  count: number
+}
+
+export interface IPetCarePinsRequest {
+  type?: string
+}
+
+export interface IPetCarePinsResponse extends IPetCare {}

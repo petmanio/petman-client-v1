@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IShop } from '../../models/api';
+import { mapStyles } from '../../../util';
 
 export interface IShopItemComponent {
 
@@ -10,23 +11,20 @@ export interface IShopItemComponent {
   template: `
     <md-card>
       <md-card-header>
-        <md-card-title>{{shop.source}}</md-card-title>
-        <md-card-subtitle>{{shop.name}}</md-card-subtitle>
+        <md-card-title>{{shop.name}}</md-card-title>
+        <md-card-subtitle>Marshal Baghramyan Ave.</md-card-subtitle>
       </md-card-header>
       <img md-card-image [src]="shop.thumbnail">
-      <!--<a [href]="shop.link" target="_blank"><img md-card-image [src]="shop.thumbnail"></a>-->
       <md-card-content>
         <p>{{shop.description}}</p>
       </md-card-content>
       <!--<md-card-actions>-->
-        <!--<button md-button>LIKE</button>-->
-        <!--<button md-button>SHARE</button>-->
-        <!--<a md-button [href]="shop.link" target="_blank">READ</a>-->
+        <!--<button md-button (click)="showMap = !showMap">MAP</button>-->
       <!--</md-card-actions>-->
     </md-card>
   `,
   styles: [`
-    
+
   `]
 })
 export class ShopItemComponent implements IShopItemComponent {

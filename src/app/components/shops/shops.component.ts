@@ -77,13 +77,13 @@ export class ShopsComponent implements OnInit, IShopsComponent {
   public shopList$: Observable<any>;
   public shopPins$: Observable<any>;
   public mapOptions = {
-    styles: mapStyles,
+    // styles: mapStyles,
     center: {
       lat: 0,
       lng: 0
     },
     zoom: 4
-};
+  };
   private _skip = 0;
   private _limit = 12;
   private _count: number = null;

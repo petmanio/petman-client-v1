@@ -26,12 +26,14 @@ import {
   JoinComponent,
   ShopsComponent,
   ShopItemComponent,
+  PetCareComponent,
+  PetCareItemComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, ShopService, UtilService } from './services';
-import { AuthEffects, BlogEffects, ShopEffects } from './store';
+import { AuthService, BlogService, ShopService, UtilService, PetCareService } from './services';
+import { AuthEffects, BlogEffects, ShopEffects, PetCareEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -85,6 +87,16 @@ const appRoutes: Routes = [
       toolbarRightButtons: ['ACTIONS'],
       showSidenav: true
     }
+  },
+  {
+    path: 'pet-care',
+    component: PetCareComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
   }
 ];
 
@@ -103,6 +115,8 @@ const appRoutes: Routes = [
     JoinComponent,
     ShopsComponent,
     ShopItemComponent,
+    PetCareComponent,
+    PetCareItemComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -125,6 +139,7 @@ const appRoutes: Routes = [
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),
+    EffectsModule.run(PetCareEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -132,6 +147,7 @@ const appRoutes: Routes = [
     AuthService,
     BlogService,
     ShopService,
+    PetCareService,
     UtilService
   ],
   bootstrap: [AppComponent]
