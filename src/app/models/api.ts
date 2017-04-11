@@ -113,7 +113,7 @@ export interface IShopPinsResponse extends IShop {}
 export interface IPetCareListRequest {
   skip: number,
   limit: number,
-  type?: string
+  categories?: string[]
 }
 
 export interface IPetCareListResponse {
@@ -122,7 +122,13 @@ export interface IPetCareListResponse {
 }
 
 export interface IPetCarePinsRequest {
-  type?: string
+  categories?: string[]
 }
 
 export interface IPetCarePinsResponse extends IPetCare {}
+
+export interface IPetCareFiltersRequest {}
+
+export interface IPetCareFiltersResponse {
+  categories?: { [name: string]: { id: number, name: string } }
+}

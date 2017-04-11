@@ -20,16 +20,17 @@ export interface IPetCareComponent {
   selector: 'app-pet-care',
   template: `
     <div class="columns is-mobile filters">
-      <div class="column is-6 is-6-mobile">
+      <div class="column is-8 is-8-mobile">
         <md-chip-list>
-          <md-chip  *ngFor="let category of filters.categories" (click)="onChipClick(category)" 
+          <md-chip (click)="onChipClick({id: ''})" [selected]="activeFilters.categories.indexOf('') !== -1">All</md-chip>
+          <md-chip  *ngFor="let category of (petCareFilters$ | async)?.categories" (click)="onChipClick(category)" 
                     [selected]="activeFilters.categories.indexOf(category.id) !== -1">{{category.name}}</md-chip>
         </md-chip-list>
         <!--<md-select placeholder="Type" [(ngModel)]="activeFilters.type" (change)="onFilterChange()">-->
           <!--<md-option *ngFor="let type of filters.types" [value]="type.id">{{ type.name }}</md-option>-->
         <!--</md-select>-->
       </div>
-      <div class="column is-6 is-6-mobile">
+      <div class="column is-4 is-4-mobile">
         <md-slide-toggle *ngIf="isMobile" [(ngModel)]="mapView" (change)="onSlideChange()">Map</md-slide-toggle>
       </div>
     </div>
@@ -95,37 +96,11 @@ export interface IPetCareComponent {
 })
 export class PetCareComponent implements OnInit, IPetCareComponent {
   @ViewChild(MapComponent) map;
-  // public activeFilters = {
-  //   type: '',
-  // };
-  // public filters = {
-  //   types: [{
-  //     id: '',
-  //     name: 'All'
-  //   }, {
-  //     id: 'SHOP',
-  //     name: 'Shops'
-  //   }, {
-  //     id: 'CLINIC',
-  //     name: 'Clinics'
-  //   }]
-  // };
   public activeFilters = {
     categories: [''],
     type: ''
   };
-  public filters = {
-    categories: [{
-      id: '',
-      name: 'All'
-    }, {
-      id: 'SHOP',
-      name: 'Shops'
-    }, {
-      id: 'CLINIC',
-      name: 'Clinics'
-    }]
-  };
+  public petCareFilters$: Observable<any>;
   public petCareList$: Observable<any>;
   public petCarePins$: Observable<any>;
   public mapOptions = {
@@ -144,14 +119,16 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
   private _limit = 9;
   private _count: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
+    this.petCareFilters$ = _store.select(fromRoot.getPetCareFilters);
     this.petCareList$ = _store.select(fromRoot.getPetCareList);
     this.petCarePins$ = _store.select(fromRoot.getPetCarePins);
   }
 
   ngOnInit(): void {
+    this._store.dispatch(new petCareAction.FiltersAction({}));
     const listListener = this.petCareList$.subscribe((event) => {
       if (event.count === null) {
-        this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip, type: this.activeFilters.type }));
+        this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip }));
         if (listListener) {
           listListener.unsubscribe();
         }
@@ -161,7 +138,7 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
     });
 
     const pinsListener = this.petCarePins$.subscribe((event) => {
-      this._store.dispatch(new petCareAction.PinsAction({ type: this.activeFilters.type }));
+      this._store.dispatch(new petCareAction.PinsAction({}));
       if (pinsListener) {
         pinsListener.unsubscribe();
       }
@@ -171,15 +148,16 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
   onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
-      this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip, type: this.activeFilters.type }));
+      this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip,
+        categories: this.activeFilters.categories }));
     }
   }
 
   onFilterChange(): void {
     this._skip = 0;
     this._store.dispatch(new petCareAction.ListClearAction({}));
-    this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip, type: this.activeFilters.type }));
-    this._store.dispatch(new petCareAction.PinsAction({ type: this.activeFilters.type }));
+    this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip, categories: this.activeFilters.categories }));
+    this._store.dispatch(new petCareAction.PinsAction({ categories: this.activeFilters.categories }));
   }
 
   onShowPin(pin: IPetCare): void {
@@ -199,7 +177,7 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
 
   onSlideChange(): void {
     // TODO: find solution without timeouts
-    this.map.setIconToAllMarkers();
+    this.map.setIconToAllActivePins();
     setTimeout(() => this.map.triggerResize());
     setTimeout(() => this.map.fitBoundsMap(), 100);
   }
@@ -216,5 +194,10 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
     } else {
       this.activeFilters.categories = [''];
     }
+
+    this._skip = 0;
+    this._store.dispatch(new petCareAction.ListClearAction({}));
+    this._store.dispatch(new petCareAction.ListAction({ limit: this._limit, skip: this._skip, categories: this.activeFilters.categories }));
+    this._store.dispatch(new petCareAction.PinsAction({ categories: this.activeFilters.categories }));
   }
 }

@@ -30,6 +30,7 @@ import * as petCareAction from '../../store/petCare/petCare.actions';
  */
 
 interface IPetCareEffects {
+  filters$: Observable<Action>,
   list$: Observable<Action>,
   pins$: Observable<Action>
 }
@@ -37,6 +38,16 @@ interface IPetCareEffects {
 @Injectable()
 export class PetCareEffects implements IPetCareEffects {
   constructor(private actions$: Actions, private petCareService: PetCareService, private store: Store<fromRoot.State>) { }
+
+  @Effect()
+  public filters$: Observable<Action> = this.actions$
+    .ofType(petCareAction.ActionTypes.FILTERS)
+    .map((action: petCareAction.FiltersAction) => action.payload)
+    .switchMap(options => {
+      return this.petCareService.filters(options)
+        .map(response => new petCareAction.FiltersCompleteAction(response))
+        .catch(err => of(new petCareAction.ListErrorAction(err)))
+    });
 
   @Effect()
   public list$: Observable<Action> = this.actions$

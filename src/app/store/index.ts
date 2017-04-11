@@ -146,4 +146,5 @@ export const getShopPins = createSelector(getShopState, fromShop.getPins);
  */
 export const getPetCareState = (state: State) => state.petCare;
 export const getPetCareList = createSelector(getPetCareState, fromPetCare.getList);
+export const getPetCareFilters = createSelector(getPetCareState, fromPetCare.getFilters);
 export const getPetCarePins = createSelector(getPetCareState, fromPetCare.getPins);

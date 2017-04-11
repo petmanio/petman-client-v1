@@ -87,14 +87,15 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
             }
 
             if (this.fitBounds) {
-              setTimeout(() => this.fitBoundsMap(), 300);
+              setTimeout(() => this.fitBoundsMap());
             }
           })
+        } else {
+          this.fitBoundsMap();
         }
 
         this.addMarkers(this.pins);
         this.triggerResize();
-        this.fitBoundsMap();
       });
     }
   }

@@ -4,10 +4,14 @@ import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
-import { IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest, IPetCarePinsResponse } from '../../models/api';
+import {
+  IPetCareFiltersRequest, IPetCareFiltersResponse, IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest,
+  IPetCarePinsResponse
+} from '../../models/api';
 
 export interface IPetCareService {
-  list(options: IPetCareListRequest): Observable<IPetCareListResponse>
+  filters(options: IPetCareFiltersRequest): Observable<IPetCareFiltersResponse>,
+  list(options: IPetCareListRequest): Observable<IPetCareListResponse>,
   pins(options: IPetCarePinsRequest): Observable<IPetCarePinsResponse[]>
 }
 
@@ -16,6 +20,19 @@ export class PetCareService implements IPetCareService {
 
   constructor(private http: Http) {
 
+  }
+
+  filters(options: IPetCareFiltersRequest): Observable<IPetCareFiltersResponse> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this.http
+      .get(`${environment.apiEndpoint}/api/pet-care/filters`,
+        {headers, withCredentials: true}
+      )
+      .map(response => response.json());
   }
 
   list(options: IPetCareListRequest): Observable<IPetCareListResponse> {
@@ -27,7 +44,9 @@ export class PetCareService implements IPetCareService {
 
     params.set('skip', options.skip.toString());
     params.set('limit', options.limit.toString());
-    params.set('type', options.type.toString());
+    if (options.categories) {
+      options.categories.forEach(c => params.set('categories', c.toString()))
+    }
 
     return this.http
       .get(`${environment.apiEndpoint}/api/pet-care/list`,
@@ -43,7 +62,9 @@ export class PetCareService implements IPetCareService {
     headers.append('Content-Type', 'application/json');
     headers.append('x-auth-token', localStorage.getItem('token'));
 
-    params.set('type', options.type.toString());
+    if (options.categories) {
+      options.categories.forEach(c => params.set('categories', c.toString()))
+    }
 
     return this.http
       .get(`${environment.apiEndpoint}/api/pet-care/pins`,

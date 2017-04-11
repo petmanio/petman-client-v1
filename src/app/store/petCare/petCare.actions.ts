@@ -1,6 +1,9 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest, IPetCarePinsResponse } from '../../models/api';
+import {
+  IPetCareFiltersRequest, IPetCareFiltersResponse, IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest,
+  IPetCarePinsResponse
+} from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -14,8 +17,11 @@ export const ActionTypes = {
   LIST: type('[PetCare] List'),
   LIST_COMPLETE: type('[PetCare] List Complete'),
   LIST_ERROR: type('[PetCare] List Error'),
-
   LIST_CLEAR: type('[PetCare] List Clear'),
+
+  FILTERS: type('[PetCare] Filters'),
+  FILTERS_COMPLETE: type('[PetCare] Filters Complete'),
+  FILTERS_ERROR: type('[PetCare] Filters Error'),
 
   PINS: type('[PetCare] Pins'),
   PINS_COMPLETE: type('[PetCare] Pins Complete'),
@@ -71,13 +77,34 @@ export class PinsErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class FiltersAction implements Action {
+  type = ActionTypes.FILTERS;
+
+  constructor(public payload: IPetCareFiltersRequest) { }
+}
+
+export class FiltersCompleteAction implements Action {
+  type = ActionTypes.FILTERS_COMPLETE;
+
+  constructor(public payload: IPetCareFiltersResponse) { }
+}
+
+export class FiltersErrorAction implements Action {
+  type = ActionTypes.FILTERS_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
 export type Actions
-  = ListAction
+  = FiltersAction
+  | FiltersCompleteAction
+  | FiltersErrorAction
+  | ListAction
   | ListCompleteAction
   | ListErrorAction
   | ListClearAction
