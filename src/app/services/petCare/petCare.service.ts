@@ -45,7 +45,7 @@ export class PetCareService implements IPetCareService {
     params.set('skip', options.skip.toString());
     params.set('limit', options.limit.toString());
     if (options.categories) {
-      options.categories.forEach(c => params.set('categories', c.toString()))
+      options.categories.forEach(c => params.append('categories', c.toString()))
     }
 
     return this.http
@@ -63,7 +63,7 @@ export class PetCareService implements IPetCareService {
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     if (options.categories) {
-      options.categories.forEach(c => params.set('categories', c.toString()))
+      options.categories.forEach(c => params.append('categories', c.toString()))
     }
 
     return this.http

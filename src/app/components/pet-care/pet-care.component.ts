@@ -22,7 +22,7 @@ export interface IPetCareComponent {
     <div class="columns is-mobile filters">
       <div class="column is-8 is-8-mobile">
         <md-chip-list>
-          <md-chip (click)="onChipClick({id: ''})" [selected]="activeFilters.categories.indexOf('') !== -1">All</md-chip>
+          <!--<md-chip (click)="onChipClick({id: ''})" [selected]="activeFilters.categories.indexOf('') !== -1">All</md-chip>-->
           <md-chip  *ngFor="let category of (petCareFilters$ | async)?.categories" (click)="onChipClick(category)" 
                     [selected]="activeFilters.categories.indexOf(category.id) !== -1">{{category.name}}</md-chip>
         </md-chip-list>
@@ -60,6 +60,11 @@ export interface IPetCareComponent {
     }
     md-slide-toggle {
       margin: 0;
+    }
+    md-chip-list {
+      display: block;
+      overflow: auto;
+      white-space: nowrap;
     }
     /*TODO: find right way*/
     .column {
@@ -106,12 +111,7 @@ export class PetCareComponent implements OnInit, IPetCareComponent {
   public mapOptions = {
     styles: mapStyles,
     clickableIcons: false,
-    tilt: 0,
-    center: {
-      lat: 0,
-      lng: 0
-    },
-    zoom: 4
+    tilt: 0
   };
   public isMobile = UtilService.getCurrentDevice() === 'MOBILE';
   public mapView = false;

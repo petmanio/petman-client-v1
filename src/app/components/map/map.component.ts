@@ -2,6 +2,8 @@ import { Component, AfterViewChecked, Input, OnChanges, SimpleChanges } from '@a
 const GoogleMapsLoader = require('google-maps');
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
+import * as lodash from 'lodash';
+
 GoogleMapsLoader.KEY = environment.mapApiKey;
 
 export interface IMapComponent {
@@ -13,7 +15,8 @@ export interface IMapComponent {
   panTo(pin: any): void,
   fitBoundsMap(): void,
   setIconToAllActivePins(icon: string): void,
-  addInfoWindowListener(marker: any): void
+  addInfoWindowListener(marker: any): void,
+  deleteMarkers(): void
 }
 
 @Component({
@@ -48,12 +51,14 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
   public map: any;
   public markers: any;
   public latlngbounds: any;
+  public userMarker: any = null;
   public mapId: string = UtilService.randomHtmlId();
   public el: Element;
   private _pinIcon = '/assets/pin.png';
   private _pinIconActive = '/assets/pin-active.png';
   private _pinIconUser = '/assets/pin-user.png';
   private _activePins: any[] = [];
+  private _markerMoveInterVal = 1000;
   constructor(private _utilService: UtilService) {
 
   }
@@ -63,13 +68,21 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     if (this.el) {
       GoogleMapsLoader.load((google) => {
         this.google = google;
-        this.map = new google.maps.Map(this.el, this.options);
+        const fitBoundsMapDebounce = lodash.debounce(this.fitBoundsMap.bind(this), 300);
+        if (!this.map) {
+          this.map = new google.maps.Map(this.el, this.options);
+        } else {
+          this.deleteMarkers();
+        }
 
         if (this.fitBounds) {
           this.latlngbounds = new google.maps.LatLngBounds();
+          if (this.userMarker) {
+            this.latlngbounds.extend(this.userMarker.getPosition());
+          }
         }
 
-        if (this.showUserLocation && navigator.geolocation) {
+        if (this.showUserLocation && navigator.geolocation && !this.userMarker) {
           navigator.geolocation.getCurrentPosition((navigatorPosition) => {
             const position = new this.google.maps.LatLng(navigatorPosition.coords.latitude, navigatorPosition.coords.longitude);
             const pinMarkerOptions = {
@@ -81,19 +94,20 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
               }
             };
 
-            const marker = new this.google.maps.Marker(pinMarkerOptions);
+            this.userMarker = new this.google.maps.Marker(pinMarkerOptions);
             if (this.latlngbounds) {
               this.latlngbounds.extend(position);
             }
 
             if (this.fitBounds) {
-              setTimeout(() => this.fitBoundsMap());
+              setTimeout(() => {
+                fitBoundsMapDebounce();
+                this.triggerResize();
+              }, 100);
             }
           })
-        } else {
-          this.fitBoundsMap();
         }
-
+        fitBoundsMapDebounce();
         this.addMarkers(this.pins);
         this.triggerResize();
       });
@@ -225,5 +239,16 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     marker.addListener('click', () => {
       marker.openInfoWindow();
     });
+  }
+
+  deleteMarkers(): void {
+    if (this.markers) {
+      this.markers.forEach(m => m.setMap(null));
+    }
+    // if (this.userMarker) {
+    //   this.userMarker.setMap(null);
+    // }
+    this._activePins = [];
+
   }
 }
