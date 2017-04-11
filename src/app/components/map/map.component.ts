@@ -9,6 +9,11 @@ export interface IMapComponent {
   addMarker(pin: any): void
   addMarkers(pins: any): void,
   clearMap(): void,
+  highlightPin(pin: any): void,
+  panTo(pin: any): void,
+  fitBoundsMap(): void,
+  setIconToAllActivePins(icon: string): void,
+  addInfoWindowListener(marker: any): void
 }
 
 @Component({
@@ -30,21 +35,25 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     center: {
       lat: 0,
       lng: 0
-    },
-    zoom: 4
+    }
   };
   @Input() pins: {
     lat: number,
     lng: number
   }[] = [];
   @Input() fitBounds = true;
+  @Input() infoWindow = true;
+  @Input() showUserLocation = true;
   public google: any;
   public map: any;
   public markers: any;
   public latlngbounds: any;
   public mapId: string = UtilService.randomHtmlId();
   public el: Element;
-  private _initialized = false;
+  private _pinIcon = '/assets/pin.png';
+  private _pinIconActive = '/assets/pin-active.png';
+  private _pinIconUser = '/assets/pin-user.png';
+  private _activePins: any[] = [];
   constructor(private _utilService: UtilService) {
 
   }
@@ -55,15 +64,37 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
       GoogleMapsLoader.load((google) => {
         this.google = google;
         this.map = new google.maps.Map(this.el, this.options);
+
         if (this.fitBounds) {
           this.latlngbounds = new google.maps.LatLngBounds();
         }
 
+        if (this.showUserLocation && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((navigatorPosition) => {
+            const position = new this.google.maps.LatLng(navigatorPosition.coords.latitude, navigatorPosition.coords.longitude);
+            const pinMarkerOptions = {
+              position,
+              map: this.map,
+              icon: {
+                url: this._pinIconUser,
+                scaledSize : new google.maps.Size(32, 32),
+              }
+            };
+
+            const marker = new this.google.maps.Marker(pinMarkerOptions);
+            if (this.latlngbounds) {
+              this.latlngbounds.extend(position);
+            }
+
+            if (this.fitBounds) {
+              setTimeout(() => this.fitBoundsMap(), 300);
+            }
+          })
+        }
+
         this.addMarkers(this.pins);
         this.triggerResize();
-        if (this.fitBounds) {
-          this.map.fitBounds(this.latlngbounds);
-        }
+        this.fitBoundsMap();
       });
     }
   }
@@ -99,13 +130,22 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     const position = new this.google.maps.LatLng(pin.lat, pin.lng);
     const pinMarkerOptions = {
       position,
-      map: this.map
+      map: this.map,
+      icon: {
+        url: this._pinIcon,
+        scaledSize : new google.maps.Size(32, 32),
+      },
+      pin
     };
 
     const marker = new this.google.maps.Marker(pinMarkerOptions);
 
     if (this.latlngbounds) {
       this.latlngbounds.extend(position);
+    }
+
+    if (this.infoWindow) {
+      this.addInfoWindowListener(marker);
     }
 
     return marker;
@@ -123,5 +163,66 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
         this.markers.pop().setMap(null);
       }
     }
+  }
+
+  highlightPin(pin: any): void {
+    const activePin = this.markers.find(m => m.pin.id === pin.id);
+    if (activePin) {
+      const index = this._activePins.indexOf(activePin);
+      if (index === -1) {
+        activePin.setIcon({
+          url: this._pinIconActive,
+          scaledSize : new google.maps.Size(32, 32),
+        });
+        activePin.openInfoWindow();
+        this.setIconToAllActivePins();
+        this._activePins.push(activePin);
+      } else {
+        this._activePins.splice(index, 1);
+        activePin.setIcon({
+          url: this._pinIcon,
+          scaledSize : new google.maps.Size(32, 32),
+        });
+        activePin.closeInfoWindow();
+        setTimeout(() => this.fitBoundsMap());
+      }
+    }
+  }
+
+  panTo(pin: any): void {
+    const activePin = this.markers.find(m => m.pin.id === pin.id);
+    if (activePin) {
+      this.map.panTo(activePin.getPosition());
+    }
+  }
+
+  fitBoundsMap(): void {
+    if (this.fitBounds) {
+      this.map.fitBounds(this.latlngbounds);
+    }
+  }
+
+  setIconToAllActivePins(icon = this._pinIcon): void {
+    while (this._activePins.length) {
+      const marker = this._activePins.pop();
+      marker.setIcon({
+        url: icon,
+        scaledSize : new google.maps.Size(32, 32),
+      });
+      marker.closeInfoWindow();
+    }
+  }
+
+  addInfoWindowListener(marker: any): void {
+    const infoWindow = new google.maps.InfoWindow({
+      content: `<div>${marker.pin.name}</div><div>${marker.pin.description}</div>`
+    });
+
+    marker.openInfoWindow = () => infoWindow.open(this.map, marker);
+    marker.closeInfoWindow = () => infoWindow.close(this.map, marker);
+
+    marker.addListener('click', () => {
+      marker.openInfoWindow();
+    });
   }
 }

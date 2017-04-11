@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IPetCare } from '../../models/api';
 
 export interface IPetCareItemComponent {
@@ -11,12 +11,12 @@ export interface IPetCareItemComponent {
     <md-card>
       <md-card-header>
         <md-card-title>{{petCare.name}}</md-card-title>
-        <md-card-subtitle>Marshal Baghramyan Ave.</md-card-subtitle>
+        <md-card-subtitle>{{petCare.description}}</md-card-subtitle>
       </md-card-header>
       <img md-card-image [src]="petCare.thumbnail">
-      <md-card-content>
-        <p>{{petCare.description}}</p>
-      </md-card-content>
+      <md-card-actions>
+        <button md-button (click)="onShowPin.emit(petCare)">Show on map</button>
+      </md-card-actions>
     </md-card>
   `,
   styles: [`
@@ -25,6 +25,7 @@ export interface IPetCareItemComponent {
 })
 export class PetCareItemComponent implements IPetCareItemComponent {
   @Input() petCare: IPetCare;
+  @Output() onShowPin = new EventEmitter();
   constructor() {
 
   }
