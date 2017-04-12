@@ -26,14 +26,14 @@ import {
   JoinComponent,
   ShopsComponent,
   ShopItemComponent,
-  PetCareComponent,
-  PetCareItemComponent,
+  LocationComponent,
+  LocationItemComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, ShopService, UtilService, PetCareService } from './services';
-import { AuthEffects, BlogEffects, ShopEffects, PetCareEffects } from './store';
+import { AuthService, BlogService, ShopService, UtilService, LocationService } from './services';
+import { AuthEffects, BlogEffects, ShopEffects, LocationEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -90,7 +90,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'pet-care',
-    component: PetCareComponent,
+    component: LocationComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
@@ -115,8 +115,8 @@ const appRoutes: Routes = [
     JoinComponent,
     ShopsComponent,
     ShopItemComponent,
-    PetCareComponent,
-    PetCareItemComponent,
+    LocationComponent,
+    LocationItemComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -130,7 +130,7 @@ const appRoutes: Routes = [
     HttpModule,
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes, { useHash: true }),
+    RouterModule.forRoot(appRoutes, { useHash: false }),
     MaterialModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
@@ -139,7 +139,7 @@ const appRoutes: Routes = [
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),
-    EffectsModule.run(PetCareEffects),
+    EffectsModule.run(LocationEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -147,7 +147,7 @@ const appRoutes: Routes = [
     AuthService,
     BlogService,
     ShopService,
-    PetCareService,
+    LocationService,
     UtilService
   ],
   bootstrap: [AppComponent]

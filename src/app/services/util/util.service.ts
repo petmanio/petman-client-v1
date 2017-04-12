@@ -91,7 +91,3 @@ export class UtilService implements IUtilService {
   //   return boundsSubject;
   // }
 }
-
-export enum PetCareFilterEnum {
-  ALL
-}

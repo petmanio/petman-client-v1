@@ -1,11 +1,11 @@
 import { createSelector } from 'reselect';
-import { IPetCareFiltersResponse, IPetCareListRequest, IPetCareListResponse, IPetCarePinsResponse } from '../../models/api';
-import * as petCareAction from './petCare.actions';
+import { ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsResponse } from '../../models/api';
+import * as locationAction from './location.actions';
 
 export interface State {
-  list?: IPetCareListResponse
-  pins?: IPetCarePinsResponse[],
-  filters?: IPetCareFiltersResponse
+  list?: ILocationListResponse
+  pins?: ILocationPinsResponse[],
+  filters?: ILocationFiltersResponse
 }
 
 const initialState: State = {
@@ -17,10 +17,10 @@ const initialState: State = {
   filters: {}
 };
 
-export function reducer(state = initialState, action: petCareAction.Actions): State {
+export function reducer(state = initialState, action: locationAction.Actions): State {
   switch (action.type) {
-    case petCareAction.ActionTypes.FILTERS_COMPLETE: {
-      const res: IPetCareFiltersResponse = action.payload;
+    case locationAction.ActionTypes.FILTERS_COMPLETE: {
+      const res: ILocationFiltersResponse = action.payload;
       // TODO: use object assign
       return {
         list: state.list,
@@ -29,7 +29,7 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
       };
     }
 
-    case petCareAction.ActionTypes.FILTERS_ERROR: {
+    case locationAction.ActionTypes.FILTERS_ERROR: {
       const error: any = action.payload;
       return {
         list: state.list,
@@ -39,8 +39,8 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
     }
 
     // TODO: use another action for loading more
-    case petCareAction.ActionTypes.LIST_COMPLETE: {
-      const res: IPetCareListResponse = action.payload;
+    case locationAction.ActionTypes.LIST_COMPLETE: {
+      const res: ILocationListResponse = action.payload;
       // TODO: use object assign
       return {
         filters: state.filters,
@@ -52,7 +52,7 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
       };
     }
 
-    case petCareAction.ActionTypes.LIST_ERROR: {
+    case locationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
       return {
         filters: state.filters,
@@ -65,7 +65,7 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
     }
 
     // TODO: use another action for loading more
-    case petCareAction.ActionTypes.LIST_CLEAR: {
+    case locationAction.ActionTypes.LIST_CLEAR: {
       // TODO: use object assign
       return {
         filters: state.filters,
@@ -77,8 +77,8 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
       };
     }
 
-    case petCareAction.ActionTypes.PINS_COMPLETE: {
-      const res: IPetCarePinsResponse[] = action.payload;
+    case locationAction.ActionTypes.PINS_COMPLETE: {
+      const res: ILocationPinsResponse[] = action.payload;
       // TODO: use object assign
       return {
         filters: state.filters,
@@ -87,7 +87,7 @@ export function reducer(state = initialState, action: petCareAction.Actions): St
       };
     }
 
-    case petCareAction.ActionTypes.PINS_ERROR: {
+    case locationAction.ActionTypes.PINS_ERROR: {
       const error: any = action.payload;
       return {
         filters: state.filters,

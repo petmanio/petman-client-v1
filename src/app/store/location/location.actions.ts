@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IPetCareFiltersRequest, IPetCareFiltersResponse, IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest,
-  IPetCarePinsResponse
+  ILocationFiltersRequest, ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsRequest,
+  ILocationPinsResponse
 } from '../../models/api';
 
 /**
@@ -14,18 +14,18 @@ import {
  * action types in the application are unique.
  */
 export const ActionTypes = {
-  LIST: type('[PetCare] List'),
-  LIST_COMPLETE: type('[PetCare] List Complete'),
-  LIST_ERROR: type('[PetCare] List Error'),
-  LIST_CLEAR: type('[PetCare] List Clear'),
+  LIST: type('[Location] List'),
+  LIST_COMPLETE: type('[Location] List Complete'),
+  LIST_ERROR: type('[Location] List Error'),
+  LIST_CLEAR: type('[Location] List Clear'),
 
-  FILTERS: type('[PetCare] Filters'),
-  FILTERS_COMPLETE: type('[PetCare] Filters Complete'),
-  FILTERS_ERROR: type('[PetCare] Filters Error'),
+  FILTERS: type('[Location] Filters'),
+  FILTERS_COMPLETE: type('[Location] Filters Complete'),
+  FILTERS_ERROR: type('[Location] Filters Error'),
 
-  PINS: type('[PetCare] Pins'),
-  PINS_COMPLETE: type('[PetCare] Pins Complete'),
-  PINS_ERROR: type('[PetCare] Pins Error')
+  PINS: type('[Location] Pins'),
+  PINS_COMPLETE: type('[Location] Pins Complete'),
+  PINS_ERROR: type('[Location] Pins Error')
 };
 
 /**
@@ -38,13 +38,13 @@ export const ActionTypes = {
 export class ListAction implements Action {
   type = ActionTypes.LIST;
 
-  constructor(public payload: IPetCareListRequest) { }
+  constructor(public payload: ILocationListRequest) { }
 }
 
 export class ListCompleteAction implements Action {
   type = ActionTypes.LIST_COMPLETE;
 
-  constructor(public payload: IPetCareListResponse) { }
+  constructor(public payload: ILocationListResponse) { }
 }
 
 export class ListErrorAction implements Action {
@@ -62,13 +62,13 @@ export class ListClearAction implements Action {
 export class PinsAction implements Action {
   type = ActionTypes.PINS;
 
-  constructor(public payload: IPetCarePinsRequest) { }
+  constructor(public payload: ILocationPinsRequest) { }
 }
 
 export class PinsCompleteAction implements Action {
   type = ActionTypes.PINS_COMPLETE;
 
-  constructor(public payload: IPetCarePinsResponse[]) { }
+  constructor(public payload: ILocationPinsResponse[]) { }
 }
 
 export class PinsErrorAction implements Action {
@@ -80,13 +80,13 @@ export class PinsErrorAction implements Action {
 export class FiltersAction implements Action {
   type = ActionTypes.FILTERS;
 
-  constructor(public payload: IPetCareFiltersRequest) { }
+  constructor(public payload: ILocationFiltersRequest) { }
 }
 
 export class FiltersCompleteAction implements Action {
   type = ActionTypes.FILTERS_COMPLETE;
 
-  constructor(public payload: IPetCareFiltersResponse) { }
+  constructor(public payload: ILocationFiltersResponse) { }
 }
 
 export class FiltersErrorAction implements Action {

@@ -39,7 +39,7 @@ export interface IShop {
   lang: string
 }
 
-export interface IPetCare {
+export interface ILocation {
   name: string,
   id: number,
   description: string,
@@ -108,27 +108,27 @@ export interface IShopPinsRequest {}
 export interface IShopPinsResponse extends IShop {}
 
 /**
- * PetCare
+ * Location
  */
-export interface IPetCareListRequest {
+export interface ILocationListRequest {
   skip: number,
   limit: number,
   categories?: string[]
 }
 
-export interface IPetCareListResponse {
-  list: IPetCare[],
+export interface ILocationListResponse {
+  list: ILocation[],
   count: number
 }
 
-export interface IPetCarePinsRequest {
+export interface ILocationPinsRequest {
   categories?: string[]
 }
 
-export interface IPetCarePinsResponse extends IPetCare {}
+export interface ILocationPinsResponse extends ILocation {}
 
-export interface IPetCareFiltersRequest {}
+export interface ILocationFiltersRequest {}
 
-export interface IPetCareFiltersResponse {
+export interface ILocationFiltersResponse {
   categories?: { [name: string]: { id: number, name: string } }
 }

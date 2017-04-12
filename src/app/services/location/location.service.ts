@@ -5,37 +5,37 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
 import {
-  IPetCareFiltersRequest, IPetCareFiltersResponse, IPetCareListRequest, IPetCareListResponse, IPetCarePinsRequest,
-  IPetCarePinsResponse
+  ILocationFiltersRequest, ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsRequest,
+  ILocationPinsResponse
 } from '../../models/api';
 
-export interface IPetCareService {
-  filters(options: IPetCareFiltersRequest): Observable<IPetCareFiltersResponse>,
-  list(options: IPetCareListRequest): Observable<IPetCareListResponse>,
-  pins(options: IPetCarePinsRequest): Observable<IPetCarePinsResponse[]>
+export interface ILocationService {
+  filters(options: ILocationFiltersRequest): Observable<ILocationFiltersResponse>,
+  list(options: ILocationListRequest): Observable<ILocationListResponse>,
+  pins(options: ILocationPinsRequest): Observable<ILocationPinsResponse[]>
 }
 
 @Injectable()
-export class PetCareService implements IPetCareService {
+export class LocationService implements ILocationService {
 
   constructor(private http: Http) {
 
   }
 
-  filters(options: IPetCareFiltersRequest): Observable<IPetCareFiltersResponse> {
+  filters(options: ILocationFiltersRequest): Observable<ILocationFiltersResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this.http
-      .get(`${environment.apiEndpoint}/api/pet-care/filters`,
+      .get(`${environment.apiEndpoint}/api/location/filters`,
         {headers, withCredentials: true}
       )
       .map(response => response.json());
   }
 
-  list(options: IPetCareListRequest): Observable<IPetCareListResponse> {
+  list(options: ILocationListRequest): Observable<ILocationListResponse> {
     const headers = new Headers();
     const params: URLSearchParams = new URLSearchParams();
 
@@ -49,13 +49,13 @@ export class PetCareService implements IPetCareService {
     }
 
     return this.http
-      .get(`${environment.apiEndpoint}/api/pet-care/list`,
+      .get(`${environment.apiEndpoint}/api/location/list`,
         { headers, withCredentials: true, search: params }
       )
       .map(response => response.json());
   }
 
-  pins(options: IPetCarePinsRequest): Observable<IPetCarePinsResponse[]> {
+  pins(options: ILocationPinsRequest): Observable<ILocationPinsResponse[]> {
     const headers = new Headers();
     const params: URLSearchParams = new URLSearchParams();
 
@@ -67,7 +67,7 @@ export class PetCareService implements IPetCareService {
     }
 
     return this.http
-      .get(`${environment.apiEndpoint}/api/pet-care/pins`,
+      .get(`${environment.apiEndpoint}/api/location/pins`,
         { headers, withCredentials: true, search: params }
       )
       .map(response => response.json());

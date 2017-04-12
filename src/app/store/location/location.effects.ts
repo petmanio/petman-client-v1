@@ -11,9 +11,9 @@ import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { Store } from '@ngrx/store';
-import { PetCareService } from '../../services/petCare/petCare.service';
+import { LocationService } from '../../services/location/location.service';
 import * as fromRoot from '../../store';
-import * as petCareAction from '../../store/petCare/petCare.actions';
+import * as locationAction from '../../store/location/location.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -29,43 +29,43 @@ import * as petCareAction from '../../store/petCare/petCare.actions';
  * RxJS 5 Operators By Example: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35
  */
 
-interface IPetCareEffects {
+interface ILocationEffects {
   filters$: Observable<Action>,
   list$: Observable<Action>,
   pins$: Observable<Action>
 }
 
 @Injectable()
-export class PetCareEffects implements IPetCareEffects {
-  constructor(private actions$: Actions, private petCareService: PetCareService, private store: Store<fromRoot.State>) { }
+export class LocationEffects implements ILocationEffects {
+  constructor(private actions$: Actions, private locationService: LocationService, private store: Store<fromRoot.State>) { }
 
   @Effect()
   public filters$: Observable<Action> = this.actions$
-    .ofType(petCareAction.ActionTypes.FILTERS)
-    .map((action: petCareAction.FiltersAction) => action.payload)
+    .ofType(locationAction.ActionTypes.FILTERS)
+    .map((action: locationAction.FiltersAction) => action.payload)
     .switchMap(options => {
-      return this.petCareService.filters(options)
-        .map(response => new petCareAction.FiltersCompleteAction(response))
-        .catch(err => of(new petCareAction.ListErrorAction(err)))
+      return this.locationService.filters(options)
+        .map(response => new locationAction.FiltersCompleteAction(response))
+        .catch(err => of(new locationAction.ListErrorAction(err)))
     });
 
   @Effect()
   public list$: Observable<Action> = this.actions$
-    .ofType(petCareAction.ActionTypes.LIST)
-    .map((action: petCareAction.ListAction) => action.payload)
+    .ofType(locationAction.ActionTypes.LIST)
+    .map((action: locationAction.ListAction) => action.payload)
     .switchMap(options => {
-      return this.petCareService.list(options)
-        .map(response => new petCareAction.ListCompleteAction(response))
-        .catch(err => of(new petCareAction.ListErrorAction(err)))
+      return this.locationService.list(options)
+        .map(response => new locationAction.ListCompleteAction(response))
+        .catch(err => of(new locationAction.ListErrorAction(err)))
     });
 
   @Effect()
   public pins$: Observable<Action> = this.actions$
-    .ofType(petCareAction.ActionTypes.PINS)
-    .map((action: petCareAction.PinsAction) => action.payload)
+    .ofType(locationAction.ActionTypes.PINS)
+    .map((action: locationAction.PinsAction) => action.payload)
     .switchMap(options => {
-      return this.petCareService.pins(options)
-        .map(response => new petCareAction.PinsCompleteAction(response))
-        .catch(err => of(new petCareAction.PinsErrorAction(err)))
+      return this.locationService.pins(options)
+        .map(response => new locationAction.PinsCompleteAction(response))
+        .catch(err => of(new locationAction.PinsErrorAction(err)))
     });
 }
