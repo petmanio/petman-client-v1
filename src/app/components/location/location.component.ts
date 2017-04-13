@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ILocation } from '../../models/api';
 
+// TODO: rename
 export interface ILocationItemComponent {
 
 }

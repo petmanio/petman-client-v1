@@ -9,6 +9,7 @@ import { mapStyles } from '../../../util';
 import { MapComponent } from '../map/map.component';
 import { ILocation } from '../../models/api';
 
+// TODO: rename
 export interface ILocationComponent {
   onScroll(): void,
   onFilterChange(): void,

@@ -28,6 +28,7 @@ import {
   ShopItemComponent,
   LocationComponent,
   LocationItemComponent,
+  NannyComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -97,6 +98,16 @@ const appRoutes: Routes = [
       toolbarRightButtons: ['ACTIONS'],
       showSidenav: true
     }
+  },
+  {
+    path: 'nanny',
+    component: NannyComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
   }
 ];
 
@@ -117,6 +128,7 @@ const appRoutes: Routes = [
     ShopItemComponent,
     LocationComponent,
     LocationItemComponent,
+    NannyComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,

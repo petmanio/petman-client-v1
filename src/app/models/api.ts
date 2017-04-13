@@ -1,3 +1,9 @@
+export interface IPin {
+  description: string,
+  lat: number,
+  lng: number
+  link: string
+}
 export interface IUserData {
   id: number,
   gender: 'MALE' | 'FEMALE',

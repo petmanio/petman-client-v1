@@ -3,6 +3,7 @@ const GoogleMapsLoader = require('google-maps');
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
 import * as lodash from 'lodash';
+import { IPin } from '../../models/api';
 
 GoogleMapsLoader.KEY = environment.mapApiKey;
 
@@ -40,10 +41,7 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
       lng: 0
     }
   };
-  @Input() pins: {
-    lat: number,
-    lng: number
-  }[] = [];
+  @Input() pins: IPin[] = [];
   @Input() fitBounds = true;
   @Input() infoWindow = true;
   @Input() showUserLocation = true;
@@ -108,6 +106,7 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
             }
           })
         }
+
         fitBoundsMapDebounce();
         this.addMarkers(this.pins);
         this.triggerResize();
@@ -235,11 +234,21 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
       maxWidth: this._infoWindowMaxWidth
     });
 
-    marker.openInfoWindow = () => infoWindow.open(this.map, marker);
-    marker.closeInfoWindow = () => infoWindow.close(this.map, marker);
+    marker.openInfoWindow = () => {
+      marker._infoWindow = true;
+      infoWindow.open(this.map, marker);
+    };
+    marker.closeInfoWindow = () => {
+      marker._infoWindow = false;
+      infoWindow.close(this.map, marker);
+    };
 
     marker.addListener('click', () => {
-      marker.openInfoWindow();
+      if (marker._infoWindow) {
+        marker.closeInfoWindow();
+      } else {
+        marker.openInfoWindow();
+      }
     });
   }
 
