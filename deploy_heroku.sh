@@ -3,17 +3,26 @@ set -e
 rm -rf ./dist/
 ./node_modules/.bin/ng build --prod
 cd ./dist/
+
 echo "{\
   \"name\": \"petman-client\",\
   \"version\": \"0.0.0\",\
   \"scripts\": {\
-    \"start\": \"http-server\"\
+    \"start\": \"superstatic --config superstatic.json --port \$PORT --host 0.0.0.0\"\
   },\
   \"dependencies\": {\
-    \"http-server\": \"^0.9.0\"\
+    \"superstatic\": \"^4.0.3\"\
   }\
 }\
 " > package.json
+
+echo "{\
+  \"rewrites\": [\
+    {\"source\":\"/**\",\"destination\":\"/index.html\"}\
+  ]\
+}\
+" > superstatic.json
+
 git init;
 git remote add heroku https://git.heroku.com/petman.git
 git add --all

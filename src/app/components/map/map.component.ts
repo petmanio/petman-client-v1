@@ -59,6 +59,7 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
   private _pinIconUser = '/assets/pin-user.png';
   private _activePins: any[] = [];
   private _markerMoveInterVal = 1000;
+  private _infoWindowMaxWidth = 200;
   constructor(private _utilService: UtilService) {
 
   }
@@ -230,7 +231,8 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
 
   addInfoWindowListener(marker: any): void {
     const infoWindow = new google.maps.InfoWindow({
-      content: `<div>${marker.pin.name}</div><div>${marker.pin.description}</div>`
+      content: `<div>${marker.pin.name}</div><div>${marker.pin.description}</div>`,
+      maxWidth: this._infoWindowMaxWidth
     });
 
     marker.openInfoWindow = () => infoWindow.open(this.map, marker);
