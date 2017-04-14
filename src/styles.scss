@@ -3,6 +3,7 @@
 //TODO: use material ui grid system for mobile
 //@import "../node_modules/bulma/sass/base/all";
 @import "../node_modules/bulma/sass/grid/all";
+
 :focus { outline:none; }
 ::-moz-focus-inner { border:0; }
 
@@ -12,4 +13,46 @@
 
 [hidden] {
   display: none !important;
+}
+
+.star-icon {
+  font-size: 16px !important;
+  &:before {
+    color: #673ab7 !important;
+  }
+}
+
+.pm-font-12 {
+  font-size: 12px;
+}
+
+.pm-font-16 {
+  font-size: 16px;
+}
+
+.pm-color-gray {
+  color: #484848;
+}
+
+.pm-font-bold {
+  font-weight: bold;
+}
+
+.pm-padding-15 {
+  padding: 15px;
+}
+
+.pm-fl {
+  float: left;
+}
+
+.pm-fr {
+  float: right;
+}
+
+// TODO: find right way
+.column {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;
 }

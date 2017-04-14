@@ -56,7 +56,7 @@ export interface ILocationComponent {
   `,
   styles: [`
     .filters {
-      margin-top: 30px !important;
+      margin-top: 15px !important;
       margin-left: 15px !important;
     }
     md-slide-toggle {
@@ -67,19 +67,13 @@ export interface ILocationComponent {
       overflow: auto;
       white-space: nowrap;
     }
-    /*TODO: find right way*/
-    .column {
-      -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-      -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-      box-sizing: border-box;
-    }
     .items {
       overflow: auto;
     }
     app-map, .items {
-      height: calc(100vh - 176px);
-      height: -webkit-calc(100vh - 176px);
-      height: -moz-calc(100vh - 176px);
+      height: calc(100vh - 160px);
+      height: -webkit-calc(100vh - 160px);
+      height: -moz-calc(100vh - 160px);
     }
     md-chip {
       cursor: pointer;
@@ -90,9 +84,9 @@ export interface ILocationComponent {
         margin-top: 10px !important;
       }
       app-map, .items {
-        height: calc(100vh - 140px);
-        height: -webkit-calc(100vh - 140px);
-        height: -moz-calc(100vh - 140px);
+        height: calc(100vh - 125px);
+        height: -webkit-calc(100vh - 125px);
+        height: -moz-calc(100vh - 125px);
       }
       .items-container, .map-container {
         padding-top: 0;

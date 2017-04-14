@@ -12,6 +12,7 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { RatingModule } from 'ngx-rating';
 import { environment } from '../environments/environment';
 import {
   AppComponent,
@@ -148,6 +149,7 @@ const appRoutes: Routes = [
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     InfiniteScrollModule,
+    RatingModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),
