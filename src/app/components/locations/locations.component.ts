@@ -10,6 +10,7 @@ import { MapComponent } from '../map/map.component';
 import { ILocation } from '../../models/api';
 
 // TODO: rename
+// TODO: rename css class names
 export interface ILocationComponent {
   onScroll(): void,
   onFilterChange(): void,
@@ -151,7 +152,8 @@ export class LocationComponent implements OnInit, ILocationComponent {
   onFilterChange(): void {
     this._skip = 0;
     this._store.dispatch(new locationAction.ListClearAction({}));
-    this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip, categories: this.activeFilters.categories }));
+    this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip,
+      categories: this.activeFilters.categories }));
     this._store.dispatch(new locationAction.PinsAction({ categories: this.activeFilters.categories }));
   }
 

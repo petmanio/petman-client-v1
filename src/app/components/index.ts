@@ -12,5 +12,7 @@ export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
 export { WelcomeComponent } from './welcome/welcome.component';
-export { NannyComponent } from './nanny/nany.component';
+export { RoomsComponent } from './rooms/rooms.component';
+export { RoomComponent } from './room/room.component';
+export { RoomAddComponent } from './room-add/room-add.component';
 export { MapComponent } from './map/map.component';

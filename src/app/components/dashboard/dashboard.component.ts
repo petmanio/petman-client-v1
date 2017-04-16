@@ -16,7 +16,7 @@ export interface IDashboardComponent {
             <md-card-title>Shiba Inu</md-card-title>
             <md-card-subtitle>Dog Breed</md-card-subtitle>
           </md-card-header>
-          <img md-card-image src="http://lorempixel.com/400/200/">
+          <img md-card-image src="//lorempixel.com/400/200/">
           <md-card-content>
             <p>
               The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.

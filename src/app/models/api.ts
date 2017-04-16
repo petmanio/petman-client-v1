@@ -56,6 +56,18 @@ export interface ILocation {
   lang: string,
   type: string
 }
+
+export interface IRoomImage {
+  src: string,
+}
+
+export interface IRoom {
+  name: string,
+  description: string,
+  cost: number,
+  images?: IRoomImage[],
+  user?: IUser
+}
 /**
  * Auth
  */
@@ -138,3 +150,7 @@ export interface ILocationFiltersRequest {}
 export interface ILocationFiltersResponse {
   categories?: { [name: string]: { id: number, name: string } }
 }
+
+/**
+ * Room
+ */

@@ -13,7 +13,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
+import { ImageUploadModule } from 'angular2-image-upload';
 import { environment } from '../environments/environment';
+
 import {
   AppComponent,
   LayoutComponent,
@@ -29,7 +31,9 @@ import {
   ShopItemComponent,
   LocationComponent,
   LocationItemComponent,
-  NannyComponent,
+  RoomsComponent,
+  RoomComponent,
+  RoomAddComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -101,14 +105,28 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'nanny',
-    component: NannyComponent,
+    path: 'rooms',
+    component: RoomsComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
       toolbarRightButtons: ['ACTIONS'],
       showSidenav: true
     }
+  },
+  {
+    path: 'room/add',
+    component: RoomAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
 
@@ -129,7 +147,9 @@ const appRoutes: Routes = [
     ShopItemComponent,
     LocationComponent,
     LocationItemComponent,
-    NannyComponent,
+    RoomsComponent,
+    RoomComponent,
+    RoomAddComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -150,6 +170,7 @@ const appRoutes: Routes = [
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     InfiniteScrollModule,
     RatingModule,
+    ImageUploadModule.forRoot(),
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),

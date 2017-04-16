@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router , NavigationStart, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { UtilService } from "../../services/util/util.service";
+import { UtilService } from '../../services/util/util.service';
 
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
@@ -81,6 +81,7 @@ export class AppComponent implements OnInit, IAppComponent {
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
   currentSideNavState: boolean;
+  // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
 
   constructor(private store: Store<fromRoot.State>,
