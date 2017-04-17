@@ -15,4 +15,5 @@ export { WelcomeComponent } from './welcome/welcome.component';
 export { RoomsComponent } from './rooms/rooms.component';
 export { RoomComponent } from './room/room.component';
 export { RoomAddComponent } from './room-add/room-add.component';
+export { RoomDetailsComponent } from './room-details/room-details.component';
 export { MapComponent } from './map/map.component';

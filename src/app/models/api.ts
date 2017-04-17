@@ -151,6 +151,24 @@ export interface ILocationFiltersResponse {
   categories?: { [name: string]: { id: number, name: string } }
 }
 
+export interface IRoomListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IRoomListResponse {
+  list: IRoom[],
+  count: number
+}
+
+export interface IRoomCreateRequest {
+  name: string,
+  description: string,
+  cost: number,
+  images?: File[],
+}
+
+export interface IRoomCreateResponse extends IRoom {}
 /**
  * Room
  */

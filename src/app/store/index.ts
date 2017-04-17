@@ -1,5 +1,6 @@
 export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
+export { RoomEffects } from './room/room.effects';
 export { ShopEffects } from './shop/shop.effects';
 export { LocationEffects } from './location/location.effects';
 
@@ -49,6 +50,7 @@ import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromShop from './shop/shop.reducer';
 import * as fromLocation from './location/location.reducer';
+import * as fromRoom from './room/room.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -59,6 +61,7 @@ export interface State {
   blog: fromBlog.State,
   shop: fromShop.State,
   location: fromLocation.State,
+  room: fromRoom.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -76,6 +79,7 @@ const reducers = {
   blog: fromBlog.reducer,
   shop: fromShop.reducer,
   location: fromLocation.reducer,
+  room: fromRoom.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -148,3 +152,9 @@ export const getLocationState = (state: State) => state.location;
 export const getLocationList = createSelector(getLocationState, fromLocation.getList);
 export const getLocationFilters = createSelector(getLocationState, fromLocation.getFilters);
 export const getLocationPins = createSelector(getLocationState, fromLocation.getPins);
+
+/**
+ * Room Reducers
+ */
+export const getRoomState = (state: State) => state.room;
+export const getRoomList = createSelector(getRoomState, fromRoom.getList);

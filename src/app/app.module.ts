@@ -34,12 +34,13 @@ import {
   RoomsComponent,
   RoomComponent,
   RoomAddComponent,
+  RoomDetailsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, ShopService, UtilService, LocationService } from './services';
-import { AuthEffects, BlogEffects, ShopEffects, LocationEffects } from './store';
+import { AuthService, BlogService, ShopService, UtilService, LocationService, RoomService } from './services';
+import { AuthEffects, BlogEffects, ShopEffects, LocationEffects, RoomEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -150,6 +151,7 @@ const appRoutes: Routes = [
     RoomsComponent,
     RoomComponent,
     RoomAddComponent,
+    RoomDetailsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -175,6 +177,7 @@ const appRoutes: Routes = [
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),
     EffectsModule.run(LocationEffects),
+    EffectsModule.run(RoomEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -183,6 +186,7 @@ const appRoutes: Routes = [
     BlogService,
     ShopService,
     LocationService,
+    RoomService,
     UtilService
   ],
   bootstrap: [AppComponent]

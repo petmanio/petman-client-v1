@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+// TODO: fix stars on mobile firefox
 export interface IRoomComponent {
 
 }

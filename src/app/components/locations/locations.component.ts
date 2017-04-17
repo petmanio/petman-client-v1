@@ -194,7 +194,8 @@ export class LocationComponent implements OnInit, ILocationComponent {
 
     this._skip = 0;
     this._store.dispatch(new locationAction.ListClearAction({}));
-    this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip, categories: this.activeFilters.categories }));
+    this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip,
+      categories: this.activeFilters.categories }));
     this._store.dispatch(new locationAction.PinsAction({ categories: this.activeFilters.categories }));
   }
 }

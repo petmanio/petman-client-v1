@@ -1,10 +1,18 @@
-import { Component, EventEmitter } from '@angular/core';
-import { FileHolder } from 'angular2-image-upload/lib/image-upload/image-upload.component';
+import { ChangeDetectorRef, Component, EventEmitter, ViewChild } from '@angular/core';
+import { FileHolder, ImageUploadComponent } from 'angular2-image-upload/lib/image-upload/image-upload.component';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Store, Action } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
 import { IRoom } from '../../models/api';
+import * as fromRoot from '../../store';
+import * as roomAction from '../../store/room/room.actions';
+import { Subject } from 'rxjs/Subject';
+import { MdSnackBar } from '@angular/material';
+const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
-
+// TODO: add image resize functionality
 export interface IRoomAddComponent {
   onImageUploaded($event: FileHolder): void,
   onImageRemove($event: FileHolder): void,
@@ -15,7 +23,7 @@ export interface IRoomAddComponent {
   selector: 'app-room-add',
   template: `
     <div class="columns">
-      <div class="column pm-room-add-container is-6" [hidden]="isMobile && roomPreview">
+      <div class="column pm-room-add-container is-6 is-offset-3">
         <form #roomForm="ngForm">
           <div class="columns">
             <md-input-container>
@@ -37,7 +45,7 @@ export interface IRoomAddComponent {
                 (onRemove)="onImageRemove($event)"></image-upload>
             </div>
           </div>
-          <div class="columns">
+          <div class="columns is-mobile">
             <div class="column is-8">
               <md-input-container>
                 <input type="number" mdInput placeholder="Cost per day/$" name="cost" required [(ngModel)]="room.cost" min="0"/>
@@ -51,36 +59,66 @@ export interface IRoomAddComponent {
           </div>
         </form>
       </div>
-      <div class="column is-6 pm-preview-container" [hidden]="isMobile && !roomPreview">
-      </div>
+      <!--<div class="column is-6 pm-preview-container">-->
+        <!--<app-room-details [room]="room"></app-room-details>-->
+      <!--</div>-->
     </div>
 
   `,
   styles: [`
+    .pm-room-add-container {
+      margin-top: 15px;
+    }
     md-input-container {
       width: 100%;
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
-      .pm-room-add-container, .pm-preview-container {
+      .pm-room-add-container {
         padding-top: 0;
+      }
+
+      /deep/ .drag-box-message {
+        display: none !important;
       }
     }
   `]
 })
 export class RoomAddComponent implements IRoomAddComponent {
+  @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   public room: IRoom = {
     name: '',
     description: '',
     cost: null,
     images: [],
   };
-  constructor() {
-
+  private _destroyed$ = new Subject<boolean>();
+  constructor(private _ref: ChangeDetectorRef, private _store: Store<fromRoot.State>, private _actions$: Actions,
+              private _snackBar: MdSnackBar) {
+    _actions$
+      .ofType(roomAction.ActionTypes.CREATE_COMPLETE)
+      .takeUntil(this._destroyed$)
+      .do(() => {
+        this._snackBar.open(`New room successfully created`, null, {
+          duration: 3000
+        });
+        this.room = {
+          name: '',
+          description: '',
+          cost: null,
+          images: [],
+        };
+        this._imageUploadComponent.files = [];
+        this._imageUploadComponent.fileCounter = 0;
+        // TODO: navigate to details page
+      })
+      .subscribe();
   }
 
   onImageUploaded($event: FileHolder): void {
-    this.room.images.push($event);
+    // TODO: use smartcrop
+    this.room = Object.assign(this.room, { images: this.room.images.concat($event) });
+    this._ref.detectChanges();
   }
 
   onImageRemove($event: FileHolder): void {
@@ -88,7 +126,9 @@ export class RoomAddComponent implements IRoomAddComponent {
   }
 
   onSaveRoom(): void {
-    console.log(this.room);
+    const formData = _.clone(this.room);
+    formData.images = formData.images.map(image => image.file);
+    this._store.dispatch(new roomAction.CreateAction(formData));
   }
 
 }
