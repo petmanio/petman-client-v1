@@ -51,11 +51,28 @@
   float: right;
 }
 
+.pm-cart-avatar {
+  // TODO: remove part update material upgrade
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-size: cover;
+}
+
 // TODO: find right way
 .column {
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;
+}
+
+.pm-cart-image-fixed-300 {
+  display: block;
+  height: 300px;
+  //TODO: IE support
+  object-fit: cover;
+  margin: 0 -24px 16px;
 }
 
 .image-upload {

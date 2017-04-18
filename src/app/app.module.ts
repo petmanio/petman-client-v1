@@ -14,6 +14,8 @@ import { MaterialModule } from '@angular/material';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
+import { ImageCropperModule } from 'ng2-img-cropper';
+// import { ImageUploadModule } from 'ng2-imageupload';
 import { environment } from '../environments/environment';
 
 import {
@@ -131,7 +133,6 @@ const appRoutes: Routes = [
   }
 ];
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -173,6 +174,8 @@ const appRoutes: Routes = [
     InfiniteScrollModule,
     RatingModule,
     ImageUploadModule.forRoot(),
+    ImageCropperModule,
+    // ImageUploadModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(ShopEffects),

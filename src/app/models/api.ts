@@ -8,7 +8,8 @@ export interface IUserData {
   id: number,
   gender: 'MALE' | 'FEMALE',
   avatar: string,
-  user: number
+  firstName: string,
+  lastName: string
 }
 
 export interface IAuthProvider {
@@ -21,7 +22,8 @@ export interface IUser {
   id: number,
   email: string,
   userData?: IUserData,
-  authProvider?: IAuthProvider
+  authProviders?: IAuthProvider[]
+  reviews?: IUserReview[]
 }
 
 export interface IBlog {
@@ -62,10 +64,17 @@ export interface IRoomImage {
 }
 
 export interface IRoom {
-  name: string,
+  // name: string,
   description: string,
   cost: number,
   images?: IRoomImage[],
+  user?: IUser
+}
+
+export interface IUserReview {
+  rating: number,
+  text: string,
+  reviewer?: IUser,
   user?: IUser
 }
 /**

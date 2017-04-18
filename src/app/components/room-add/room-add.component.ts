@@ -9,6 +9,7 @@ import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
 import { MdSnackBar } from '@angular/material';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
@@ -25,11 +26,11 @@ export interface IRoomAddComponent {
     <div class="columns">
       <div class="column pm-room-add-container is-6 is-offset-3">
         <form #roomForm="ngForm">
-          <div class="columns">
-            <md-input-container>
-              <input mdInput placeholder="Name (short description)" name="name" required [(ngModel)]="room.name">
-            </md-input-container>  
-          </div>
+          <!--<div class="columns">-->
+            <!--<md-input-container>-->
+              <!--<input mdInput placeholder="Name (short description)" name="name" required [(ngModel)]="room.name">-->
+            <!--</md-input-container>  -->
+          <!--</div>-->
           <div class="columns">
             <md-input-container>
               <textarea mdInput placeholder="Description" name="description" required [(ngModel)]="room.description"></textarea>
@@ -37,6 +38,8 @@ export interface IRoomAddComponent {
           </div>
           <div class="columns">
             <div class="column">
+              <!--<img [src]="data.image"/>-->
+              <!--<img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>-->
               <image-upload
                 [preview]="true"
                 [max]="4"
@@ -86,12 +89,15 @@ export interface IRoomAddComponent {
 })
 export class RoomAddComponent implements IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
-  public room: IRoom = {
+  // @ViewChild('cropper') private _cropper: ImageCropperComponent;
+  room: IRoom = {
     name: '',
     description: '',
     cost: null,
     images: [],
   };
+  // data = {};
+  cropperSettings: CropperSettings;
   private _destroyed$ = new Subject<boolean>();
   constructor(private _ref: ChangeDetectorRef, private _store: Store<fromRoot.State>, private _actions$: Actions,
               private _snackBar: MdSnackBar) {
@@ -113,11 +119,23 @@ export class RoomAddComponent implements IRoomAddComponent {
         // TODO: navigate to details page
       })
       .subscribe();
+
+    // this.cropperSettings = new CropperSettings();
+    // this.cropperSettings.width = 100;
+    // this.cropperSettings.height = 100;
+    // this.cropperSettings.croppedWidth = 100;
+    // this.cropperSettings.croppedHeight = 100;
+    // this.cropperSettings.canvasWidth = 400;
+    // this.cropperSettings.canvasHeight = 300;
+    // this.cropperSettings.noFileInput = true
   }
 
   onImageUploaded($event: FileHolder): void {
     // TODO: use smartcrop
     this.room = Object.assign(this.room, { images: this.room.images.concat($event) });
+    // const image: any = new Image();
+    // image.src = $event.src;
+    // this._cropper.setImage(image);
     this._ref.detectChanges();
   }
 

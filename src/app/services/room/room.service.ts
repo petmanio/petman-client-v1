@@ -29,7 +29,7 @@ export class RoomService implements IRoomService {
     params.set('limit', options.limit.toString());
 
     return this.http
-      .get(`${environment.apiEndpoint}/api/shop/list`,
+      .get(`${environment.apiEndpoint}/api/room/list`,
         { headers, withCredentials: true, search: params }
       )
       .map(response => response.json());
