@@ -30,6 +30,7 @@ import * as roomAction from '../../store/room/room.actions';
  */
 
 interface IRoomEffects {
+  getById$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>
 }
@@ -37,6 +38,16 @@ interface IRoomEffects {
 @Injectable()
 export class RoomEffects implements IRoomEffects {
   constructor(private actions$: Actions, private roomService: RoomService, private store: Store<fromRoot.State>) { }
+
+  @Effect()
+  public getById$: Observable<Action> = this.actions$
+    .ofType(roomAction.ActionTypes.GET_BY_ID)
+    .map((action: roomAction.GetByIdAction) => action.payload)
+    .switchMap(options => {
+      return this.roomService.getById(options)
+        .map(response => new roomAction.GetByIdCompleteAction(response))
+        .catch(err => of(new roomAction.GetByIdErrorAction(err)))
+    });
 
   @Effect()
   public list$: Observable<Action> = this.actions$

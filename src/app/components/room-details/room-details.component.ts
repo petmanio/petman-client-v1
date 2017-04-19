@@ -1,5 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IRoom } from '../../models/api';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import * as fromRoot from '../../store';
+import * as roomAction from '../../store/room/room.actions';
+import { UtilService } from '../../services/util/util.service';
 
 export interface IRoomDetailsComponent {
 
@@ -10,72 +15,37 @@ export interface IRoomDetailsComponent {
   template: `
     <md-card class="room-card">
       <md-card-content>
-        <p class="pm-font-bold" [hidden]="!room.name">
-          {{room.name}}
+        <p class="pm-font-bold">
+          {{(roomRoom$ | async)?.cost}}$ / day
         </p>
-        <span class="pm-font-12">{{room.cost}}$/day Room</span>
-        <div class="pm-image-container">
-          <div class="pm-image-selected" [style.background-image]="'url('+ (selectedImage || '/assets/no-image.jpg') +')'"></div>
-          <div class="pm-image-thumbnail-row">
-            <div *ngFor="let image of room.images"
-                 class="pm-image-thumbnail"
-                 [ngClass]="{selected: selectedImage === image.src}"
-                 (click)="selectedImage = image.src" [style.background-image]="'url('+ image.src +')'"></div>
-          </div>  
-        </div>
+        <p class="pm-room-description pm-font-16">{{(roomRoom$ | async)?.description}}</p>
       </md-card-content>
-      <md-card-footer>
-        <p>{{room.description}}</p>
-      </md-card-footer>
     </md-card>
   `,
   styles: [`
-    .pm-image-selected {
-      height: 400px;
-      width: calc(100% + 48px);
-      background-repeat: no-repeat;
-      background-size: cover;
-      margin-left: -24px;
-      margin-right: -24px;
-    }
-    .pm-image-thumbnail {
-      height: 50px;
-      width: 70px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      cursor: pointer;
-      margin: 5px;
-      border-radius: 5px;
-    }
-    .pm-image-thumbnail.selected {
-      border: solid 1px #fff;
-    }
-    
-    .pm-image-container {
-      position: relative;
-    }
-    
-    .pm-image-thumbnail-row {
-      position: absolute;
-      bottom: 0;
-      right: -24px;
-      opacity: 0.85;
-      display: flex;
-      justify-content: center;
-    }
+   
   `]
 })
 export class RoomDetailsComponent implements OnInit, OnChanges, IRoomDetailsComponent {
-  @Input() room: IRoom;
-  selectedImage: string;
-  constructor() {
-
+  // TODO: update attribute name
+  roomRoom$: Observable<any>;
+  private _roomId: number;
+  constructor(private _store: Store<fromRoot.State>, private _activatedRoute: ActivatedRoute, private _utilService: UtilService) {
+    this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
   }
 
   ngOnInit(): void {
+    // TODO: remove listener on destroy
+    this._activatedRoute.params.subscribe((params: Params) => {
+      this._roomId = parseInt(params['roomId'], 10);
+      if (!this._roomId) {
+        // TODO: use global error handling
+        throw new Error('RoomDetailsComponent: roomId is not defined');
+      }
+      return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}))
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
   }
 }

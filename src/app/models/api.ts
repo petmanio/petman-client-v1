@@ -64,6 +64,7 @@ export interface IRoomImage {
 }
 
 export interface IRoom {
+  id: number,
   // name: string,
   description: string,
   cost: number,
@@ -178,6 +179,12 @@ export interface IRoomCreateRequest {
 }
 
 export interface IRoomCreateResponse extends IRoom {}
+
+export interface IRoomGetByIdRequest {
+  roomId: number
+}
+
+export interface IRoomGetByIdResponse extends IRoom {}
 /**
  * Room
  */

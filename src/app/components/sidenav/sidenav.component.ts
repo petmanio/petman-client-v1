@@ -15,7 +15,7 @@ interface ISidenavComponent {
           <!--<app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="place">Pets friendly cafes</app-nav-item>-->
           <!--<app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="shopping_basket" routerLink="/shops" -->
                         <!--routerLinkActive="is-active">Shops</app-nav-item>-->
-          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" routerLink="/pet-care" icon="pets" 
+          <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" routerLink="/locations" icon="pets" 
                         routerLinkActive="is-active">Pet care</app-nav-item>
           <app-nav-item *ngIf="currentUser" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/rooms"
                         routerLinkActive="is-active">Sitters</app-nav-item>

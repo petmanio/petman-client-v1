@@ -91,7 +91,8 @@ export class RoomAddComponent implements IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   // @ViewChild('cropper') private _cropper: ImageCropperComponent;
   room: IRoom = {
-    name: '',
+    id: null,
+    // name: '',
     description: '',
     cost: null,
     images: [],
@@ -109,7 +110,8 @@ export class RoomAddComponent implements IRoomAddComponent {
           duration: 3000
         });
         this.room = {
-          name: '',
+          id: null,
+          // name: '',
           description: '',
           cost: null,
           images: [],

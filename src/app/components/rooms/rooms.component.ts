@@ -72,6 +72,7 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
   }
 
   ngOnInit(): void {
+    // TODO: clear list and get new one
     const listListener = this.roomList$.subscribe((event) => {
       if (event.count === null) {
         this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));

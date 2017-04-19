@@ -1,9 +1,10 @@
 import { createSelector } from 'reselect';
-import { IRoomListRequest, IRoomListResponse } from '../../models/api';
+import { IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse } from '../../models/api';
 import * as roomAction from './room.actions';
 
 export interface State {
-  list?: IRoomListResponse
+  room?: IRoomGetByIdResponse,
+  list?: IRoomListResponse,
 }
 
 const initialState: State = {
@@ -11,6 +12,7 @@ const initialState: State = {
     list: [],
     count: null
   },
+  room: null
 };
 
 export function reducer(state = initialState, action: roomAction.Actions): State {
@@ -48,6 +50,17 @@ export function reducer(state = initialState, action: roomAction.Actions): State
       };
     }
 
+    case roomAction.ActionTypes.GET_BY_ID_COMPLETE: {
+      const res: IRoomGetByIdResponse = action.payload;
+      // TODO: use object assign
+      return Object.assign({}, state, {room: res});
+    }
+
+    case roomAction.ActionTypes.GET_BY_ID_ERROR: {
+      const error: any = action.payload;
+      return Object.assign({}, state, {room: null})
+    }
+
     default: {
       return state;
     }
@@ -64,4 +77,5 @@ export function reducer(state = initialState, action: roomAction.Actions): State
  */
 
 export const getList = (state: State) => state.list;
+export const getRoom = (state: State) => state.room;
 

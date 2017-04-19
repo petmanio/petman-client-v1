@@ -56,6 +56,7 @@ export class BlogComponent implements OnInit, IBlogComponent {
   }
 
   ngOnInit(): void {
+    // TODO: clear list and get new one
     const listener = this.blogListData$.subscribe((event) => {
       if (event.count === null) {
         this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));

@@ -20,32 +20,48 @@ export interface IRoomComponent {
         <p class="pm-font-bold">
           {{room.cost}}$ / day
         </p>
-        <span class="pm-font-16">{{room.description}}</span>
+        <p class="pm-room-description pm-font-16">{{room.description | appEllipsis}}</p>
       </md-card-content>
       <md-card-footer>
         <div class="pm-rating-row">
-          <rating [ngModel]="averageRating"
-                  [max]="5"
-                  fullIcon="★"
-                  emptyIcon="☆"
-                  [readonly]="true"
-                  [disabled]="false"
-                  [required]="true"
-                  [float]="true"
-                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']">
-          </rating>
-          <span class="pm-font-12 pm-color-gray">{{room.user.reviews.length}} reviews</span>
+          <div class="pm-fl">
+            <rating [ngModel]="averageRating"
+                    [max]="5"
+                    fullIcon="★"
+                    emptyIcon="☆"
+                    [readonly]="true"
+                    [disabled]="false"
+                    [required]="true"
+                    [float]="true"
+                    [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']">
+            </rating>
+            <span class="pm-font-12 pm-color-gray">{{room.user.reviews.length}} reviews</span>
+          </div>
+          <div class="pm-fr">
+            <a md-button [routerLink]="['/room', room.id, 'details']">Details</a>
+          </div>
         </div>
       </md-card-footer>
     </md-card>
   `,
   styles: [`
     .room-card .pm-rating-row {
-      padding: 10px;
+      padding: 0 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
     }
     
     md-card-title {
       margin-top: 10px;
+    }
+    
+    .pm-room-description {
+      height: 50px;
+    }
+    
+    /*TODO: fix footer on tablet view*/
+    .pm-rating-row .pm-fl {
+      padding-top: 10px;
     }
   `]
 })

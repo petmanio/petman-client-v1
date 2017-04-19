@@ -121,6 +121,7 @@ export class LocationComponent implements OnInit, ILocationComponent {
   }
 
   ngOnInit(): void {
+    // TODO: clear list and get new one
     this._store.dispatch(new locationAction.FiltersAction({}));
     const listListener = this.locationList$.subscribe((event) => {
       if (event.count === null) {

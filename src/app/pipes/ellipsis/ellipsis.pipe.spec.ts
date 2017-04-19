@@ -3,8 +3,8 @@ import { EllipsisPipe } from './ellipsis.pipe';
 
 describe('Pipe: Ellipsis', () => {
   let pipe: EllipsisPipe;
-  let longStr: string = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam ab similique';
-  let shortStr: string = 'Lorem ipsum dolor sit amet, consectetur adipisicin';
+  const longStr = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam ab similique';
+  const shortStr = 'Lorem ipsum dolor sit amet, consectetur adipisicin';
   beforeEach(() => {
     pipe = new EllipsisPipe();
   });

@@ -1,6 +1,9 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { IRoomListRequest, IRoomListResponse, IRoomCreateRequest,  IRoomCreateResponse } from '../../models/api';
+import {
+  IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
+  IRoomGetByIdResponse
+} from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -11,6 +14,10 @@ import { IRoomListRequest, IRoomListResponse, IRoomCreateRequest,  IRoomCreateRe
  * action types in the application are unique.
  */
 export const ActionTypes = {
+  GET_BY_ID: type('[Room] Get By Id'),
+  GET_BY_ID_COMPLETE: type('[Room] Get By Id Complete'),
+  GET_BY_ID_ERROR: type('[Room] Get By Id Error'),
+
   LIST: type('[Room] List'),
   LIST_COMPLETE: type('[Room] List Complete'),
   LIST_ERROR: type('[Room] List Error'),
@@ -27,6 +34,31 @@ export const ActionTypes = {
  * type checking in reducer functions.
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
+ */
+
+/**
+ * Get By Id
+ */
+export class GetByIdAction implements Action {
+  type = ActionTypes.GET_BY_ID;
+
+  constructor(public payload: IRoomGetByIdRequest) { }
+}
+
+export class GetByIdCompleteAction implements Action {
+  type = ActionTypes.GET_BY_ID_COMPLETE;
+
+  constructor(public payload: IRoomGetByIdResponse) { }
+}
+
+export class GetByIdErrorAction implements Action {
+  type = ActionTypes.GET_BY_ID_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+/**
+ * List
  */
 export class ListAction implements Action {
   type = ActionTypes.LIST;
@@ -52,6 +84,9 @@ export class ListClearAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Create
+ */
 export class CreateAction implements Action {
   type = ActionTypes.CREATE;
 
@@ -76,7 +111,10 @@ export class CreateErrorAction implements Action {
  * so that reducers can easily compose action types
  */
 export type Actions
-  = ListAction
+  = GetByIdAction
+  | GetByIdCompleteAction
+  | GetByIdErrorAction
+  | ListAction
   | ListCompleteAction
   | ListErrorAction
   | ListClearAction

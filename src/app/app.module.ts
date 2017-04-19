@@ -16,6 +16,7 @@ import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
+// TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
 import { environment } from '../environments/environment';
 
 import {
@@ -98,7 +99,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'pet-care',
+    path: 'locations',
     component: LocationComponent,
     canActivate: [AuthGuard],
     data: {
@@ -120,6 +121,16 @@ const appRoutes: Routes = [
   {
     path: 'room/add',
     component: RoomAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: 'room/:roomId/details',
+    component: RoomDetailsComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,

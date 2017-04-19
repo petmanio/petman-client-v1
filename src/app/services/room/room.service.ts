@@ -4,10 +4,14 @@ import { Observable, ReplaySubject } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
-import { IRoomCreateRequest, IRoomCreateResponse, IRoomListRequest, IRoomListResponse } from '../../models/api';
+import {
+  IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest, IRoomGetByIdResponse, IRoomListRequest,
+  IRoomListResponse
+} from '../../models/api';
 
 export interface IRoomService {
-  list(options: IRoomListRequest): Observable<IRoomListResponse>
+  getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse>,
+  list(options: IRoomListRequest): Observable<IRoomListResponse>,
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse>
 }
 
@@ -16,6 +20,19 @@ export class RoomService implements IRoomService {
 
   constructor(private http: Http) {
 
+  }
+
+  getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this.http
+      .get(`${environment.apiEndpoint}/api/room/${options.roomId}`,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.json());
   }
 
   list(options: IRoomListRequest): Observable<IRoomListResponse> {
