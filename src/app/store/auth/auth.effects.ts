@@ -73,6 +73,6 @@ export class AuthEffects implements IAuthEffects {
     // .map((action: authAction.LogoutAction) => action.payload)
     .switchMap(() => {
       return this.authService.logout()
-        .map(result => new authAction.LogoutCompleteAction());
+        .map(result => new authAction.LogoutCompleteAction({}));
     });
 }

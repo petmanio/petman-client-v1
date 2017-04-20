@@ -84,13 +84,13 @@ export class GetCurrentUserCompleteAction implements Action {
 export class LogoutAction implements Action {
   type = ActionTypes.LOGOUT;
 
-  constructor() { }
+  constructor(public payload: any) { }
 }
 
 export class LogoutCompleteAction implements Action {
   type = ActionTypes.LOGOUT_COMPLETE;
 
-  constructor() { }
+  constructor(public payload: any) { }
 }
 
 export class LogoutErrorAction implements Action {

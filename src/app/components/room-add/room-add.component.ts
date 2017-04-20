@@ -90,13 +90,15 @@ export interface IRoomAddComponent {
 export class RoomAddComponent implements IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   // @ViewChild('cropper') private _cropper: ImageCropperComponent;
-  room: IRoom = {
-    id: null,
-    // name: '',
-    description: '',
-    cost: null,
-    images: [],
-  };
+  // TODO: UPGRADE fix after upgrade
+  room: any;
+  // room: IRoom = {
+  //   id: null,
+  //   // name: '',
+  //   description: '',
+  //   cost: null,
+  //   images: [],
+  // };
   // data = {};
   cropperSettings: CropperSettings;
   private _destroyed$ = new Subject<boolean>();
@@ -142,7 +144,7 @@ export class RoomAddComponent implements IRoomAddComponent {
   }
 
   onImageRemove($event: FileHolder): void {
-    _.remove(this.room.images, image => image.src === $event.src);
+    _.remove(this.room.images, (image: any) => image.src === $event.src);
   }
 
   onSaveRoom(): void {

@@ -144,7 +144,7 @@ export class AppComponent implements OnInit, IAppComponent {
     localStorage.removeItem('token');
     setTimeout(() => {
       this.router.navigate(['/welcome']);
-      this.store.dispatch(new auth.LogoutCompleteAction());
+      this.store.dispatch(new auth.LogoutCompleteAction({}));
     }, 300);
     // location.href = '/';
   }

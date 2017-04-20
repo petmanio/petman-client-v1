@@ -1,10 +1,10 @@
-import { PetmanPage } from './app.po';
+import { PetmanClientPage } from './app.po';
 
-describe('petman client App', () => {
-  let page: PetmanPage;
+describe('petman-client App', () => {
+  let page: PetmanClientPage;
 
   beforeEach(() => {
-    page = new PetmanPage();
+    page = new PetmanClientPage();
   });
 
   it('should display message saying app works', () => {

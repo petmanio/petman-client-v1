@@ -10,8 +10,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { DBModule } from '@ngrx/db';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { MaterialModule } from '@angular/material';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// TODO: create fake module and export all modules from materila
+import {
+  MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdToolbarModule,
+  MdChipsModule, MdSlideToggleModule, MdIconModule, MdListModule
+} from '@angular/material';
+// TODO: UPGRADE npm install ngx-infinite-scroll --save for angular 4
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+// import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { ImageCropperModule } from 'ng2-img-cropper';
@@ -47,6 +54,7 @@ import { AuthEffects, BlogEffects, ShopEffects, LocationEffects, RoomEffects } f
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
+// import { schema } from './db';
 
 const appRoutes: Routes = [
   {
@@ -178,7 +186,9 @@ const appRoutes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { useHash: false }),
-    MaterialModule,
+    BrowserAnimationsModule,
+    MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
+    MdToolbarModule, MdIconModule, MdListModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
