@@ -83,7 +83,7 @@ export interface IRoomDetailsComponent {
                         [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
                 <span class="pm-font-14 pm-color-gray">&nbsp; {{schedule.consumer.userData.firstName}} 
                   {{schedule.consumer.userData.lastName}}<br/>
-                  <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;{{schedule.review}}</span>
+                  <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;{{schedule.review || 'There are no review details'}}</span>
                 </span>
               </md-list-item>
             </md-list>

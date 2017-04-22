@@ -48,7 +48,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, ShopService, UtilService, LocationService, RoomService } from './services';
+import { AuthService, BlogService, UtilService, LocationService, RoomService } from './services';
 import { AuthEffects, BlogEffects, LocationEffects, RoomEffects } from './store';
 import { AuthGuard } from './guards';
 
@@ -195,7 +195,6 @@ const appRoutes: Routes = [
     AuthGuard,
     AuthService,
     BlogService,
-    ShopService,
     LocationService,
     RoomService,
     UtilService

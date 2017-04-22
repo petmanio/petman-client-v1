@@ -46,6 +46,7 @@ export interface IRoomsComponent {
     
     .pm-room-items {
       overflow: auto;
+      width: 100%;
     }
     .pm-room-items {
       height: calc(100vh - 160px);
