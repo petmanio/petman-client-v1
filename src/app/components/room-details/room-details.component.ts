@@ -5,6 +5,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
+import { IRoomSchedule } from '../../models/api';
 
 export interface IRoomDetailsComponent {
 
@@ -13,22 +14,103 @@ export interface IRoomDetailsComponent {
 @Component({
   selector: 'app-room-details',
   template: `
-    <md-card class="room-card">
+    <md-card>
+      <div class="columns">
+        <div class="column is-10 is-offset-1">
+          <md-card-header>
+            <div md-card-avatar class="pm-cart-avatar"
+                 [ngStyle]="{'background-image': 'url(' + (roomRoom$ | async)?.user.userData.avatar + ')'}"></div>
+            <md-card-title>{{(roomRoom$ | async)?.user.userData.firstName}} {{(roomRoom$ | async)?.user.userData.lastName}}</md-card-title>
+            <md-card-subtitle>
+            <span class="pm-font-14 pm-color-red" *ngIf="!isAvailable">
+              <md-icon class="pm-font-14 pm-color-red">close</md-icon>
+              Not available
+            </span>
+              <span class="pm-font-14 pm-color-green" *ngIf="isAvailable">
+              <md-icon class="pm-font-14 pm-color-green">check</md-icon>
+              Available
+            </span>
+            </md-card-subtitle>
+          </md-card-header>
+        </div>
+      </div>
       <md-card-content>
-        <p class="pm-font-bold">
-          {{(roomRoom$ | async)?.cost}}$ / day
-        </p>
-        <p class="pm-room-description pm-font-16">{{(roomRoom$ | async)?.description}}</p>
+        <div class="columns">
+          <div class="column is-10 is-offset-1">
+            <ngx-siema [options]="carouselOptions" *ngIf="(roomRoom$ | async)?.images">
+              <ngx-siema-slide *ngFor="let image of (roomRoom$ | async)?.images">
+                <img class="pm-carousel-image" [src]="image.src">
+              </ngx-siema-slide>
+            </ngx-siema>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-10 is-offset-1">
+            <div class="columns is-mobile">
+              <div class="column is-9">
+                <span class="pm-font-12 pm-color-gray">Average rating &nbsp;</span>
+                <rating [ngModel]="averageRating"
+                        [max]="5"
+                        fullIcon="★"
+                        emptyIcon="☆"
+                        [readonly]="true"
+                        [disabled]="false"
+                        [required]="true"
+                        [float]="true"
+                        [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+              </div>
+              <div class="column is-3">
+                <button md-button class="pm-fr">Book</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-10 is-offset-1">
+            <span class="pm-font-12 pm-color-gray">{{finishedSchedules.length}} review(s)</span>
+            <md-list>
+              <md-list-item *ngFor="let schedule of finishedSchedules">
+                <div md-card-avatar class="pm-cart-avatar"
+                     [ngStyle]="{'background-image': 'url(' + schedule.consumer.userData.avatar + ')'}"></div>&nbsp;
+                <rating [ngModel]="schedule.rating"
+                        [max]="5"
+                        fullIcon="★"
+                        emptyIcon="☆"
+                        [readonly]="true"
+                        [disabled]="false"
+                        [required]="true"
+                        [float]="true"
+                        [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+                <span class="pm-font-14 pm-color-gray">&nbsp; {{schedule.consumer.userData.firstName}} 
+                  {{schedule.consumer.userData.lastName}}<br/>
+                  <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;{{schedule.review}}</span>
+                </span>
+              </md-list-item>
+            </md-list>
+          </div>
+        </div>
       </md-card-content>
     </md-card>
+   
   `,
   styles: [`
-   
   `]
 })
 export class RoomDetailsComponent implements OnInit, OnChanges, IRoomDetailsComponent {
   // TODO: update attribute name
   roomRoom$: Observable<any>;
+  averageRating: number;
+  isAvailable: boolean;
+  finishedSchedules: IRoomSchedule[] = [];
+  inProgressSchedules: IRoomSchedule[] = [];
+  carouselOptions = {
+    duration: 200,
+    easing: 'ease-out',
+    perPage: 1,
+    startIndex: 0,
+    draggable: true,
+    threshold: 20
+  };
   private _roomId: number;
   constructor(private _store: Store<fromRoot.State>, private _activatedRoute: ActivatedRoute, private _utilService: UtilService) {
     this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
@@ -43,6 +125,19 @@ export class RoomDetailsComponent implements OnInit, OnChanges, IRoomDetailsComp
         throw new Error('RoomDetailsComponent: roomId is not defined');
       }
       return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}))
+    });
+
+    this.roomRoom$.subscribe($event => {
+      if ($event) {
+        this.inProgressSchedules = $event.schedules.filter(schedule => !schedule.deletedAt);
+        this.finishedSchedules = $event.schedules.filter(schedule => schedule.deletedAt);
+
+        this.isAvailable = this.inProgressSchedules.length <= $event.limit;
+        this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
+          sum += el.rating;
+          return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
+        }, 0);
+      }
     });
   }
 

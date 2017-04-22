@@ -86,6 +86,14 @@
   margin: 0 -24px 16px;
 }
 
+.pm-carousel-image {
+  display: block;
+  height: 500px;
+  //TODO: IE support
+  object-fit: cover;
+  width: 100%;
+}
+
 .image-upload {
   --active-color: #673ab7 !important;
   .upload-button {

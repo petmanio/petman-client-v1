@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IRoom } from '../../models/api';
+import { IRoom, IRoomSchedule } from '../../models/api';
 
 // TODO: fix stars on mobile firefox
 export interface IRoomComponent {
@@ -23,9 +23,6 @@ export interface IRoomComponent {
               Available
             </span>
         </md-card-subtitle>
-        <!--<div md-card-avatar class="pm-cart-avatar" [ngStyle]="{'background-image': 'url(' + room.user.userData.avatar + ')'}"></div>-->
-        <!--<md-card-title>{{room.user.userData.firstName}} {{room.user.userData.lastName}}</md-card-title>-->
-        <!--<md-card-subtitle></md-card-subtitle>-->
       </md-card-header>
       <img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">
       <md-card-content>
@@ -36,7 +33,7 @@ export interface IRoomComponent {
       </md-card-content>
       <md-card-footer>
         <div class="columns is-mobile">
-          <div class="column is-9">
+          <div class="column is-8">
             <rating [ngModel]="averageRating"
                     [max]="5"
                     fullIcon="★"
@@ -46,9 +43,9 @@ export interface IRoomComponent {
                     [required]="true"
                     [float]="true"
                     [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-            <span class="pm-font-12 pm-color-gray">{{room.schedules.length}} review(s)</span>
+            <span class="pm-font-12 pm-color-gray">{{finishedSchedules.length}} review(s)</span>
           </div>
-          <div class="column is-3 pm-room-details-button">
+          <div class="column is-4 pm-room-details-button">
             <a md-button [routerLink]="['/room', room.id, 'details']">Details</a>
           </div>
         </div>
@@ -75,14 +72,19 @@ export class RoomComponent implements OnChanges, IRoomComponent {
   @Input() room: IRoom;
   averageRating: number;
   isAvailable: boolean;
+  finishedSchedules: IRoomSchedule[] = [];
+  inProgressSchedules: IRoomSchedule[] = [];
   constructor() {
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
-      this.isAvailable = this.room.schedules.filter(schedule => schedule.deletedAt).length <= this.room.limit;
-      this.averageRating = this.room.schedules.filter(schedule => !schedule.deletedAt).reduce((sum, el, i, array) => {
+      this.inProgressSchedules = this.room.schedules.filter(schedule => !schedule.deletedAt);
+      this.finishedSchedules = this.room.schedules.filter(schedule => schedule.deletedAt);
+
+      this.isAvailable = this.inProgressSchedules.length <= this.room.limit;
+      this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
         sum += el.rating;
         return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
       }, 0);

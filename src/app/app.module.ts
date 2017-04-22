@@ -11,6 +11,7 @@ import { DBModule } from '@ngrx/db';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxSiemaModule } from 'ngx-siema';
 // TODO: create fake module and export all modules from materila
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
@@ -182,6 +183,7 @@ const appRoutes: Routes = [
     RatingModule,
     ImageUploadModule.forRoot(),
     ImageCropperModule,
+    NgxSiemaModule,
     // ImageUploadModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
