@@ -5,8 +5,6 @@ export { DashboardComponent } from './dashboard/dashboard.component';
 export { JoinComponent } from './join/join.component';
 export { LayoutComponent } from './layout/layout.component';
 export { NavItemComponent } from './nav-item/nav-item.component';
-export { ShopsComponent } from './shops/shops.component';
-export { ShopItemComponent } from './shop-item/shop-item.component';
 export { LocationComponent } from './locations/locations.component';
 export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';

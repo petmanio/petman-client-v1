@@ -1,7 +1,6 @@
 export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
 export { RoomEffects } from './room/room.effects';
-export { ShopEffects } from './shop/shop.effects';
 export { LocationEffects } from './location/location.effects';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -48,7 +47,6 @@ import { combineReducers } from '@ngrx/store';
 import * as fromLayout from './layout/layout.reducer';
 import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
-import * as fromShop from './shop/shop.reducer';
 import * as fromLocation from './location/location.reducer';
 import * as fromRoom from './room/room.reducer';
 
@@ -59,7 +57,6 @@ import * as fromRoom from './room/room.reducer';
 export interface State {
   auth: fromAuth.State,
   blog: fromBlog.State,
-  shop: fromShop.State,
   location: fromLocation.State,
   room: fromRoom.State,
   layout: fromLayout.State,
@@ -77,7 +74,6 @@ export interface State {
 const reducers = {
   auth: fromAuth.reducer,
   blog: fromBlog.reducer,
-  shop: fromShop.reducer,
   location: fromLocation.reducer,
   room: fromRoom.reducer,
   layout: fromLayout.reducer,
@@ -137,13 +133,6 @@ export const getBlogList = createSelector(getBlogState, fromBlog.getList);
 export const getBlogListData = createSelector(getBlogList, fromBlog.getListData);
 export const getBlogListError = createSelector(getBlogList, fromBlog.getListError);
 // TODO: remove error from state
-
-/**
- * Shop Reducers
- */
-export const getShopState = (state: State) => state.shop;
-export const getShopList = createSelector(getShopState, fromShop.getList);
-export const getShopPins = createSelector(getShopState, fromShop.getPins);
 
 /**
  * Location Reducers

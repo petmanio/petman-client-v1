@@ -27,14 +27,14 @@ export interface IRoomAddComponent {
       <div class="column pm-room-add-container is-6 is-offset-3">
         <form #roomForm="ngForm">
           <!--<div class="columns">-->
-            <!--<md-input-container>-->
-              <!--<input mdInput placeholder="Name (short description)" name="name" required [(ngModel)]="room.name">-->
-            <!--</md-input-container>  -->
+          <!--<md-input-container>-->
+          <!--<input mdInput placeholder="Name (short description)" name="name" required [(ngModel)]="room.name">-->
+          <!--</md-input-container>  -->
           <!--</div>-->
           <div class="columns">
             <md-input-container>
               <textarea mdInput placeholder="Description" name="description" required [(ngModel)]="room.description"></textarea>
-            </md-input-container>  
+            </md-input-container>
           </div>
           <div class="columns">
             <div class="column">
@@ -49,21 +49,28 @@ export interface IRoomAddComponent {
             </div>
           </div>
           <div class="columns is-mobile">
-            <div class="column is-8">
+            <div class="column is-4">
               <md-input-container>
                 <input type="number" mdInput placeholder="Cost per day/$" name="cost" required [(ngModel)]="room.cost" min="0"/>
-              </md-input-container>  
+              </md-input-container>
             </div>
             <div class="column is-4">
-              <button type="submit" class="btn btn-success pm-fr" 
-                      [color]="(roomForm.form.valid && room.images.length) ? 'primary' : 'warn'" 
-                      md-button (click)="(roomForm.form.valid && room.images.length) && onSaveRoom()">Add</button>
+              <md-input-container>
+                <!--TODO: add more detaild placeholder-->
+                <input type="number" mdInput placeholder="Limit" name="limit" required [(ngModel)]="room.limit" min="1"/>
+              </md-input-container>
+            </div>
+            <div class="column is-3">
+              <button type="submit" class="btn btn-success pm-fr"
+                      [color]="(roomForm.form.valid && room.images.length) ? 'primary' : 'warn'"
+                      md-button (click)="(roomForm.form.valid && room.images.length) && onSaveRoom()">Add
+              </button>
             </div>
           </div>
         </form>
       </div>
       <!--<div class="column is-6 pm-preview-container">-->
-        <!--<app-room-details [room]="room"></app-room-details>-->
+      <!--<app-room-details [room]="room"></app-room-details>-->
       <!--</div>-->
     </div>
 
@@ -72,18 +79,19 @@ export interface IRoomAddComponent {
     .pm-room-add-container {
       margin-top: 15px;
     }
+
     md-input-container {
       width: 100%;
     }
-    
+
     @media (max-width: 600px) and (orientation: portrait) {
       .pm-room-add-container {
         padding-top: 0;
       }
 
-      /deep/ .drag-box-message {
-        display: none !important;
-      }
+    /deep/ .drag-box-message {
+             display: none !important;
+           }
     }
   `]
 })
@@ -91,7 +99,9 @@ export class RoomAddComponent implements IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   // @ViewChild('cropper') private _cropper: ImageCropperComponent;
   // TODO: UPGRADE fix after upgrade
-  room: any;
+  room: any = {
+    images: []
+  };
   // room: IRoom = {
   //   id: null,
   //   // name: '',
@@ -102,6 +112,7 @@ export class RoomAddComponent implements IRoomAddComponent {
   // data = {};
   cropperSettings: CropperSettings;
   private _destroyed$ = new Subject<boolean>();
+
   constructor(private _ref: ChangeDetectorRef, private _store: Store<fromRoot.State>, private _actions$: Actions,
               private _snackBar: MdSnackBar) {
     _actions$
@@ -112,11 +123,7 @@ export class RoomAddComponent implements IRoomAddComponent {
           duration: 3000
         });
         this.room = {
-          id: null,
-          // name: '',
-          description: '',
-          cost: null,
-          images: [],
+          images: []
         };
         this._imageUploadComponent.files = [];
         this._imageUploadComponent.fileCounter = 0;
@@ -136,7 +143,7 @@ export class RoomAddComponent implements IRoomAddComponent {
 
   onImageUploaded($event: FileHolder): void {
     // TODO: use smartcrop
-    this.room = Object.assign(this.room, { images: this.room.images.concat($event) });
+    this.room = Object.assign(this.room, {images: this.room.images.concat($event)});
     // const image: any = new Image();
     // image.src = $event.src;
     // this._cropper.setImage(image);

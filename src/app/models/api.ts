@@ -1,3 +1,4 @@
+import { IScheduler } from 'rxjs/Scheduler';
 export interface IPin {
   description: string,
   lat: number,
@@ -13,9 +14,9 @@ export interface IUserData {
 }
 
 export interface IAuthProvider {
-  provider: 'FACEBOOK',
-  fbId: string,
-  fbAccessToken: string
+  type: 'FACEBOOK',
+  externalId: string,
+  accessToken: string
 }
 
 export interface IUser {
@@ -23,7 +24,6 @@ export interface IUser {
   email: string,
   userData?: IUserData,
   authProviders?: IAuthProvider[]
-  reviews?: IUserReview[]
 }
 
 export interface IBlog {
@@ -33,17 +33,6 @@ export interface IBlog {
   link: string,
   thumbnail: string,
   date: string,
-  lang: string
-}
-
-export interface IShop {
-  name: string,
-  id: number,
-  description: string,
-  link: string,
-  thumbnail: string,
-  lat: number,
-  lng: number
   lang: string
 }
 
@@ -59,6 +48,15 @@ export interface ILocation {
   type: string
 }
 
+export interface IRoomSchedule {
+  rating: number,
+  review: string,
+  consumer?: IUser,
+  provider?: IUser,
+  room?: IRoom,
+  deletedAt: string
+}
+
 export interface IRoomImage {
   src: string,
 }
@@ -68,6 +66,8 @@ export interface IRoom {
   // name: string,
   description: string,
   cost: number,
+  limit: number,
+  schedules: IRoomSchedule[]
   images?: IRoomImage[],
   user?: IUser
 }
@@ -119,23 +119,6 @@ export interface IBlogListResponse {
 }
 
 /**
- * Blog
- */
-export interface IShopListRequest {
-  skip: number,
-  limit: number
-}
-
-export interface IShopListResponse {
-  list: IShop[],
-  count: number
-}
-
-export interface IShopPinsRequest {}
-
-export interface IShopPinsResponse extends IShop {}
-
-/**
  * Location
  */
 export interface ILocationListRequest {
@@ -161,6 +144,9 @@ export interface ILocationFiltersResponse {
   categories?: { [name: string]: { id: number, name: string } }
 }
 
+/**
+ * Room
+ */
 export interface IRoomListRequest {
   skip: number,
   limit: number
@@ -175,7 +161,8 @@ export interface IRoomCreateRequest {
   name: string,
   description: string,
   cost: number,
-  images?: File[],
+  limit: number,
+  images: File[],
 }
 
 export interface IRoomCreateResponse extends IRoom {}
@@ -185,6 +172,3 @@ export interface IRoomGetByIdRequest {
 }
 
 export interface IRoomGetByIdResponse extends IRoom {}
-/**
- * Room
- */

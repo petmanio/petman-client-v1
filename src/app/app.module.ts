@@ -13,8 +13,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // TODO: create fake module and export all modules from materila
 import {
-  MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdToolbarModule,
-  MdChipsModule, MdSlideToggleModule, MdIconModule, MdListModule
+  MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
+  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule
 } from '@angular/material';
 // TODO: UPGRADE npm install ngx-infinite-scroll --save for angular 4
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -37,8 +37,6 @@ import {
   BlogComponent,
   BlogItemComponent,
   JoinComponent,
-  ShopsComponent,
-  ShopItemComponent,
   LocationComponent,
   LocationItemComponent,
   RoomsComponent,
@@ -50,7 +48,7 @@ import {
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
 import { AuthService, BlogService, ShopService, UtilService, LocationService, RoomService } from './services';
-import { AuthEffects, BlogEffects, ShopEffects, LocationEffects, RoomEffects } from './store';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -89,16 +87,6 @@ const appRoutes: Routes = [
   {
     path: 'blog',
     component: BlogComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
-  },
-  {
-    path: 'shops',
-    component: ShopsComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
@@ -164,8 +152,6 @@ const appRoutes: Routes = [
     BlogComponent,
     BlogItemComponent,
     JoinComponent,
-    ShopsComponent,
-    ShopItemComponent,
     LocationComponent,
     LocationItemComponent,
     RoomsComponent,
@@ -188,7 +174,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-    MdToolbarModule, MdIconModule, MdListModule,
+    MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
@@ -199,7 +185,6 @@ const appRoutes: Routes = [
     // ImageUploadModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
-    EffectsModule.run(ShopEffects),
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
     // DBModule.provideDB(schema),
