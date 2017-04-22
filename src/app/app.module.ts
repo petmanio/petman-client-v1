@@ -15,7 +15,7 @@ import { NgxSiemaModule } from 'ngx-siema';
 // TODO: create fake module and export all modules from materila
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule
+  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule
 } from '@angular/material';
 // TODO: UPGRADE npm install ngx-infinite-scroll --save for angular 4
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -44,6 +44,8 @@ import {
   RoomComponent,
   RoomAddComponent,
   RoomDetailsComponent,
+  RoomRatingRowComponent,
+  RoomApplyDialogComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -159,12 +161,17 @@ const appRoutes: Routes = [
     RoomComponent,
     RoomAddComponent,
     RoomDetailsComponent,
+    RoomRatingRowComponent,
+    RoomApplyDialogComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
     KeysPipe,
     KeysOrderPipe,
     ChunkPipe
+  ],
+  entryComponents: [
+    RoomApplyDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -175,7 +182,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-    MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule,
+    MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),

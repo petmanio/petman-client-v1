@@ -14,4 +14,6 @@ export { RoomsComponent } from './rooms/rooms.component';
 export { RoomComponent } from './room/room.component';
 export { RoomAddComponent } from './room-add/room-add.component';
 export { RoomDetailsComponent } from './room-details/room-details.component';
+export { RoomRatingRowComponent } from './room-rating-row/room-rating-row.component';
+export { RoomApplyDialogComponent } from './room-apply-dialog/room-apply-dialog.component';
 export { MapComponent } from './map/map.component';

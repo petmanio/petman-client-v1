@@ -32,23 +32,11 @@ export interface IRoomComponent {
         <p class="pm-room-description pm-font-14">{{room.description | appEllipsis}}</p>
       </md-card-content>
       <md-card-footer>
-        <div class="columns is-mobile">
-          <div class="column is-8">
-            <rating [ngModel]="averageRating"
-                    [max]="5"
-                    fullIcon="★"
-                    emptyIcon="☆"
-                    [readonly]="true"
-                    [disabled]="false"
-                    [required]="true"
-                    [float]="true"
-                    [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-            <span class="pm-font-12 pm-color-gray">{{finishedSchedules.length}} review(s)</span>
-          </div>
-          <div class="column is-4 pm-room-details-button">
-            <a md-button [routerLink]="['/room', room.id, 'details']">Details</a>
-          </div>
-        </div>
+        <app-room-rating-row
+          [averageRating]="averageRating"
+          [routerLink]="['/room', room.id, 'details']"
+          actionText="Details"
+        ></app-room-rating-row>
       </md-card-footer>
     </md-card>
   `,
