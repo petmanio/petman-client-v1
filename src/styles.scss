@@ -3,6 +3,7 @@
 //TODO: use material ui grid system for mobile
 //@import "../node_modules/bulma/sass/base/all";
 @import "../node_modules/bulma/sass/grid/all";
+@import "../node_modules/pikaday/scss/pikaday.scss";
 
 :focus { outline:none; }
 ::-moz-focus-inner { border:0; }
@@ -101,5 +102,15 @@
     span {
       text-transform: none;
     }
+  }
+}
+
+date-input-polyfill {
+  z-index: 1010;
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .pm-carousel-image {
+    height: 300px;
   }
 }

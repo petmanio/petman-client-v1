@@ -54,6 +54,9 @@ export interface IRoomSchedule {
   consumer?: IUser,
   provider?: IUser,
   room?: IRoom,
+  count: number,
+  startedAt: string
+  endedAt: string
   deletedAt: string
 }
 
@@ -67,7 +70,9 @@ export interface IRoom {
   description: string,
   cost: number,
   limit: number,
+  isAvailable: boolean,
   schedules: IRoomSchedule[]
+  isOwner?: boolean,
   images?: IRoomImage[],
   user?: IUser
 }

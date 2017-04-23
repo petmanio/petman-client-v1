@@ -1,16 +1,16 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
-import { IRoomSchedule } from '../../models/api';
+import { IRoom, IRoomSchedule } from '../../models/api';
 import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
 
 export interface IRoomDetailsComponent {
-  onApplyClick(): void
+  onRatingRowClick(): void
 }
 
 @Component({
@@ -24,11 +24,11 @@ export interface IRoomDetailsComponent {
                  [ngStyle]="{'background-image': 'url(' + (roomRoom$ | async)?.user.userData.avatar + ')'}"></div>
             <md-card-title>{{(roomRoom$ | async)?.user.userData.firstName}} {{(roomRoom$ | async)?.user.userData.lastName}}</md-card-title>
             <md-card-subtitle>
-            <span class="pm-font-14 pm-color-red" *ngIf="!isAvailable">
+            <span class="pm-font-14 pm-color-red" *ngIf="!(roomRoom$ | async)?.isAvailable">
               <md-icon class="pm-font-14 pm-color-red">close</md-icon>
               Not available
             </span>
-              <span class="pm-font-14 pm-color-green" *ngIf="isAvailable">
+              <span class="pm-font-14 pm-color-green" *ngIf="(roomRoom$ | async)?.isAvailable">
               <md-icon class="pm-font-14 pm-color-green">check</md-icon>
               Available
             </span>
@@ -49,9 +49,10 @@ export interface IRoomDetailsComponent {
         <div class="columns">
           <div class="column is-10 is-offset-1">
             <app-room-rating-row
-              (onButtonClick)="onApplyClick()"
+              (onButtonClick)="onRatingRowClick()"
               [averageRating]="averageRating"
-              actionText="Apply"
+              [hideAction]="!(roomRoom$ | async)?.isAvailable"
+              [actionText]="(roomRoom$ | async)?.isOwner ? 'Edit' : 'Apply'"
             ></app-room-rating-row>
           </div>
         </div>
@@ -118,10 +119,12 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
     draggable: true,
     threshold: 20
   };
+  room: IRoom;
   private _roomId: number;
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
               private dialog: MdDialog,
+              private _snackBar: MdSnackBar,
               private _utilService: UtilService) {
     this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
   }
@@ -139,10 +142,12 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
 
     this.roomRoom$.subscribe($event => {
       if ($event) {
+        this.room = $event;
         this.inProgressSchedules = $event.schedules.filter(schedule => !schedule.deletedAt);
         this.finishedSchedules = $event.schedules.filter(schedule => schedule.deletedAt);
 
-        this.isAvailable = this.inProgressSchedules.length <= $event.limit;
+        // TODO: update logic
+        // this.isAvailable = this.inProgressSchedules.length <= $event.limit;
         this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
           sum += el.rating;
           return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
@@ -151,11 +156,18 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
     });
   }
 
-  onApplyClick(): void {
-    const dialogRef = this.dialog.open(RoomApplyDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-    });
+  onRatingRowClick(): void {
+    if (this.room.isOwner) {
+      this._snackBar.open(`Sorry but now edit functionality not available`, null, {
+        duration: 3000
+      });
+    } else {
+      const dialogRef = this.dialog.open(RoomApplyDialogComponent);
+      dialogRef.componentInstance.room = this.room;
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+      });
+    }
   }
 
 }

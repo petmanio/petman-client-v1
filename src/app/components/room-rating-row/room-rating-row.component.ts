@@ -21,9 +21,11 @@ export interface IRoomRatingRowComponent {
                 [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
       </div>
       <div class="column is-4">
-        <a class="pm-room-details-button" *ngIf="routerLink" md-button [routerLink]="routerLink">{{actionText}}</a>
+        <a class="pm-room-details-button" *ngIf="routerLink && !hideAction" md-button [routerLink]="routerLink" 
+           [disabled]="disabled">{{actionText}}</a>
         <button class="pm-room-details-button" 
-                *ngIf="!routerLink" md-button class="pm-fr" (click)="onButtonClick.emit($event)">{{actionText}}</button>
+                *ngIf="!routerLink && !hideAction" md-button class="pm-fr" (click)="onButtonClick.emit($event)"
+                [disabled]="disabled">{{actionText}}</button>
       </div>
     </div>
   `,
@@ -37,6 +39,8 @@ export class RoomRatingRowComponent implements IRoomRatingRowComponent {
   @Input() averageRating: 0;
   @Input() routerLink: null;
   @Input() actionText: '';
+  @Input() disabled = false;
+  @Input() hideAction = false;
   @Output() onButtonClick = new EventEmitter();
   constructor() {
 

@@ -14,11 +14,11 @@ export interface IRoomComponent {
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + room.user.userData.avatar + ')'}"></div>
         <md-card-title>{{room.user.userData.firstName}} {{room.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
-          <span class="pm-font-14 pm-color-red" [hidden]="isAvailable">
+          <span class="pm-font-14 pm-color-red" [hidden]="room.isAvailable">
               <md-icon class="pm-font-14 pm-color-red">close</md-icon>
               Not available
             </span>
-          <span class="pm-font-14 pm-color-green" [hidden]="!isAvailable">
+          <span class="pm-font-14 pm-color-green" [hidden]="!room.isAvailable">
               <md-icon class="pm-font-14 pm-color-green">check</md-icon>
               Available
             </span>
@@ -71,7 +71,8 @@ export class RoomComponent implements OnChanges, IRoomComponent {
       this.inProgressSchedules = this.room.schedules.filter(schedule => !schedule.deletedAt);
       this.finishedSchedules = this.room.schedules.filter(schedule => schedule.deletedAt);
 
-      this.isAvailable = this.inProgressSchedules.length <= this.room.limit;
+      // TODO: update logic
+      // this.isAvailable = this.inProgressSchedules.length <= $event.limit;
       this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
         sum += el.rating;
         return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
