@@ -22,7 +22,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 // import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
-import { ImageCropperModule } from 'ng2-img-cropper';
+// import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
 import { environment } from '../environments/environment';
@@ -46,12 +46,13 @@ import {
   RoomDetailsComponent,
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
+  ContractsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService, LocationService, RoomService } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects } from './store';
+import { AuthService, BlogService, UtilService, LocationService, RoomService, ContractService } from './services';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, ContractEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -138,6 +139,16 @@ const appRoutes: Routes = [
     }
   },
   {
+    path: 'contracts',
+    component: ContractsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
@@ -163,6 +174,7 @@ const appRoutes: Routes = [
     RoomDetailsComponent,
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
+    ContractsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -196,6 +208,7 @@ const appRoutes: Routes = [
     EffectsModule.run(BlogEffects),
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
+    EffectsModule.run(ContractEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -204,6 +217,7 @@ const appRoutes: Routes = [
     BlogService,
     LocationService,
     RoomService,
+    ContractService,
     UtilService
   ],
   bootstrap: [AppComponent]

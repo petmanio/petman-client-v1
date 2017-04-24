@@ -55,10 +55,11 @@ export interface IRoomAddComponent {
               </md-input-container>
             </div>
             <div class="column is-4">
-              <md-input-container>
-                <!--TODO: add more detaild placeholder-->
-                <input type="number" mdInput placeholder="Limit" name="limit" required [(ngModel)]="room.limit" min="1"/>
-              </md-input-container>
+              <!--TODO: functionality for future-->
+              <!--<md-input-container>-->
+                <!--TODO: add more detailed placeholder-->
+                <!--<input type="number" mdInput placeholder="Limit" name="limit" required [(ngModel)]="room.limit" min="1"/>-->
+              <!--</md-input-container>-->
             </div>
             <div class="column is-3">
               <button type="submit" class="btn btn-success pm-fr"

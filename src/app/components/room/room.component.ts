@@ -72,6 +72,7 @@ export class RoomComponent implements OnChanges, IRoomComponent {
       this.finishedSchedules = this.room.schedules.filter(schedule => schedule.deletedAt);
 
       // TODO: update logic
+      // TODO: functionality for future
       // this.isAvailable = this.inProgressSchedules.length <= $event.limit;
       this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
         sum += el.rating;

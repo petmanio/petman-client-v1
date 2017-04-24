@@ -51,8 +51,7 @@ export interface IAppComponent {
       <!--TODO: pass items-->
       <app-sidenav [open]="currentSideNavState" 
         (onClose)="closeSidenav()"
-        [mode]="sideNavMode" 
-        [currentUser]="currentUser$ | async">
+        [mode]="sideNavMode">
         <router-outlet></router-outlet>
       </app-sidenav>
     </app-layout>

@@ -23,6 +23,7 @@ export interface IUser {
   id: number,
   email: string,
   userData?: IUserData,
+  isSitter?: boolean
   authProviders?: IAuthProvider[]
 }
 
@@ -69,7 +70,7 @@ export interface IRoom {
   // name: string,
   description: string,
   cost: number,
-  limit: number,
+  limit?: number,
   isAvailable: boolean,
   schedules: IRoomSchedule[]
   isOwner?: boolean,
@@ -177,3 +178,22 @@ export interface IRoomGetByIdRequest {
 }
 
 export interface IRoomGetByIdResponse extends IRoom {}
+
+/**
+ * Contract
+ */
+export interface IContractCountRequest {}
+
+export interface IContractCountResponse {
+  count: number
+}
+
+export interface IContractListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IContractListResponse {
+  list: IRoomSchedule[],
+  count: number
+}

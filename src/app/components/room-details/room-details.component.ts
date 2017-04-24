@@ -147,6 +147,7 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
         this.finishedSchedules = $event.schedules.filter(schedule => schedule.deletedAt);
 
         // TODO: update logic
+        // TODO: functionality for future
         // this.isAvailable = this.inProgressSchedules.length <= $event.limit;
         this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
           sum += el.rating;
@@ -162,11 +163,12 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
         duration: 3000
       });
     } else {
-      const dialogRef = this.dialog.open(RoomApplyDialogComponent);
-      dialogRef.componentInstance.room = this.room;
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(result);
-      });
+      // TODO: functionality for future
+      // const dialogRef = this.dialog.open(RoomApplyDialogComponent);
+      // dialogRef.componentInstance.room = this.room;
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log(result);
+      // });
     }
   }
 

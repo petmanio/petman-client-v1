@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `
     <a md-list-item [routerLink]="routerLink" (click)="activate.emit()" [routerLinkActive]="routerLinkActive" ngClass="{{activeClass}}">
       <md-icon md-list-icon>{{ icon }}</md-icon>
-      <span md-line><ng-content></ng-content></span> 
+      <span md-line><ng-content></ng-content><md-chip-list *ngIf="chip"><md-chip>{{chip}}</md-chip></md-chip-list></span> 
       <span md-line class="secondary">{{ hint }}</span>
     </a>
   `,
@@ -16,6 +16,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     .is-active {
       color: #673ab7;
     }
+    md-chip-list {
+      display: inline-block;
+    }
   `]
 })
 export class NavItemComponent {
@@ -24,5 +27,6 @@ export class NavItemComponent {
   @Input() routerLink: string | any[];
   @Input() routerLinkActive: any | any[] = '';
   @Input() activeClass: any | any[] = '';
+  @Input() chip: number;
   @Output() activate = new EventEmitter();
 }

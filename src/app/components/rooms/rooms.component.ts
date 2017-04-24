@@ -53,6 +53,7 @@ export interface IRoomsComponent {
       height: -webkit-calc(100vh - 160px);
       height: -moz-calc(100vh - 160px);
     }
+    
     @media (max-width: 600px) and (orientation: portrait) {
      .pm-room-items {
         height: calc(100vh - 125px);

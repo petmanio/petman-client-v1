@@ -61,7 +61,8 @@ export class RoomService implements IRoomService {
     formData.append('name', options.name);
     formData.append('description', options.description);
     formData.append('cost', options.cost);
-    formData.append('limit', options.limit);
+    // TODO: functionality for future
+    // formData.append('limit', options.limit);
 
     if (options.images && options.images.length) {
       options.images.forEach(file => {
