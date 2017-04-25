@@ -180,20 +180,20 @@ export interface IRoomGetByIdRequest {
 export interface IRoomGetByIdResponse extends IRoom {}
 
 /**
- * Contract
+ * Application
  */
-export interface IContractCountRequest {}
+export interface IApplicationCountRequest {}
 
-export interface IContractCountResponse {
+export interface IApplicationCountResponse {
   count: number
 }
 
-export interface IContractListRequest {
+export interface IApplicationListRequest {
   skip: number,
   limit: number
 }
 
-export interface IContractListResponse {
+export interface IApplicationListResponse {
   list: IRoomSchedule[],
   count: number
 }

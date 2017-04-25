@@ -46,13 +46,13 @@ import {
   RoomDetailsComponent,
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
-  ContractsComponent,
+  ApplicationsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService, LocationService, RoomService, ContractService } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, ContractEffects } from './store';
+import { AuthService, BlogService, UtilService, LocationService, RoomService, ApplicationService } from './services';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, ApplicationEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -139,8 +139,8 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'contracts',
-    component: ContractsComponent,
+    path: 'applications',
+    component: ApplicationsComponent,
     canActivate: [AuthGuard],
     data: {
       auth: true,
@@ -174,7 +174,7 @@ const appRoutes: Routes = [
     RoomDetailsComponent,
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
-    ContractsComponent,
+    ApplicationsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -208,7 +208,7 @@ const appRoutes: Routes = [
     EffectsModule.run(BlogEffects),
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
-    EffectsModule.run(ContractEffects),
+    EffectsModule.run(ApplicationEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -217,7 +217,7 @@ const appRoutes: Routes = [
     BlogService,
     LocationService,
     RoomService,
-    ContractService,
+    ApplicationService,
     UtilService
   ],
   bootstrap: [AppComponent]

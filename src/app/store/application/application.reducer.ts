@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
-import { IContractCountResponse, IContractListRequest, IContractListResponse } from '../../models/api';
-import * as contractAction from './contract.actions';
+import { IApplicationCountResponse, IApplicationListRequest, IApplicationListResponse } from '../../models/api';
+import * as applicationAction from './application.actions';
 
 export interface State {
-  count?: IContractCountResponse,
-  list?: IContractListResponse,
+  count?: IApplicationCountResponse,
+  list?: IApplicationListResponse,
 }
 
 const initialState: State = {
@@ -17,11 +17,11 @@ const initialState: State = {
   }
 };
 
-export function reducer(state = initialState, action: contractAction.Actions): State {
+export function reducer(state = initialState, action: applicationAction.Actions): State {
   switch (action.type) {
     // TODO: use another action for loading more
-    case contractAction.ActionTypes.LIST_COMPLETE: {
-      const res: IContractListResponse = action.payload;
+    case applicationAction.ActionTypes.LIST_COMPLETE: {
+      const res: IApplicationListResponse = action.payload;
       // TODO: use object assign
       return {
         list: {
@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: contractAction.Actions): S
       };
     }
 
-    case contractAction.ActionTypes.LIST_ERROR: {
+    case applicationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
       return {
         list: {
@@ -42,7 +42,7 @@ export function reducer(state = initialState, action: contractAction.Actions): S
     }
 
     // TODO: use another action for loading more
-    case contractAction.ActionTypes.LIST_CLEAR: {
+    case applicationAction.ActionTypes.LIST_CLEAR: {
       // TODO: use object assign
       return {
         list: {
@@ -52,13 +52,13 @@ export function reducer(state = initialState, action: contractAction.Actions): S
       };
     }
 
-    case contractAction.ActionTypes.GET_COUNT_COMPLETE: {
-      const res: IContractCountResponse = action.payload;
+    case applicationAction.ActionTypes.GET_COUNT_COMPLETE: {
+      const res: IApplicationCountResponse = action.payload;
       // TODO: use object assign
       return Object.assign({}, state, {count: res});
     }
 
-    case contractAction.ActionTypes.GET_COUNT_ERROR: {
+    case applicationAction.ActionTypes.GET_COUNT_ERROR: {
       const error: any = action.payload;
       return Object.assign({}, state, {count: { count: 0 }})
     }

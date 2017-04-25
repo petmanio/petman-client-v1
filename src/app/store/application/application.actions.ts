@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { IContractCountRequest, IContractCountResponse, IContractListRequest, IContractListResponse } from '../../models/api';
+import { IApplicationCountRequest, IApplicationCountResponse, IApplicationListRequest, IApplicationListResponse } from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -11,14 +11,14 @@ import { IContractCountRequest, IContractCountResponse, IContractListRequest, IC
  * action types in the application are unique.
  */
 export const ActionTypes = {
-  GET_COUNT: type('[Contract] Get Count'),
-  GET_COUNT_COMPLETE: type('[Contract] Get Count Complete'),
-  GET_COUNT_ERROR: type('[Contract] Get Count Error'),
+  GET_COUNT: type('[Application] Get Count'),
+  GET_COUNT_COMPLETE: type('[Application] Get Count Complete'),
+  GET_COUNT_ERROR: type('[Application] Get Count Error'),
 
-  LIST: type('[Contract] List'),
-  LIST_COMPLETE: type('[Contract] List Complete'),
-  LIST_ERROR: type('[Contract] List Error'),
-  LIST_CLEAR: type('[Contract] List Clear')
+  LIST: type('[Application] List'),
+  LIST_COMPLETE: type('[Application] List Complete'),
+  LIST_ERROR: type('[Application] List Error'),
+  LIST_CLEAR: type('[Application] List Clear')
 };
 
 /**
@@ -35,13 +35,13 @@ export const ActionTypes = {
 export class GetCountAction implements Action {
   type = ActionTypes.GET_COUNT;
 
-  constructor(public payload: IContractCountRequest) { }
+  constructor(public payload: IApplicationCountRequest) { }
 }
 
 export class GetCountCompleteAction implements Action {
   type = ActionTypes.GET_COUNT_COMPLETE;
 
-  constructor(public payload: IContractCountResponse) { }
+  constructor(public payload: IApplicationCountResponse) { }
 }
 
 export class GetCountErrorAction implements Action {
@@ -56,13 +56,13 @@ export class GetCountErrorAction implements Action {
 export class ListAction implements Action {
   type = ActionTypes.LIST;
 
-  constructor(public payload: IContractListRequest) { }
+  constructor(public payload: IApplicationListRequest) { }
 }
 
 export class ListCompleteAction implements Action {
   type = ActionTypes.LIST_COMPLETE;
 
-  constructor(public payload: IContractListResponse) { }
+  constructor(public payload: IApplicationListResponse) { }
 }
 
 export class ListErrorAction implements Action {

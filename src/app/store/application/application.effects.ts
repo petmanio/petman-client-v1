@@ -9,9 +9,9 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { ContractService } from '../../services/contract/contract.service';
+import { ApplicationService } from '../../services/application/application.service';
 import * as fromRoot from '../../store';
-import * as contractAction from '../../store/contract/contract.actions';
+import * as applicationAction from '../../store/application/application.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -27,33 +27,33 @@ import * as contractAction from '../../store/contract/contract.actions';
  * RxJS 5 Operators By Example: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35
  */
 
-interface IContractEffects {
+interface IApplicationEffects {
   getCount$: Observable<Action>,
   list$: Observable<Action>
 }
 
 @Injectable()
-export class ContractEffects implements IContractEffects {
-  constructor(private actions$: Actions, private contractService: ContractService, private store: Store<fromRoot.State>) { }
+export class ApplicationEffects implements IApplicationEffects {
+  constructor(private actions$: Actions, private applicationService: ApplicationService, private store: Store<fromRoot.State>) { }
 
   @Effect()
   public getCount$: Observable<Action> = this.actions$
-    .ofType(contractAction.ActionTypes.GET_COUNT)
-    .map((action: contractAction.GetCountAction) => action.payload)
+    .ofType(applicationAction.ActionTypes.GET_COUNT)
+    .map((action: applicationAction.GetCountAction) => action.payload)
     .switchMap(options => {
-      return this.contractService.count(options)
-        .map(response => new contractAction.GetCountCompleteAction(response))
-        .catch(err => of(new contractAction.GetCountErrorAction(err)))
+      return this.applicationService.count(options)
+        .map(response => new applicationAction.GetCountCompleteAction(response))
+        .catch(err => of(new applicationAction.GetCountErrorAction(err)))
     });
 
   @Effect()
   public list$: Observable<Action> = this.actions$
-    .ofType(contractAction.ActionTypes.LIST)
-    .map((action: contractAction.ListAction) => action.payload)
+    .ofType(applicationAction.ActionTypes.LIST)
+    .map((action: applicationAction.ListAction) => action.payload)
     .switchMap(options => {
-      return this.contractService.list(options)
-        .map(response => new contractAction.ListCompleteAction(response))
-        .catch(err => of(new contractAction.ListErrorAction(err)))
+      return this.applicationService.list(options)
+        .map(response => new applicationAction.ListCompleteAction(response))
+        .catch(err => of(new applicationAction.ListErrorAction(err)))
     });
 
 }

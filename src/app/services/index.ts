@@ -3,5 +3,5 @@ export { AuthService } from './auth/auth.service';
 export { BlogService } from './blog/blog.service';
 export { LocationService } from './location/location.service';
 export { RoomService } from './room/room.service';
-export { ContractService } from './contract/contract.service';
+export { ApplicationService } from './application/application.service';
 export { UtilService } from './util/util.service';
