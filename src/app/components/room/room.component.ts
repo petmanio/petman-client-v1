@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IRoom, IRoomSchedule } from '../../models/api';
+import { IRoom, IRoomApplication } from '../../models/api';
 
 // TODO: fix stars on mobile firefox
 export interface IRoomComponent {
@@ -60,21 +60,21 @@ export class RoomComponent implements OnChanges, IRoomComponent {
   @Input() room: IRoom;
   averageRating: number;
   isAvailable: boolean;
-  finishedSchedules: IRoomSchedule[] = [];
-  inProgressSchedules: IRoomSchedule[] = [];
+  finishedApplications: IRoomApplication[] = [];
+  inProgressApplications: IRoomApplication[] = [];
   constructor() {
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
-      this.inProgressSchedules = this.room.schedules.filter(schedule => !schedule.deletedAt);
-      this.finishedSchedules = this.room.schedules.filter(schedule => schedule.deletedAt);
+      this.inProgressApplications = this.room.applications.filter(application => !application.deletedAt);
+      this.finishedApplications = this.room.applications.filter(application => application.deletedAt);
 
       // TODO: update logic
       // TODO: functionality for future
-      // this.isAvailable = this.inProgressSchedules.length <= $event.limit;
-      this.averageRating = this.finishedSchedules.reduce((sum, el, i, array) => {
+      // this.isAvailable = this.inProgressApplications.length <= $event.limit;
+      this.averageRating = this.finishedApplications.reduce((sum, el, i, array) => {
         sum += el.rating;
         return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
       }, 0);

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
-import { IRoom, IRoomSchedule } from '../../models/api';
+import { IRoom, IRoomApplication } from '../../models/api';
 import * as moment from 'moment';
 const Pikaday = require('pikaday');
 
@@ -53,7 +53,7 @@ export class RoomApplyDialogComponent implements OnInit, IRoomApplyDialogCompone
     count: 1,
   };
   room: IRoom;
-  private _inProgressSchedules: IRoomSchedule[] = [];
+  private _inProgressApplications: IRoomApplication[] = [];
   private fromDatePicker;
   private toDatePicker;
   constructor(public dialogRef: MdDialogRef<RoomApplyDialogComponent>, private ref: ElementRef) {
@@ -61,7 +61,7 @@ export class RoomApplyDialogComponent implements OnInit, IRoomApplyDialogCompone
   }
 
   ngOnInit(): void {
-    this._inProgressSchedules = this.room.schedules.filter(schedule => !schedule.deletedAt);
+    this._inProgressApplications = this.room.applications.filter(application => !application.deletedAt);
     this._buildDatePicker();
   }
 
@@ -102,7 +102,7 @@ export class RoomApplyDialogComponent implements OnInit, IRoomApplyDialogCompone
     if (date <= today) {
       return true;
     } else {
-      return this._inProgressSchedules.some(shedule => {
+      return this._inProgressApplications.some(shedule => {
         const isInRange = moment(date).isBetween(moment(new Date(shedule.startedAt)), moment(new Date(shedule.endedAt)));
         if (isInRange) {
           return shedule.count + this.applyOptions.count > this.room.limit
@@ -119,7 +119,7 @@ export class RoomApplyDialogComponent implements OnInit, IRoomApplyDialogCompone
       if (date < from) {
         return true;
       } else {
-        return this._inProgressSchedules.some(shedule => {
+        return this._inProgressApplications.some(shedule => {
           const isInRange = moment(date).isBetween(moment(new Date(shedule.startedAt)), moment(new Date(shedule.endedAt)));
           if (isInRange) {
             return shedule.count + this.applyOptions.count > this.room.limit

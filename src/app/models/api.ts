@@ -1,4 +1,3 @@
-import { IScheduler } from 'rxjs/Scheduler';
 export interface IPin {
   description: string,
   lat: number,
@@ -49,7 +48,7 @@ export interface ILocation {
   type: string
 }
 
-export interface IRoomSchedule {
+export interface IRoomApplication {
   rating: number,
   review: string,
   consumer?: IUser,
@@ -72,7 +71,7 @@ export interface IRoom {
   cost: number,
   limit?: number,
   isAvailable: boolean,
-  schedules: IRoomSchedule[]
+  applications: IRoomApplication[]
   isOwner?: boolean,
   images?: IRoomImage[],
   user?: IUser
@@ -194,6 +193,6 @@ export interface IApplicationListRequest {
 }
 
 export interface IApplicationListResponse {
-  list: IRoomSchedule[],
+  list: IRoomApplication[],
   count: number
 }
