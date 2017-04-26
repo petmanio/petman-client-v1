@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
   IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
-  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse
+  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse, IRoomUpdateApplicationRequest, IRoomUpdateApplicationResponse
 } from '../../models/api';
 
 /**
@@ -29,7 +29,11 @@ export const ActionTypes = {
 
   APPLY: type('[Room] Apply'),
   APPLY_COMPLETE: type('[Room] Apply Complete'),
-  APPLY_ERROR: type('[Room] Apply Error')
+  APPLY_ERROR: type('[Room] Apply Error'),
+
+  UPDATE_APPLICATION: type('[Room] Update Application'),
+  UPDATE_APPLICATION_COMPLETE: type('[Room] Update Application Complete'),
+  UPDATE_APPLICATION_ERROR: type('[Room] Update Application Error')
 };
 
 /**
@@ -130,6 +134,26 @@ export class ApplyErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Update Application
+ */
+export class UpdateApplicationAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION;
+
+  constructor(public payload: IRoomUpdateApplicationRequest) { }
+}
+
+export class UpdateApplicationCompleteAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_COMPLETE;
+
+  constructor(public payload: IRoomUpdateApplicationResponse) { }
+}
+
+export class UpdateApplicationErrorAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_ERROR;
+
+  constructor(public payload: any) { }
+}
 
 /**
  * Export a type alias of all actions in this action group
@@ -149,3 +173,6 @@ export type Actions
   | ApplyAction
   | ApplyCompleteAction
   | ApplyErrorAction
+  | UpdateApplicationAction
+  | UpdateApplicationCompleteAction
+  | UpdateApplicationErrorAction

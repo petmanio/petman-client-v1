@@ -49,14 +49,14 @@ export interface ILocation {
 }
 
 export interface IRoomApplication {
+  id: number,
   rating: number,
   review: string,
   consumer?: IUser,
   provider?: IUser,
   room?: IRoom,
   count?: number,
-  status: 'CONFIRMED' | 'WAITING_CONSUMER_CONFIRM' | 'WAITING_PROVIDER_CONFIRM' | 'DECLINED_BY_CONSUMER' | 'DECLINED_BY_PROVIDER' |
-    'FINISHED'
+  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
 }
@@ -184,6 +184,10 @@ export interface IRoomApplyRequest {
 }
 
 export interface IRoomApplyResponse {}
+
+export interface IRoomUpdateApplicationRequest extends IRoomApplication {}
+
+export interface IRoomUpdateApplicationResponse extends IRoomApplication {}
 
 /**
  * Notification

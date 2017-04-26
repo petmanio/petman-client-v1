@@ -1,10 +1,11 @@
 import { createSelector } from 'reselect';
-import { IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse } from '../../models/api';
+import { findIndex, extend, clone, assign, pick } from 'lodash';
+import { IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse, IRoomUpdateApplicationRequest, IRoomApplication } from '../../models/api';
 import * as roomAction from './room.actions';
 
 export interface State {
-  room?: IRoomGetByIdResponse,
-  list?: IRoomListResponse,
+  room: IRoomGetByIdResponse,
+  list: IRoomListResponse,
 }
 
 const initialState: State = {
@@ -25,7 +26,8 @@ export function reducer(state = initialState, action: roomAction.Actions): State
         list: {
           list: state.list.list.concat(res.list),
           count: res.count
-        }
+        },
+        room: state.room
       };
     }
 
@@ -35,7 +37,8 @@ export function reducer(state = initialState, action: roomAction.Actions): State
         list: {
           list: [],
           count: null
-        }
+        },
+        room: state.room
       };
     }
 
@@ -46,7 +49,8 @@ export function reducer(state = initialState, action: roomAction.Actions): State
         list: {
           list: [],
           count: null
-        }
+        },
+        room: state.room
       };
     }
 
@@ -63,6 +67,24 @@ export function reducer(state = initialState, action: roomAction.Actions): State
 
     default: {
       return state;
+    }
+
+    case roomAction.ActionTypes.UPDATE_APPLICATION_COMPLETE: {
+      const res: IRoomUpdateApplicationRequest = action.payload;
+      const applicationIndex = findIndex(state.room.applications, (application) => application.id === res.id);
+      // TODO: without clone
+      const applications = clone(state.room.applications);
+      if (applicationIndex !== -1) {
+        // TODO: merge full object
+        applications[applicationIndex] = assign({}, state.room.applications[applicationIndex], pick(res, ['status']));
+      }
+      const room = Object.assign({}, state.room, { applications });
+      return Object.assign({}, state, { room: room })
+    }
+
+    case roomAction.ActionTypes.UPDATE_APPLICATION_ERROR: {
+      const error: any = action.payload;
+      return Object.assign({}, state, {})
     }
   }
 }

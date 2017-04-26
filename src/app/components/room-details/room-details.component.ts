@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
+import { clone } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -10,9 +11,12 @@ import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
 import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
+import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
+  onApplicationSelect(index: number): void,
+  onActionClick(status: string): void
 }
 
 @Component({
@@ -92,84 +96,17 @@ export interface IRoomDetailsComponent {
             </div>
             <div class="columns">
               <div class="column is-4">
-                <span class="pm-font-12 pm-color-gray">My applications</span>
-                <md-list>
-                  <div *ngFor="let i of [1,2,3]">
-                    <md-list-item class="pm-cursor-pointer">
-                      <div class="columns is-mobile pm-application-row">
-                        <div class="column">
-                          <div md-card-avatar class="pm-cart-avatar"
-                               [ngStyle]="{'background-image': 'url(' + 'https://fb-s-a-a.akamaihd.net/h-ak-xfl1/v/t1.0-1/' +
-                              'c0.0.480.480/p480x480' +
-                          '/17990916_1671967849497512_7190601138827019061_n.jpg?oh=80c9d09ca63c770b8f8d21fa21b609b5&oe=59988214&__gda__=' +
-                           '1503211597_553a09894fc90fcb6b2ffe02b5168d4f' + ')'}"></div>&nbsp;
-                        </div>
-                        <div class="column is-8">
-                          <div class="pm-font-12 pm-color-gray pm-room-application-status">Waiting for provider confirmation</div>
-                        </div>
-                        <div class="column is-2">
-                          <button md-icon-button>
-                            <md-icon>info_outline</md-icon>
-                          </button>
-                        </div>
-                      </div>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                  </div>
-                </md-list>
+                <span class="pm-font-14 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
+                <app-room-applications-list [room]="roomRoom$ | async" 
+                                            (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
               </div>
               <div class="column is-8 pm-application-info-window">
-                <div class="pm-application-actions-row">
-                  <button md-button>Cancel application</button>
-                </div>
-                <span class="pm-font-14 pm-color-gray">Chat history</span>
-                <ul class="pm-chat-list">
-                  <li *ngFor="let i of [1,2]">
-                    <div class="columns is-mobile pm-chat-row">
-                      <div class="column is-11">
-                        <div class="pm-chat-text pm-background-light-pink">
-                          <span class="pm-font-12 pm-color-white">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting </span>
-                        </div>
-
-                      </div>
-                      <div class="column is-1">
-                        <span class="pm-font-10 pm-color-gray">10:24</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li *ngFor="let i of [1,2,3]">
-                    <div class="columns is-mobile pm-chat-row">
-                      <div class="column is-1-desktop is-2-mobile">
-                        <div md-card-avatar class="pm-cart-avatar"
-                             [ngStyle]="{'background-image': 'url(' + 'https://fb-s-a-a.akamaihd.net/h-ak-xfl1/v/t1.0-1/' +
-                              'c0.0.480.480/p480x480' +
-                          '/17990916_1671967849497512_7190601138827019061_n.jpg?oh=80c9d09ca63c770b8f8d21fa21b609b5&oe=59988214&__gda__=' +
-                           '1503211597_553a09894fc90fcb6b2ffe02b5168d4f' + ')'}"></div>&nbsp;
-                      </div>
-                      <div class="column is-10-desktop is-8-mobile">
-                        <div class="pm-chat-text pm-background-light-gray">
-                          <span class="pm-font-12 pm-color-gray">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting  Lorem Ipsum is simply dummy text of 
-                            the printing and typesetting  Lorem Ipsum is simply dummy text of the printing and typesetting </span>  
-                        </div>
-                        
-                      </div>
-                      <div class="column is-1">
-                        <span class="pm-font-10 pm-color-gray">10:24</span>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <div class="columns is-mobile pm-chart-actions">
-                  <div class="column is-10">
-                    <md-input-container>
-                      <input mdInput placeholder="Type a message" name="message"/>
-                    </md-input-container>    
-                  </div>
-                  <div class="column is-2"><button md-button>Send</button></div>
-                </div>
-                
+                <app-room-application-actions *ngIf="selectedApplication" 
+                                              [room]="roomRoom$ | async" 
+                                              [application]="selectedApplication" 
+                                              (onActionClick)="onActionClick($event)"></app-room-application-actions>
+                <app-room-application-chat *ngIf="selectedApplication"
+                                           [room]="roomRoom$ | async" [application]="selectedApplication"></app-room-application-chat>
               </div>
             </div>
           </div>
@@ -178,46 +115,21 @@ export interface IRoomDetailsComponent {
     </md-card>
   `,
   styles: [`
-    .pm-application-row {
-      width: 100%;
-      padding-top: 20px;
+    app-room-application-actions {
+      margin-top: 25px;
     }
-    
-    .pm-chat-row {
-      width: 100%;
-    }
-    
-    .pm-chat-list {
-      height: auto;
-      list-style: none;
-      padding-left: 5px;
-    }
-    
-    .pm-chat-text {
-      padding: 10px;
-    }
-    
-    .pm-room-application-status {
-      padding-top: 14px;
-    }
-    
-    .pm-application-info-window md-input-container {
-      width: 100%;
-    }
-    
-    .pm-chart-actions input {
-      padding: 5px 10px;
+    app-room-applications-list {
+      margin-top: 10px;
     }
   `]
 })
 export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComponent {
+  @ViewChild(RoomApplicationsListComponent) _roomApplicationList;
   // TODO: update attribute name
   roomRoom$: Observable<any>;
   averageRating: number;
   isAvailable: boolean;
-  finishedApplications: IRoomApplication[] = [];
-  inProgressApplications: IRoomApplication[] = [];
-  myApplications: IRoomApplication[] = [];
+  selectedApplication: IRoomApplication;
   carouselOptions = {
     duration: 200,
     easing: 'ease-out',
@@ -252,17 +164,17 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this.roomRoom$.subscribe($event => {
       if ($event) {
         this.room = $event;
-        this.inProgressApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && !application.endedAt);
-        this.finishedApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
-        this.myApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
-
+        if (this.room.applications.length) {
+          this.selectedApplication = this.room.applications[0];
+          this._roomApplicationList.selected = 0;
+        }
         // TODO: update logic
         // TODO: functionality for future
         // this.isAvailable = this.inProgressApplications.length <= $event.limit;
-        this.averageRating = this.finishedApplications.reduce((sum, el, i, array) => {
-          sum += el.rating;
-          return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
-        }, 0);
+        // this.averageRating = this.finishedApplications.reduce((sum, el, i, array) => {
+        //   sum += el.rating;
+        //   return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
+        // }, 0);
       }
     });
 
@@ -296,6 +208,17 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
 
       this._store.dispatch(new roomAction.ApplyAction({roomId: this._roomId}));
     }
+  }
+
+  onApplicationSelect(index: number): void {
+    this.selectedApplication = this.room.applications[index];
+    this._roomApplicationList.selected = index;
+  }
+
+  onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {
+    const application = clone<IRoomApplication>(this.selectedApplication);
+    application.status = status;
+    this._store.dispatch(new roomAction.UpdateApplicationAction(application));
   }
 
 }

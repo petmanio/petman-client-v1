@@ -34,6 +34,7 @@ interface IRoomEffects {
   list$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>
+  updateApplication$: Observable<Action>
 }
 
 @Injectable()
@@ -74,5 +75,14 @@ export class RoomEffects implements IRoomEffects {
       return this.roomService.apply(options)
         .map(response => new roomAction.ApplyCompleteAction(response))
         .catch(err => of(new roomAction.ApplyErrorAction(err)))
+    });
+
+  @Effect() updateApplication$: Observable<Action> = this.actions$
+    .ofType(roomAction.ActionTypes.UPDATE_APPLICATION)
+    .map((action: roomAction.UpdateApplicationAction) => action.payload)
+    .switchMap(options => {
+      return this.roomService.updateApplication(options)
+        .map(response => new roomAction.UpdateApplicationCompleteAction(response))
+        .catch(err => of(new roomAction.UpdateApplicationErrorAction(err)))
     });
 }
