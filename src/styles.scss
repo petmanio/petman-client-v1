@@ -25,6 +25,10 @@
   }
 }
 
+.pm-font-10 {
+  font-size: 12px;
+}
+
 .pm-font-12 {
   font-size: 12px;
 }
@@ -41,8 +45,16 @@
   color: #484848;
 }
 
+.pm-color-light-gray {
+  color: #f1f0f0;
+}
+
 .pm-color-green {
   color: #80d47f;
+}
+
+.pm-color-white {
+  color: #fff;
 }
 
 .pm-color-blue {
@@ -51,6 +63,18 @@
 
 .pm-color-red {
   color: #fc6f6f;
+}
+
+.pm-background-light-gray {
+  background-color: #f1f0f0;
+}
+
+.pm-background-blue {
+  background: #6fb5fc;
+}
+
+.pm-background-light-pink {
+  background-color: #8b59e4;
 }
 
 .pm-font-bold {

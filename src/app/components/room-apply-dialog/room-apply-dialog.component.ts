@@ -61,7 +61,7 @@ export class RoomApplyDialogComponent implements OnInit, IRoomApplyDialogCompone
   }
 
   ngOnInit(): void {
-    this._inProgressApplications = this.room.applications.filter(application => !application.deletedAt);
+    this._inProgressApplications = this.room.applications.filter(application => !application.endedAt);
     this._buildDatePicker();
   }
 
