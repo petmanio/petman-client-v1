@@ -32,15 +32,15 @@ import * as roomAction from '../../store/room/room.actions';
 interface IRoomEffects {
   getById$: Observable<Action>,
   list$: Observable<Action>,
-  create$: Observable<Action>
+  create$: Observable<Action>,
+  apply$: Observable<Action>
 }
 
 @Injectable()
 export class RoomEffects implements IRoomEffects {
   constructor(private actions$: Actions, private roomService: RoomService, private store: Store<fromRoot.State>) { }
 
-  @Effect()
-  public getById$: Observable<Action> = this.actions$
+  @Effect() getById$: Observable<Action> = this.actions$
     .ofType(roomAction.ActionTypes.GET_BY_ID)
     .map((action: roomAction.GetByIdAction) => action.payload)
     .switchMap(options => {
@@ -49,8 +49,7 @@ export class RoomEffects implements IRoomEffects {
         .catch(err => of(new roomAction.GetByIdErrorAction(err)))
     });
 
-  @Effect()
-  public list$: Observable<Action> = this.actions$
+  @Effect() list$: Observable<Action> = this.actions$
     .ofType(roomAction.ActionTypes.LIST)
     .map((action: roomAction.ListAction) => action.payload)
     .switchMap(options => {
@@ -59,13 +58,21 @@ export class RoomEffects implements IRoomEffects {
         .catch(err => of(new roomAction.ListErrorAction(err)))
     });
 
-  @Effect()
-  public create$: Observable<Action> = this.actions$
+  @Effect() create$: Observable<Action> = this.actions$
     .ofType(roomAction.ActionTypes.CREATE)
     .map((action: roomAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this.roomService.create(options)
         .map(response => new roomAction.CreateCompleteAction(response))
         .catch(err => of(new roomAction.CreateErrorAction(err)))
+    });
+
+  @Effect() apply$: Observable<Action> = this.actions$
+    .ofType(roomAction.ActionTypes.APPLY)
+    .map((action: roomAction.ApplyAction) => action.payload)
+    .switchMap(options => {
+      return this.roomService.apply(options)
+        .map(response => new roomAction.ApplyCompleteAction(response))
+        .catch(err => of(new roomAction.ApplyErrorAction(err)))
     });
 }

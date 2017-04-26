@@ -1,7 +1,7 @@
 export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
 export { RoomEffects } from './room/room.effects';
-export { ApplicationEffects } from './application/application.effects';
+export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -50,7 +50,7 @@ import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromLocation from './location/location.reducer';
 import * as fromRoom from './room/room.reducer';
-import * as fromApplication from './application/application.reducer';
+import * as fromNotification from './notification/notification.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -61,7 +61,7 @@ export interface State {
   blog: fromBlog.State,
   location: fromLocation.State,
   room: fromRoom.State,
-  application: fromApplication.State,
+  notification: fromNotification.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -79,7 +79,7 @@ const reducers = {
   blog: fromBlog.reducer,
   location: fromLocation.reducer,
   room: fromRoom.reducer,
-  application: fromApplication.reducer,
+  notification: fromNotification.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -155,9 +155,9 @@ export const getRoomList = createSelector(getRoomState, fromRoom.getList);
 export const getRoomRoom = createSelector(getRoomState, fromRoom.getRoom);
 
 /**
- * Application Reducers
+ * Notification Reducers
  */
-export const getApplicationState = (state: State) => state.application;
-export const getApplicationList = createSelector(getApplicationState, fromApplication.getList);
+export const getNotificationState = (state: State) => state.notification;
+export const getNotificationList = createSelector(getNotificationState, fromNotification.getList);
 // TODO: update method and store item names
-export const getApplicationCount = createSelector(getApplicationState, fromApplication.getCount);
+export const getNotificationCount = createSelector(getNotificationState, fromNotification.getCount);

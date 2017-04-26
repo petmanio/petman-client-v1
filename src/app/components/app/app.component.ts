@@ -8,6 +8,7 @@ import { UtilService } from '../../services/util/util.service';
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
+import { IUser } from '../../models/api';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -31,21 +32,35 @@ export interface IAppComponent {
                 *ngIf="toolbarRightButtons.indexOf('JOIN') !== -1">
           Join
         </button>
+        <!--TODO: find better solution-->
         <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1">
-          <button md-icon-button
-                  [mdMenuTriggerFor]="menu">
-            <md-icon>more_vert</md-icon>
-          </button>
-          <md-menu #menu="mdMenu">
-            <button md-menu-item>
-              <md-icon>account_circle</md-icon>
-              <span>Account</span>
-            </button>
-            <button md-menu-item (click)="logOut()">
-              <md-icon>power_settings_new</md-icon>
-              <span>Log out</span>
-            </button>
-          </md-menu>
+          <div class="columns is-mobile">
+            <div class="column">
+              <button md-icon-button
+                      [mdMenuTriggerFor]="notification">
+                <md-icon>notifications</md-icon>
+              </button>
+              <md-menu #notification="mdMenu">
+                <md-list>
+                  <md-list-item>notifications</md-list-item>
+                </md-list>
+              </md-menu>
+            </div>
+            <div class="column">
+              <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
+                   [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+              <md-menu #menu="mdMenu">
+                <button md-menu-item>
+                  <md-icon>account_circle</md-icon>
+                  <span>Account</span>
+                </button>
+                <button md-menu-item (click)="logOut()">
+                  <md-icon>power_settings_new</md-icon>
+                  <span>Log out</span>
+                </button>
+              </md-menu>
+            </div>
+          </div>
         </div>
       </app-toolbar>
       <!--TODO: pass items-->
@@ -77,6 +92,7 @@ export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
   // TODO: import model
   currentUser$: Observable<any>;
+  currentUser: IUser;
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
   currentSideNavState: boolean;

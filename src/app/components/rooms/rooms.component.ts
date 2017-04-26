@@ -26,7 +26,7 @@ export interface IRoomsComponent {
            [scrollWindow]="false">
         <div class="columns" *ngFor="let roomRow of (roomList$ | async)?.list | chunk:4">
           <div class="column" *ngFor="let room of roomRow">
-            <app-room [room]="room" (onShowPin)="onShowPin($event)"></app-room>
+            <app-room [room]="room"></app-room>
           </div>
         </div>
       </div>

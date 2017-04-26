@@ -3,21 +3,21 @@ import { Headers, Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
-import { IApplicationCountRequest, IApplicationCountResponse, IApplicationListRequest, IApplicationListResponse } from '../../models/api';
+import { INotificationCountRequest, INotificationCountResponse, INotificationListRequest, INotificationListResponse } from '../../models/api';
 
-export interface IApplicationService {
-  count(options: IApplicationCountRequest): Observable<IApplicationCountResponse>
-  list(options: IApplicationListRequest): Observable<IApplicationListResponse>
+export interface INotificationService {
+  count(options: INotificationCountRequest): Observable<INotificationCountResponse>
+  list(options: INotificationListRequest): Observable<INotificationListResponse>
 }
 
 @Injectable()
-export class ApplicationService implements IApplicationService {
+export class NotificationService implements INotificationService {
 
   constructor(private http: Http) {
 
   }
 
-  count(options: IApplicationCountRequest): Observable<IApplicationCountResponse> {
+  count(options: INotificationCountRequest): Observable<INotificationCountResponse> {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('x-auth-token', localStorage.getItem('token'));
@@ -29,7 +29,7 @@ export class ApplicationService implements IApplicationService {
       .map(response => response.json());
   }
 
-  list(options: IApplicationListRequest): Observable<IApplicationListResponse> {
+  list(options: INotificationListRequest): Observable<INotificationListResponse> {
     const headers = new Headers();
     const params: URLSearchParams = new URLSearchParams();
 
@@ -40,7 +40,7 @@ export class ApplicationService implements IApplicationService {
     params.set('limit', options.limit.toString());
 
     return this.http
-      .get(`${environment.apiEndpoint}/api/application/list`,
+      .get(`${environment.apiEndpoint}/api/notification/list`,
         { headers, withCredentials: true, search: params }
       )
       .map(response => response.json());

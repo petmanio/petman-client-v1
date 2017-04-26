@@ -9,9 +9,9 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { ApplicationService } from '../../services/application/application.service';
+import { NotificationService } from '../../services/notification/notification.service';
 import * as fromRoot from '../../store';
-import * as applicationAction from '../../store/application/application.actions';
+import * as notificationAction from './/notification.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -27,33 +27,33 @@ import * as applicationAction from '../../store/application/application.actions'
  * RxJS 5 Operators By Example: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35
  */
 
-interface IApplicationEffects {
+interface INotificationEffects {
   getCount$: Observable<Action>,
   list$: Observable<Action>
 }
 
 @Injectable()
-export class ApplicationEffects implements IApplicationEffects {
-  constructor(private actions$: Actions, private applicationService: ApplicationService, private store: Store<fromRoot.State>) { }
+export class NotificationEffects implements INotificationEffects {
+  constructor(private actions$: Actions, private notificationService: NotificationService, private store: Store<fromRoot.State>) { }
 
   @Effect()
   public getCount$: Observable<Action> = this.actions$
-    .ofType(applicationAction.ActionTypes.GET_COUNT)
-    .map((action: applicationAction.GetCountAction) => action.payload)
+    .ofType(notificationAction.ActionTypes.GET_COUNT)
+    .map((action: notificationAction.GetCountAction) => action.payload)
     .switchMap(options => {
-      return this.applicationService.count(options)
-        .map(response => new applicationAction.GetCountCompleteAction(response))
-        .catch(err => of(new applicationAction.GetCountErrorAction(err)))
+      return this.notificationService.count(options)
+        .map(response => new notificationAction.GetCountCompleteAction(response))
+        .catch(err => of(new notificationAction.GetCountErrorAction(err)))
     });
 
   @Effect()
   public list$: Observable<Action> = this.actions$
-    .ofType(applicationAction.ActionTypes.LIST)
-    .map((action: applicationAction.ListAction) => action.payload)
+    .ofType(notificationAction.ActionTypes.LIST)
+    .map((action: notificationAction.ListAction) => action.payload)
     .switchMap(options => {
-      return this.applicationService.list(options)
-        .map(response => new applicationAction.ListCompleteAction(response))
-        .catch(err => of(new applicationAction.ListErrorAction(err)))
+      return this.notificationService.list(options)
+        .map(response => new notificationAction.ListCompleteAction(response))
+        .catch(err => of(new notificationAction.ListErrorAction(err)))
     });
 
 }

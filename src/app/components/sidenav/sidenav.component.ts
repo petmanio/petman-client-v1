@@ -3,7 +3,7 @@ import { Router , NavigationStart, NavigationEnd } from '@angular/router';
 import { IUser } from '../../models/api';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import * as applicationAction from '../../store/application/application.actions';
+import * as applicationAction from '../../store/notification/notification.actions';
 import * as fromRoot from '../../store';
 
 interface ISidenavComponent {
@@ -22,8 +22,8 @@ interface ISidenavComponent {
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/rooms"
                         routerLinkActive="is-active">Sitters</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly">Walks</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="event" routerLink="/applications"
-                        routerLinkActive="is-active" [chip]="(applicationCount$ | async)?.count">Applications</app-nav-item>
+          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="event" routerLink="/applications"-->
+                        <!--routerLinkActive="is-active" [chip]="(applicationCount$ | async)?.count">Applications</app-nav-item>-->
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
                         routerLinkActive="is-active">Blog</app-nav-item>
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
@@ -65,14 +65,11 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
   isHomeActive;
   // TODO: add observable type for all components
   currentUser$: Observable<any>;
-  applicationCount$: Observable<any>;
   constructor(private _router: Router, private _store: Store<fromRoot.State>) {
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
-    this.applicationCount$ = this._store.select(fromRoot.getApplicationCount);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new applicationAction.GetCountAction({}));
     this._router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
 

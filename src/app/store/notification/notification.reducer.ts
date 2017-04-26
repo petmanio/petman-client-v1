@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
-import { IApplicationCountResponse, IApplicationListRequest, IApplicationListResponse } from '../../models/api';
-import * as applicationAction from './application.actions';
+import { INotificationCountResponse, INotificationListRequest, INotificationListResponse } from '../../models/api';
+import * as notificationAction from './notification.actions';
 
 export interface State {
-  count?: IApplicationCountResponse,
-  list?: IApplicationListResponse,
+  count?: INotificationCountResponse,
+  list?: INotificationListResponse,
 }
 
 const initialState: State = {
@@ -17,11 +17,11 @@ const initialState: State = {
   }
 };
 
-export function reducer(state = initialState, action: applicationAction.Actions): State {
+export function reducer(state = initialState, action: notificationAction.Actions): State {
   switch (action.type) {
     // TODO: use another action for loading more
-    case applicationAction.ActionTypes.LIST_COMPLETE: {
-      const res: IApplicationListResponse = action.payload;
+    case notificationAction.ActionTypes.LIST_COMPLETE: {
+      const res: INotificationListResponse = action.payload;
       // TODO: use object assign
       return {
         list: {
@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: applicationAction.Actions)
       };
     }
 
-    case applicationAction.ActionTypes.LIST_ERROR: {
+    case notificationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
       return {
         list: {
@@ -42,7 +42,7 @@ export function reducer(state = initialState, action: applicationAction.Actions)
     }
 
     // TODO: use another action for loading more
-    case applicationAction.ActionTypes.LIST_CLEAR: {
+    case notificationAction.ActionTypes.LIST_CLEAR: {
       // TODO: use object assign
       return {
         list: {
@@ -52,13 +52,13 @@ export function reducer(state = initialState, action: applicationAction.Actions)
       };
     }
 
-    case applicationAction.ActionTypes.GET_COUNT_COMPLETE: {
-      const res: IApplicationCountResponse = action.payload;
+    case notificationAction.ActionTypes.GET_COUNT_COMPLETE: {
+      const res: INotificationCountResponse = action.payload;
       // TODO: use object assign
       return Object.assign({}, state, {count: res});
     }
 
-    case applicationAction.ActionTypes.GET_COUNT_ERROR: {
+    case notificationAction.ActionTypes.GET_COUNT_ERROR: {
       const error: any = action.payload;
       return Object.assign({}, state, {count: { count: 0 }})
     }

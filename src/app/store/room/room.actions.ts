@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
   IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
-  IRoomGetByIdResponse
+  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse
 } from '../../models/api';
 
 /**
@@ -25,7 +25,11 @@ export const ActionTypes = {
 
   CREATE: type('[Room] Create'),
   CREATE_COMPLETE: type('[Room] Create Complete'),
-  CREATE_ERROR: type('[Room] Create Error')
+  CREATE_ERROR: type('[Room] Create Error'),
+
+  APPLY: type('[Room] Apply'),
+  APPLY_COMPLETE: type('[Room] Apply Complete'),
+  APPLY_ERROR: type('[Room] Apply Error')
 };
 
 /**
@@ -105,6 +109,27 @@ export class CreateErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Apply
+ */
+export class ApplyAction implements Action {
+  type = ActionTypes.APPLY;
+
+  constructor(public payload: IRoomApplyRequest) { }
+}
+
+export class ApplyCompleteAction implements Action {
+  type = ActionTypes.APPLY_COMPLETE;
+
+  constructor(public payload: IRoomApplyResponse) { }
+}
+
+export class ApplyErrorAction implements Action {
+  type = ActionTypes.APPLY_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 
 /**
  * Export a type alias of all actions in this action group
@@ -121,3 +146,6 @@ export type Actions
   | CreateAction
   | CreateCompleteAction
   | CreateErrorAction
+  | ApplyAction
+  | ApplyCompleteAction
+  | ApplyErrorAction

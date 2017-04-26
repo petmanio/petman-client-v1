@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../util/util.service';
 import {
+  IRoomApplyRequest, IRoomApplyResponse,
   IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest, IRoomGetByIdResponse, IRoomListRequest,
   IRoomListResponse
 } from '../../models/api';
@@ -13,6 +14,7 @@ export interface IRoomService {
   getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse>,
   list(options: IRoomListRequest): Observable<IRoomListResponse>,
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse>
+  apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>
 }
 
 @Injectable()
@@ -76,5 +78,16 @@ export class RoomService implements IRoomService {
         { headers, withCredentials: true }
       )
       .map(response => response.json());
+  }
+
+  apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse> {
+    const headers = new Headers();
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this.http
+      .post(`${environment.apiEndpoint}/api/room/${options.roomId}/apply`, {},
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 }

@@ -68,8 +68,9 @@ export class RoomComponent implements OnChanges, IRoomComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
-      this.inProgressApplications = this.room.applications.filter(application => !application.deletedAt);
-      this.finishedApplications = this.room.applications.filter(application => application.deletedAt);
+      this.inProgressApplications = this.room.applications
+        .filter(application => application.status === 'CONFIRMED' && !application.endedAt);
+      this.finishedApplications = this.room.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
 
       // TODO: update logic
       // TODO: functionality for future

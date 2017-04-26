@@ -46,13 +46,12 @@ import {
   RoomDetailsComponent,
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
-  ApplicationsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService, LocationService, RoomService, ApplicationService } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, ApplicationEffects } from './store';
+import { AuthService, BlogService, UtilService, LocationService, RoomService, NotificationService } from './services';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, NotificationEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -139,16 +138,6 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'applications',
-    component: ApplicationsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
-  },
-  {
     path: '**',
     redirectTo: '/'
   }
@@ -174,7 +163,6 @@ const appRoutes: Routes = [
     RoomDetailsComponent,
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
-    ApplicationsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -208,7 +196,7 @@ const appRoutes: Routes = [
     EffectsModule.run(BlogEffects),
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
-    EffectsModule.run(ApplicationEffects),
+    EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
@@ -217,7 +205,7 @@ const appRoutes: Routes = [
     BlogService,
     LocationService,
     RoomService,
-    ApplicationService,
+    NotificationService,
     UtilService
   ],
   bootstrap: [AppComponent]

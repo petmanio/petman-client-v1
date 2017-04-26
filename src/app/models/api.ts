@@ -54,10 +54,11 @@ export interface IRoomApplication {
   consumer?: IUser,
   provider?: IUser,
   room?: IRoom,
-  count: number,
+  count?: number,
+  status: 'CONFIRMED' | 'WAITING_CONSUMER_CONFIRM' | 'WAITING_PROVIDER_CONFIRM' | 'DECLINED_BY_CONSUMER' | 'DECLINED_BY_PROVIDER' |
+    'FINISHED'
   startedAt: string
   endedAt: string
-  deletedAt: string
 }
 
 export interface IRoomImage {
@@ -178,21 +179,27 @@ export interface IRoomGetByIdRequest {
 
 export interface IRoomGetByIdResponse extends IRoom {}
 
-/**
- * Application
- */
-export interface IApplicationCountRequest {}
+export interface IRoomApplyRequest {
+  roomId: number
+}
 
-export interface IApplicationCountResponse {
+export interface IRoomApplyResponse {}
+
+/**
+ * Notification
+ */
+export interface INotificationCountRequest {}
+
+export interface INotificationCountResponse {
   count: number
 }
 
-export interface IApplicationListRequest {
+export interface INotificationListRequest {
   skip: number,
   limit: number
 }
 
-export interface IApplicationListResponse {
-  list: IRoomApplication[],
+export interface INotificationListResponse {
+  list: any,
   count: number
 }

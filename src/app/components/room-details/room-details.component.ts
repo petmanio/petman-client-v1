@@ -1,10 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
+import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
 import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
@@ -22,7 +24,8 @@ export interface IRoomDetailsComponent {
           <md-card-header>
             <div md-card-avatar class="pm-cart-avatar"
                  [ngStyle]="{'background-image': 'url(' + (roomRoom$ | async)?.user.userData.avatar + ')'}"></div>
-            <md-card-title>{{(roomRoom$ | async)?.user.userData.firstName}} {{(roomRoom$ | async)?.user.userData.lastName}}</md-card-title>
+            <md-card-title>
+              {{(roomRoom$ | async)?.user.userData.firstName}} {{(roomRoom$ | async)?.user.userData.lastName}}</md-card-title>
             <md-card-subtitle>
             <span class="pm-font-14 pm-color-red" *ngIf="!(roomRoom$ | async)?.isAvailable">
               <md-icon class="pm-font-14 pm-color-red">close</md-icon>
@@ -76,7 +79,8 @@ export interface IRoomDetailsComponent {
                             [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
                     <span class="pm-font-14 pm-color-gray">&nbsp; {{application.consumer.userData.firstName}} 
                       {{application.consumer.userData.lastName}}<br/>
-                      <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;{{application.review || 'There are no review details'}}</span>
+                      <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;
+                        {{application.review || 'There are no review details'}}</span>
                     </span>
                   </md-list-item>
                 </md-list>
@@ -99,18 +103,18 @@ export interface IRoomDetailsComponent {
         </div>
       </md-card-content>
     </md-card>
-   
   `,
   styles: [`
   `]
 })
-export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
+export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComponent {
   // TODO: update attribute name
   roomRoom$: Observable<any>;
   averageRating: number;
   isAvailable: boolean;
   finishedApplications: IRoomApplication[] = [];
   inProgressApplications: IRoomApplication[] = [];
+  myApplications: IRoomApplication[] = [];
   carouselOptions = {
     duration: 200,
     easing: 'ease-out',
@@ -121,11 +125,13 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
   };
   room: IRoom;
   private _roomId: number;
+  private _destroyed$ = new Subject<boolean>();
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
               private dialog: MdDialog,
               private _snackBar: MdSnackBar,
-              private _utilService: UtilService) {
+              private _utilService: UtilService,
+              private _actions$: Actions) {
     this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
   }
 
@@ -137,14 +143,15 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
         // TODO: use global error handling
         throw new Error('RoomDetailsComponent: roomId is not defined');
       }
-      return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}))
+      return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
     });
 
     this.roomRoom$.subscribe($event => {
       if ($event) {
         this.room = $event;
-        this.inProgressApplications = $event.applications.filter(application => !application.deletedAt);
-        this.finishedApplications = $event.applications.filter(application => application.deletedAt);
+        this.inProgressApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && !application.endedAt);
+        this.finishedApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
+        this.myApplications = $event.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
 
         // TODO: update logic
         // TODO: functionality for future
@@ -155,6 +162,20 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
         }, 0);
       }
     });
+
+    this._actions$
+      .ofType(roomAction.ActionTypes.APPLY_COMPLETE)
+      .takeUntil(this._destroyed$)
+      .do(() => {
+        this._snackBar.open(`Your request has been sent`, null, {
+          duration: 3000
+        });
+      })
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this._destroyed$.next(true);
   }
 
   onRatingRowClick(): void {
@@ -169,6 +190,8 @@ export class RoomDetailsComponent implements OnInit, IRoomDetailsComponent {
       // dialogRef.afterClosed().subscribe(result => {
       //   console.log(result);
       // });
+
+      this._store.dispatch(new roomAction.ApplyAction({roomId: this._roomId}));
     }
   }
 

@@ -1,15 +1,13 @@
-import { ChangeDetectorRef, Component, EventEmitter, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileHolder, ImageUploadComponent } from 'angular2-image-upload/lib/image-upload/image-upload.component';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { IRoom } from '../../models/api';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
 import { MdSnackBar } from '@angular/material';
-import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { CropperSettings } from 'ng2-img-cropper';
 const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
@@ -96,7 +94,7 @@ export interface IRoomAddComponent {
     }
   `]
 })
-export class RoomAddComponent implements IRoomAddComponent {
+export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   // @ViewChild('cropper') private _cropper: ImageCropperComponent;
   // TODO: UPGRADE fix after upgrade
@@ -116,7 +114,18 @@ export class RoomAddComponent implements IRoomAddComponent {
 
   constructor(private _ref: ChangeDetectorRef, private _store: Store<fromRoot.State>, private _actions$: Actions,
               private _snackBar: MdSnackBar) {
-    _actions$
+    // this.cropperSettings = new CropperSettings();
+    // this.cropperSettings.width = 100;
+    // this.cropperSettings.height = 100;
+    // this.cropperSettings.croppedWidth = 100;
+    // this.cropperSettings.croppedHeight = 100;
+    // this.cropperSettings.canvasWidth = 400;
+    // this.cropperSettings.canvasHeight = 300;
+    // this.cropperSettings.noFileInput = true
+  }
+
+  ngOnInit(): void {
+    this._actions$
       .ofType(roomAction.ActionTypes.CREATE_COMPLETE)
       .takeUntil(this._destroyed$)
       .do(() => {
@@ -132,14 +141,10 @@ export class RoomAddComponent implements IRoomAddComponent {
       })
       .subscribe();
 
-    // this.cropperSettings = new CropperSettings();
-    // this.cropperSettings.width = 100;
-    // this.cropperSettings.height = 100;
-    // this.cropperSettings.croppedWidth = 100;
-    // this.cropperSettings.croppedHeight = 100;
-    // this.cropperSettings.canvasWidth = 400;
-    // this.cropperSettings.canvasHeight = 300;
-    // this.cropperSettings.noFileInput = true
+  }
+
+  ngOnDestroy(): void {
+    this._destroyed$.next(true);
   }
 
   onImageUploaded($event: FileHolder): void {
