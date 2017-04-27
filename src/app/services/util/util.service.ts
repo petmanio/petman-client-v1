@@ -75,6 +75,8 @@ export class UtilService implements IUtilService {
     return text;
   }
 
+  static capitalizeFirstChar = string => string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
+
   constructor() {}
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {

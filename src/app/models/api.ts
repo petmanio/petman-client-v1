@@ -59,6 +59,7 @@ export interface IRoomApplication {
   status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
+  createdAt: string
 }
 
 export interface IRoomImage {

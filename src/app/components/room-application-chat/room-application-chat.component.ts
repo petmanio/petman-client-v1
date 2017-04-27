@@ -12,19 +12,19 @@ export interface IRoomApplicationChatComponent {
       <ul class="pm-chat-list">
         <li *ngFor="let i of [1,2]">
           <div class="columns is-mobile pm-chat-row">
-            <div class="column is-11">
+            <div class="column is-11-desktop is-10-mobile">
               <div class="pm-chat-text pm-background-light-pink">
                           <span class="pm-font-12 pm-color-white">
                             Lorem Ipsum is simply dummy text of the printing and typesetting </span>
               </div>
 
             </div>
-            <div class="column is-1">
+            <div class="column is-1-desktop is-2-mobile">
               <span class="pm-font-10 pm-color-gray">10:24</span>
             </div>
           </div>
         </li>
-        <li *ngFor="let i of [1,2,3]">
+        <li *ngFor="let i of [1,2,3,4,6]">
           <div class="columns is-mobile pm-chat-row">
             <div class="column is-1-desktop is-2-mobile">
               <div md-card-avatar class="pm-cart-avatar"

@@ -46,11 +46,7 @@ export interface IRoomDetailsComponent {
         </div>
         <div class="columns">
           <div class="column">
-            <ngx-siema [options]="carouselOptions" *ngIf="(roomRoom$ | async)?.images">
-              <ngx-siema-slide *ngFor="let image of (roomRoom$ | async)?.images">
-                <img class="pm-carousel-image" [src]="image.src">
-              </ngx-siema-slide>
-            </ngx-siema>
+            
           </div>
         </div>
         <div class="columns">
@@ -95,18 +91,18 @@ export interface IRoomDetailsComponent {
               </div>
             </div>
             <div class="columns">
-              <div class="column is-4">
+              <div class="column is-5">
                 <span class="pm-font-14 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
                 <app-room-applications-list [room]="roomRoom$ | async" 
                                             (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
               </div>
-              <div class="column is-8 pm-application-info-window">
-                <app-room-application-actions *ngIf="selectedApplication" 
-                                              [room]="roomRoom$ | async" 
-                                              [application]="selectedApplication" 
+              <div class="column is-7 pm-application-info-window" *ngIf="selectedApplication">
+                <div class="pm-font-16 pm-color-gray pm-action-label">Change application status</div>
+                <app-room-application-actions [room]="roomRoom$ | async"
+                                              [application]="selectedApplication"
                                               (onActionClick)="onActionClick($event)"></app-room-application-actions>
-                <app-room-application-chat *ngIf="selectedApplication"
-                                           [room]="roomRoom$ | async" [application]="selectedApplication"></app-room-application-chat>
+                <div class="pm-font-16 pm-color-gray pm-chat-label">Chat history</div>
+                <app-room-application-chat [room]="roomRoom$ | async" [application]="selectedApplication"></app-room-application-chat>
               </div>
             </div>
           </div>
@@ -116,10 +112,29 @@ export interface IRoomDetailsComponent {
   `,
   styles: [`
     app-room-application-actions {
-      margin-top: 25px;
+      /*margin-top: 25px;*/
     }
     app-room-applications-list {
-      margin-top: 10px;
+      max-height: 640px;
+      overflow-x: auto;
+    }
+
+    app-room-application-chat {
+      max-height: 500px;
+      overflow-x: auto;
+    }
+    
+    .pm-chat-label {
+      margin-top: 20px;
+      padding-right: 10px;
+      text-align: right;
+    }
+    
+    .pm-action-label {
+      margin-top: 25px;
+      text-align: right;
+      padding-right: 10px;
+      margin-bottom: 15px;
     }
   `]
 })
@@ -130,14 +145,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   averageRating: number;
   isAvailable: boolean;
   selectedApplication: IRoomApplication;
-  carouselOptions = {
-    duration: 200,
-    easing: 'ease-out',
-    perPage: 1,
-    startIndex: 0,
-    draggable: true,
-    threshold: 20
-  };
   room: IRoom;
   private _roomId: number;
   private _destroyed$ = new Subject<boolean>();
@@ -168,6 +175,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
           this.selectedApplication = this.room.applications[0];
           this._roomApplicationList.selected = 0;
         }
+
         // TODO: update logic
         // TODO: functionality for future
         // this.isAvailable = this.inProgressApplications.length <= $event.limit;
@@ -182,9 +190,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       .ofType(roomAction.ActionTypes.APPLY_COMPLETE)
       .takeUntil(this._destroyed$)
       .do(() => {
-        this._snackBar.open(`Your request has been sent`, null, {
-          duration: 3000
-        });
+        this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
+        // this._snackBar.open(`Your request has been sent`, null, {
+        //   duration: 3000
+        // })
       })
       .subscribe();
   }
