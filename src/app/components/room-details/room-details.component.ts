@@ -101,8 +101,9 @@ export interface IRoomDetailsComponent {
                 <app-room-application-actions [room]="roomRoom$ | async"
                                               [application]="selectedApplication"
                                               (onActionClick)="onActionClick($event)"></app-room-application-actions>
-                <div class="pm-font-16 pm-color-gray pm-chat-label">Chat history</div>
-                <app-room-application-chat [room]="roomRoom$ | async" [application]="selectedApplication"></app-room-application-chat>
+                <div class="pm-font-16 pm-color-gray pm-message-label">Chat history</div>
+                <app-room-application-messages [room]="roomRoom$ | async"
+                                               [application]="selectedApplication"></app-room-application-messages>
               </div>
             </div>
           </div>
@@ -116,15 +117,17 @@ export interface IRoomDetailsComponent {
     }
     app-room-applications-list {
       max-height: 640px;
-      overflow-x: auto;
-    }
-
-    app-room-application-chat {
-      max-height: 500px;
+      min-height: 640px;
       overflow-x: auto;
     }
     
-    .pm-chat-label {
+    app-room-application-messages {
+      max-height: 500px;
+      min-height: 500px;
+      overflow-x: auto;
+    }
+    
+    .pm-message-label {
       margin-top: 20px;
       padding-right: 10px;
       text-align: right;

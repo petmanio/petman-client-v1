@@ -99,38 +99,40 @@ export class AppComponent implements OnInit, IAppComponent {
   // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
 
-  constructor(private store: Store<fromRoot.State>,
-              private activatedRoute: ActivatedRoute,
-              private router: Router,
-              private ref: ChangeDetectorRef,
-              private zone: NgZone,
-              private utilsService: UtilService) {
+  constructor(private _store: Store<fromRoot.State>,
+              private _activatedRoute: ActivatedRoute,
+              private _router: Router,
+              private _ref: ChangeDetectorRef,
+              private _zone: NgZone,
+              private _utilsService: UtilService) {
     UtilService.initScripts();
-    this.showSidenav$ = this.store.select(fromRoot.getShowSidenav);
-    this.currentUser$ = this.store.select(fromRoot.getAuthCurrentUser);
+    this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
     // FIXME: find better way
-    this.router.events.subscribe((event: any) => {
+    this._router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
 
       } else if (event instanceof NavigationEnd) {
-        this.zone.run(() => {
+        this._zone.run(() => {
           this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
           const showSideNav = this.getRouteDataByKey('showSidenav');
           if (typeof showSideNav !== 'undefined') {
             if (showSideNav && UtilService.getCurrentDevice() !== 'MOBILE') {
-              this.store.dispatch(new layout.OpenSidenavAction());
+              this._store.dispatch(new layout.OpenSidenavAction());
             } else {
-              this.store.dispatch(new layout.CloseSidenavAction());
+              this._store.dispatch(new layout.CloseSidenavAction());
             }
           }
-          this.ref.markForCheck();
+          this._ref.markForCheck();
         })
 
       }
     });
+
+    this._utilsService.initSocket();
 
     if (UtilService.getCurrentDevice() === 'MOBILE') {
       this.sideNavMode = 'push';
@@ -140,32 +142,32 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   closeSidenav(): void {
-    this.store.dispatch(new layout.CloseSidenavAction());
+    this._store.dispatch(new layout.CloseSidenavAction());
   }
 
   toggleSidenav($event: Event): void {
     $event.stopPropagation();
     if (this.currentSideNavState) {
-      this.store.dispatch(new layout.CloseSidenavAction());
+      this._store.dispatch(new layout.CloseSidenavAction());
     } else {
-      this.store.dispatch(new layout.OpenSidenavAction());
+      this._store.dispatch(new layout.OpenSidenavAction());
     }
   }
 
   logOut(): void {
-    // this.store.dispatch(new auth.LogoutAction());
+    // this._store.dispatch(new auth.LogoutAction());
     // TODO: use complete action
     // TODO: use dispatch
     localStorage.removeItem('token');
     setTimeout(() => {
-      this.router.navigate(['/welcome']);
-      this.store.dispatch(new auth.LogoutCompleteAction({}));
+      this._router.navigate(['/welcome']);
+      this._store.dispatch(new auth.LogoutCompleteAction({}));
     }, 300);
-    // location.href = '/';
+    // location.h_ref = '/';
   }
 
   private getRouteDataByKey(key: string): any {
-    return this.activatedRoute.snapshot.data[key] ||
-      (this.activatedRoute.snapshot.children.length && this.activatedRoute.snapshot.children[0].data[key]);
+    return this._activatedRoute.snapshot.data[key] ||
+      (this._activatedRoute.snapshot.children.length && this._activatedRoute.snapshot.children[0].data[key]);
   }
 }

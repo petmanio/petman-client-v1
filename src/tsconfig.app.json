@@ -6,7 +6,9 @@
     "baseUrl": "",
     "types": [
       "node"
-    ]
+    ],
+    "allowJs": true,
+    "jsx": "react"
   },
   "exclude": [
     "test.ts",

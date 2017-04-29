@@ -11,16 +11,15 @@ import { DBModule } from '@ngrx/db';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// TODO: create fake module and export all modules from materila
+// TODO: create fake module and export all modules from material
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
   MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule
 } from '@angular/material';
-// TODO: UPGRADE npm install ngx-infinite-scroll --save for angular 4
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-// import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
+import { SailsModule } from 'angular2-sails';
 // import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
@@ -46,7 +45,8 @@ import {
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
   RoomApplicationActionsComponent,
-  RoomApplicationChatComponent,
+  RoomApplicationMessagesComponent,
+  RoomApplicationMessageComponent,
   RoomApplicationsListComponent,
   MapComponent
 } from './components';
@@ -166,7 +166,8 @@ const appRoutes: Routes = [
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
     RoomApplicationActionsComponent,
-    RoomApplicationChatComponent,
+    RoomApplicationMessagesComponent,
+    RoomApplicationMessageComponent,
     RoomApplicationsListComponent,
     MapComponent,
     FitContentsDirective,
@@ -194,6 +195,7 @@ const appRoutes: Routes = [
     InfiniteScrollModule,
     RatingModule,
     ImageUploadModule.forRoot(),
+    SailsModule.forRoot(),
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,

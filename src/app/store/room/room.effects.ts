@@ -5,14 +5,11 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/takeUntil';
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
-import { Store } from '@ngrx/store';
 import { RoomService } from '../../services/room/room.service';
-import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 
 /**
@@ -33,56 +30,84 @@ interface IRoomEffects {
   getById$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
-  apply$: Observable<Action>
-  updateApplication$: Observable<Action>
+  apply$: Observable<Action>,
+  updateApplication$: Observable<Action>,
+  applicationMessageList$: Observable<Action>,
+  applicationMessageJoin$: Observable<Action>,
+  applicationMessageCreate$: Observable<Action>
 }
 
 @Injectable()
 export class RoomEffects implements IRoomEffects {
-  constructor(private actions$: Actions, private roomService: RoomService, private store: Store<fromRoot.State>) { }
-
-  @Effect() getById$: Observable<Action> = this.actions$
+  @Effect() getById$: Observable<Action> = this._actions$
     .ofType(roomAction.ActionTypes.GET_BY_ID)
     .map((action: roomAction.GetByIdAction) => action.payload)
     .switchMap(options => {
-      return this.roomService.getById(options)
+      return this._roomService.getById(options)
         .map(response => new roomAction.GetByIdCompleteAction(response))
         .catch(err => of(new roomAction.GetByIdErrorAction(err)))
     });
 
-  @Effect() list$: Observable<Action> = this.actions$
+  @Effect() list$: Observable<Action> = this._actions$
     .ofType(roomAction.ActionTypes.LIST)
     .map((action: roomAction.ListAction) => action.payload)
     .switchMap(options => {
-      return this.roomService.list(options)
+      return this._roomService.list(options)
         .map(response => new roomAction.ListCompleteAction(response))
         .catch(err => of(new roomAction.ListErrorAction(err)))
     });
 
-  @Effect() create$: Observable<Action> = this.actions$
+  @Effect() create$: Observable<Action> = this._actions$
     .ofType(roomAction.ActionTypes.CREATE)
     .map((action: roomAction.CreateAction) => action.payload)
     .switchMap(options => {
-      return this.roomService.create(options)
+      return this._roomService.create(options)
         .map(response => new roomAction.CreateCompleteAction(response))
         .catch(err => of(new roomAction.CreateErrorAction(err)))
     });
 
-  @Effect() apply$: Observable<Action> = this.actions$
+  @Effect() apply$: Observable<Action> = this._actions$
     .ofType(roomAction.ActionTypes.APPLY)
     .map((action: roomAction.ApplyAction) => action.payload)
     .switchMap(options => {
-      return this.roomService.apply(options)
+      return this._roomService.apply(options)
         .map(response => new roomAction.ApplyCompleteAction(response))
         .catch(err => of(new roomAction.ApplyErrorAction(err)))
     });
 
-  @Effect() updateApplication$: Observable<Action> = this.actions$
+  @Effect() updateApplication$: Observable<Action> = this._actions$
     .ofType(roomAction.ActionTypes.UPDATE_APPLICATION)
     .map((action: roomAction.UpdateApplicationAction) => action.payload)
     .switchMap(options => {
-      return this.roomService.updateApplication(options)
+      return this._roomService.updateApplication(options)
         .map(response => new roomAction.UpdateApplicationCompleteAction(response))
         .catch(err => of(new roomAction.UpdateApplicationErrorAction(err)))
     });
+
+  @Effect() applicationMessageList$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_LIST)
+    .map((action: roomAction.ApplicationMessageListAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.getApplicationMessageList(options)
+        .map(response => new roomAction.ApplicationMessageListCompleteAction(response))
+        .catch(err => of(new roomAction.ApplicationMessageListErrorAction(err)))
+    });
+
+  @Effect() applicationMessageJoin$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_JOIN)
+    .map((action: roomAction.ApplicationMessageJoinAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.applicationMessageJoin(options)
+    });
+
+  @Effect() applicationMessageCreate$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE)
+    .map((action: roomAction.ApplicationMessageCreateAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.applicationMessageCreate(options)
+    });
+
+  constructor(private _actions$: Actions,
+              private _roomService: RoomService) {}
+
 }

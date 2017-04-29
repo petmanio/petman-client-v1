@@ -21,12 +21,12 @@ export interface IRoomApplicationsListComponent {
             <div md-card-avatar class="pm-cart-avatar"
                  [ngStyle]="{'background-image': 'url(' + getUserAvatar(application) + ')'}"></div>&nbsp;
           </div>
-          <div class="column is-8">
-            <span class="pm-font-14 pm-color-gray pm-room-application-status">{{getUserName(application)}}</span><br/>
-            <span class="pm-font-12 pm-color-gray pm-room-application-status">{{getApplicationStatus(application)}}</span>
-          </div>
-          <div class="column is-2">
-            <span class="pm-font-12 pm-color-gray pm-room-application-status">{{application.createdAt | date}}</span>
+          <div class="column is-10">
+            <div>
+              <span class="pm-font-14 pm-color-gray pm-room-application-status">{{getUserName(application)}}</span><br/>
+              <span class="pm-font-12 pm-color-gray pm-room-application-status">{{getApplicationStatus(application)}}</span>
+            </div>
+            <div class="pm-font-12 pm-color-gray pm-room-application-status">{{application.createdAt | date}}</div>
           </div>
         </div>
       </li>
@@ -43,7 +43,7 @@ export interface IRoomApplicationsListComponent {
     }
 
     .pm-room-application-status {
-      padding-top: 14px;
+      text-align: right;
     }
 
     li.selected {

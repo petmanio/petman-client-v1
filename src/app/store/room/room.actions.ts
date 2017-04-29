@@ -2,7 +2,9 @@ import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
   IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
-  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse, IRoomUpdateApplicationRequest, IRoomUpdateApplicationResponse
+  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse, IRoomUpdateApplicationRequest, IRoomUpdateApplicationResponse,
+  IRoomApplicationMessageListRequest, IRoomApplicationMessageListResponse, IRoomApplicationMessageJoinRequest,
+  IRoomApplicationMessageCreateRequest, IRoomApplicationMessageCreateEventResponse
 } from '../../models/api';
 
 /**
@@ -33,7 +35,21 @@ export const ActionTypes = {
 
   UPDATE_APPLICATION: type('[Room] Update Application'),
   UPDATE_APPLICATION_COMPLETE: type('[Room] Update Application Complete'),
-  UPDATE_APPLICATION_ERROR: type('[Room] Update Application Error')
+  UPDATE_APPLICATION_ERROR: type('[Room] Update Application Error'),
+
+  APPLICATION_MESSAGE_LIST: type('[Room] Application Message List'),
+  APPLICATION_MESSAGE_LIST_COMPLETE: type('[Room] Application Message Complete'),
+  APPLICATION_MESSAGE_LIST_ERROR: type('[Room] Application Message Error'),
+  APPLICATION_MESSAGE_LIST_CLEAR: type('[Room] Application Message Clear'),
+
+  APPLICATION_MESSAGE_JOIN: type('[Room] Application Message Join'),
+  // TODO: add actions for complete and error
+
+  APPLICATION_MESSAGE_CREATE: type('[Room] Application Message Create'),
+  // TODO: add actions for complete and error
+
+  APPLICATION_MESSAGE_CREATE_EVENT: type('[Room] Application Message Create Event'),
+  // TODO: add actions for complete and error
 };
 
 /**
@@ -156,6 +172,60 @@ export class UpdateApplicationErrorAction implements Action {
 }
 
 /**
+ * Application Message List
+ */
+export class ApplicationMessageListAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_LIST;
+
+  constructor(public payload: IRoomApplicationMessageListRequest) { }
+}
+
+export class ApplicationMessageListCompleteAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE;
+
+  constructor(public payload: IRoomApplicationMessageListResponse) { }
+}
+
+export class ApplicationMessageListErrorAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_LIST_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+export class ApplicationMessageListClearAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_LIST_CLEAR;
+
+  constructor(public payload: any) { }
+}
+
+/**
+ * Application Message Join
+ */
+export class ApplicationMessageJoinAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_JOIN;
+
+  constructor(public payload: IRoomApplicationMessageJoinRequest) { }
+}
+
+/**
+ * Application Message Create
+ */
+export class ApplicationMessageCreateAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_CREATE;
+
+  constructor(public payload: IRoomApplicationMessageCreateRequest) { }
+}
+
+/**
+ * Application Message Create Event
+ */
+export class ApplicationMessageCreateEventAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT;
+
+  constructor(public payload: IRoomApplicationMessageCreateEventResponse) { }
+}
+
+/**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
@@ -176,3 +246,10 @@ export type Actions
   | UpdateApplicationAction
   | UpdateApplicationCompleteAction
   | UpdateApplicationErrorAction
+  | ApplicationMessageListAction
+  | ApplicationMessageListCompleteAction
+  | ApplicationMessageListErrorAction
+  | ApplicationMessageListClearAction
+  | ApplicationMessageJoinAction
+  | ApplicationMessageCreateAction
+  | ApplicationMessageCreateEventAction

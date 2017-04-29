@@ -56,9 +56,18 @@ export interface IRoomApplication {
   provider?: IUser,
   room?: IRoom,
   count?: number,
+  chats?: IRoomApplicationMessage[],
   status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
+  createdAt: string
+}
+
+export interface IRoomApplicationMessage {
+  to: number | IUser
+  from: number | IUser,
+  isOwner: boolean,
+  message: string,
   createdAt: string
 }
 
@@ -189,6 +198,30 @@ export interface IRoomApplyResponse {}
 export interface IRoomUpdateApplicationRequest extends IRoomApplication {}
 
 export interface IRoomUpdateApplicationResponse extends IRoomApplication {}
+
+export interface IRoomApplicationMessageListRequest {
+  applicationId: number
+}
+
+export interface IRoomApplicationMessageListResponse {
+  count: number,
+  list: IRoomApplicationMessage[]
+}
+
+export interface IRoomApplicationMessageJoinRequest {
+  applicationId: number,
+  'x-auth-token'?: string
+}
+
+export interface IRoomApplicationMessageCreateRequest {
+  applicationId: number,
+  'x-auth-token'?: string,
+  message: string
+}
+
+export interface IRoomApplicationMessageCreateEventResponse extends IRoomApplicationMessage {
+
+}
 
 /**
  * Notification

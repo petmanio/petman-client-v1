@@ -153,6 +153,7 @@ export const getRoomState = (state: State) => state.room;
 export const getRoomList = createSelector(getRoomState, fromRoom.getList);
 // TODO: update method and store item names
 export const getRoomRoom = createSelector(getRoomState, fromRoom.getRoom);
+export const getRoomApplicationMessageList = createSelector(getRoomState, fromRoom.getApplicationMessageList);
 
 /**
  * Notification Reducers

@@ -17,6 +17,7 @@ export { RoomDetailsComponent } from './room-details/room-details.component';
 export { RoomRatingRowComponent } from './room-rating-row/room-rating-row.component';
 export { RoomApplyDialogComponent } from './room-apply-dialog/room-apply-dialog.component';
 export { RoomApplicationActionsComponent } from './room-application-actions/room-application-actions.component';
-export { RoomApplicationChatComponent } from './room-application-chat/room-application-chat.component';
+export { RoomApplicationMessagesComponent } from './room-application-messages/room-application-messages.component';
+export { RoomApplicationMessageComponent } from './room-application-message/room-application-message';
 export { RoomApplicationsListComponent } from './room-applications-list/room-applications-list.component';
 export { MapComponent } from './map/map.component';

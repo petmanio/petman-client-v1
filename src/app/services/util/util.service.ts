@@ -1,9 +1,15 @@
-import { Injectable, Component, Compiler, NgModule, Input, ComponentFactory } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { LatLngBounds, LatLng, MapsAPILoader } from 'angular2-google-maps/core';
-import { environment } from '../../../environments/environment'
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { SailsService } from 'angular2-sails';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store';
+import * as roomAction from '../../store/room/room.actions';
+import { setInterval } from 'timers';
 
 export interface IUtilService {
+  initSocket(): void
   // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
@@ -18,7 +24,7 @@ export class UtilService implements IUtilService {
       });
     };
 
-    (function(d, s, id){
+    (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
@@ -34,7 +40,8 @@ export class UtilService implements IUtilService {
       subject.next(true);
       const pointer = this;
       const intervalId = setInterval(() => {
-        if (pointer.readyState !== 4) {
+          // if (pointer.readyState !== 4) {
+          if (pointer.readyState === 1) {
           return;
         }
         subject.next(false);
@@ -77,7 +84,22 @@ export class UtilService implements IUtilService {
 
   static capitalizeFirstChar = string => string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
 
-  constructor() {}
+  constructor(private _sailsService: SailsService, private _store: Store<fromRoot.State>) {}
+
+  initSocket(): void {
+    const connect = () => {
+      this._sailsService.connect(environment.apiEndpoint)
+        .subscribe(() => {
+          this._sailsService.on('roomApplicationMessage')
+            .subscribe($event => {
+              this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
+            });
+        });
+    };
+
+    connect();
+
+  }
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {
   //   const boundsSubject: Subject<any> = new Subject();
