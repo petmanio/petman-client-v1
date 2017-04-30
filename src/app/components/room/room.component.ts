@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IRoom, IRoomApplication } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 // TODO: fix stars on mobile firefox
 export interface IRoomComponent {
@@ -20,8 +21,16 @@ export interface IRoomComponent {
           </span>
         </md-card-subtitle>
       </md-card-header>
-      <img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">
+      <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">-->
       <md-card-content>
+        <div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">
+          <div class="swiper-wrapper">
+            <div *ngFor="let image of room.images" class="swiper-slide">
+              <img class="pm-carousel-image" [src]="image.src">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
         <p class="pm-font-bold">
           {{room.cost}}$ / day
         </p>
@@ -38,11 +47,7 @@ export interface IRoomComponent {
   `,
   styles: [`
     .room-card  {}
-    
-    md-card-footer .pm-room-details-button {
-      margin-top: -10px;
-    }
-    
+
     md-card-title {
       margin-top: 10px;
     }
@@ -50,12 +55,22 @@ export interface IRoomComponent {
     .pm-room-description {
       height: 50px;
     }
+
+    .pm-carousel-image {
+      height: 300px;
+    }
   `]
 })
 export class RoomComponent implements OnChanges, IRoomComponent {
   @Input() room: IRoom;
   averageRating: number;
-  isAvailable: boolean;
+  swiperOptions: SwiperConfigInterface = {
+    direction: 'horizontal',
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    autoplay: 3000 + (Math.random() * 100),
+    loop: true
+  };
   constructor() {
 
   }

@@ -7,11 +7,9 @@ import { HttpModule, Http } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { DBModule } from '@ngrx/db';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// TODO: create fake module and export all modules from material
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
   MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule
@@ -21,10 +19,13 @@ import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
 import { SwiperModule } from 'ngx-swiper-wrapper';
+import { environment } from '../environments/environment';
+
+// import { DBModule } from '@ngrx/db';
 // import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
+// TODO: create fake module and export all modules from material
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
-import { environment } from '../environments/environment';
 
 import {
   AppComponent,

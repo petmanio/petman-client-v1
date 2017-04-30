@@ -24,7 +24,7 @@ export interface IRoomReviewsListComponent {
               </span><br/>
             </div>
           </div>
-          <div class="column is-4">
+          <div class="column">
             <div class="pm-room-review-padding">
               <rating [ngModel]="application.rating"
                       [max]="5"
@@ -36,14 +36,12 @@ export interface IRoomReviewsListComponent {
                       [float]="true"
                       [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
               <div><i class="pm-font-12 pm-color-gray">{{application.review || 'There are no review details'}}</i></div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="pm-font-12 pm-color-gray pm-room-review-date is-hidden-mobile pm-room-review-padding">
-              {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}
-            </div>
-            <div class="pm-font-12 pm-color-gray pm-room-review-date is-hidden-desktop">
-              {{formatDateMobile(application.createdAt)}}<br/>{{formatDateMobile(application.finsihedAt)}}
+              <div class="pm-font-12 pm-color-gray pm-room-review-date pm-room-review-padding">
+                {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}
+              </div>
+              <!--<div class="pm-font-12 pm-color-gray pm-room-review-date is-hidden-desktop">-->
+                <!--{{formatDateMobile(application.createdAt)}}<br/>{{formatDateMobile(application.finsihedAt)}}-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -87,6 +85,6 @@ export class RoomReviewsListComponent implements IRoomReviewsListComponent {
 
   formatDateMobile(date): string {
     // TODO: use angular date filter
-    return UtilService.formatDate(date, 'L');
+    return UtilService.formatDate(date, 'DD/M/YY');
   }
 }

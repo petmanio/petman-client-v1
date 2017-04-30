@@ -28,8 +28,9 @@ export interface IRoomApplicationMessagesComponent {
             <input mdInput 
                    placeholder="Type a message" 
                    name="message" 
-                   type="text" 
-                   autocomplete="false" [(ngModel)]="message" 
+                   type="text"
+                   autocomplete="off"
+                   [(ngModel)]="message"
                    [disabled]="isMessageSendDisabled()"
                    (keyup.enter)="onSendMessage()"/>
           </md-input-container>
