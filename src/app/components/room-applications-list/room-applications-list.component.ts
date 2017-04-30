@@ -19,11 +19,13 @@ export interface IRoomApplicationsListComponent {
         <div class="columns is-mobile pm-application-row">
           <div class="column is-2">
             <div md-card-avatar class="pm-cart-avatar"
-                 [ngStyle]="{'background-image': 'url(' + getUserAvatar(application) + ')'}"></div>&nbsp;
+                 [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
           </div>
           <div class="column is-10">
             <div>
-              <span class="pm-font-14 pm-color-gray pm-room-application-status">{{getUserName(application)}}</span><br/>
+              <span class="pm-font-14 pm-color-gray pm-room-application-status">
+                {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
+              </span><br/>
               <span class="pm-font-12 pm-color-gray pm-room-application-status">{{getApplicationStatus(application)}}</span>
             </div>
             <div class="pm-font-12 pm-color-gray pm-room-application-status">{{formatDate(application.createdAt)}}</div>
