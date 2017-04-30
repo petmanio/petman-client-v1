@@ -20,7 +20,7 @@ export interface IRoomRatingRowComponent {
                 [float]="true"
                 [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
       </div>
-      <div class="column is-4">
+      <div class="column is-4 pm-room-details-action">
         <a class="pm-room-details-button" *ngIf="routerLink && !hideAction" md-button [routerLink]="routerLink" 
            [disabled]="disabled">{{actionText}}</a>
         <button class="pm-room-details-button" 
@@ -32,6 +32,10 @@ export interface IRoomRatingRowComponent {
   styles: [`
     .pm-room-details-button {
       margin-top: -10px;
+    }
+
+    .pm-room-details-action {
+      text-align: right;
     }
   `]
 })

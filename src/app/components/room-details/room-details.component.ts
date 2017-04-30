@@ -69,12 +69,13 @@ export interface IRoomDetailsComponent {
         </div>
         <div class="columns">
           <div class="column column is-6 is-offset-5">
+            <div class="pm-font-16 pm-color-gray pm-action-label">Reviews</div>
             <app-room-reviews-list [applications]="finishedApplications"></app-room-reviews-list>
           </div>
         </div>
         <div class="columns">
           <div class="column is-4 is-offset-1">
-            <span class="pm-font-14 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
+            <span class="pm-font-16 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
             <app-room-applications-list [applications]="inProgressApplications"
                                         [room]="roomRoom$ | async"
                                         (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
