@@ -1,15 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IRoomApplicationMessage } from '../../models/api';
+import { IRoomApplicationMessage, IUser } from '../../models/api';
 import * as moment from 'moment';
 
 export interface IRoomApplicationMessageComponent {
-  getMessageDateFromNow(date): string
+  getMessageDateFromNow(date): string,
+  isMessageOwner(): boolean
 }
 
 @Component({
   selector: 'app-room-application-message',
   template: `
-    <div class="columns is-mobile pm-message-row" *ngIf="message.isOwner">
+    <div class="columns is-mobile pm-message-row" *ngIf="isMessageOwner()">
       <div class="column">
         <div class="pm-message-text pm-background-light-pink">
           <span class="pm-font-12 pm-color-white">{{message.message}}</span>
@@ -17,7 +18,7 @@ export interface IRoomApplicationMessageComponent {
         <div class="pm-font-10 pm-color-gray pm-message-time">{{getMessageDateFromNow(message.createdAt)}}</div>
       </div>
     </div>
-    <div class="columns is-mobile pm-message-row" *ngIf="!message.isOwner">
+    <div class="columns is-mobile pm-message-row" *ngIf="!isMessageOwner()">
       <div class="column is-1-desktop is-2-mobile">
         <div md-card-avatar class="pm-cart-avatar"
              [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></div>&nbsp;
@@ -58,6 +59,7 @@ export interface IRoomApplicationMessageComponent {
 })
 export class RoomApplicationMessageComponent implements OnInit, IRoomApplicationMessageComponent{
   @Input() message: IRoomApplicationMessage;
+  @Input() currentUser: IUser;
 
   constructor() {
   }
@@ -67,5 +69,9 @@ export class RoomApplicationMessageComponent implements OnInit, IRoomApplication
 
   getMessageDateFromNow(date): string {
     return moment(date).fromNow();
+  }
+
+  isMessageOwner(): boolean {
+    return this.currentUser.id === this.message.from['id'];
   }
 }

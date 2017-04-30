@@ -22,17 +22,28 @@ export interface IRoomApplicationMessagesComponent {
       <ul class="pm-message-list">
         <app-room-application-message 
           *ngFor="let message of (roomApplicationMessageList$ | async)?.list"
-          [message]="message"></app-room-application-message>
+          [message]="message"
+          [currentUser]="currentUser$ | async"></app-room-application-message>
       </ul>
       <div class="columns is-mobile pm-chart-actions">
-        <div class="column">
+        <div class="column is-11-desktop is-9-mobile">
           <md-input-container>
-            <input mdInput placeholder="Type a message" name="message" [(ngModel)]="message" 
+            <input mdInput 
+                   placeholder="Type a message" 
+                   name="message" 
+                   type="text" 
+                   autocomplete="false" [(ngModel)]="message" 
                    [disabled]="isMessageSendDisabled()"
                    (keyup.enter)="onSendMessage()"/>
           </md-input-container>
         </div>
-        <!--<div class="column is-2"><button md-button (click)="onSendMessage()">Send</button></div>-->
+        <div class="column is-1-desktop is-3-mobile">
+          <button md-icon-button 
+                  (click)="onSendMessage()"
+                  [disabled]="!message || isMessageSendDisabled()">
+            <md-icon>send</md-icon>
+          </button>
+        </div>
       </div>
     </div>
   `,
@@ -63,9 +74,11 @@ export class RoomApplicationMessagesComponent implements OnInit, OnChanges, IRoo
 
   message = '';
   roomApplicationMessageList$: Observable<any>;
+  currentUser$: Observable<any>;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService,
               private _sailsService: SailsService) {
     this.roomApplicationMessageList$ = _store.select(fromRoot.getRoomApplicationMessageList);
+    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
@@ -73,7 +86,10 @@ export class RoomApplicationMessagesComponent implements OnInit, OnChanges, IRoo
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['application'].previousValue || changes['application'].previousValue.id !==  changes['application'].currentValue.id) {
+    if (!changes['application']) {
+      this._store.dispatch(new roomAction.ApplicationMessageListClearAction({}));
+    } else if (!changes['application'].previousValue ||
+      changes['application'].previousValue.id !==  changes['application'].currentValue.id) {
       this._store.dispatch(new roomAction.ApplicationMessageListClearAction({}));
       this._store.dispatch(new roomAction.ApplicationMessageListAction({ applicationId: this.application.id }));
       this._store.dispatch(new roomAction.ApplicationMessageJoinAction({ applicationId: this.application.id }));
@@ -82,8 +98,10 @@ export class RoomApplicationMessagesComponent implements OnInit, OnChanges, IRoo
   }
 
   onSendMessage(): void {
-    this._store.dispatch(new roomAction.ApplicationMessageCreateAction({ applicationId: this.application.id, message: this.message }));
-    this.message = '';
+    if (this.message) {
+      this._store.dispatch(new roomAction.ApplicationMessageCreateAction({ applicationId: this.application.id, message: this.message }));
+      this.message = '';
+    }
   }
 
   isMessageSendDisabled(): boolean {

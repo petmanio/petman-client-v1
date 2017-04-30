@@ -6,7 +6,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
-import { setInterval } from 'timers';
+import * as moment from 'moment';
 
 export interface IUtilService {
   initSocket(): void
@@ -84,21 +84,38 @@ export class UtilService implements IUtilService {
 
   static capitalizeFirstChar = string => string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
 
+  static formatDate(date, format = 'll'): string {
+    return moment(date).format(format);
+  }
+
   constructor(private _sailsService: SailsService, private _store: Store<fromRoot.State>) {}
 
   initSocket(): void {
+    window['io'].sails.reconnection = true;
+    window['io'].sails.useCORSRouteToGetCookie = false;
+    window['io'].sails.environment = environment.production ? 'production' : 'development';
+
     const connect = () => {
-      this._sailsService.connect(environment.apiEndpoint)
+      // TODO: why opts not working
+      const opts = {
+        url: environment.apiEndpoint,
+        transports: ['polling', 'websocket'],
+        headers: {'x-auth-token': localStorage.getItem('token')},
+        autoConnect: true,
+        environment: environment.production ? 'production' : 'development'
+      };
+      this._sailsService.connect(opts)
         .subscribe(() => {
           this._sailsService.on('roomApplicationMessage')
             .subscribe($event => {
-              this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
+              if ($event) {
+                this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
+              }
             });
         });
     };
 
     connect();
-
   }
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {

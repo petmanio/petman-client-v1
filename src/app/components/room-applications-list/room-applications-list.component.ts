@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { IRoom, IRoomApplication } from '../../models/api';
-import { root } from 'rxjs/util/root';
 import { UtilService } from '../../services/util/util.service';
 
 export interface IRoomApplicationsListComponent {
   getUserAvatar(application: IRoomApplication): string,
   getUserName(application: IRoomApplication): string,
-  getApplicationStatus(application: IRoomApplication): string
+  getApplicationStatus(application: IRoomApplication): string,
+  formatDate(date): string
 }
 
 @Component({
@@ -26,7 +26,7 @@ export interface IRoomApplicationsListComponent {
               <span class="pm-font-14 pm-color-gray pm-room-application-status">{{getUserName(application)}}</span><br/>
               <span class="pm-font-12 pm-color-gray pm-room-application-status">{{getApplicationStatus(application)}}</span>
             </div>
-            <div class="pm-font-12 pm-color-gray pm-room-application-status">{{application.createdAt | date}}</div>
+            <div class="pm-font-12 pm-color-gray pm-room-application-status">{{formatDate(application.createdAt)}}</div>
           </div>
         </div>
       </li>
@@ -115,5 +115,10 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
     }
 
     return UtilService.capitalizeFirstChar(status);
+  }
+
+  formatDate(date): string {
+    // TODO: use angular date filter
+    return UtilService.formatDate(date);
   }
 }

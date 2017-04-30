@@ -116,15 +116,17 @@ export interface IRoomDetailsComponent {
       /*margin-top: 25px;*/
     }
     app-room-applications-list {
-      max-height: 640px;
-      min-height: 640px;
-      overflow-x: auto;
+      min-height: 200px;
+      /*max-height: 640px;*/
+      /*min-height: 640px;*/
+      /*overflow-x: auto;*/
     }
     
     app-room-application-messages {
-      max-height: 500px;
-      min-height: 500px;
-      overflow-x: auto;
+      min-height: 200px;
+      /*max-height: 500px;*/
+      /*min-height: 500px;*/
+      /*overflow-x: auto;*/
     }
     
     .pm-message-label {
@@ -151,6 +153,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   room: IRoom;
   private _roomId: number;
   private _destroyed$ = new Subject<boolean>();
+  private _roomListener;
+  private _routeListener;
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
               private dialog: MdDialog,
@@ -162,7 +166,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
 
   ngOnInit(): void {
     // TODO: remove listener on destroy
-    this._activatedRoute.params.subscribe((params: Params) => {
+    this._routeListener = this._activatedRoute.params.subscribe((params: Params) => {
       this._roomId = parseInt(params['roomId'], 10);
       if (!this._roomId) {
         // TODO: use global error handling
@@ -171,12 +175,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
     });
 
-    this.roomRoom$.subscribe($event => {
+    this._roomListener = this.roomRoom$.subscribe($event => {
       if ($event) {
         this.room = $event;
         if (this.room.applications.length) {
           this.selectedApplication = this.room.applications[0];
           this._roomApplicationList.selected = 0;
+        } else {
+          this.selectedApplication = null;
         }
 
         // TODO: update logic
@@ -194,15 +200,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       .takeUntil(this._destroyed$)
       .do(() => {
         this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
-        // this._snackBar.open(`Your request has been sent`, null, {
-        //   duration: 3000
-        // })
       })
       .subscribe();
   }
 
   ngOnDestroy(): void {
     this._destroyed$.next(true);
+    this._roomListener.unsubscribe();
+    this._routeListener.unsubscribe();
   }
 
   onRatingRowClick(): void {
