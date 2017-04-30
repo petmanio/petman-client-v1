@@ -6,9 +6,6 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
-import { SailsService } from 'angular2-sails';
-import { environment } from '../../../environments/environment';
-
 
 export interface IRoomApplicationMessagesComponent {
   onSendMessage(): void,
@@ -75,8 +72,7 @@ export class RoomApplicationMessagesComponent implements OnInit, OnChanges, IRoo
   message = '';
   roomApplicationMessageList$: Observable<any>;
   currentUser$: Observable<any>;
-  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService,
-              private _sailsService: SailsService) {
+  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.roomApplicationMessageList$ = _store.select(fromRoot.getRoomApplicationMessageList);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }

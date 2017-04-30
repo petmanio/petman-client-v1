@@ -24,7 +24,8 @@
         "styles.scss"
       ],
       "scripts": [
-        "../node_modules/sails.io.js/dist/sails.io.js"
+        "../node_modules/sails.io.js/dist/sails.io.js",
+        "../custom.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

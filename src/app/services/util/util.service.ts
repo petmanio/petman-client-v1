@@ -88,6 +88,13 @@ export class UtilService implements IUtilService {
     return moment(date).format(format);
   }
 
+  static countAverage(list: any[], key = 'rating'): number {
+    return list.reduce((sum, el, i, array) => {
+      sum += el[key];
+      return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
+    }, 0);
+  }
+
   constructor(private _sailsService: SailsService, private _store: Store<fromRoot.State>) {}
 
   initSocket(): void {
@@ -101,7 +108,7 @@ export class UtilService implements IUtilService {
         url: environment.apiEndpoint,
         transports: ['polling', 'websocket'],
         headers: {'x-auth-token': localStorage.getItem('token')},
-        autoConnect: true,
+        autoConnect: false,
         environment: environment.production ? 'production' : 'development'
       };
       this._sailsService.connect(opts)

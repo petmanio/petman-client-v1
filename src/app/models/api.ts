@@ -85,7 +85,8 @@ export interface IRoom {
   applications: IRoomApplication[]
   isOwner?: boolean,
   images?: IRoomImage[],
-  user?: IUser
+  user?: IUser,
+  createdAt: string
 }
 
 export interface IUserReview {

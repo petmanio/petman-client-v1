@@ -16,7 +16,8 @@ import { RoomApplicationsListComponent } from '../room-applications-list/room-ap
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
   onApplicationSelect(index: number): void,
-  onActionClick(status: string): void
+  onActionClick(status: string): void,
+  formatDate(date): string
 }
 
 @Component({
@@ -32,14 +33,9 @@ export interface IRoomDetailsComponent {
               <md-card-title>
                 {{(roomRoom$ | async)?.user.userData.firstName}} {{(roomRoom$ | async)?.user.userData.lastName}}</md-card-title>
               <md-card-subtitle>
-            <span class="pm-font-14 pm-color-red" *ngIf="!(roomRoom$ | async)?.isAvailable">
-              <md-icon class="pm-font-14 pm-color-red">close</md-icon>
-              Not available
-            </span>
-                <span class="pm-font-14 pm-color-green" *ngIf="(roomRoom$ | async)?.isAvailable">
-              <md-icon class="pm-font-14 pm-color-green">check</md-icon>
-              Available
-            </span>
+              <span class="pm-font-12 pm-color-gray">
+                {{formatDate((roomRoom$ | async)?.createdAt)}}
+              </span>
               </md-card-subtitle>
             </md-card-header>
           </div>
@@ -62,32 +58,30 @@ export interface IRoomDetailsComponent {
         <div class="columns">
           <div class="column">
             <div class="columns">
-              <div class="column">
-                <div class="column is-6">
-                  <span class="pm-font-12 pm-color-gray">3 review(s)</span>
-                  <md-list>
-                    <md-list-item>
-                      <div md-card-avatar class="pm-cart-avatar"
-                           [ngStyle]="{'background-image': 'url(' + 'https://fb-s-a-a.akamaihd.net/h-ak-xfl1' +
+              <div class="column is-6">
+                <span class="pm-font-12 pm-color-gray">3 review(s)</span>
+                <md-list>
+                  <md-list-item>
+                    <div md-card-avatar class="pm-cart-avatar"
+                         [ngStyle]="{'background-image': 'url(' + 'https://fb-s-a-a.akamaihd.net/h-ak-xfl1' +
                             '/v/t1.0-1/c0.0.480.480/p480x480' +
                           '/17990916_1671967849497512_7190601138827019061_n.jpg?oh=80c9d09ca63c770b8f8d21fa21b609b5&oe=59988214&__gda__=' +
                            '1503211597_553a09894fc90fcb6b2ffe02b5168d4f' + ')'}"></div>&nbsp;
-                      <rating [ngModel]="3"
-                              [max]="5"
-                              fullIcon="★"
-                              emptyIcon="☆"
-                              [readonly]="true"
-                              [disabled]="false"
-                              [required]="true"
-                              [float]="true"
-                              [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-                      <span class="pm-font-14 pm-color-gray">&nbsp; Andranik Antonyan<br/>
+                    <rating [ngModel]="3"
+                            [max]="5"
+                            fullIcon="★"
+                            emptyIcon="☆"
+                            [readonly]="true"
+                            [disabled]="false"
+                            [required]="true"
+                            [float]="true"
+                            [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+                    <span class="pm-font-14 pm-color-gray">&nbsp; Andranik Antonyan<br/>
                       <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;
                         {{'Test review' || 'There are no review details'}}</span>
                     </span>
-                    </md-list-item>
-                  </md-list>
-                </div>
+                  </md-list-item>
+                </md-list>
               </div>
             </div>
             <div class="columns">
@@ -148,7 +142,6 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   // TODO: update attribute name
   roomRoom$: Observable<any>;
   averageRating: number;
-  isAvailable: boolean;
   selectedApplication: IRoomApplication;
   room: IRoom;
   private _roomId: number;
@@ -184,14 +177,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
         } else {
           this.selectedApplication = null;
         }
-
-        // TODO: update logic
-        // TODO: functionality for future
-        // this.isAvailable = this.inProgressApplications.length <= $event.limit;
-        // this.averageRating = this.finishedApplications.reduce((sum, el, i, array) => {
-        //   sum += el.rating;
-        //   return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
-        // }, 0);
+        this.averageRating = UtilService.countAverage(this.room.applications.filter(application => application.status === 'FINISHED'));
       }
     });
 
@@ -236,6 +222,11 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     const application = clone<IRoomApplication>(this.selectedApplication);
     application.status = status;
     this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+  }
+
+  formatDate(date): string {
+    // TODO: use angular date filter
+    return UtilService.formatDate(date);
   }
 
 }

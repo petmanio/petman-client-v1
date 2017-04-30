@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IRoom, IRoomApplication } from '../../models/api';
+import { UtilService } from '../../services/util/util.service';
 
 // TODO: fix stars on mobile firefox
 export interface IRoomComponent {
-
+  formatDate(date): string
 }
 
 @Component({
@@ -14,14 +15,9 @@ export interface IRoomComponent {
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + room.user.userData.avatar + ')'}"></div>
         <md-card-title>{{room.user.userData.firstName}} {{room.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
-          <span class="pm-font-14 pm-color-red" [hidden]="room.isAvailable">
-              <md-icon class="pm-font-14 pm-color-red">close</md-icon>
-              Not available
-            </span>
-          <span class="pm-font-14 pm-color-green" [hidden]="!room.isAvailable">
-              <md-icon class="pm-font-14 pm-color-green">check</md-icon>
-              Available
-            </span>
+          <span class="pm-font-12 pm-color-gray">
+            {{formatDate(room.createdAt)}}
+          </span>
         </md-card-subtitle>
       </md-card-header>
       <img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">
@@ -60,25 +56,18 @@ export class RoomComponent implements OnChanges, IRoomComponent {
   @Input() room: IRoom;
   averageRating: number;
   isAvailable: boolean;
-  finishedApplications: IRoomApplication[] = [];
-  inProgressApplications: IRoomApplication[] = [];
   constructor() {
 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['room']) {
-      this.inProgressApplications = this.room.applications
-        .filter(application => application.status === 'CONFIRMED' && !application.endedAt);
-      this.finishedApplications = this.room.applications.filter(application => application.status === 'CONFIRMED' && application.endedAt);
-
-      // TODO: update logic
-      // TODO: functionality for future
-      // this.isAvailable = this.inProgressApplications.length <= $event.limit;
-      this.averageRating = this.finishedApplications.reduce((sum, el, i, array) => {
-        sum += el.rating;
-        return i === array.length - 1 ? (array.length === 0 ? 0 : sum / array.length) : sum
-      }, 0);
+      this.averageRating = UtilService.countAverage(this.room.applications.filter(application => application.status === 'FINISHED'));
     }
+  }
+
+  formatDate(date): string {
+    // TODO: use angular date filter
+    return UtilService.formatDate(date);
   }
 }
