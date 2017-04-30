@@ -48,7 +48,7 @@
     "ngrx-store-freeze": "^0.1.9",
     "ngx-infinite-scroll": "^0.4.2",
     "ngx-rating": "0.0.9",
-    "ngx-siema": "^1.1.0",
+    "ngx-swiper-wrapper": "^4.0.0",
     "normalize.css": "^5.0.0",
     "pikaday": "^1.5.1",
     "react": "^15.5.4",
@@ -59,6 +59,7 @@
     "siema": "^1.4.2",
     "smartcrop": "^1.1.1",
     "socket.io-client": "^1.7.3",
+    "swiper": "3.2.6",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

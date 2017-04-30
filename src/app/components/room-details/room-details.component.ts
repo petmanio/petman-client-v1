@@ -12,10 +12,11 @@ import { UtilService } from '../../services/util/util.service';
 import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
-  onApplicationSelect(index: number): void,
+  onApplicationSelect(application: IRoomApplication): void,
   onActionClick(status: string): void,
   formatDate(date): string
 }
@@ -26,7 +27,7 @@ export interface IRoomDetailsComponent {
     <md-card>
       <md-card-content>
         <div class="columns">
-          <div class="column">
+          <div class="column is-10 is-offset-1">
             <md-card-header>
               <div md-card-avatar class="pm-cart-avatar"
                    [ngStyle]="{'background-image': 'url(' + (roomRoom$ | async)?.user.userData.avatar + ')'}"></div>
@@ -41,65 +42,51 @@ export interface IRoomDetailsComponent {
           </div>
         </div>
         <div class="columns">
-          <div class="column">
-            
+          <div class="column is-10 is-offset-1">
+            <div class="swiper-container" *ngIf="(roomRoom$ | async)?.images.length" [swiper]="swiperOptions">
+              <div class="swiper-wrapper">
+                <div *ngFor="let image of (roomRoom$ | async)?.images" class="swiper-slide">
+                  <img class="pm-carousel-image" [src]="image.src">
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
           </div>
         </div>
         <div class="columns">
-          <div class="column">
+          <div class="column column is-10 is-offset-1">
             <app-room-rating-row
               (onButtonClick)="onRatingRowClick()"
               [averageRating]="averageRating"
-              [hideAction]="!(roomRoom$ | async)?.isAvailable"
               [actionText]="(roomRoom$ | async)?.isOwner ? 'Edit' : 'Apply'"
             ></app-room-rating-row>
           </div>
         </div>
         <div class="columns">
-          <div class="column">
-            <div class="columns">
-              <div class="column is-6">
-                <span class="pm-font-12 pm-color-gray">3 review(s)</span>
-                <md-list>
-                  <md-list-item>
-                    <div md-card-avatar class="pm-cart-avatar"
-                         [ngStyle]="{'background-image': 'url(' + 'https://fb-s-a-a.akamaihd.net/h-ak-xfl1' +
-                            '/v/t1.0-1/c0.0.480.480/p480x480' +
-                          '/17990916_1671967849497512_7190601138827019061_n.jpg?oh=80c9d09ca63c770b8f8d21fa21b609b5&oe=59988214&__gda__=' +
-                           '1503211597_553a09894fc90fcb6b2ffe02b5168d4f' + ')'}"></div>&nbsp;
-                    <rating [ngModel]="3"
-                            [max]="5"
-                            fullIcon="★"
-                            emptyIcon="☆"
-                            [readonly]="true"
-                            [disabled]="false"
-                            [required]="true"
-                            [float]="true"
-                            [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-                    <span class="pm-font-14 pm-color-gray">&nbsp; Andranik Antonyan<br/>
-                      <span class="pm-font-12 pm-color-gray">&nbsp;&nbsp;&nbsp;
-                        {{'Test review' || 'There are no review details'}}</span>
-                    </span>
-                  </md-list-item>
-                </md-list>
-              </div>
-            </div>
-            <div class="columns">
-              <div class="column is-5">
-                <span class="pm-font-14 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
-                <app-room-applications-list [room]="roomRoom$ | async" 
-                                            (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
-              </div>
-              <div class="column is-7 pm-application-info-window" *ngIf="selectedApplication">
-                <div class="pm-font-16 pm-color-gray pm-action-label">Change application status</div>
-                <app-room-application-actions [room]="roomRoom$ | async"
-                                              [application]="selectedApplication"
-                                              (onActionClick)="onActionClick($event)"></app-room-application-actions>
-                <div class="pm-font-16 pm-color-gray pm-message-label">Chat history</div>
-                <app-room-application-messages [room]="roomRoom$ | async"
-                                               [application]="selectedApplication"></app-room-application-messages>
-              </div>
-            </div>
+          <div class="column is-8 is-offset-2">
+            <span class="pm-color-gray pm-font-16">{{(roomRoom$ | async)?.description}}</span>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column column is-6 is-offset-5">
+            <app-room-reviews-list [applications]="finishedApplications"></app-room-reviews-list>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-4 is-offset-1">
+            <span class="pm-font-14 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
+            <app-room-applications-list [applications]="inProgressApplications"
+                                        [room]="roomRoom$ | async"
+                                        (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
+          </div>
+          <div class="column is-6 pm-application-info-window" *ngIf="selectedApplication">
+            <div class="pm-font-16 pm-color-gray pm-action-label">Change application status</div>
+            <app-room-application-actions [room]="roomRoom$ | async"
+                                          [application]="selectedApplication"
+                                          (onActionClick)="onActionClick($event)"></app-room-application-actions>
+            <div class="pm-font-16 pm-color-gray pm-message-label">Chat history</div>
+            <app-room-application-messages [room]="roomRoom$ | async"
+                                           [application]="selectedApplication"></app-room-application-messages>
           </div>
         </div>
       </md-card-content>
@@ -122,6 +109,10 @@ export interface IRoomDetailsComponent {
       /*min-height: 500px;*/
       /*overflow-x: auto;*/
     }
+
+    app-room-reviews-list {
+      
+    }
     
     .pm-message-label {
       margin-top: 20px;
@@ -135,6 +126,7 @@ export interface IRoomDetailsComponent {
       padding-right: 10px;
       margin-bottom: 15px;
     }
+
   `]
 })
 export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComponent {
@@ -143,7 +135,16 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   roomRoom$: Observable<any>;
   averageRating: number;
   selectedApplication: IRoomApplication;
+  inProgressApplications: IRoomApplication[];
+  finishedApplications: IRoomApplication[];
   room: IRoom;
+  swiperOptions: SwiperConfigInterface = {
+    direction: 'horizontal',
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    autoplay: 3000,
+    loop: true
+  };
   private _roomId: number;
   private _destroyed$ = new Subject<boolean>();
   private _roomListener;
@@ -171,8 +172,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this._roomListener = this.roomRoom$.subscribe($event => {
       if ($event) {
         this.room = $event;
-        if (this.room.applications.length) {
-          this.selectedApplication = this.room.applications[0];
+        this.inProgressApplications = this.room.applications.filter(application => application.status !== 'FINISHED');
+        this.finishedApplications = this.room.applications.filter(application => application.status === 'FINISHED');
+        if (this.inProgressApplications.length) {
+          this.selectedApplication = this.inProgressApplications[0];
           this._roomApplicationList.selected = 0;
         } else {
           this.selectedApplication = null;
@@ -202,20 +205,12 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
         duration: 3000
       });
     } else {
-      // TODO: functionality for future
-      // const dialogRef = this.dialog.open(RoomApplyDialogComponent);
-      // dialogRef.componentInstance.room = this.room;
-      // dialogRef.afterClosed().subscribe(result => {
-      //   console.log(result);
-      // });
-
       this._store.dispatch(new roomAction.ApplyAction({roomId: this._roomId}));
     }
   }
 
-  onApplicationSelect(index: number): void {
-    this.selectedApplication = this.room.applications[index];
-    this._roomApplicationList.selected = index;
+  onApplicationSelect(application: IRoomApplication): void {
+    this.selectedApplication = application;
   }
 
   onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {

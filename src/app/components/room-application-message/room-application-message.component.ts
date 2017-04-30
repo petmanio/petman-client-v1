@@ -12,7 +12,7 @@ export interface IRoomApplicationMessageComponent {
   template: `
     <div class="columns is-mobile pm-message-row" *ngIf="isMessageOwner()">
       <div class="column">
-        <div class="pm-message-text pm-background-light-pink">
+        <div class="pm-message-text pm-background-blue">
           <span class="pm-font-12 pm-color-white">{{message.message}}</span>
         </div>
         <div class="pm-font-10 pm-color-gray pm-message-time">{{getMessageDateFromNow(message.createdAt)}}</div>

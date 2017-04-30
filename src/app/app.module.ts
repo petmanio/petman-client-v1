@@ -20,6 +20,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
+import { SwiperModule } from 'ngx-swiper-wrapper';
 // import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
@@ -48,6 +49,7 @@ import {
   RoomApplicationMessagesComponent,
   RoomApplicationMessageComponent,
   RoomApplicationsListComponent,
+  RoomReviewsListComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -169,6 +171,7 @@ const appRoutes: Routes = [
     RoomApplicationMessagesComponent,
     RoomApplicationMessageComponent,
     RoomApplicationsListComponent,
+    RoomReviewsListComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -196,6 +199,7 @@ const appRoutes: Routes = [
     RatingModule,
     ImageUploadModule.forRoot(),
     SailsModule.forRoot(),
+    SwiperModule.forRoot({}),
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,

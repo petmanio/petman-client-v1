@@ -23,7 +23,7 @@ export interface IRoomApplicationMessagesComponent {
           [currentUser]="currentUser$ | async"></app-room-application-message>
       </ul>
       <div class="columns is-mobile pm-chart-actions">
-        <div class="column is-11-desktop is-9-mobile">
+        <div class="column is-10 is-offset-1">
           <md-input-container>
             <input mdInput 
                    placeholder="Type a message" 
@@ -34,13 +34,13 @@ export interface IRoomApplicationMessagesComponent {
                    (keyup.enter)="onSendMessage()"/>
           </md-input-container>
         </div>
-        <div class="column is-1-desktop is-3-mobile">
-          <button md-icon-button 
-                  (click)="onSendMessage()"
-                  [disabled]="!message || isMessageSendDisabled()">
-            <md-icon>send</md-icon>
-          </button>
-        </div>
+        <!--<div class="column is-1-desktop is-3-mobile">-->
+          <!--<button md-icon-button -->
+                  <!--(click)="onSendMessage()"-->
+                  <!--[disabled]="!message || isMessageSendDisabled()">-->
+            <!--<md-icon>send</md-icon>-->
+          <!--</button>-->
+        <!--</div>-->
       </div>
     </div>
   `,

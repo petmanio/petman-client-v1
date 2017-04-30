@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/bulma/sass/utilities/all";
+@import "../node_modules/bulma/sass/base/helpers";
 //TODO: use material ui grid system for mobile
-//@import "../node_modules/bulma/sass/base/all";
 @import "../node_modules/bulma/sass/grid/all";
 @import "../node_modules/pikaday/scss/pikaday.scss";
 
@@ -21,7 +21,7 @@
   line-height: inherit !important;
   &:before {
     top: 0;
-    color: #673ab7 !important;
+    color:  #fcdd7f !important;
   }
 }
 
@@ -143,6 +143,10 @@
 
 date-input-polyfill {
   z-index: 1010;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fcdd7f;
 }
 
 @media (max-width: 600px) and (orientation: portrait) {

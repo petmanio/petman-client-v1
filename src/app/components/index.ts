@@ -20,4 +20,5 @@ export { RoomApplicationActionsComponent } from './room-application-actions/room
 export { RoomApplicationMessagesComponent } from './room-application-messages/room-application-messages.component';
 export { RoomApplicationMessageComponent } from './room-application-message/room-application-message.component';
 export { RoomApplicationsListComponent } from './room-applications-list/room-applications-list.component';
+export { RoomReviewsListComponent } from './room-reviews-list/room-reviews-list.component';
 export { MapComponent } from './map/map.component';

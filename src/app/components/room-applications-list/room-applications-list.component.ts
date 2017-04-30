@@ -3,8 +3,6 @@ import { IRoom, IRoomApplication } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 
 export interface IRoomApplicationsListComponent {
-  getUserAvatar(application: IRoomApplication): string,
-  getUserName(application: IRoomApplication): string,
   getApplicationStatus(application: IRoomApplication): string,
   formatDate(date): string
 }
@@ -12,10 +10,10 @@ export interface IRoomApplicationsListComponent {
 @Component({
   selector: 'app-room-applications-list',
   template: `
-    <ul *ngFor="let application of room?.applications; let i = index;">
+    <ul *ngFor="let application of applications; let i = index;">
       <li class="pm-cursor-pointer"
                     [ngClass]="{'selected': i === selected}"
-                    (click)="onApplicationClick.emit(i)">
+                    (click)="onApplicationClick.emit(application); selected = i">
         <div class="columns is-mobile pm-application-row">
           <div class="column is-2">
             <div md-card-avatar class="pm-cart-avatar"
@@ -61,6 +59,7 @@ export interface IRoomApplicationsListComponent {
 })
 export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomApplicationsListComponent {
   @Input() room: IRoom;
+  @Input() applications: IRoomApplication[];
   @Output() onApplicationClick = new EventEmitter();
   selected;
   constructor() {
@@ -73,28 +72,6 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
 
   ngOnChanges(changes: SimpleChanges): void {
 
-  }
-
-  getUserAvatar(application: IRoomApplication): string {
-    let src;
-    if (this.room.isOwner) {
-      src = application.provider.userData.avatar;
-    } else {
-      src = application.consumer.userData.avatar;
-    }
-
-    return src;
-  }
-
-  getUserName(application: IRoomApplication): string {
-    let name;
-    if (this.room.isOwner) {
-      name = `${application.provider.userData.firstName} ${application.provider.userData.lastName}`;
-    } else {
-      name = `${application.consumer.userData.firstName} ${application.consumer.userData.lastName}`;
-    }
-
-    return name;
   }
 
   getApplicationStatus(application: IRoomApplication): string {
