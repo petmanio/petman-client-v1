@@ -29,7 +29,6 @@ export interface IRoomService {
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>,
   updateApplication(options: IRoomUpdateApplicationRequest): Observable<IRoomUpdateApplicationResponse>,
   getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse>,
-  applicationMessageJoin(options: IRoomApplicationMessageJoinRequest): Observable<any>,
   applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any>
 }
 
@@ -128,13 +127,14 @@ export class RoomService implements IRoomService {
       .map(response => response.json());
   }
 
-  applicationMessageJoin(options: IRoomApplicationMessageJoinRequest): Observable<any> {
-    options = assign({}, options, { 'x-auth-token':  localStorage.getItem('token') });
-    return this._sailsService.get(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/message/join`, options);
-  }
-
   applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any> {
-    options = assign({}, options, { 'x-auth-token':  localStorage.getItem('token') });
-    return this._sailsService.post(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/message/create`, options);
+    const headers = new Headers();
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .post(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/message/create`, options,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 }

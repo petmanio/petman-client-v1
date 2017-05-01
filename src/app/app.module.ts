@@ -51,6 +51,7 @@ import {
   RoomApplicationMessageComponent,
   RoomApplicationsListComponent,
   RoomReviewsListComponent,
+  RoomReviewDialogComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -173,6 +174,7 @@ const appRoutes: Routes = [
     RoomApplicationMessageComponent,
     RoomApplicationsListComponent,
     RoomReviewsListComponent,
+    RoomReviewDialogComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -181,7 +183,8 @@ const appRoutes: Routes = [
     ChunkPipe
   ],
   entryComponents: [
-    RoomApplyDialogComponent
+    RoomApplyDialogComponent,
+    RoomReviewDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -216,7 +216,6 @@ export interface IRoomApplicationMessageJoinRequest {
 
 export interface IRoomApplicationMessageCreateRequest {
   applicationId: number,
-  'x-auth-token'?: string,
   message: string
 }
 

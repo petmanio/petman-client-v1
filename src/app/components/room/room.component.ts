@@ -68,7 +68,7 @@ export class RoomComponent implements OnChanges, IRoomComponent {
     direction: 'horizontal',
     pagination: '.swiper-pagination',
     paginationClickable: true,
-    autoplay: 3000 + (Math.random() * 100),
+    autoplay: 2800 + (Math.random() * 500),
     loop: true
   };
   constructor() {

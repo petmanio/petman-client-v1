@@ -9,6 +9,9 @@ import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
 import { IUser } from '../../models/api';
+import { SailsService } from 'angular2-sails';
+import { environment } from '../../../environments/environment';
+import * as roomAction from '../../store/room/room.actions';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -104,7 +107,8 @@ export class AppComponent implements OnInit, IAppComponent {
               private _router: Router,
               private _ref: ChangeDetectorRef,
               private _zone: NgZone,
-              private _utilsService: UtilService) {
+              private _utilsService: UtilService,
+              private _sailsService: SailsService) {
     UtilService.initScripts();
     this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
@@ -132,7 +136,7 @@ export class AppComponent implements OnInit, IAppComponent {
       }
     });
 
-    this._utilsService.initSocket();
+    this.initSocket();
 
     if (UtilService.getCurrentDevice() === 'MOBILE') {
       this.sideNavMode = 'push';
@@ -164,6 +168,36 @@ export class AppComponent implements OnInit, IAppComponent {
       this._store.dispatch(new auth.LogoutCompleteAction({}));
     }, 300);
     // location.h_ref = '/';
+  }
+
+  initSocket(): void {
+    let socketConnection;
+
+    const opts = {
+      url: environment.apiEndpoint,
+      transports: ['polling', 'websocket'],
+      headers: {'x-auth-token': localStorage.getItem('token')},
+      autoConnect: false,
+      environment: environment.production ? 'production' : 'development'
+    };
+
+    this.currentUser$.subscribe(($event) => {
+      if ($event && (!socketConnection || !socketConnection.connected)) {
+        this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
+
+        this._sailsService.on('connect').subscribe(() => {
+          this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
+        });
+
+        this._sailsService.on('roomApplicationMessage').subscribe(message => {
+          this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
+        });
+        // TODO: reconnect on connection lost
+      } else if (!$event && socketConnection && socketConnection.connected) {
+        // TODO: fix disconnect
+        this._sailsService.disconnect();
+      }
+    });
   }
 
   private getRouteDataByKey(key: string): any {

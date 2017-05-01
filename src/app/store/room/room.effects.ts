@@ -33,7 +33,6 @@ interface IRoomEffects {
   apply$: Observable<Action>,
   updateApplication$: Observable<Action>,
   applicationMessageList$: Observable<Action>,
-  applicationMessageJoin$: Observable<Action>,
   applicationMessageCreate$: Observable<Action>
 }
 
@@ -91,13 +90,6 @@ export class RoomEffects implements IRoomEffects {
       return this._roomService.getApplicationMessageList(options)
         .map(response => new roomAction.ApplicationMessageListCompleteAction(response))
         .catch(err => of(new roomAction.ApplicationMessageListErrorAction(err)))
-    });
-
-  @Effect() applicationMessageJoin$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_JOIN)
-    .map((action: roomAction.ApplicationMessageJoinAction) => action.payload)
-    .switchMap(options => {
-      return this._roomService.applicationMessageJoin(options)
     });
 
   @Effect() applicationMessageCreate$: Observable<Action> = this._actions$

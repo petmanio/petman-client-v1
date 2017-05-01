@@ -42,9 +42,6 @@ export const ActionTypes = {
   APPLICATION_MESSAGE_LIST_ERROR: type('[Room] Application Message Error'),
   APPLICATION_MESSAGE_LIST_CLEAR: type('[Room] Application Message Clear'),
 
-  APPLICATION_MESSAGE_JOIN: type('[Room] Application Message Join'),
-  // TODO: add actions for complete and error
-
   APPLICATION_MESSAGE_CREATE: type('[Room] Application Message Create'),
   // TODO: add actions for complete and error
 
@@ -199,17 +196,9 @@ export class ApplicationMessageListClearAction implements Action {
 }
 
 /**
- * Application Message Join
- */
-export class ApplicationMessageJoinAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_JOIN;
-
-  constructor(public payload: IRoomApplicationMessageJoinRequest) { }
-}
-
-/**
  * Application Message Create
  */
+// TODO: add complete and error actions
 export class ApplicationMessageCreateAction implements Action {
   type = ActionTypes.APPLICATION_MESSAGE_CREATE;
 
@@ -250,6 +239,5 @@ export type Actions
   | ApplicationMessageListCompleteAction
   | ApplicationMessageListErrorAction
   | ApplicationMessageListClearAction
-  | ApplicationMessageJoinAction
   | ApplicationMessageCreateAction
   | ApplicationMessageCreateEventAction

@@ -13,6 +13,7 @@ import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
+import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
@@ -205,6 +206,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       this._snackBar.open(`Sorry but now edit functionality not available`, null, {
         duration: 3000
       });
+    } else if (this.inProgressApplications.some(application => application.status === 'WAITING')) {
+      this._snackBar.open(`Sorry but you have in progress application`, null, {
+        duration: 3000
+      });
     } else {
       this._store.dispatch(new roomAction.ApplyAction({roomId: this._roomId}));
     }
@@ -217,7 +222,19 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {
     const application = clone<IRoomApplication>(this.selectedApplication);
     application.status = status;
-    this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+
+    if (application.status === 'FINISHED') {
+      const dialogRef = this.dialog.open(RoomReviewDialogComponent);
+      dialogRef.afterClosed().subscribe(reviewOptions => {
+        if (reviewOptions) {
+          application.rating = reviewOptions.rating;
+          application.review = reviewOptions.review;
+          this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+        }
+      });
+    } else {
+      this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+    }
   }
 
   formatDate(date): string {

@@ -89,7 +89,6 @@ export class RoomApplicationMessagesComponent implements OnInit, OnChanges, IRoo
       changes['application'].previousValue.id !==  changes['application'].currentValue.id) {
       this._store.dispatch(new roomAction.ApplicationMessageListClearAction({}));
       this._store.dispatch(new roomAction.ApplicationMessageListAction({ applicationId: this.application.id }));
-      this._store.dispatch(new roomAction.ApplicationMessageJoinAction({ applicationId: this.application.id }));
     }
 
   }

@@ -15,6 +15,10 @@ export interface IRoomApplicationActionsComponent {
         <button md-button class="pm-fr" *ngIf="application.status === 'WAITING' && room.isOwner" (click)="onActionClick.emit('CONFIRMED')">
           Confirm
         </button>
+        <button md-button class="pm-fr" *ngIf="application.status === 'CONFIRMED' && !room.isOwner" 
+                (click)="onActionClick.emit('FINISHED')">
+          Finish
+        </button>
         <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'WAITING'"
                 (click)="onActionClick.emit(room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
           Cancel
