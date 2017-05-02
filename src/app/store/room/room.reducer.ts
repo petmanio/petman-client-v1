@@ -71,7 +71,8 @@ export function reducer(state = initialState, action: roomAction.Actions): State
       const applications = clone(state.room.applications);
       if (applicationIndex !== -1) {
         // TODO: merge full object
-        applications[applicationIndex] = assign({}, state.room.applications[applicationIndex], pick(res, ['status', 'review', 'rating']));
+        applications[applicationIndex] = assign({}, state.room.applications[applicationIndex], pick(res,
+          ['status', 'review', 'rating', 'finishedAt']));
       }
       const room = Object.assign({}, state.room, { applications });
       return Object.assign({}, state, { room: room })

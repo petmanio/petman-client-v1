@@ -183,6 +183,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       }
     });
 
+    // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
     this._actions$
       .ofType(roomAction.ActionTypes.APPLY_COMPLETE)
       .takeUntil(this._destroyed$)

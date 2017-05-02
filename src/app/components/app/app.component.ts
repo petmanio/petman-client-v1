@@ -171,6 +171,10 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   initSocket(): void {
+    // TODO: use sails service for configuration
+    window['io'].sails.reconnection = true;
+    window['io'].sails.useCORSRouteToGetCookie = false;
+    window['io'].sails.environment = environment.production ? 'production' : 'development';
     let socketConnection;
 
     const opts = {
@@ -195,6 +199,10 @@ export class AppComponent implements OnInit, IAppComponent {
 
         this._sailsService.on('roomApplicationUpdate').subscribe(update => {
           this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
+        });
+
+        this._sailsService.on('roomApplicationCreate').subscribe(application => {
+          this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
         });
         // TODO: reconnect on connection lost
       } else if (!$event && socketConnection && socketConnection.connected) {
