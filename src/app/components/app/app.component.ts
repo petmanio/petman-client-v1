@@ -38,17 +38,17 @@ export interface IAppComponent {
         <!--TODO: find better solution-->
         <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1">
           <div class="columns is-mobile">
-            <div class="column">
-              <button md-icon-button
-                      [mdMenuTriggerFor]="notification">
-                <md-icon>notifications</md-icon>
-              </button>
-              <md-menu #notification="mdMenu">
-                <md-list>
-                  <md-list-item>notifications</md-list-item>
-                </md-list>
-              </md-menu>
-            </div>
+            <!--<div class="column">-->
+              <!--<button md-icon-button-->
+                      <!--[mdMenuTriggerFor]="notification">-->
+                <!--<md-icon>notifications</md-icon>-->
+              <!--</button>-->
+              <!--<md-menu #notification="mdMenu">-->
+                <!--<md-list>-->
+                  <!--<md-list-item>notifications</md-list-item>-->
+                <!--</md-list>-->
+              <!--</md-menu>-->
+            <!--</div>-->
             <div class="column">
               <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
                    [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
@@ -191,6 +191,10 @@ export class AppComponent implements OnInit, IAppComponent {
 
         this._sailsService.on('roomApplicationMessage').subscribe(message => {
           this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
+        });
+
+        this._sailsService.on('roomApplicationUpdate').subscribe(update => {
+          this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
         });
         // TODO: reconnect on connection lost
       } else if (!$event && socketConnection && socketConnection.connected) {
