@@ -1,5 +1,6 @@
-import { assign, clone, findIndex, pick } from 'lodash';
+import { assign, clone, findIndex, pick, cloneDeep } from 'lodash';
 import {
+  IRoomApplication,
   IRoomApplicationMessageCreateEventResponse,
   IRoomApplicationMessageListResponse,
   IRoomGetByIdResponse,
@@ -7,6 +8,7 @@ import {
   IRoomUpdateApplicationRequest
 } from '../../models/api';
 import * as roomAction from './room.actions';
+import { stat } from 'fs';
 
 export interface State {
   room: IRoomGetByIdResponse,
@@ -59,6 +61,21 @@ export function reducer(state = initialState, action: roomAction.Actions): State
     case roomAction.ActionTypes.GET_BY_ID_ERROR: {
       const error: any = action.payload;
       return Object.assign({}, state, {room: null})
+    }
+
+    /**
+     * Application Apply
+     * TODO: get room application separately, store into applications
+     */
+    case roomAction.ActionTypes.APPLY_COMPLETE: {
+      const res: IRoomApplication = action.payload;
+      if (res.room !== state.room.id) {
+        return state
+      } else {
+        const room = cloneDeep(state.room);
+        room.applications.unshift(res);
+        return Object.assign({}, state, { room });
+      }
     }
 
     /**

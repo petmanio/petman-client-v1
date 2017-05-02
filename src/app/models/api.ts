@@ -54,7 +54,7 @@ export interface IRoomApplication {
   review: string,
   consumer?: IUser,
   provider?: IUser,
-  room?: IRoom,
+  room?: number | IRoom,
   count?: number,
   chats?: IRoomApplicationMessage[],
   status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',

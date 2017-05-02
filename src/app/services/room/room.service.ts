@@ -102,7 +102,7 @@ export class RoomService implements IRoomService {
       .post(`${environment.apiEndpoint}/api/room/${options.roomId}/apply`, {},
         { headers, withCredentials: true }
       )
-      .map(response => response.ok);
+      .map(response => response.json());
   }
 
   updateApplication(options: IRoomUpdateApplicationRequest): Observable<IRoomUpdateApplicationResponse> {
