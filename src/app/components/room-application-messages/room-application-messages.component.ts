@@ -17,10 +17,11 @@ export interface IRoomApplicationMessagesComponent {
   template: `
     <div class="pm-background-lightest-gray">
       <ul class="pm-message-list">
-        <app-room-application-message 
-          *ngFor="let message of (roomApplicationMessageList$ | async)?.list"
-          [message]="message"
-          [currentUser]="currentUser$ | async"></app-room-application-message>
+        <li *ngFor="let message of (roomApplicationMessageList$ | async)?.list">
+          <app-room-application-message
+            [message]="message"
+            [currentUser]="currentUser$ | async"></app-room-application-message>    
+        </li>
       </ul>
       <div class="columns is-mobile pm-chart-actions">
         <div class="column is-10 is-offset-1">

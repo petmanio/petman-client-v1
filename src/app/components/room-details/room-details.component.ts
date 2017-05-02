@@ -70,8 +70,8 @@ export interface IRoomDetailsComponent {
         </div>
         <div class="columns">
           <div class="column column is-6 is-offset-5">
-            <div class="pm-font-16 pm-color-gray pm-action-label">Reviews</div>
-            <app-room-reviews-list [applications]="finishedApplications"></app-room-reviews-list>
+            <div class="pm-font-16 pm-color-gray pm-action-label">History</div>
+            <app-room-reviews-list [applications]="finishedApplications" [room]="roomRoom$ | async"></app-room-reviews-list>
           </div>
         </div>
         <div class="columns">
@@ -99,17 +99,14 @@ export interface IRoomDetailsComponent {
       /*margin-top: 25px;*/
     }
     app-room-applications-list {
-      min-height: 200px;
-      /*max-height: 640px;*/
-      /*min-height: 640px;*/
-      /*overflow-x: auto;*/
+      max-height: 640px;
+      overflow-x: auto;
     }
     
     app-room-application-messages {
-      min-height: 200px;
-      /*max-height: 500px;*/
-      /*min-height: 500px;*/
-      /*overflow-x: auto;*/
+      /*min-height: 200px;*/
+      max-height: 500px;
+      overflow-x: auto;
     }
 
     app-room-reviews-list {
@@ -224,14 +221,19 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     application.status = status;
 
     if (application.status === 'FINISHED') {
-      const dialogRef = this.dialog.open(RoomReviewDialogComponent);
-      dialogRef.afterClosed().subscribe(reviewOptions => {
-        if (reviewOptions) {
-          application.rating = reviewOptions.rating;
-          application.review = reviewOptions.review;
-          this._store.dispatch(new roomAction.UpdateApplicationAction(application));
-        }
-      });
+      if (this.room.isOwner) {
+        this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+      } else  {
+        const dialogRef = this.dialog.open(RoomReviewDialogComponent);
+        dialogRef.afterClosed().subscribe(reviewOptions => {
+          if (reviewOptions) {
+            application.rating = reviewOptions.rating;
+            application.review = reviewOptions.review;
+            this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+          }
+        });
+      }
+
     } else {
       this._store.dispatch(new roomAction.UpdateApplicationAction(application));
     }

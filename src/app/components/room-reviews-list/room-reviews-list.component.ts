@@ -1,10 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IRoomApplication } from '../../models/api';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IRoom, IRoomApplication } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
-
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store';
+import * as roomAction from '../../store/room/room.actions';
+import { MdDialog } from '@angular/material';
+import { clone } from 'lodash';
+import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
 export interface IRoomReviewsListComponent {
   formatDate(date): string,
-  formatDateMobile(date): string
+  formatDateMobile(date): string,
+  onReviewClick(application: IRoomApplication): void
 }
 
 @Component({
@@ -26,22 +33,27 @@ export interface IRoomReviewsListComponent {
           </div>
           <div class="column">
             <div class="pm-room-review-padding">
-              <rating [ngModel]="application.rating"
-                      [max]="5"
-                      fullIcon="★"
-                      emptyIcon="☆"
-                      [readonly]="true"
-                      [disabled]="false"
-                      [required]="true"
-                      [float]="true"
-                      [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-              <div><i class="pm-font-12 pm-color-gray">{{application.review || 'There are no review details'}}</i></div>
+              <div *ngIf="application.rating">
+                <rating [ngModel]="application.rating"
+                        [max]="5"
+                        fullIcon="★"
+                        emptyIcon="☆"
+                        [readonly]="true"
+                        [disabled]="false"
+                        [required]="true"
+                        [float]="true"
+                        [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+                <div><i class="pm-font-12 pm-color-gray">{{application.review || 'There are no review details'}}</i></div>
+              </div>
+              <div *ngIf="room && !application.rating && !room.isOwner && application.consumer.id === (currentUser$ | async)?.id">
+                <span class="pm-color-gray pm-font-14">Write a review</span>
+                <button md-icon-button (click)="onReviewClick(application)">
+                  <md-icon>rate_review</md-icon>
+                </button>
+              </div>
               <div class="pm-font-12 pm-color-gray pm-room-review-date pm-room-review-padding">
                 {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}
               </div>
-              <!--<div class="pm-font-12 pm-color-gray pm-room-review-date is-hidden-desktop">-->
-                <!--{{formatDateMobile(application.createdAt)}}<br/>{{formatDateMobile(application.finsihedAt)}}-->
-              <!--</div>-->
             </div>
           </div>
         </div>
@@ -70,12 +82,23 @@ export interface IRoomReviewsListComponent {
       list-style: none;
       padding-left: 5px;
     }
+
+    md-icon {
+      color: #fcdd7f;
+      
+    }
   `]
 })
-export class RoomReviewsListComponent implements IRoomReviewsListComponent {
+export class RoomReviewsListComponent implements OnInit, IRoomReviewsListComponent {
   @Input() applications: IRoomApplication[];
-  constructor() {
+  @Input() room: IRoom;
+  currentUser$: Observable<any>;
+  constructor(private _store: Store<fromRoot.State>, private dialog: MdDialog) {
 
+  }
+
+  ngOnInit(): void {
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
   }
 
   formatDate(date): string {
@@ -86,5 +109,17 @@ export class RoomReviewsListComponent implements IRoomReviewsListComponent {
   formatDateMobile(date): string {
     // TODO: use angular date filter
     return UtilService.formatDate(date, 'DD/M/YY');
+  }
+
+  onReviewClick(application: IRoomApplication): void {
+    const update = clone<IRoomApplication>(application);
+    const dialogRef = this.dialog.open(RoomReviewDialogComponent);
+    dialogRef.afterClosed().subscribe(reviewOptions => {
+      if (reviewOptions) {
+        update.rating = reviewOptions.rating;
+        update.review = reviewOptions.review;
+        this._store.dispatch(new roomAction.UpdateApplicationAction(update));
+      }
+    });
   }
 }

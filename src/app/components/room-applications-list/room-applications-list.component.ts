@@ -10,8 +10,8 @@ export interface IRoomApplicationsListComponent {
 @Component({
   selector: 'app-room-applications-list',
   template: `
-    <ul *ngFor="let application of applications; let i = index;">
-      <li class="pm-cursor-pointer"
+    <ul>
+      <li *ngFor="let application of applications; let i = index;" class="pm-cursor-pointer"
                     [ngClass]="{'selected': i === selected}"
                     (click)="onApplicationClick.emit(application); selected = i">
         <div class="columns is-mobile pm-application-row">
