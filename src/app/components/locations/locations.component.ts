@@ -109,7 +109,7 @@ export class LocationComponent implements OnInit, ILocationComponent {
     clickableIcons: false,
     tilt: 0
   };
-  public isMobile = UtilService.getCurrentDevice() === 'MOBILE';
+  public isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   public mapView = false;
   private _skip = 0;
   private _limit = 9;

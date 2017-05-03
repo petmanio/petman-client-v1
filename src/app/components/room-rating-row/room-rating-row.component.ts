@@ -9,7 +9,7 @@ export interface IRoomRatingRowComponent {
   template: `
     <div class="columns is-mobile">
       <div class="column is-8">
-        <span class="pm-font-12 pm-color-gray">Average rating &nbsp;</span>
+        <!--<span class="pm-font-12 pm-color-gray">Average rating &nbsp;</span>-->
         <rating [ngModel]="averageRating"
                 [max]="5"
                 fullIcon="★"

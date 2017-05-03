@@ -124,7 +124,7 @@ export class AppComponent implements OnInit, IAppComponent {
           this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
           const showSideNav = this.getRouteDataByKey('showSidenav');
           if (typeof showSideNav !== 'undefined') {
-            if (showSideNav && UtilService.getCurrentDevice() !== 'MOBILE') {
+            if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
               this._store.dispatch(new layout.OpenSidenavAction());
             } else {
               this._store.dispatch(new layout.CloseSidenavAction());
@@ -138,7 +138,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
     this.initSocket();
 
-    if (UtilService.getCurrentDevice() === 'MOBILE') {
+    if (UtilService.getCurrentDevice() !== 'DESKTOP') {
       this.sideNavMode = 'push';
     }
 

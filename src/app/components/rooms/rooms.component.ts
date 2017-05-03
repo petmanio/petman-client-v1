@@ -65,7 +65,7 @@ export interface IRoomsComponent {
 })
 export class RoomsComponent implements OnInit, IRoomsComponent {
   roomList$: Observable<any>;
-  isMobile = UtilService.getCurrentDevice() === 'MOBILE';
+  isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   private _skip = 0;
   private _limit = 9;
   private _count: number = null;

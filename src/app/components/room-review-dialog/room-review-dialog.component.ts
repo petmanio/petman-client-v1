@@ -26,7 +26,7 @@ export interface IRoomReviewDialogComponent {
                   [readonly]="false"
                   [disabled]="false"
                   [required]="true"
-                  [float]="true"
+                  [float]="false"
                   [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
         </div>
       </div>

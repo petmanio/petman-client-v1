@@ -49,24 +49,24 @@ export class RoomApplicationActionsComponent {
   }
 
   getApplicationStatus(application: IRoomApplication): string {
-    let status: string = application.status;
+    let status: string = UtilService.capitalizeFirstChar(application.status);
     if (this.room.isOwner) {
-      if (status === 'CANCELED_BY_PROVIDER') {
+      if (application.status === 'CANCELED_BY_PROVIDER') {
         status = `Canceled by you`;
       }
-      if (status === 'CANCELED_BY_CONSUMER') {
+      if (application.status === 'CANCELED_BY_CONSUMER') {
         status = `Canceled by ${application.consumer.userData.firstName} ${application.consumer.userData.lastName}`;
       }
 
     } else {
-      if (status === 'CANCELED_BY_PROVIDER') {
+      if (application.status === 'CANCELED_BY_PROVIDER') {
         status = `Canceled by ${this.room.user.userData.firstName} ${this.room.user.userData.lastName}`;
       }
-      if (status === 'CANCELED_BY_CONSUMER') {
+      if (application.status === 'CANCELED_BY_CONSUMER') {
         status = `Canceled by you`;
       }
     }
 
-    return UtilService.capitalizeFirstChar(status);
+    return status;
   }
 }
