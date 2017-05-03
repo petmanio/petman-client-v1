@@ -52,6 +52,7 @@ import {
   RoomApplicationsListComponent,
   RoomReviewsListComponent,
   RoomReviewDialogComponent,
+  RoomStatisticsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -175,6 +176,7 @@ const appRoutes: Routes = [
     RoomApplicationsListComponent,
     RoomReviewsListComponent,
     RoomReviewDialogComponent,
+    RoomStatisticsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,

@@ -69,8 +69,12 @@ export interface IRoomDetailsComponent {
           </div>
         </div>
         <div class="columns">
-          <div class="column column is-6 is-offset-5">
-            <div class="pm-font-16 pm-color-gray pm-action-label">History</div>
+          <div class="column column is-4 is-offset-1">
+            <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
+            <!--<app-room-statistics [applications]="finishedApplications"></app-room-statistics>-->
+          </div>
+          <div class="column column is-6">
+            <div class="pm-font-16 pm-color-gray pm-history-label">History</div>
             <app-room-reviews-list [applications]="finishedApplications" [room]="roomRoom$ | async"></app-room-reviews-list>
           </div>
         </div>
@@ -122,6 +126,13 @@ export interface IRoomDetailsComponent {
     .pm-action-label {
       margin-top: 25px;
       text-align: right;
+      padding-right: 10px;
+      margin-bottom: 15px;
+    }
+
+    .pm-history-label {
+      margin-top: 25px;
+      text-align: left;
       padding-right: 10px;
       margin-bottom: 15px;
     }
