@@ -15,12 +15,13 @@ import {
   IRoomGetByIdRequest,
   IRoomGetByIdResponse,
   IRoomListRequest,
-  IRoomListResponse,
+  IRoomListResponse, IRoomShareOnFacebookRequest,
   IRoomUpdateApplicationRequest,
   IRoomUpdateApplicationResponse
 } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { assign } from 'lodash';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IRoomService {
   getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse>,
@@ -29,7 +30,8 @@ export interface IRoomService {
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>,
   updateApplication(options: IRoomUpdateApplicationRequest): Observable<IRoomUpdateApplicationResponse>,
   getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse>,
-  applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any>
+  applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any>,
+  shareOnFacebook(options: IRoomShareOnFacebookRequest): Observable<any>
 }
 
 @Injectable()
@@ -136,5 +138,18 @@ export class RoomService implements IRoomService {
         { headers, withCredentials: true }
       )
       .map(response => response.ok);
+  }
+
+  shareOnFacebook(options: IRoomShareOnFacebookRequest): Observable<any> {
+    const subject = new ReplaySubject(1);
+    FB.ui(options, response => {
+      if (response && response.post_id) {
+        subject.next(response);
+      }else {
+        subject.error(new Error());
+      }
+    });
+
+    return subject;
   }
 }

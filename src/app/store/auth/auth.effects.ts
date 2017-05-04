@@ -14,7 +14,6 @@ import { Store } from '@ngrx/store';
 import { AuthService } from '../../services/auth/auth.service';
 import * as fromRoot from '../../store';
 import * as authAction from '../../store/auth/auth.actions';
-import {ILoginRequest} from "../../models/api";
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -39,40 +38,40 @@ interface IAuthEffects {
 
 @Injectable()
 export class AuthEffects implements IAuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService, private store: Store<fromRoot.State>) { }
-
   @Effect()
-  public fbLogin$: Observable<Action> = this.actions$
+  public fbLogin$: Observable<Action> = this._actions$
     .ofType(authAction.ActionTypes.FB_LOGIN)
     .map((action: authAction.FbLoginAction) => action.payload)
     .switchMap(options => {
-      return this.authService.fbLogin()
+      return this._authService.fbLogin()
         .map(response => new authAction.FbLoginCompleteAction(response))
         .catch(err => of(new authAction.LoginErrorAction(err)))
     });
 
   @Effect()
-  public fbLoginComplete$: Observable<any> = this.actions$
+  public fbLoginComplete$: Observable<any> = this._actions$
     .ofType(authAction.ActionTypes.FB_LOGIN_COMPLETE)
     .map((action: authAction.FbLoginCompleteAction) => action.payload)
     .switchMap((options: any) => of(new authAction.LoginAction({fb: options})));
 
   @Effect()
-  public login$: Observable<Action> = this.actions$
+  public login$: Observable<Action> = this._actions$
     .ofType(authAction.ActionTypes.LOGIN)
     .map((action: authAction.LoginAction) => action.payload)
     .switchMap(options => {
-      return this.authService.login(options)
+      return this._authService.login(options)
         .map(response => new authAction.LoginCompleteAction(response))
         .catch(err => of(new authAction.LoginErrorAction(err)))
     });
 
   @Effect()
-  public logout$: Observable<Action> = this.actions$
+  public logout$: Observable<Action> = this._actions$
     .ofType(authAction.ActionTypes.LOGOUT)
     // .map((action: authAction.LogoutAction) => action.payload)
     .switchMap(() => {
-      return this.authService.logout()
+      return this._authService.logout()
         .map(result => new authAction.LogoutCompleteAction({}));
     });
+
+  constructor(private _actions$: Actions, private _authService: AuthService) { }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
-import { UtilService } from '../util/util.service';
-import { ILoginResponse, ILoginRequest, IAuthCurrentUserRequest, IAuthCurrentUserResponse } from '../../models/api';
+import { IAuthCurrentUserRequest, IAuthCurrentUserResponse, ILoginRequest, ILoginResponse } from '../../models/api';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IAuthService {
   fbLogin(): Observable<any>,
@@ -16,9 +16,7 @@ export interface IAuthService {
 @Injectable()
 export class AuthService implements IAuthService {
 
-  constructor(private http: Http) {
-
-  }
+  constructor(private http: Http) {}
 
   fbLogin(): Observable<any> {
     const subject = new ReplaySubject(1);

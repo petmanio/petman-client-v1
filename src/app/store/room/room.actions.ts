@@ -4,7 +4,8 @@ import {
   IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
   IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse, IRoomUpdateApplicationRequest, IRoomUpdateApplicationResponse,
   IRoomApplicationMessageListRequest, IRoomApplicationMessageListResponse, IRoomApplicationMessageJoinRequest,
-  IRoomApplicationMessageCreateRequest, IRoomApplicationMessageCreateEventResponse
+  IRoomApplicationMessageCreateRequest, IRoomApplicationMessageCreateEventResponse, IRoomShareOnFacebookRequest,
+  IRoomShareOnFacebookResponse
 } from '../../models/api';
 
 /**
@@ -47,6 +48,10 @@ export const ActionTypes = {
 
   APPLICATION_MESSAGE_CREATE_EVENT: type('[Room] Application Message Create Event'),
   // TODO: add actions for complete and error
+
+  SHARE_ON_FACEBOOK: type('[Room] Share On Facebook'),
+  SHARE_ON_FACEBOOK_COMPLETE: type('[Room] Share On Facebook Complete'),
+  SHARE_ON_FACEBOOK_ERROR: type('[Room] Share On Facebook Error'),
 };
 
 /**
@@ -215,6 +220,27 @@ export class ApplicationMessageCreateEventAction implements Action {
 }
 
 /**
+ * Share On Facebook
+ */
+export class ShareOnFacebookAction implements Action {
+  type = ActionTypes.SHARE_ON_FACEBOOK;
+
+  constructor(public payload: IRoomShareOnFacebookRequest) { }
+}
+
+export class ShareOnFacebookCompleteAction implements Action {
+  type = ActionTypes.SHARE_ON_FACEBOOK_COMPLETE;
+
+  constructor(public payload: IRoomShareOnFacebookResponse) { }
+}
+
+export class ShareOnFacebookErrorAction implements Action {
+  type = ActionTypes.SHARE_ON_FACEBOOK_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+/**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
@@ -241,3 +267,6 @@ export type Actions
   | ApplicationMessageListClearAction
   | ApplicationMessageCreateAction
   | ApplicationMessageCreateEventAction
+  | ShareOnFacebookAction
+  | ShareOnFacebookCompleteAction
+  | ShareOnFacebookErrorAction

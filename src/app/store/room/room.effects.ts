@@ -33,7 +33,8 @@ interface IRoomEffects {
   apply$: Observable<Action>,
   updateApplication$: Observable<Action>,
   applicationMessageList$: Observable<Action>,
-  applicationMessageCreate$: Observable<Action>
+  applicationMessageCreate$: Observable<Action>,
+  shareOnFacebook$: Observable<Action>
 }
 
 @Injectable()
@@ -96,7 +97,17 @@ export class RoomEffects implements IRoomEffects {
     .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE)
     .map((action: roomAction.ApplicationMessageCreateAction) => action.payload)
     .switchMap(options => {
+      // TODO: check complete action
       return this._roomService.applicationMessageCreate(options)
+    });
+
+  @Effect() shareOnFacebook$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.SHARE_ON_FACEBOOK)
+    .map((action: roomAction.ShareOnFacebookAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.shareOnFacebook(options)
+        .map(response => new roomAction.ShareOnFacebookCompleteAction(response))
+        .catch(err => of(new roomAction.ShareOnFacebookErrorAction(err)))
     });
 
   constructor(private _actions$: Actions,

@@ -33,6 +33,6 @@ export class RoomShareDialogComponent implements IRoomShareDialogComponent {
   }
 
   onShare(network: string): void {
-    this.dialogRef.close(network)
+    setTimeout(() => this.dialogRef.close(network), 300);
   }
 }

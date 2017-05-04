@@ -223,6 +223,17 @@ export interface IRoomApplicationMessageCreateEventResponse extends IRoomApplica
 
 }
 
+export interface IRoomShareOnFacebookRequest {
+  method?: string,
+  name?: string,
+  link?: string,
+  caption?: string,
+  picture?: string,
+  description?: string
+}
+
+export interface IRoomShareOnFacebookResponse {}
+
 /**
  * Notification
  */

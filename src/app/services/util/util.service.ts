@@ -22,6 +22,10 @@ export class UtilService implements IUtilService {
         xfbml : true,
         version : 'v2.8'
       });
+
+      FB.getLoginStatus(response => {
+        if (response.status === 'connected') {} else if (response.status === 'not_authorized') {} else {}
+      });
     };
 
     (function(d, s, id) {
