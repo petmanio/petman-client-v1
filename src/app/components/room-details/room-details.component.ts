@@ -13,6 +13,7 @@ import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
+import { RoomShareDialogComponent } from '../room-share-dialog/room-share-dialog.component';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
@@ -55,11 +56,30 @@ export interface IRoomDetailsComponent {
         </div>
         <div class="columns">
           <div class="column column is-10 is-offset-1">
-            <app-room-rating-row
-              (onButtonClick)="onRatingRowClick()"
-              [averageRating]="averageRating"
-              [actionText]="(roomRoom$ | async)?.isOwner ? 'Edit' : 'Apply'"
-            ></app-room-rating-row>
+            <div class="pm-details-actions">
+              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{(roomRoom$ | async)?.cost}}$ / day</span>&nbsp;
+              <rating [ngModel]="averageRating"
+                      [max]="5"
+                      fullIcon="★"
+                      emptyIcon="☆"
+                      [readonly]="true"
+                      [disabled]="false"
+                      [required]="true"
+                      [float]="true"
+                      [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+              <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="!(roomRoom$ | async)?.isOwner">
+                <span class="pm-font-14 pm-color-gray">Apply &nbsp;<i class="mdi mdi-plus"></i></span>
+              </button>
+              <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="(roomRoom$ | async)?.isOwner">
+                <span class="pm-font-14 pm-color-gray">Edit &nbsp;<i class="mdi mdi-table-edit"></i></span>
+              </button>
+              &nbsp;&nbsp;
+              <button md-icon-button (click)="onShareClick()">
+                <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
+              </button>
+            </div>
+            <br/>
+            <md-divider></md-divider>
           </div>
         </div>
         <div class="columns">
@@ -68,28 +88,29 @@ export interface IRoomDetailsComponent {
           </div>
         </div>
         <div class="columns">
-          <div class="column column is-4 is-offset-1">
+          <!--<div class="column column is-4 is-offset-1">-->
             <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
             <!--<app-room-statistics [applications]="finishedApplications"></app-room-statistics>-->
-          </div>
-          <div class="column column is-6">
-            <div class="pm-font-16 pm-color-gray pm-history-label">History</div>
+          <!--</div>-->
+          <div class="column is-10 is-offset-1">
+            <div class="pm-font-16 pm-color-gray pm-history-label">History & reviews <i class="mdi mdi-history"></i></div>
             <app-room-reviews-list [applications]="finishedApplications" [room]="roomRoom$ | async"></app-room-reviews-list>
           </div>
         </div>
         <div class="columns">
-          <div class="column is-4 is-offset-1">
-            <span class="pm-font-16 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}}</span>
+          <div class="column is-4-desktop is-5-tablet is-offset-1">
+            <span class="pm-font-16 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}} 
+              <i class="mdi mdi-application"></i></span>
             <app-room-applications-list [applications]="inProgressApplications"
                                         [room]="roomRoom$ | async"
                                         (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
           </div>
-          <div class="column is-6 pm-application-info-window" *ngIf="selectedApplication">
-            <div class="pm-font-16 pm-color-gray pm-action-label">Change application status</div>
+          <div class="column is-6-desktop is-5-tablet pm-application-info-window" *ngIf="selectedApplication">
+            <div class="pm-font-16 pm-color-gray pm-action-label">Status <i class="mdi mdi-check-all"></i></div>
             <app-room-application-actions [room]="roomRoom$ | async"
                                           [application]="selectedApplication"
                                           (onActionClick)="onActionClick($event)"></app-room-application-actions>
-            <div class="pm-font-16 pm-color-gray pm-message-label">Chat history</div>
+            <div class="pm-font-16 pm-color-gray pm-message-label">Chat history <i class="mdi mdi-wechat"></i></div>
             <app-room-application-messages [room]="roomRoom$ | async"
                                            [application]="selectedApplication"></app-room-application-messages>
           </div>
@@ -113,7 +134,8 @@ export interface IRoomDetailsComponent {
     }
 
     app-room-reviews-list {
-      
+      max-height: 500px;
+      overflow-x: auto;
     }
     
     .pm-message-label {
@@ -134,6 +156,16 @@ export interface IRoomDetailsComponent {
       text-align: left;
       padding-right: 10px;
       margin-bottom: 15px;
+    }
+
+    .pm-details-actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .pm-room-action-apply-edit {
+      margin-left: auto;
     }
 
   `]
@@ -207,6 +239,28 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this._destroyed$.next(true);
     this._roomListener.unsubscribe();
     this._routeListener.unsubscribe();
+  }
+
+  onShareClick(): void {
+    const _dialogRef = this._dialog.open(RoomShareDialogComponent);
+    _dialogRef.afterClosed().subscribe(shareOptions => {
+      if (shareOptions) {
+        // TODO: create url via router
+        if (shareOptions === 'facebook') {
+          const fbShareOptions = {
+            method: 'feed',
+            name: 'Petman',
+            link: `${location.origin}/room/${this.room.id}/details`,
+            picture: this.room.images[0].src,
+            description: this.room.description
+          };
+
+          // TODO: shate using dispatch
+          // this._store.dispatch(new roomAction.ShareOnFacebookAction(fbShareOptions));
+          FB.ui(fbShareOptions, response => {});
+        }
+      }
+    })
   }
 
   onRatingRowClick(): void {

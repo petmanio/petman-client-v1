@@ -31,7 +31,7 @@ export interface IRoomComponent {
       </md-card-header>
       <md-divider></md-divider><br/>
       <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">-->
-      <md-card-content [routerLink]="['/room', room.id, 'details']">
+      <md-card-content [routerLink]="['/room', room.id, 'details']" class="pm-cursor-pointer">
         <div class="pm-room-description pm-font-16 pm-color-gray">{{room.description | appEllipsis:100}}</div>
         <div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">
           <div class="swiper-wrapper">
@@ -44,7 +44,7 @@ export interface IRoomComponent {
       </md-card-content>
       <md-card-actions>
         <div class="pm-room-footer">
-          <span class="pm-font-14 pm-color-gray">{{room.cost}}$ / day</span>&nbsp;
+          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{room.cost}}$ / day</span>&nbsp;
           <rating [ngModel]="averageRating"
                   [max]="5"
                   fullIcon="★"
