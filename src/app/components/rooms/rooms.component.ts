@@ -24,8 +24,8 @@ export interface IRoomsComponent {
            [infiniteScrollDistance]="2"
            [infiniteScrollThrottle]="300"
            [scrollWindow]="false">
-        <div class="columns" *ngFor="let roomRow of (roomList$ | async)?.list | chunk:4">
-          <div class="column is-3" *ngFor="let room of roomRow">
+        <div class="columns" *ngFor="let roomRow of (roomList$ | async)?.list | chunk:3">
+          <div class="column is-4" *ngFor="let room of roomRow">
             <app-room [room]="room"></app-room>
           </div>
         </div>

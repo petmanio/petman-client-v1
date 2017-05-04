@@ -2,10 +2,13 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IRoom, IRoomApplication } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
+import { MdDialog } from '@angular/material';
+import { RoomShareDialogComponent } from '../room-share-dialog/room-share-dialog.component';
 
 // TODO: fix stars on mobile firefox
 export interface IRoomComponent {
-  formatDate(date): string
+  formatDate(date): string,
+  onShareClick(): void
 }
 
 @Component({
@@ -20,9 +23,14 @@ export interface IRoomComponent {
             {{formatDate(room.createdAt)}}
           </span>
         </md-card-subtitle>
+        <a md-icon-button class="pm-room-action-open" [routerLink]="['/room', room.id, 'details']">
+          <md-icon class="pm-font-16 pm-color-gray">open_in_new</md-icon>
+        </a>
       </md-card-header>
+      <md-divider></md-divider><br/>
       <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">-->
-      <md-card-content>
+      <md-card-content [routerLink]="['/room', room.id, 'details']">
+        <div class="pm-room-description pm-font-18 pm-color-gray">{{room.description | appEllipsis:100}}</div>
         <div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">
           <div class="swiper-wrapper">
             <div *ngFor="let image of room.images" class="swiper-slide">
@@ -31,18 +39,24 @@ export interface IRoomComponent {
           </div>
           <div class="swiper-pagination"></div>
         </div>
-        <p class="pm-font-bold">
-          {{room.cost}}$ / day
-        </p>
-        <p class="pm-room-description pm-font-14">{{room.description | appEllipsis}}</p>
       </md-card-content>
-      <md-card-footer>
-        <app-room-rating-row
-          [averageRating]="averageRating"
-          [routerLink]="['/room', room.id, 'details']"
-          actionText="Details"
-        ></app-room-rating-row>
-      </md-card-footer>
+      <md-card-actions>
+        <div class="pm-room-footer">
+          <span class="pm-font-14 pm-color-gray">{{room.cost}}$ / day</span>&nbsp;
+          <rating [ngModel]="averageRating"
+                  [max]="5"
+                  fullIcon="★"
+                  emptyIcon="☆"
+                  [readonly]="true"
+                  [disabled]="false"
+                  [required]="true"
+                  [float]="true"
+                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+          <button md-icon-button class="pm-room-action-share" (click)="onShareClick()">
+            <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
+          </button>
+        </div>
+      </md-card-actions>
     </md-card>
   `,
   styles: [`
@@ -53,11 +67,33 @@ export interface IRoomComponent {
     }
     
     .pm-room-description {
-      height: 50px;
+      margin-bottom: 25px;
     }
 
     .pm-carousel-image {
       height: 300px;
+    }
+    
+    .swiper-container {
+      width: calc(100% + 48px);
+      margin: 0 -24px 16px -24px;
+    }
+
+    @media (max-width: 600px) {
+      .swiper-container {
+        width: calc(100% + 32px);
+        margin: 16px -16px;
+      }
+    }
+    
+    .pm-room-action-open, .pm-room-action-share {
+      margin-left: auto;
+    }
+
+    .pm-room-footer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   `]
 })
@@ -71,8 +107,18 @@ export class RoomComponent implements OnChanges, IRoomComponent {
     autoplay: 2800 + (Math.random() * 500),
     loop: true
   };
-  constructor() {
+  constructor(private _dialog: MdDialog) {
 
+  }
+
+  onShareClick(): void {
+    const _dialogRef = this._dialog.open(RoomShareDialogComponent);
+    _dialogRef.afterClosed().subscribe(shareOptions => {
+      if (shareOptions) {
+        console.log(shareOptions)
+        // this._store.dispatch(new roomAction.UpdateApplicationAction(application));
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
-import { Router , NavigationStart, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UtilService } from '../../services/util/util.service';
 
@@ -112,6 +112,14 @@ export class AppComponent implements OnInit, IAppComponent {
     UtilService.initScripts();
     this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+
+    // TODO: use mdIconRegistry
+    // _mdIconRegistry
+    //   .addSvgIcon('thumb-up',
+    //     sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/thumbup-icon.svg'))
+    //   .addSvgIconSetInNamespace('mdi',
+    //     _sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/core-icon-set.svg'))
+    //   .registerFontClassAlias('mdi', 'mdi');
   }
 
   ngOnInit(): void {

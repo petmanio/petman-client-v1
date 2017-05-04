@@ -1,16 +1,15 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { clone } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
 import { IRoom, IRoomApplication } from '../../models/api';
-import { RoomApplyDialogComponent } from '../room-apply-dialog/room-apply-dialog.component';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
@@ -161,7 +160,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   private _routeListener;
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
-              private dialog: MdDialog,
+              private _dialog: MdDialog,
               private _snackBar: MdSnackBar,
               private _utilService: UtilService,
               private _actions$: Actions) {
@@ -236,8 +235,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       if (this.room.isOwner) {
         this._store.dispatch(new roomAction.UpdateApplicationAction(application));
       } else  {
-        const dialogRef = this.dialog.open(RoomReviewDialogComponent);
-        dialogRef.afterClosed().subscribe(reviewOptions => {
+        const _dialogRef = this._dialog.open(RoomReviewDialogComponent);
+        _dialogRef.afterClosed().subscribe(reviewOptions => {
           if (reviewOptions) {
             application.rating = reviewOptions.rating;
             application.review = reviewOptions.review;
