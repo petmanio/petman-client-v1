@@ -146,7 +146,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
     this.initSocket();
 
-    if (UtilService.getCurrentDevice() !== 'DESKTOP') {
+    if (UtilService.getCurrentDevice() === 'MOBILE') {
       this.sideNavMode = 'push';
     }
 
