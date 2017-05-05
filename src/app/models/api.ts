@@ -125,11 +125,18 @@ export interface IWalker {
   createdAt: string
 }
 
-export interface IUserReview {
-  rating: number,
-  text: string,
-  reviewer?: IUser,
-  user?: IUser
+export interface INotificationRoomApplicationStatusUpdate {
+  room: number | IRoom,
+  prevStatus: string,
+  currentStatus: string
+}
+
+export interface INotification {
+  from: number | IUser,
+  to: number | IUser,
+  roomApplicationStatusUpdate: number | INotificationRoomApplicationStatusUpdate,
+  seen: boolean,
+  createdAt: string
 }
 /**
  * Auth
@@ -347,18 +354,12 @@ export interface IWalkerShareOnFacebookResponse {}
 /**
  * Notification
  */
-export interface INotificationCountRequest {}
-
-export interface INotificationCountResponse {
-  count: number
-}
-
 export interface INotificationListRequest {
   skip: number,
   limit: number
 }
 
 export interface INotificationListResponse {
-  list: any,
+  list: INotification[],
   count: number
 }

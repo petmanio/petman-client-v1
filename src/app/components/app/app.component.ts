@@ -12,6 +12,7 @@ import { IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
+import * as notificationAction from '../../store/notification/notification.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 
 export interface IAppComponent {
@@ -103,7 +104,7 @@ export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
   // TODO: import model
   currentUser$: Observable<any>;
-  currentUser: IUser;
+  notifications$: Observable<any>;
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
   currentSideNavState: boolean;
@@ -120,6 +121,7 @@ export class AppComponent implements OnInit, IAppComponent {
     UtilService.initScripts();
     this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.notifications$ = this._store.select(fromRoot.getNotificationList);
 
     // TODO: use mdIconRegistry
     // _mdIconRegistry
@@ -131,6 +133,8 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   ngOnInit(): void {
+    this._store.dispatch(new notificationAction.ListAction({skip: 0, limit: 50}));
+
     // FIXME: find better way
     this._router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {

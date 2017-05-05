@@ -3,7 +3,7 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { NotificationService } from './notification.service';
 
-describe('ApplicationService', () => {
+describe('NotificationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [NotificationService]

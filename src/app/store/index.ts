@@ -173,5 +173,3 @@ export const getWalkerApplicationMessageList = createSelector(getWalkerState, fr
  */
 export const getNotificationState = (state: State) => state.notification;
 export const getNotificationList = createSelector(getNotificationState, fromNotification.getList);
-// TODO: update method and store item names
-export const getNotificationCount = createSelector(getNotificationState, fromNotification.getCount);

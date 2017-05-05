@@ -1,66 +1,37 @@
-import { createSelector } from 'reselect';
-import { INotificationCountResponse, INotificationListRequest, INotificationListResponse } from '../../models/api';
+import { assign } from 'lodash';
+import { INotificationListResponse } from '../../models/api';
 import * as notificationAction from './notification.actions';
 
 export interface State {
-  count?: INotificationCountResponse,
-  list?: INotificationListResponse,
+  list: INotificationListResponse
 }
 
 const initialState: State = {
   list: {
     list: [],
     count: null
-  },
-  count: {
-    count: 0
   }
 };
 
 export function reducer(state = initialState, action: notificationAction.Actions): State {
   switch (action.type) {
+    /**
+     * List
+     */
     // TODO: use another action for loading more
     case notificationAction.ActionTypes.LIST_COMPLETE: {
       const res: INotificationListResponse = action.payload;
-      // TODO: use object assign
-      return {
-        list: {
-          list: state.list.list.concat(res.list),
-          count: res.count
-        }
-      };
+      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
 
     case notificationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return {
-        list: {
-          list: [],
-          count: null
-        }
-      };
+      return assign({}, state, { list: { list: [], count: null }});
     }
 
     // TODO: use another action for loading more
     case notificationAction.ActionTypes.LIST_CLEAR: {
-      // TODO: use object assign
-      return {
-        list: {
-          list: [],
-          count: null
-        }
-      };
-    }
-
-    case notificationAction.ActionTypes.GET_COUNT_COMPLETE: {
-      const res: INotificationCountResponse = action.payload;
-      // TODO: use object assign
-      return Object.assign({}, state, {count: res});
-    }
-
-    case notificationAction.ActionTypes.GET_COUNT_ERROR: {
-      const error: any = action.payload;
-      return Object.assign({}, state, {count: { count: 0 }})
+      return assign({}, state, { list: { list: [], count: null }});
     }
 
     default: {
@@ -79,5 +50,4 @@ export function reducer(state = initialState, action: notificationAction.Actions
  */
 
 export const getList = (state: State) => state.list;
-export const getCount = (state: State) => state.count;
 
