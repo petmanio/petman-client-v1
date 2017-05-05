@@ -25,7 +25,7 @@ export interface IAppComponent {
   template: `
     <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
     <app-layout>
-    <!--TODO: update layout, sideNav components component-->
+      <!--TODO: update layout, sideNav components component-->
       <app-toolbar (toggleMenu)="toggleSidenav($event)">
         <!--TODO: use route config for main route-->
         <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Petman</span>
@@ -37,56 +37,63 @@ export interface IAppComponent {
           Join
         </button>
         <!--TODO: find better solution-->
-        <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1">
-          <div class="columns is-mobile">
-            <!--<div class="column">-->
-              <!--<button md-icon-button-->
-                      <!--[mdMenuTriggerFor]="notification">-->
-                <!--<md-icon>notifications</md-icon>-->
-              <!--</button>-->
-              <!--<md-menu #notification="mdMenu">-->
-                <!--<md-list>-->
-                  <!--<md-list-item>notifications</md-list-item>-->
-                <!--</md-list>-->
-              <!--</md-menu>-->
-            <!--</div>-->
-            <div class="column">
-              <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
-                   [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
-              <md-menu #menu="mdMenu">
-                <button md-menu-item>
-                  <md-icon>account_circle</md-icon>
-                  <span>Account</span>
-                </button>
-                <button md-menu-item (click)="logOut()">
-                  <md-icon>power_settings_new</md-icon>
-                  <span>Log out</span>
-                </button>
-              </md-menu>
+        <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1" class="pm-toolbar-actions">
+          <button md-icon-button
+                  [mdMenuTriggerFor]="notification">
+            <md-icon>notifications</md-icon>
+          </button>
+          <md-menu #notification="mdMenu" [overlapTrigger]="false" yPosition="above" xPosition="before" class="pm-notification-menu">
+            <div class="pm-notification-list">
             </div>
-          </div>
+          </md-menu>
+          <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
+               [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+          <md-menu #menu="mdMenu">
+            <button md-menu-item>
+              <md-icon>account_circle</md-icon>
+              <span>Account</span>
+            </button>
+            <button md-menu-item (click)="logOut()">
+              <md-icon>power_settings_new</md-icon>
+              <span>Log out</span>
+            </button>
+          </md-menu>
         </div>
       </app-toolbar>
       <!--TODO: pass items-->
-      <app-sidenav [open]="currentSideNavState" 
-        (onClose)="closeSidenav()"
-        [mode]="sideNavMode">
+      <app-sidenav [open]="currentSideNavState"
+                   (onClose)="closeSidenav()"
+                   [mode]="sideNavMode">
         <router-outlet></router-outlet>
       </app-sidenav>
     </app-layout>
   `,
   styles: [`
-   .home {
+    .home {
       cursor: pointer;
       padding: 5px;
     }
+
     .toolbar-spacer {
       flex: 1 1 auto;
     }
-    
+
     md-progress-bar {
       position: fixed;
       z-index: 10;
+    }
+
+    .pm-toolbar-actions {
+      display: flex;
+    }
+
+    /deep/ .pm-notification-menu {
+      /*max-width: 380px !important;*/
+    }
+    
+    .pm-notification-list {
+      width: 280px;
+      height: 280px;
     }
 
   `],
