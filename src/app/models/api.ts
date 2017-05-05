@@ -89,6 +89,42 @@ export interface IRoom {
   createdAt: string
 }
 
+export interface IWalkerApplication {
+  id: number,
+  rating: number,
+  review: string,
+  consumer?: IUser,
+  provider?: IUser,
+  walker?: number | IWalker,
+  count?: number,
+  chats?: IWalkerApplicationMessage[],
+  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
+  startedAt: string
+  endedAt: string
+  finsihedAt: string
+}
+
+export interface IWalkerApplicationMessage {
+  to: number | IUser
+  from: number | IUser,
+  isOwner: boolean,
+  message: string,
+  createdAt: string
+}
+
+export interface IWalker {
+  id: number,
+  // name: string,
+  description: string,
+  cost: number,
+  limit?: number,
+  isAvailable: boolean,
+  applications: IWalkerApplication[]
+  isOwner?: boolean,
+  user?: IUser,
+  createdAt: string
+}
+
 export interface IUserReview {
   rating: number,
   text: string,
@@ -233,6 +269,80 @@ export interface IRoomShareOnFacebookRequest {
 }
 
 export interface IRoomShareOnFacebookResponse {}
+
+
+/**
+ * Walker
+ */
+export interface IWalkerListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IWalkerListResponse {
+  list: IWalker[],
+  count: number
+}
+
+export interface IWalkerCreateRequest {
+  name: string,
+  description: string,
+  cost: number,
+  limit: number,
+  images: File[],
+}
+
+export interface IWalkerCreateResponse extends IWalker {}
+
+export interface IWalkerGetByIdRequest {
+  walkerId: number
+}
+
+export interface IWalkerGetByIdResponse extends IWalker {}
+
+export interface IWalkerApplyRequest {
+  walkerId: number
+}
+
+export interface IWalkerApplyResponse {}
+
+export interface IWalkerUpdateApplicationRequest extends IWalkerApplication {}
+
+export interface IWalkerUpdateApplicationResponse extends IWalkerApplication {}
+
+export interface IWalkerApplicationMessageListRequest {
+  applicationId: number
+}
+
+export interface IWalkerApplicationMessageListResponse {
+  count: number,
+  list: IWalkerApplicationMessage[]
+}
+
+export interface IWalkerApplicationMessageJoinRequest {
+  applicationId: number,
+  'x-auth-token'?: string
+}
+
+export interface IWalkerApplicationMessageCreateRequest {
+  applicationId: number,
+  message: string
+}
+
+export interface IWalkerApplicationMessageCreateEventResponse extends IWalkerApplicationMessage {
+
+}
+
+export interface IWalkerShareOnFacebookRequest {
+  method?: string,
+  name?: string,
+  link?: string,
+  caption?: string,
+  picture?: string,
+  description?: string
+}
+
+export interface IWalkerShareOnFacebookResponse {}
 
 /**
  * Notification

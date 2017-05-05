@@ -8,6 +8,7 @@ import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
 import { MdSnackBar } from '@angular/material';
 import { CropperSettings } from 'ng2-img-cropper';
+import { Router } from '@angular/router';
 const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
@@ -113,7 +114,7 @@ export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
   private _destroyed$ = new Subject<boolean>();
 
   constructor(private _ref: ChangeDetectorRef, private _store: Store<fromRoot.State>, private _actions$: Actions,
-              private _snackBar: MdSnackBar) {
+              private _snackBar: MdSnackBar, private _router: Router) {
     // this.cropperSettings = new CropperSettings();
     // this.cropperSettings.width = 100;
     // this.cropperSettings.height = 100;
@@ -128,15 +129,16 @@ export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
     this._actions$
       .ofType(roomAction.ActionTypes.CREATE_COMPLETE)
       .takeUntil(this._destroyed$)
-      .do(() => {
-        this._snackBar.open(`New room successfully created`, null, {
-          duration: 3000
-        });
-        this.room = {
-          images: []
-        };
-        this._imageUploadComponent.files = [];
-        this._imageUploadComponent.fileCounter = 0;
+      .do((action) => {
+        this._router.navigate(['room', action.payload.id, 'details']);
+        // this._snackBar.open(`New room successfully created`, null, {
+        //   duration: 3000
+        // });
+        // this.room = {
+        //   images: []
+        // };
+        // this._imageUploadComponent.files = [];
+        // this._imageUploadComponent.fileCounter = 0;
         // TODO: navigate to details page
       })
       .subscribe();

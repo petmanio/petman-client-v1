@@ -24,4 +24,16 @@ export { RoomReviewsListComponent } from './room-reviews-list/room-reviews-list.
 export { RoomReviewDialogComponent } from './room-review-dialog/room-review-dialog.component';
 export { RoomStatisticsComponent } from './room-statistics/room-statistics.component';
 export { RoomShareDialogComponent } from './room-share-dialog/room-share-dialog.component';
+export { WalkersComponent } from './walkers/walkers.component';
+export { WalkerComponent } from './walker/walker.component';
+export { WalkerAddComponent } from './walker-add/walker-add.component';
+export { WalkerDetailsComponent } from './walker-details/walker-details.component';
+export { WalkerApplyDialogComponent } from './walker-apply-dialog/walker-apply-dialog.component';
+export { WalkerApplicationActionsComponent } from './walker-application-actions/walker-application-actions.component';
+export { WalkerApplicationMessagesComponent } from './walker-application-messages/walker-application-messages.component';
+export { WalkerApplicationMessageComponent } from './walker-application-message/walker-application-message.component';
+export { WalkerApplicationsListComponent } from './walker-applications-list/walker-applications-list.component';
+export { WalkerReviewsListComponent } from './walker-reviews-list/walker-reviews-list.component';
+export { WalkerReviewDialogComponent } from './walker-review-dialog/walker-review-dialog.component';
+export { WalkerShareDialogComponent } from './walker-share-dialog/walker-share-dialog.component';
 export { MapComponent } from './map/map.component';

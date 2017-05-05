@@ -54,12 +54,24 @@ import {
   RoomReviewDialogComponent,
   RoomStatisticsComponent,
   RoomShareDialogComponent,
+  WalkersComponent,
+  WalkerComponent,
+  WalkerAddComponent,
+  WalkerDetailsComponent,
+  WalkerApplyDialogComponent,
+  WalkerApplicationActionsComponent,
+  WalkerApplicationMessagesComponent,
+  WalkerApplicationMessageComponent,
+  WalkerApplicationsListComponent,
+  WalkerReviewsListComponent,
+  WalkerReviewDialogComponent,
+  WalkerShareDialogComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService, LocationService, RoomService, NotificationService } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, NotificationEffects } from './store';
+import { AuthService, BlogService, UtilService, LocationService, RoomService, WalkerService, NotificationService } from './services';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, WalkerEffects, NotificationEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -146,6 +158,36 @@ const appRoutes: Routes = [
     }
   },
   {
+    path: 'walkers',
+    component: WalkersComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: 'walker/add',
+    component: WalkerAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: 'walker/:walkerId/details',
+    component: WalkerDetailsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
@@ -179,6 +221,18 @@ const appRoutes: Routes = [
     RoomReviewDialogComponent,
     RoomStatisticsComponent,
     RoomShareDialogComponent,
+    WalkersComponent,
+    WalkerComponent,
+    WalkerAddComponent,
+    WalkerDetailsComponent,
+    WalkerApplyDialogComponent,
+    WalkerApplicationActionsComponent,
+    WalkerApplicationMessagesComponent,
+    WalkerApplicationMessageComponent,
+    WalkerApplicationsListComponent,
+    WalkerReviewsListComponent,
+    WalkerReviewDialogComponent,
+    WalkerShareDialogComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -189,7 +243,10 @@ const appRoutes: Routes = [
   entryComponents: [
     RoomApplyDialogComponent,
     RoomReviewDialogComponent,
-    RoomShareDialogComponent
+    RoomShareDialogComponent,
+    WalkerApplyDialogComponent,
+    WalkerReviewDialogComponent,
+    WalkerShareDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -217,6 +274,7 @@ const appRoutes: Routes = [
     EffectsModule.run(BlogEffects),
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
+    EffectsModule.run(WalkerEffects),
     EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],
@@ -226,6 +284,7 @@ const appRoutes: Routes = [
     BlogService,
     LocationService,
     RoomService,
+    WalkerService,
     NotificationService,
     UtilService
   ],

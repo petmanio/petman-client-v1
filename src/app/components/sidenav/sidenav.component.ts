@@ -21,7 +21,8 @@ interface ISidenavComponent {
                         routerLinkActive="is-active">Pet care</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/rooms"
                         routerLinkActive="is-active">Sitters</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly">Walkers</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walkers"
+                        routerLinkActive="is-active">Walkers</app-nav-item>
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="event" routerLink="/applications"-->
                         <!--routerLinkActive="is-active" [chip]="(applicationCount$ | async)?.count">Applications</app-nav-item>-->
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 

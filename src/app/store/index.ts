@@ -1,6 +1,7 @@
 export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
 export { RoomEffects } from './room/room.effects';
+export { WalkerEffects } from './walker/walker.effects';
 export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
 
@@ -50,6 +51,7 @@ import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromLocation from './location/location.reducer';
 import * as fromRoom from './room/room.reducer';
+import * as fromWalker from './walker/walker.reducer';
 import * as fromNotification from './notification/notification.reducer';
 
 /**
@@ -61,6 +63,7 @@ export interface State {
   blog: fromBlog.State,
   location: fromLocation.State,
   room: fromRoom.State,
+  walker: fromWalker.State,
   notification: fromNotification.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
@@ -79,6 +82,7 @@ const reducers = {
   blog: fromBlog.reducer,
   location: fromLocation.reducer,
   room: fromRoom.reducer,
+  walker: fromWalker.reducer,
   notification: fromNotification.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
@@ -154,6 +158,15 @@ export const getRoomList = createSelector(getRoomState, fromRoom.getList);
 // TODO: update method and store item names
 export const getRoomRoom = createSelector(getRoomState, fromRoom.getRoom);
 export const getRoomApplicationMessageList = createSelector(getRoomState, fromRoom.getApplicationMessageList);
+
+/**
+ * Walker Reducers
+ */
+export const getWalkerState = (state: State) => state.walker;
+export const getWalkerList = createSelector(getWalkerState, fromWalker.getList);
+// TODO: update method and store item names
+export const getWalkerWalker = createSelector(getWalkerState, fromWalker.getWalker);
+export const getWalkerApplicationMessageList = createSelector(getWalkerState, fromWalker.getApplicationMessageList);
 
 /**
  * Notification Reducers

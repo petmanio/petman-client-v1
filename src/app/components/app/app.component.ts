@@ -12,6 +12,7 @@ import { IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
+import * as walkerAction from '../../store/walker/walker.actions';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -201,6 +202,7 @@ export class AppComponent implements OnInit, IAppComponent {
           this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
         });
 
+        // Room Events
         this._sailsService.on('roomApplicationMessage').subscribe(message => {
           this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
         });
@@ -211,6 +213,19 @@ export class AppComponent implements OnInit, IAppComponent {
 
         this._sailsService.on('roomApplicationCreate').subscribe(application => {
           this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
+        });
+
+        // Walker Events
+        this._sailsService.on('walkerApplicationMessage').subscribe(message => {
+          this._store.dispatch(new walkerAction.ApplicationMessageCreateEventAction(message))
+        });
+
+        this._sailsService.on('walkerApplicationUpdate').subscribe(update => {
+          this._store.dispatch(new walkerAction.UpdateApplicationCompleteAction(update))
+        });
+
+        this._sailsService.on('walkerApplicationCreate').subscribe(application => {
+          this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
         });
         // TODO: reconnect on connection lost
       } else if (!$event && socketConnection && socketConnection.connected) {
