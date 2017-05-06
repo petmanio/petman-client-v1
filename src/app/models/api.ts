@@ -127,14 +127,50 @@ export interface IWalker {
 
 export interface INotificationRoomApplicationStatusUpdate {
   room: number | IRoom,
+  application: number | IRoomApplication,
   prevStatus: string,
   currentStatus: string
 }
 
+export interface INotificationRoomApplicationCreate {
+  room: number | IRoom,
+  application: number | IRoomApplication,
+}
+
+export interface INotificationRoomApplicationMessageCreate {
+  room: number | IRoom,
+  application: number | IRoomApplication,
+  message: number | IRoomApplicationMessage,
+}
+
+export interface INotificationWalkerApplicationStatusUpdate {
+  walker: number | IWalker,
+  application: number | IWalkerApplication,
+  prevStatus: string,
+  currentStatus: string
+}
+
+export interface INotificationWalkerApplicationCreate {
+  walker: number | IWalker,
+  application: number | IWalkerApplication,
+}
+
+export interface INotificationWalkerApplicationMessageCreate {
+  walker: number | IWalker,
+  application: number | IWalkerApplication,
+  message: number | IWalkerApplicationMessage,
+}
+
 export interface INotification {
+  id: number,
   from: number | IUser,
   to: number | IUser,
+  roomApplicationCreate: number | INotificationRoomApplicationCreate,
   roomApplicationStatusUpdate: number | INotificationRoomApplicationStatusUpdate,
+  roomApplicationMessageCreate: number | INotificationRoomApplicationMessageCreate,
+  walkerApplicationCreate: number | INotificationWalkerApplicationCreate,
+  walkerApplicationStatusUpdate: number | INotificationWalkerApplicationStatusUpdate,
+  walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
   seen: boolean,
   createdAt: string
 }
@@ -362,4 +398,12 @@ export interface INotificationListRequest {
 export interface INotificationListResponse {
   list: INotification[],
   count: number
+}
+
+export interface INotificationSeenRequest {
+  notifications: number[]
+}
+
+export interface INotificationSeenResponse {
+  notifications: number[]
 }

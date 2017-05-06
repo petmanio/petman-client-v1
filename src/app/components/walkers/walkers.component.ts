@@ -76,6 +76,9 @@ export class WalkersComponent implements OnInit, IWalkersComponent {
   ngOnInit(): void {
     this._store.dispatch(new walkerAction.ListClearAction({}));
     this._store.dispatch(new walkerAction.ListAction({ limit: this._limit, skip: this._skip }));
+    this.walkerList$.subscribe($event => {
+      this._count = $event.count;
+    });
   }
 
   onScroll(): void {

@@ -8,7 +8,7 @@ import { UtilService } from '../../services/util/util.service';
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
-import { IUser } from '../../models/api';
+import { INotification, IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
@@ -18,7 +18,11 @@ import * as walkerAction from '../../store/walker/walker.actions';
 export interface IAppComponent {
   closeSidenav(): void,
   toggleSidenav($event: Event): void,
-  logOut(): void
+  onScroll(): void,
+  onNotificationMenuOpen(): void,
+  onNotificationClick(notification: INotification): void
+  logOut(): void,
+  initSocket(): void
 }
 
 @Component({
@@ -40,11 +44,21 @@ export interface IAppComponent {
         <!--TODO: find better solution-->
         <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1" class="pm-toolbar-actions">
           <button md-icon-button
-                  [mdMenuTriggerFor]="notification">
-            <md-icon>notifications</md-icon>
+                  [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
+            <md-icon color="accent" *ngIf="haveUnseenNotification == true">notifications</md-icon>
+            <md-icon *ngIf="haveUnseenNotification == false">notifications_none</md-icon>
           </button>
-          <md-menu #notification="mdMenu" [overlapTrigger]="false" yPosition="above" xPosition="before" class="pm-notification-menu">
-            <div class="pm-notification-list">
+          <md-menu #notification="mdMenu" [overlapTrigger]="false"
+                   yPosition="above" xPosition="before" class="pm-notification-menu">
+            <div class="pm-notification-list" infinite-scroll
+                 (scrolled)="onScroll()"
+                 [infiniteScrollDistance]="2"
+                 [infiniteScrollThrottle]="300"
+                 [scrollWindow]="false">
+              <div *ngIf="!(notifications$ | async)?.list.length" class="pm-font-14 pm-color-gray pm-text-center pm-no-notifications">
+                No notifications yet</div>
+              <app-notifications [notifications]="(notifications$ | async)?.list" 
+                                 (onNotificationClick)="onNotificationClick($event)"></app-notifications>
             </div>
           </md-menu>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
@@ -88,13 +102,34 @@ export interface IAppComponent {
       display: flex;
     }
 
-    /deep/ .pm-notification-menu {
-      /*max-width: 380px !important;*/
+    /deep/ .mat-menu-panel.pm-notification-menu {
+       width: 380px;
+       max-width: 380px;
+       margin-left: -100px;
+    }
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      /deep/ .mat-menu-panel.pm-notification-menu {
+        margin-left: auto;
+        width: 280px;
+        max-width: 280px;
+      }
+
+      .pm-notification-list {
+        width: 260px !important;
+      }
     }
     
     .pm-notification-list {
-      width: 280px;
-      height: 280px;
+      width: 380px;
+      padding: 0;
+      margin: 0;
+      max-height: 500px;
+      overflow: auto;
+    }
+    
+    .pm-no-notifications {
+      margin-top: 20px;
     }
 
   `],
@@ -105,12 +140,17 @@ export class AppComponent implements OnInit, IAppComponent {
   // TODO: import model
   currentUser$: Observable<any>;
   notifications$: Observable<any>;
+  notifications: INotification[];
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
   currentSideNavState: boolean;
+  // TODO: improve notification status system
+  haveUnseenNotification: boolean;
   // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
-
+  private _skip = 0;
+  private _limit = 10;
+  private _count: number = null;
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
               private _router: Router,
@@ -133,7 +173,7 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new notificationAction.ListAction({skip: 0, limit: 50}));
+    this._store.dispatch(new notificationAction.ListAction({skip: this._skip, limit: this._limit}));
 
     // FIXME: find better way
     this._router.events.subscribe((event: any) => {
@@ -156,6 +196,12 @@ export class AppComponent implements OnInit, IAppComponent {
       }
     });
 
+    this.notifications$.subscribe($event => {
+      this._count = $event.count;
+      this.notifications = $event.list;
+      this.haveUnseenNotification = !($event && $event.list.length && $event.list[0].seen);
+    });
+
     this.initSocket();
 
     if (UtilService.getCurrentDevice() === 'MOBILE') {
@@ -163,6 +209,35 @@ export class AppComponent implements OnInit, IAppComponent {
     }
 
     this.showSidenav$.subscribe((event) => this.currentSideNavState = event);
+  }
+
+  onScroll(): void {
+    if (this._skip + this._limit < this._count) {
+      this._skip += this._limit;
+      this._store.dispatch(new notificationAction.ListAction({ limit: this._limit, skip: this._skip }));
+    }
+  }
+
+  onNotificationMenuOpen(): void {
+    const notifications = this.notifications.filter(n => !n.seen).map(n => n.id);
+    if (notifications.length) {
+      this._store.dispatch(new notificationAction.SeenAction({ notifications }));
+    }
+  };
+
+  onNotificationClick(notification: INotification): void {
+    if (notification.roomApplicationCreate || notification.roomApplicationMessageCreate || notification.roomApplicationStatusUpdate) {
+      const id = (notification.roomApplicationCreate
+      || notification.roomApplicationMessageCreate
+      || notification.roomApplicationStatusUpdate)['room'];
+      this._router.navigate(['room', id, 'details'])
+    } else if (notification.walkerApplicationCreate || notification.walkerApplicationMessageCreate
+      || notification.walkerApplicationStatusUpdate) {
+      const id = (notification.walkerApplicationCreate
+      || notification.walkerApplicationMessageCreate
+      || notification.walkerApplicationStatusUpdate)['walker'];
+      this._router.navigate(['walker', id, 'details'])
+    }
   }
 
   closeSidenav(): void {
@@ -237,6 +312,11 @@ export class AppComponent implements OnInit, IAppComponent {
 
         this._sailsService.on('walkerApplicationCreate').subscribe(application => {
           this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
+        });
+
+        // Notification Event
+        this._sailsService.on('notificationNew').subscribe(notification => {
+          this._store.dispatch(new notificationAction.NewEventAction(notification));
         });
         // TODO: reconnect on connection lost
       } else if (!$event && socketConnection && socketConnection.connected) {

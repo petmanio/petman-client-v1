@@ -1,6 +1,9 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { INotificationListRequest, INotificationListResponse } from '../../models/api';
+import {
+  INotification, INotificationListRequest, INotificationListResponse, INotificationSeenRequest,
+  INotificationSeenResponse
+} from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -14,7 +17,13 @@ export const ActionTypes = {
   LIST: type('[Notification] List'),
   LIST_COMPLETE: type('[Notification] List Complete'),
   LIST_ERROR: type('[Notification] List Error'),
-  LIST_CLEAR: type('[Notification] List Clear')
+  LIST_CLEAR: type('[Notification] List Clear'),
+
+  SEEN: type('[Notification] Seen'),
+  SEEN_COMPLETE: type('[Notification] Seen Complete'),
+  SEEN_ERROR: type('[Notification] Seen Error'),
+
+  NOTIFICATION_NEW_EVENT: type('[Notification] New Event'),
 };
 
 /**
@@ -52,6 +61,36 @@ export class ListClearAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Seen
+ */
+export class SeenAction implements Action {
+  type = ActionTypes.SEEN;
+
+  constructor(public payload: INotificationSeenRequest) { }
+}
+
+export class SeenCompleteAction implements Action {
+  type = ActionTypes.SEEN_COMPLETE;
+
+  constructor(public payload: INotificationSeenResponse) { }
+}
+
+export class SeenErrorAction implements Action {
+  type = ActionTypes.SEEN_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+
+/**
+ * Notification New Event
+ */
+export class NewEventAction implements Action {
+  type = ActionTypes.NOTIFICATION_NEW_EVENT;
+
+  constructor(public payload: INotification) { }
+}
 
 /**
  * Export a type alias of all actions in this action group
@@ -62,3 +101,7 @@ export type Actions
   | ListCompleteAction
   | ListErrorAction
   | ListClearAction
+  | SeenAction
+  | SeenCompleteAction
+  | SeenErrorAction
+  | NewEventAction

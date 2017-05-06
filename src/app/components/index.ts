@@ -36,4 +36,5 @@ export { WalkerApplicationsListComponent } from './walker-applications-list/walk
 export { WalkerReviewsListComponent } from './walker-reviews-list/walker-reviews-list.component';
 export { WalkerReviewDialogComponent } from './walker-review-dialog/walker-review-dialog.component';
 export { WalkerShareDialogComponent } from './walker-share-dialog/walker-share-dialog.component';
+export { NotificationsComponent } from './notifications/notifications.component';
 export { MapComponent } from './map/map.component';

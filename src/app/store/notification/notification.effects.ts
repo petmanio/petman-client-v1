@@ -27,7 +27,8 @@ import * as notificationAction from '../../store/notification/notification.actio
  */
 
 interface INotificationEffects {
-  list$: Observable<Action>
+  list$: Observable<Action>,
+  seen$: Observable<Action>
 }
 
 @Injectable()
@@ -39,6 +40,15 @@ export class NotificationEffects implements INotificationEffects {
       return this._notificationService.list(options)
         .map(response => new notificationAction.ListCompleteAction(response))
         .catch(err => of(new notificationAction.ListErrorAction(err)))
+    });
+
+  @Effect() seen$: Observable<Action> = this._actions$
+    .ofType(notificationAction.ActionTypes.SEEN)
+    .map((action: notificationAction.SeenAction) => action.payload)
+    .switchMap(options => {
+      return this._notificationService.seen(options)
+        .map(response => new notificationAction.SeenCompleteAction(response))
+        .catch(err => of(new notificationAction.SeenErrorAction(err)))
     });
 
   constructor(private _actions$: Actions,

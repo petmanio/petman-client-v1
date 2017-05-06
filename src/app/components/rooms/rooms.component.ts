@@ -76,6 +76,9 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
   ngOnInit(): void {
     this._store.dispatch(new roomAction.ListClearAction({}));
     this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
+    this.roomList$.subscribe($event => {
+      this._count = $event.count;
+    });
   }
 
   onScroll(): void {

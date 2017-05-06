@@ -1,5 +1,5 @@
-import { assign } from 'lodash';
-import { INotificationListResponse } from '../../models/api';
+import { assign, cloneDeep, map } from 'lodash';
+import { INotification, INotificationListResponse, INotificationSeenResponse } from '../../models/api';
 import * as notificationAction from './notification.actions';
 
 export interface State {
@@ -32,6 +32,31 @@ export function reducer(state = initialState, action: notificationAction.Actions
     // TODO: use another action for loading more
     case notificationAction.ActionTypes.LIST_CLEAR: {
       return assign({}, state, { list: { list: [], count: null }});
+    }
+
+    /**
+     * Seen
+     */
+    case notificationAction.ActionTypes.SEEN_COMPLETE: {
+      const res: INotificationSeenResponse = action.payload;
+      let list = cloneDeep(state.list.list);
+      list = map(list, item => {
+        if (res.notifications.indexOf(item.id) !== -1) {
+          item.seen = true;
+        }
+        return item;
+      });
+      return assign({}, state, { list: { list: list, count: state.list.count }});
+    }
+
+    // TODO: error reducer
+
+    /**
+     * Notification New
+     */
+    case notificationAction.ActionTypes.NOTIFICATION_NEW_EVENT: {
+      const res: INotification = action.payload;
+      return assign({}, state, { list: { list: [res].concat(state.list.list), count: state.list.count + 1}});
     }
 
     default: {

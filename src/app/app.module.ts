@@ -66,6 +66,7 @@ import {
   WalkerReviewsListComponent,
   WalkerReviewDialogComponent,
   WalkerShareDialogComponent,
+  NotificationsComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
@@ -233,6 +234,7 @@ const appRoutes: Routes = [
     WalkerReviewsListComponent,
     WalkerReviewDialogComponent,
     WalkerShareDialogComponent,
+    NotificationsComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
