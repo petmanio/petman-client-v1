@@ -199,7 +199,7 @@ export class AppComponent implements OnInit, IAppComponent {
     this.notifications$.subscribe($event => {
       this._count = $event.count;
       this.notifications = $event.list;
-      this.haveUnseenNotification = !($event && $event.list.length && $event.list[0].seen);
+      this.haveUnseenNotification = Boolean($event.list.length && !$event.list[0].seen);
     });
 
     this.initSocket();
