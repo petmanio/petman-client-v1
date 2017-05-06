@@ -45,8 +45,9 @@ export interface IAppComponent {
         <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1" class="pm-toolbar-actions">
           <button md-icon-button
                   [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
-            <md-icon color="accent" *ngIf="haveUnseenNotification == true">notifications</md-icon>
-            <md-icon *ngIf="haveUnseenNotification == false">notifications_none</md-icon>
+            <md-icon *ngIf="unseenNotificationsCount" color="accent">notifications</md-icon>
+            <span *ngIf="unseenNotificationsCount" class="pm-unseen-count">{{unseenNotificationsCount}}</span>
+            <md-icon *ngIf="!unseenNotificationsCount">notifications_none</md-icon>
           </button>
           <md-menu #notification="mdMenu" [overlapTrigger]="false"
                    yPosition="above" xPosition="before" class="pm-notification-menu">
@@ -120,6 +121,14 @@ export interface IAppComponent {
       }
     }
     
+    .pm-unseen-count {
+      position: absolute;
+      top: -15px;
+      right: 7px;
+      font-size: 12px;
+      color: #ffd740;
+    }
+    
     .pm-notification-list {
       width: 380px;
       padding: 0;
@@ -145,7 +154,7 @@ export class AppComponent implements OnInit, IAppComponent {
   sideNavMode = 'side';
   currentSideNavState: boolean;
   // TODO: improve notification status system
-  haveUnseenNotification: boolean;
+  unseenNotificationsCount = 0;
   // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
   private _skip = 0;
@@ -199,7 +208,7 @@ export class AppComponent implements OnInit, IAppComponent {
     this.notifications$.subscribe($event => {
       this._count = $event.count;
       this.notifications = $event.list;
-      this.haveUnseenNotification = Boolean($event.list.length && !$event.list[0].seen);
+      this.unseenNotificationsCount = $event.list.filter((n) => !n.seen).length;
     });
 
     this.initSocket();
