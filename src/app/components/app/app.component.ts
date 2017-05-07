@@ -182,7 +182,16 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new notificationAction.ListAction({skip: this._skip, limit: this._limit}));
+    let notificationListReceived;
+    this.currentUser$.subscribe(($event) => {
+      if ($event && !notificationListReceived) {
+        this._store.dispatch(new notificationAction.ListAction({skip: this._skip, limit: this._limit}));
+        notificationListReceived = true;
+      } else if (!$event) {
+        this._store.dispatch(new notificationAction.ListClearAction({}));
+        notificationListReceived = false;
+      }
+    });
 
     // FIXME: find better way
     this._router.events.subscribe((event: any) => {

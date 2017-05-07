@@ -145,7 +145,7 @@ export interface IRoomDetailsComponent {
     }
     
     .pm-action-label {
-      margin-top: 25px;
+      margin-top: 0;
       text-align: right;
       padding-right: 10px;
       margin-bottom: 15px;
