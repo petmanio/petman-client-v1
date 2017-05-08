@@ -23,13 +23,14 @@ interface ISidenavComponent {
                         routerLinkActive="is-active">Sitters</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walkers"
                         routerLinkActive="is-active">Walkers</app-nav-item>
-          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="event" routerLink="/applications"-->
-                        <!--routerLinkActive="is-active" [chip]="(applicationCount$ | async)?.count">Applications</app-nav-item>-->
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="home">Adopt</app-nav-item>
+
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
-                        routerLinkActive="is-active">Blog</app-nav-item>
-          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
-          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
-          <app-nav-item (activate)="onItemActivate.emit()" icon="help">Help</app-nav-item>
+                        routerLinkActive="is-active">Blog/News</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="help">Vet consultant</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> 
+          <app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="info">About Us</app-nav-item>
         </md-nav-list>
       </md-sidenav>

@@ -45,7 +45,7 @@ export interface IAppComponent {
         <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1" class="pm-toolbar-actions">
           <button md-icon-button
                   [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
-            <md-icon *ngIf="unseenNotificationsCount" color="accent">notifications</md-icon>
+            <md-icon *ngIf="unseenNotificationsCount">notifications</md-icon>
             <span *ngIf="unseenNotificationsCount" class="pm-unseen-count">{{unseenNotificationsCount}}</span>
             <md-icon *ngIf="!unseenNotificationsCount">notifications_none</md-icon>
           </button>
@@ -64,7 +64,8 @@ export interface IAppComponent {
           </md-menu>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
                [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
-          <md-menu #menu="mdMenu">
+          <md-menu #menu="mdMenu" [overlapTrigger]="false"
+                   yPosition="above" xPosition="before">
             <button md-menu-item>
               <md-icon>account_circle</md-icon>
               <span>Account</span>
@@ -123,10 +124,14 @@ export interface IAppComponent {
     
     .pm-unseen-count {
       position: absolute;
-      top: -15px;
-      right: 7px;
+      right: 5px;
       font-size: 12px;
-      color: #ffd740;
+      top: 0;
+      padding: 1px 3px;
+      background: #fc6f6f;
+      line-height: initial;
+      opacity: 0.8;
+      border-radius: 3px;
     }
     
     .pm-notification-list {

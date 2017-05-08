@@ -11,8 +11,8 @@ export interface INotificationsComponent {
   selector: 'app-notifications',
   template: `
     <ul>
-      <li *ngFor="let notification of notifications; let i = index;" class="pm-cursor-pointer"
-                    [ngClass]="{'selected': i === selected}"
+      <li *ngFor="let notification of notifications;" class="pm-cursor-pointer"
+                    [ngClass]="{'selected': !notification.seen}"
                     (click)="onNotificationClick.emit(notification)">
         <div class="columns is-mobile pm-notification-row">
           <div class="column is-2">
@@ -84,7 +84,7 @@ export interface INotificationsComponent {
       text-align: right;
     }
 
-    li:hover {
+    li:hover, .selected {
       background-color: #f8f8f8;
     }
 
