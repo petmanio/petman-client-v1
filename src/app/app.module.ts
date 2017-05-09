@@ -141,7 +141,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'rooms',
+    path: 'room',
     component: RoomsComponent,
     canActivate: [AuthGuard],
     data: {
@@ -171,7 +171,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'walkers',
+    path: 'walker',
     component: WalkersComponent,
     canActivate: [AuthGuard],
     data: {

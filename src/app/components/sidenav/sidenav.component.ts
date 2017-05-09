@@ -19,9 +19,9 @@ interface ISidenavComponent {
           <app-nav-item (activate)="onItemActivate.emit()" icon="dashboard" routerLink="" [activeClass]="[isHomeActive]">Home</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" routerLink="/locations" icon="pets" 
                         routerLinkActive="is-active">Pet care</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/rooms"
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/room"
                         routerLinkActive="is-active">Sitters</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walkers"
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walker"
                         routerLinkActive="is-active">Walkers</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="home" routerLink="/adopt"
                         routerLinkActive="is-active">Adopt</app-nav-item>
