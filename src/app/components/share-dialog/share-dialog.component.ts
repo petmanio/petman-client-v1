@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
-export interface IWalkerShareDialogComponent {
+export interface IShareDialogComponent {
   onShare(network: string): void
 }
 
 @Component({
-  selector: 'app-walker-share-dialog',
+  selector: 'app-room-share-dialog',
   template: `
-    <div class="walker-share-dialog">
+    <div class="room-share-dialog">
       <p class="pm-color-gray pm-font-16">
         Share on
       </p>
@@ -21,14 +21,14 @@ export interface IWalkerShareDialogComponent {
     </div>
   `,
   styles: [`
-    .walker-share-dialog {
+    .room-share-dialog {
       overflow: hidden;
       min-width: 200px;
     }
   `]
 })
-export class WalkerShareDialogComponent implements IWalkerShareDialogComponent {
-  constructor(public dialogRef: MdDialogRef<WalkerShareDialogComponent>) {
+export class ShareDialogComponent implements IShareDialogComponent {
+  constructor(public dialogRef: MdDialogRef<ShareDialogComponent>) {
 
   }
 

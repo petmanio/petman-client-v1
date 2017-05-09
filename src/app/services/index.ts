@@ -4,5 +4,6 @@ export { BlogService } from './blog/blog.service';
 export { LocationService } from './location/location.service';
 export { RoomService } from './room/room.service';
 export { WalkerService } from './walker/walker.service';
+export { AdoptService } from './adopt/adopt.service';
 export { NotificationService } from './notification/notification.service';
 export { UtilService } from './util/util.service';

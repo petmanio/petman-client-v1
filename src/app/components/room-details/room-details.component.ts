@@ -13,12 +13,13 @@ import { IRoom, IRoomApplication } from '../../models/api';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
-import { RoomShareDialogComponent } from '../room-share-dialog/room-share-dialog.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
   onApplicationSelect(application: IRoomApplication): void,
   onActionClick(status: string): void,
+  onShareClick(): void,
   formatDate(date): string
 }
 
@@ -242,7 +243,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   }
 
   onShareClick(): void {
-    const _dialogRef = this._dialog.open(RoomShareDialogComponent);
+    const _dialogRef = this._dialog.open(ShareDialogComponent);
     _dialogRef.afterClosed().subscribe(shareOptions => {
       if (shareOptions) {
         // TODO: create url via router

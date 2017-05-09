@@ -2,6 +2,7 @@ export { AuthEffects } from './auth/auth.effects';
 export { BlogEffects } from './blog/blog.effects';
 export { RoomEffects } from './room/room.effects';
 export { WalkerEffects } from './walker/walker.effects';
+export { AdoptEffects } from './adopt/adopt.effects';
 export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
 
@@ -39,7 +40,6 @@ import { storeFreeze } from 'ngrx-store-freeze';
  */
 import { combineReducers } from '@ngrx/store';
 
-
 /**
  * Every reducer module's default export is the reducer function itself. In
  * addition, each module should export a type or interface that describes
@@ -52,6 +52,7 @@ import * as fromBlog from './blog/blog.reducer';
 import * as fromLocation from './location/location.reducer';
 import * as fromRoom from './room/room.reducer';
 import * as fromWalker from './walker/walker.reducer';
+import * as fromAdopt from './adopt/adopt.reducer';
 import * as fromNotification from './notification/notification.reducer';
 
 /**
@@ -64,6 +65,7 @@ export interface State {
   location: fromLocation.State,
   room: fromRoom.State,
   walker: fromWalker.State,
+  adopt: fromAdopt.State,
   notification: fromNotification.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
@@ -83,6 +85,7 @@ const reducers = {
   location: fromLocation.reducer,
   room: fromRoom.reducer,
   walker: fromWalker.reducer,
+  adopt: fromAdopt.reducer,
   notification: fromNotification.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
@@ -167,6 +170,14 @@ export const getWalkerList = createSelector(getWalkerState, fromWalker.getList);
 // TODO: update method and store item names
 export const getWalkerWalker = createSelector(getWalkerState, fromWalker.getWalker);
 export const getWalkerApplicationMessageList = createSelector(getWalkerState, fromWalker.getApplicationMessageList);
+
+/**
+ * Adopt Reducers
+ */
+export const getAdoptState = (state: State) => state.adopt;
+export const getAdoptList = createSelector(getAdoptState, fromAdopt.getList);
+// TODO: update method and store item names
+export const getAdoptAdopt = createSelector(getAdoptState, fromAdopt.getAdopt);
 
 /**
  * Notification Reducers

@@ -1,51 +1,51 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IWalker } from '../../models/api';
+import { IAdopt } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MdDialog } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
-import * as walkerAction from '../../store/walker/walker.actions';
 // TODO: fix stars on mobile firefox
-export interface IWalkerComponent {
+export interface IAdoptCardComponent {
   formatDate(date): string,
   onShareClick(): void
 }
 
 @Component({
-  selector: 'app-walker',
+  selector: 'app-adopt-card',
   template: `
-    <md-card class="walker-card">
+    <md-card class="adopt-card">
       <md-card-header>
-        <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + walker.user.userData.avatar + ')'}"></div>
-        <md-card-title>{{walker.user.userData.firstName}} {{walker.user.userData.lastName}}</md-card-title>
+        <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + adopt.user.userData.avatar + ')'}"></div>
+        <md-card-title>{{adopt.user.userData.firstName}} {{adopt.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
-            {{formatDate(walker.createdAt)}}
+            {{formatDate(adopt.createdAt)}}
           </span>
         </md-card-subtitle>
-        <a md-icon-button class="pm-walker-action-open" [routerLink]="['/walker', walker.id, 'details']">
+        <a md-icon-button class="pm-adopt-action-open" [routerLink]="['/adopt', adopt.id, 'details']">
           <md-icon class="pm-font-16 pm-color-gray">open_in_new</md-icon>
         </a>
       </md-card-header>
       <md-divider></md-divider><br/>
-      <md-card-content [routerLink]="['/walker', walker.id, 'details']" class="pm-cursor-pointer">
-        <div class="pm-walker-description pm-font-16 pm-color-gray">{{walker.description | appEllipsis:100}}</div>
+      <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="adopt.images[0] && adopt.images[0].src">-->
+      <md-card-content [routerLink]="['/adopt', adopt.id, 'details']" class="pm-cursor-pointer">
+        <div class="pm-adopt-description pm-font-16 pm-color-gray">{{adopt.description | appEllipsis:100}}</div>
+        <div class="swiper-container" *ngIf="adopt.images.length" [swiper]="swiperOptions">
+          <div class="swiper-wrapper">
+            <div *ngFor="let image of adopt.images" class="swiper-slide">
+              <img class="pm-carousel-image" [src]="image.src">
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
       </md-card-content>
       <md-card-actions>
-        <div class="pm-walker-footer">
-          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{walker.cost}}$ / day</span>&nbsp;
-          <rating [ngModel]="averageRating"
-                  [max]="5"
-                  fullIcon="★"
-                  emptyIcon="☆"
-                  [readonly]="true"
-                  [disabled]="false"
-                  [required]="true"
-                  [float]="true"
-                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-          <button md-icon-button class="pm-walker-action-share" (click)="onShareClick()">
+        <div class="pm-adopt-footer">
+          <!--<md-icon class="pm-font-16 pm-color-gray">contact_phone</md-icon>&nbsp;-->
+          <!--<span class="pm-font-16 pm-color-gray">{{adopt.contactPhone}}</span>-->
+          <button md-icon-button class="pm-adopt-action-share" (click)="onShareClick()">
             <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
           </button>
         </div>
@@ -53,20 +53,20 @@ export interface IWalkerComponent {
     </md-card>
   `,
   styles: [`
-    .walker-card  {}
+    .adopt-card  {}
 
     md-card-title {
       margin-top: 10px;
     }
-    
-    .pm-walker-description {
+
+    .pm-adopt-description {
       margin-bottom: 25px;
     }
 
     .pm-carousel-image {
       height: 300px;
     }
-    
+
     .swiper-container {
       width: calc(100% + 48px);
       margin: 0 -24px 16px -24px;
@@ -78,20 +78,20 @@ export interface IWalkerComponent {
         margin: 16px -16px;
       }
     }
-    
-    .pm-walker-action-open, .pm-walker-action-share {
+
+    .pm-adopt-action-open, .pm-adopt-action-share {
       margin-left: auto;
     }
 
-    .pm-walker-footer {
+    .pm-adopt-footer {
       display: flex;
       flex-direction: row;
       align-items: center;
     }
   `]
 })
-export class WalkerComponent implements OnChanges, IWalkerComponent {
-  @Input() walker: IWalker;
+export class AdoptCardComponent implements OnChanges, IAdoptCardComponent {
+  @Input() adopt: IAdopt;
   averageRating: number;
   swiperOptions: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -113,23 +113,20 @@ export class WalkerComponent implements OnChanges, IWalkerComponent {
           const fbShareOptions = {
             method: 'feed',
             name: 'Petman',
-            link: `${location.origin}/walker/${this.walker.id}/details`,
-            description: this.walker.description
+            link: `${location.origin}/adopt/${this.adopt.id}/details`,
+            picture: this.adopt.images[0].src,
+            description: this.adopt.description
           };
 
           // TODO: shate using dispatch
-          // this._store.dispatch(new walkerAction.ShareOnFacebookAction(fbShareOptions));
+          // this._store.dispatch(new adoptAction.ShareOnFacebookAction(fbShareOptions));
           FB.ui(fbShareOptions, response => {});
         }
       }
     })
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['walker']) {
-      this.averageRating = UtilService.countAverage(this.walker.applications.filter(application => application.status === 'FINISHED'));
-    }
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   formatDate(date): string {
     // TODO: use angular date filter

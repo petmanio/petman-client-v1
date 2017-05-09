@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
+import { remove, clone } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import * as fromRoot from '../../store';
@@ -107,7 +107,7 @@ export class WalkerAddComponent implements OnInit, OnDestroy, IWalkerAddComponen
   }
 
   onSaveWalker(): void {
-    const formData = _.clone(this.walker);
+    const formData = clone(this.walker);
     this._store.dispatch(new walkerAction.CreateAction(formData));
   }
 

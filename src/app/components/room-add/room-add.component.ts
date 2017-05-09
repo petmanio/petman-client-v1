@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FileHolder, ImageUploadComponent } from 'angular2-image-upload/lib/image-upload/image-upload.component';
-import * as _ from 'lodash';
+import { remove, clone } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import * as fromRoot from '../../store';
@@ -159,11 +159,11 @@ export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
   }
 
   onImageRemove($event: FileHolder): void {
-    _.remove(this.room.images, (image: any) => image.src === $event.src);
+    remove(this.room.images, (image: any) => image.src === $event.src);
   }
 
   onSaveRoom(): void {
-    const formData = _.clone(this.room);
+    const formData = clone(this.room);
     formData.images = formData.images.map(image => image.file);
     this._store.dispatch(new roomAction.CreateAction(formData));
   }

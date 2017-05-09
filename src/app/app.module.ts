@@ -53,7 +53,6 @@ import {
   RoomReviewsListComponent,
   RoomReviewDialogComponent,
   RoomStatisticsComponent,
-  RoomShareDialogComponent,
   WalkersComponent,
   WalkerComponent,
   WalkerAddComponent,
@@ -65,14 +64,27 @@ import {
   WalkerApplicationsListComponent,
   WalkerReviewsListComponent,
   WalkerReviewDialogComponent,
-  WalkerShareDialogComponent,
+  AdoptListComponent,
+  AdoptCardComponent,
+  AdoptAddComponent,
+  AdoptDetailsComponent,
   NotificationsComponent,
+  ShareDialogComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
-import { AuthService, BlogService, UtilService, LocationService, RoomService, WalkerService, NotificationService } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, WalkerEffects, NotificationEffects } from './store';
+import {
+  AuthService,
+  BlogService,
+  UtilService,
+  LocationService,
+  RoomService,
+  WalkerService,
+  AdoptService,
+  NotificationService
+} from './services';
+import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, WalkerEffects, AdoptEffects, NotificationEffects } from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -189,6 +201,36 @@ const appRoutes: Routes = [
     }
   },
   {
+    path: 'adopt',
+    component: AdoptListComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: 'adopt/add',
+    component: AdoptAddComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
+    path: 'adopt/:adoptId/details',
+    component: AdoptDetailsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
@@ -221,7 +263,6 @@ const appRoutes: Routes = [
     RoomReviewsListComponent,
     RoomReviewDialogComponent,
     RoomStatisticsComponent,
-    RoomShareDialogComponent,
     WalkersComponent,
     WalkerComponent,
     WalkerAddComponent,
@@ -233,8 +274,12 @@ const appRoutes: Routes = [
     WalkerApplicationsListComponent,
     WalkerReviewsListComponent,
     WalkerReviewDialogComponent,
-    WalkerShareDialogComponent,
+    AdoptListComponent,
+    AdoptCardComponent,
+    AdoptAddComponent,
+    AdoptDetailsComponent,
     NotificationsComponent,
+    ShareDialogComponent,
     MapComponent,
     FitContentsDirective,
     EllipsisPipe,
@@ -243,12 +288,12 @@ const appRoutes: Routes = [
     ChunkPipe
   ],
   entryComponents: [
+    // TODO: use only one review dialog for whole application
     RoomApplyDialogComponent,
     RoomReviewDialogComponent,
-    RoomShareDialogComponent,
     WalkerApplyDialogComponent,
     WalkerReviewDialogComponent,
-    WalkerShareDialogComponent
+    ShareDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -277,6 +322,7 @@ const appRoutes: Routes = [
     EffectsModule.run(LocationEffects),
     EffectsModule.run(RoomEffects),
     EffectsModule.run(WalkerEffects),
+    EffectsModule.run(AdoptEffects),
     EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],
@@ -287,6 +333,7 @@ const appRoutes: Routes = [
     LocationService,
     RoomService,
     WalkerService,
+    AdoptService,
     NotificationService,
     UtilService
   ],

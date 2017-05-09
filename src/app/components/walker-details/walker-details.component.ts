@@ -13,7 +13,7 @@ import { IWalker, IWalkerApplication } from '../../models/api';
 import { WalkerApplicationsListComponent } from '../walker-applications-list/walker-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { WalkerReviewDialogComponent } from '../walker-review-dialog/walker-review-dialog.component';
-import { WalkerShareDialogComponent } from '../walker-share-dialog/walker-share-dialog.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 
 export interface IWalkerDetailsComponent {
   onRatingRowClick(): void
@@ -230,7 +230,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
   }
 
   onShareClick(): void {
-    const _dialogRef = this._dialog.open(WalkerShareDialogComponent);
+    const _dialogRef = this._dialog.open(ShareDialogComponent);
     _dialogRef.afterClosed().subscribe(shareOptions => {
       if (shareOptions) {
         // TODO: create url via router

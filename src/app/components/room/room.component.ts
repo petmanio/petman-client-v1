@@ -3,7 +3,7 @@ import { IRoom } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MdDialog } from '@angular/material';
-import { RoomShareDialogComponent } from '../room-share-dialog/room-share-dialog.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
@@ -114,7 +114,7 @@ export class RoomComponent implements OnChanges, IRoomComponent {
   }
 
   onShareClick(): void {
-    const _dialogRef = this._dialog.open(RoomShareDialogComponent);
+    const _dialogRef = this._dialog.open(ShareDialogComponent);
     _dialogRef.afterClosed().subscribe(shareOptions => {
       if (shareOptions) {
         // TODO: create url via router

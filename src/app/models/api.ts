@@ -89,6 +89,21 @@ export interface IRoom {
   createdAt: string
 }
 
+export interface IAdoptImage {
+  src: string,
+}
+
+export interface IAdopt {
+  id: number,
+  // name: string,
+  description: string,
+  isOwner?: boolean,
+  images?: IAdoptImage[],
+  user?: IUser,
+  createdAt: string,
+  contactPhone: string
+}
+
 export interface IWalkerApplication {
   id: number,
   rating: number,
@@ -387,6 +402,32 @@ export interface IWalkerShareOnFacebookRequest {
 
 export interface IWalkerShareOnFacebookResponse {}
 
+/**
+ * Adopt
+ */
+export interface IAdoptListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IAdoptListResponse {
+  list: IAdopt[],
+  count: number
+}
+
+export interface IAdoptCreateRequest {
+  description: string,
+  contactPhone: string,
+  images: File[],
+}
+
+export interface IAdoptCreateResponse extends IAdopt {}
+
+export interface IAdoptGetByIdRequest {
+  adoptId: number
+}
+
+export interface IAdoptGetByIdResponse extends IAdopt {}
 /**
  * Notification
  */
