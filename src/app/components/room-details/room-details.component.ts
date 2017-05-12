@@ -251,7 +251,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
           const fbShareOptions = {
             method: 'feed',
             name: 'Petman',
-            link: `${location.origin}/room/${this.room.id}/details`,
+            link: `${location.origin}/rooms/${this.room.id}/details`,
             picture: this.room.images[0].src,
             description: this.room.description
           };

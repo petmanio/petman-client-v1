@@ -92,7 +92,7 @@ export class WalkerAddComponent implements OnInit, OnDestroy, IWalkerAddComponen
       .ofType(walkerAction.ActionTypes.CREATE_COMPLETE)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['walker', action.payload.id, 'details']);
+        this._router.navigate(['walkers', action.payload.id, 'details']);
         // this._snackBar.open(`New walker successfully created`, null, {
         //   duration: 3000
         // });

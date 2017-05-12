@@ -130,7 +130,7 @@ export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
       .ofType(roomAction.ActionTypes.CREATE_COMPLETE)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['room', action.payload.id, 'details']);
+        this._router.navigate(['rooms', action.payload.id, 'details']);
         // this._snackBar.open(`New room successfully created`, null, {
         //   duration: 3000
         // });

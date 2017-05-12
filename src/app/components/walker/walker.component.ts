@@ -25,7 +25,7 @@ export interface IWalkerComponent {
             {{formatDate(walker.createdAt)}}
           </span>
         </md-card-subtitle>
-        <a md-icon-button class="pm-walker-action-open" [routerLink]="['/walker', walker.id, 'details']">
+        <a md-icon-button class="pm-walker-action-open" [routerLink]="['/walkers', walker.id, 'details']">
           <md-icon class="pm-font-16 pm-color-gray">open_in_new</md-icon>
         </a>
       </md-card-header>
@@ -113,7 +113,7 @@ export class WalkerComponent implements OnChanges, IWalkerComponent {
           const fbShareOptions = {
             method: 'feed',
             name: 'Petman',
-            link: `${location.origin}/walker/${this.walker.id}/details`,
+            link: `${location.origin}/walkers/${this.walker.id}/details`,
             description: this.walker.description
           };
 

@@ -30,7 +30,7 @@ export interface IRoomComponent {
         </a>
       </md-card-header>
       <md-divider></md-divider><br/>
-      <md-card-content [routerLink]="['/room', room.id, 'details']" class="pm-cursor-pointer">
+      <md-card-content [routerLink]="['/rooms', room.id, 'details']" class="pm-cursor-pointer">
         <img md-card-image [src]="room.images[0] && room.images[0].src">
         <div class="pm-room-description pm-font-16 pm-color-gray">{{room.description | appEllipsis:100}}</div>
         <!--<div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">-->
@@ -122,7 +122,7 @@ export class RoomComponent implements OnChanges, IRoomComponent {
           const fbShareOptions = {
             method: 'feed',
             name: 'Petman',
-            link: `${location.origin}/room/${this.room.id}/details`,
+            link: `${location.origin}/rooms/${this.room.id}/details`,
             picture: this.room.images[0].src,
             description: this.room.description
           };

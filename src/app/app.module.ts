@@ -142,7 +142,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'room',
+    path: 'rooms',
     component: RoomsComponent,
     canActivate: [AuthGuard],
     data: {
@@ -152,7 +152,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'room/add',
+    path: 'rooms/add',
     component: RoomAddComponent,
     canActivate: [AuthGuard],
     data: {
@@ -162,7 +162,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'room/:roomId/details',
+    path: 'rooms/:roomId/details',
     component: RoomDetailsComponent,
     canActivate: [AuthGuard],
     data: {
@@ -172,7 +172,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'walker',
+    path: 'walkers',
     component: WalkersComponent,
     canActivate: [AuthGuard],
     data: {
@@ -182,7 +182,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'walker/add',
+    path: 'walkers/add',
     component: WalkerAddComponent,
     canActivate: [AuthGuard],
     data: {
@@ -192,7 +192,7 @@ const appRoutes: Routes = [
     }
   },
   {
-    path: 'walker/:walkerId/details',
+    path: 'walkers/:walkerId/details',
     component: WalkerDetailsComponent,
     canActivate: [AuthGuard],
     data: {

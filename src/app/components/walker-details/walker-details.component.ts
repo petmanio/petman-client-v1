@@ -238,7 +238,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
           const fbShareOptions = {
             method: 'feed',
             name: 'Petman',
-            link: `${location.origin}/walker/${this.walker.id}/details`,
+            link: `${location.origin}/walkers/${this.walker.id}/details`,
             description: this.walker.description
           };
 
