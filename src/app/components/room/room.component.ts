@@ -16,7 +16,7 @@ export interface IRoomComponent {
 @Component({
   selector: 'app-room',
   template: `
-    <md-card class="room-card">
+    <md-card>
       <md-card-header>
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + room.user.userData.avatar + ')'}"></div>
         <md-card-title>{{room.user.userData.firstName}} {{room.user.userData.lastName}}</md-card-title>
@@ -30,17 +30,17 @@ export interface IRoomComponent {
         </a>
       </md-card-header>
       <md-divider></md-divider><br/>
-      <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="room.images[0] && room.images[0].src">-->
       <md-card-content [routerLink]="['/room', room.id, 'details']" class="pm-cursor-pointer">
+        <img md-card-image [src]="room.images[0] && room.images[0].src">
         <div class="pm-room-description pm-font-16 pm-color-gray">{{room.description | appEllipsis:100}}</div>
-        <div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">
-          <div class="swiper-wrapper">
-            <div *ngFor="let image of room.images" class="swiper-slide">
-              <img class="pm-carousel-image" [src]="image.src">
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
+        <!--<div class="swiper-container" *ngIf="room.images.length" [swiper]="swiperOptions">-->
+          <!--<div class="swiper-wrapper">-->
+            <!--<div *ngFor="let image of room.images" class="swiper-slide">-->
+              <!--<img class="pm-carousel-image-card" [src]="image.src">-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="swiper-pagination"></div>-->
+        <!--</div>-->
       </md-card-content>
       <md-card-actions>
         <div class="pm-room-footer">

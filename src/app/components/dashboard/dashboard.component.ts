@@ -9,7 +9,7 @@ export interface IDashboardComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="columns">
-      <div class="column" *ngFor="let i of [1,2,3,4]">
+      <div class="column" *ngFor="let i of [1,2,3]">
         <md-card class="example-card">
           <md-card-header>
             <div md-card-avatar class="example-header-image"></div>

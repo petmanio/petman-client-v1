@@ -104,7 +104,7 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
                 this.triggerResize();
               }, 100);
             }
-          })
+          }, () => {}, {enableHighAccuracy: true})
         }
 
         fitBoundsMapDebounce();

@@ -148,6 +148,10 @@
   width: 100%;
 }
 
+.pm-carousel-image-card {
+  width: 100%;
+}
+
 .image-upload {
   --active-color: #673ab7 !important;
   .upload-button {
@@ -169,4 +173,8 @@ date-input-polyfill {
   .pm-carousel-image {
     height: 300px;
   }
+}
+
+.pm-width-100 {
+  width: 100% !important;
 }

@@ -13,15 +13,18 @@ export interface ILocationItemComponent {
       <md-card-header>
         <md-card-title>{{location.name}}</md-card-title>
         <md-card-subtitle>{{location.description}}</md-card-subtitle>
+        <button md-icon-button class="pm-room-action-show-map" (click)="onShowPin.emit(location)">
+          <md-icon class="pm-font-16 pm-color-blue">location_on</md-icon>
+        </button>
       </md-card-header>
+      <md-divider></md-divider><br/>
       <img md-card-image [src]="location.thumbnail">
-      <md-card-actions>
-        <button md-button (click)="onShowPin.emit(location)">Show on map</button>
-      </md-card-actions>
     </md-card>
   `,
   styles: [`
-
+    .pm-room-action-show-map {
+      margin-left: auto;
+    }
   `]
 })
 export class LocationItemComponent implements ILocationItemComponent {

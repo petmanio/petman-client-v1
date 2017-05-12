@@ -28,6 +28,7 @@
       "scripts": [
         "../node_modules/sails.io.js/dist/sails.io.js",
         "../node_modules/swiper/dist/js/swiper.js",
+        "../node_modules/imagesloaded/imagesloaded.pkgd.js",
         "../custom.js"
       ],
       "addons": [

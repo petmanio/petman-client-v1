@@ -19,6 +19,7 @@ import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
 import { SwiperModule } from 'ngx-swiper-wrapper';
+import { MasonryModule } from 'angular2-masonry';
 import { environment } from '../environments/environment';
 
 // import { DBModule } from '@ngrx/db';
@@ -313,6 +314,7 @@ const appRoutes: Routes = [
     ImageUploadModule.forRoot(),
     SailsModule.forRoot(),
     SwiperModule.forRoot({}),
+    MasonryModule,
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,

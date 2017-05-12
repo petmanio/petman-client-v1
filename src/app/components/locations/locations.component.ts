@@ -24,13 +24,9 @@ export interface ILocationComponent {
     <div class="columns is-mobile filters">
       <div class="column is-8 is-8-mobile">
         <md-chip-list>
-          <!--<md-chip (click)="onChipClick({id: ''})" [selected]="activeFilters.categories.indexOf('') !== -1">All</md-chip>-->
           <md-chip  *ngFor="let category of (locationFilters$ | async)?.categories" (click)="onChipClick(category)" 
                     [selected]="activeFilters.categories.indexOf(category.id) !== -1">{{category.name}}</md-chip>
         </md-chip-list>
-        <!--<md-select placeholder="Type" [(ngModel)]="activeFilters.type" (change)="onFilterChange()">-->
-          <!--<md-option *ngFor="let type of filters.types" [value]="type.id">{{ type.name }}</md-option>-->
-        <!--</md-select>-->
       </div>
       <div class="column is-4 is-4-mobile">
         <md-slide-toggle *ngIf="isMobile" [(ngModel)]="mapView" (change)="onSlideChange()">Map</md-slide-toggle>
@@ -43,9 +39,16 @@ export interface ILocationComponent {
              [infiniteScrollDistance]="2"
              [infiniteScrollThrottle]="300"
              [scrollWindow]="false">
-          <div class="columns" *ngFor="let locationRow of (locationList$ | async)?.list | chunk:3">
-            <div class="column" *ngFor="let location of locationRow">
-              <app-location [location]="location" (onShowPin)="onShowPin($event)"></app-location>
+          <div class="columns">
+            <div class="column">
+              <masonry [options]="{ transitionDuration: '0.8s', percentPosition: true }"
+                       [useImagesLoaded]="true"
+                       class="columns pm-width-100">
+                <masonry-brick *ngFor="let location of (locationList$ | async)?.list"
+                               class="column is-6-desktop is-6-tablet">
+                  <app-location [location]="location" (onShowPin)="onShowPin($event)"></app-location>
+                </masonry-brick>
+              </masonry>
             </div>
           </div>
         </div>

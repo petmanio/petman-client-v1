@@ -17,19 +17,19 @@ interface ISidenavComponent {
       <md-sidenav [opened]="open" [mode]="mode" color="primary" (close)="onClose.emit()">
         <md-nav-list>
           <app-nav-item (activate)="onItemActivate.emit()" icon="dashboard" routerLink="" [activeClass]="[isHomeActive]">Home</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" routerLink="/locations" icon="pets" 
-                        routerLinkActive="is-active">Pet care</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" routerLink="/locations" icon="location_searching" 
+                        routerLinkActive="is-active">Locations</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="favorite" routerLink="/room"
                         routerLinkActive="is-active">Sitters</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walker"
                         routerLinkActive="is-active">Walkers</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="home" routerLink="/adopt"
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="pets" routerLink="/adopt"
                         routerLinkActive="is-active">Adopt</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
-                        routerLinkActive="is-active">Blog/News</app-nav-item>
+                        routerLinkActive="is-active">Blog</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="help">Vet consultant</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> 
+          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
+          <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
           <app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="info">About Us</app-nav-item>
         </md-nav-list>

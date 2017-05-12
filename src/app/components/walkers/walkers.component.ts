@@ -24,10 +24,15 @@ export interface IWalkersComponent {
            [infiniteScrollDistance]="2"
            [infiniteScrollThrottle]="300"
            [scrollWindow]="false">
-        <div class="columns" *ngFor="let walkerRow of (walkerList$ | async)?.list | chunk:3">
-          <div class="column is-4" *ngFor="let walker of walkerRow">
-            <app-walker [walker]="walker"></app-walker>
-          </div>
+        <div class="column">
+          <masonry [options]="{ transitionDuration: '0.8s', percentPosition: true, resize: true }"
+                   [useImagesLoaded]="true"
+                   class="columns pm-width-100">
+            <masonry-brick *ngFor="let walker of (walkerList$ | async)?.list"
+                           class="column is-4-desktop is-6-tablet">
+              <app-walker [walker]="walker"></app-walker>
+            </masonry-brick>
+          </masonry>
         </div>
       </div>
     </div>
@@ -65,9 +70,8 @@ export interface IWalkersComponent {
 })
 export class WalkersComponent implements OnInit, IWalkersComponent {
   walkerList$: Observable<any>;
-  isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   private _skip = 0;
-  private _limit = 9;
+  private _limit = 6;
   private _count: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.walkerList$ = _store.select(fromRoot.getWalkerList);
