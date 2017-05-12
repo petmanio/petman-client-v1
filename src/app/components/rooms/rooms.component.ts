@@ -14,8 +14,8 @@ export interface IRoomsComponent {
   selector: 'app-rooms',
   template: `
     <div class="columns">
-      <div class="column pm-became-host">
-        <a md-button class="pm-fr" routerLink="/room/add">Became a sitter</a>
+      <div class="column">
+        <a md-icon-button class="pm-fr" routerLink="/rooms/add"><md-icon class="pm-color-gray pm-font-30">add_circle_outline</md-icon></a>
       </div>
     </div>
     <div class="columns">
@@ -43,27 +43,19 @@ export interface IRoomsComponent {
       justify-content: center;
     }
 
-    .pm-became-host {
-      overflow: hidden;
-      padding-top: 10px;
-      padding-bottom: 0;
-    }
-    
     .pm-room-items {
       overflow: auto;
       width: 100%;
-    }
-    .pm-room-items {
-      height: calc(100vh - 114px);
-      height: -webkit-calc(100vh - 114px);
-      height: -moz-calc(100vh - 114px);
+      height: calc(100vh - 130px);
+      height: -webkit-calc(100vh - 130px);
+      height: -moz-calc(100vh - 130px);
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
      .pm-room-items {
-        height: calc(100vh - 125px);
-        height: -webkit-calc(100vh - 125px);
-        height: -moz-calc(100vh - 125px);
+        height: calc(100vh - 120px);
+        height: -webkit-calc(100vh - 120px);
+        height: -moz-calc(100vh - 120px);
       }
     }
   `]
