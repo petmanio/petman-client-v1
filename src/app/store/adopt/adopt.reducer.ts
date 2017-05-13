@@ -1,4 +1,4 @@
-import { assign, clone } from 'lodash';
+import { assign, clone, cloneDeep } from 'lodash';
 import { IAdoptCommentCreateEventResponse, IAdoptCommentListResponse, IAdoptGetByIdResponse, IAdoptListResponse } from '../../models/api';
 import * as adoptAction from './adopt.actions';
 
@@ -50,6 +50,11 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
       return assign({}, state, {adopt: null})
     }
 
+    case adoptAction.ActionTypes.GET_BY_ID_CLEAR: {
+      const error: any = action.payload;
+      return assign({}, state, {adopt: null})
+    }
+
     /**
      * Comment List
      */
@@ -59,6 +64,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
       if (res.adoptId === state.adopt.id) {
         const adopt = clone(state.adopt);
         adopt.commentsCount = res.count;
+        adopt.comments = adopt.comments || [];
         adopt.comments = adopt.comments.concat(res.list);
         return assign({}, state, { adopt });
       }
@@ -88,7 +94,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
     case adoptAction.ActionTypes.COMMENT_CREATE_EVENT: {
       const res: IAdoptCommentCreateEventResponse = action.payload;
       if (res.adopt === state.adopt.id) {
-        const adopt = clone(state.adopt);
+        const adopt = cloneDeep(state.adopt);
         adopt.commentsCount++;
         adopt.comments.push(res);
         return assign({}, state, { adopt });

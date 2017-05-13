@@ -25,6 +25,7 @@ export const ActionTypes = {
   GET_BY_ID: type('[Adopt] Get By Id'),
   GET_BY_ID_COMPLETE: type('[Adopt] Get By Id Complete'),
   GET_BY_ID_ERROR: type('[Adopt] Get By Id Error'),
+  GET_BY_ID_CLEAR: type('[Adopt] Get By Id Clear'),
 
   LIST: type('[Adopt] List'),
   LIST_COMPLETE: type('[Adopt] List Complete'),
@@ -72,6 +73,12 @@ export class GetByIdCompleteAction implements Action {
 
 export class GetByIdErrorAction implements Action {
   type = ActionTypes.GET_BY_ID_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+export class GetByIdClearAction implements Action {
+  type = ActionTypes.GET_BY_ID_CLEAR;
 
   constructor(public payload: any) { }
 }
@@ -179,6 +186,7 @@ export type Actions
   = GetByIdAction
   | GetByIdCompleteAction
   | GetByIdErrorAction
+  | GetByIdClearAction
   | ListAction
   | ListCompleteAction
   | ListErrorAction

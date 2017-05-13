@@ -89,7 +89,6 @@ export interface IAdoptDetailsComponent {
 export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsComponent {
   // TODO: update attribute name
   adoptAdopt$: Observable<any>;
-  averageRating: number;
   adopt: IAdopt;
   swiperOptions: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -126,6 +125,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
   }
 
   ngOnDestroy(): void {
+    this._store.dispatch(new adoptAction.GetByIdClearAction({}));
     this._destroyed$.next(true);
     this._routeListener.unsubscribe();
     this._adoptListener.unsubscribe();

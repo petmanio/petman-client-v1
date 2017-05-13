@@ -12,8 +12,9 @@ import { INotification, IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
-import * as notificationAction from '../../store/notification/notification.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
+import * as adoptAction from '../../store/adopt/adopt.actions';
+import * as notificationAction from '../../store/notification/notification.actions';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -320,6 +321,7 @@ export class AppComponent implements OnInit, IAppComponent {
           this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
         });
 
+        // TODO: use another action for adding new application
         this._sailsService.on('roomApplicationCreate').subscribe(application => {
           this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
         });
@@ -333,8 +335,13 @@ export class AppComponent implements OnInit, IAppComponent {
           this._store.dispatch(new walkerAction.UpdateApplicationCompleteAction(update))
         });
 
+        // TODO: use another action for adding new application
         this._sailsService.on('walkerApplicationCreate').subscribe(application => {
           this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
+        });
+
+        this._sailsService.on('adoptComment').subscribe(comment => {
+          this._store.dispatch(new adoptAction.CommentCreateEventAction(comment));
         });
 
         // Notification Event
