@@ -25,7 +25,7 @@ export interface IRoomsComponent {
            [infiniteScrollThrottle]="300"
            [scrollWindow]="false">
         <div class="column">
-          <masonry [options]="{ transitionDuration: '0.8s', percentPosition: true, resize: true }"
+          <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
                    [useImagesLoaded]="true" 
                    class="columns pm-width-100">
             <masonry-brick *ngFor="let room of (roomList$ | async)?.list" 

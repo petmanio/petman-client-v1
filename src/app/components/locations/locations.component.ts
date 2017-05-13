@@ -41,7 +41,7 @@ export interface ILocationComponent {
              [scrollWindow]="false">
           <div class="columns">
             <div class="column">
-              <masonry [options]="{ transitionDuration: '0.8s', percentPosition: true }"
+              <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true }"
                        [useImagesLoaded]="true"
                        class="columns pm-width-100">
                 <masonry-brick *ngFor="let location of (locationList$ | async)?.list"

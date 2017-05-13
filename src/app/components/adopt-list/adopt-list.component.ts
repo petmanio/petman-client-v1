@@ -14,8 +14,8 @@ export interface IAdoptListComponent {
   selector: 'app-adopt-list',
   template: `
     <div class="columns">
-      <div class="column pm-became-host">
-        <a md-button class="pm-fr" routerLink="/adopt/add">Add pet for adopt</a>
+      <div class="column">
+        <a md-icon-button class="pm-fr" routerLink="/adopt/add"><md-icon class="pm-color-gray pm-font-30">add_circle_outline</md-icon></a>
       </div>
     </div>
     <div class="columns">
@@ -24,10 +24,15 @@ export interface IAdoptListComponent {
            [infiniteScrollDistance]="2"
            [infiniteScrollThrottle]="300"
            [scrollWindow]="false">
-        <div class="columns" *ngFor="let adoptRow of (adoptList$ | async)?.list | chunk:3">
-          <div class="column is-4" *ngFor="let adopt of adoptRow">
-            <app-adopt-card [adopt]="adopt"></app-adopt-card>
-          </div>
+        <div class="column">
+          <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
+                   [useImagesLoaded]="true"
+                   class="columns pm-width-100">
+            <masonry-brick *ngFor="let adoptRow of (adoptList$ | async)?.list"
+                           class="column is-4-desktop is-6-tablet">
+              <app-adopt-card [adopt]="adopt"></app-adopt-card>
+            </masonry-brick>
+          </masonry>
         </div>
       </div>
     </div>
@@ -37,37 +42,28 @@ export interface IAdoptListComponent {
       display: flex;
       justify-content: center;
     }
-
-    .pm-became-host {
-      overflow: hidden;
-      padding-top: 10px;
-      padding-bottom: 0;
-    }
     
     .pm-adopt-items {
       overflow: auto;
       width: 100%;
-    }
-    .pm-adopt-items {
-      height: calc(100vh - 160px);
-      height: -webkit-calc(100vh - 160px);
-      height: -moz-calc(100vh - 160px);
+      height: calc(100vh - 130px);
+      height: -webkit-calc(100vh - 130px);
+      height: -moz-calc(100vh - 130px);
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
      .pm-adopt-items {
-        height: calc(100vh - 125px);
-        height: -webkit-calc(100vh - 125px);
-        height: -moz-calc(100vh - 125px);
+       height: calc(100vh - 120px);
+       height: -webkit-calc(100vh - 120px);
+       height: -moz-calc(100vh - 120px);
       }
     }
   `]
 })
 export class AdoptListComponent implements OnInit, IAdoptListComponent {
   adoptList$: Observable<any>;
-  isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   private _skip = 0;
-  private _limit = 9;
+  private _limit = 6;
   private _count: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.adoptList$ = _store.select(fromRoot.getAdoptList);
