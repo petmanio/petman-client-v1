@@ -40,11 +40,6 @@ export interface IAdoptAddComponent {
           </div>
           <div class="columns is-mobile">
             <div class="column is-4">
-              <md-input-container>
-                <input type="text" mdInput placeholder="Contact phone" name="cost" required [(ngModel)]="adopt.contactPhone"/>
-              </md-input-container>
-            </div>
-            <div class="column is-4">
             </div>
             <div class="column">
               <button type="submit" class="btn btn-success pm-fr"

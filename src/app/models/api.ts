@@ -66,6 +66,8 @@ export interface IRoomApplication {
 export interface IRoomApplicationMessage {
   to: number | IUser
   from: number | IUser,
+  application: number | IRoomApplication,
+  room: number | IRoom,
   isOwner: boolean,
   message: string,
   createdAt: string
@@ -93,15 +95,21 @@ export interface IAdoptImage {
   src: string,
 }
 
+export interface IAdoptComment {
+  comment: string,
+  adopt: number | IAdopt
+  user: number | IUser,
+  createdAt: string
+}
+
 export interface IAdopt {
   id: number,
-  // name: string,
   description: string,
-  isOwner?: boolean,
   images?: IAdoptImage[],
-  user?: IUser,
+  comments?: IAdoptComment[],
+  commentsCount?: number,
+  user?: number | IUser,
   createdAt: string,
-  contactPhone: string
 }
 
 export interface IWalkerApplication {
@@ -123,6 +131,8 @@ export interface IWalkerApplicationMessage {
   to: number | IUser
   from: number | IUser,
   isOwner: boolean,
+  application: number | IWalkerApplication,
+  walker: number | IWalker,
   message: string,
   createdAt: string
 }
@@ -313,6 +323,8 @@ export interface IRoomApplicationMessageCreateRequest {
   message: string
 }
 
+// TODO: add IRoomApplicationMessageCreateResponse interface
+
 export interface IRoomApplicationMessageCreateEventResponse extends IRoomApplicationMessage {
 
 }
@@ -387,6 +399,8 @@ export interface IWalkerApplicationMessageCreateRequest {
   message: string
 }
 
+// TODO: add IWalkerApplicationMessageCreateResponse interface
+
 export interface IWalkerApplicationMessageCreateEventResponse extends IWalkerApplicationMessage {
 
 }
@@ -417,7 +431,6 @@ export interface IAdoptListResponse {
 
 export interface IAdoptCreateRequest {
   description: string,
-  contactPhone: string,
   images: File[],
 }
 
@@ -428,6 +441,33 @@ export interface IAdoptGetByIdRequest {
 }
 
 export interface IAdoptGetByIdResponse extends IAdopt {}
+
+export interface IAdoptGetByIdRequest {
+  adoptId: number
+}
+
+export interface IAdoptGetByIdResponse extends IAdopt {}
+
+
+export interface IAdoptCommentListRequest {
+  adoptId: number
+}
+
+export interface IAdoptCommentListResponse {
+  count: number,
+  list: IAdoptComment[],
+  adoptId: number
+}
+
+export interface IAdoptCommentCreateRequest {
+  adoptId: number,
+  comment: string
+}
+
+// TODO: add IAdoptCommentCreateResponse interface
+export interface IAdoptCommentCreateEventResponse extends IAdoptComment {
+
+}
 /**
  * Notification
  */

@@ -52,8 +52,6 @@ export interface IAdoptDetailsComponent {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <md-icon class="pm-font-16 pm-color-gray">contact_phone</md-icon>&nbsp;
-              <span class="pm-font-16 pm-color-gray">{{(adoptAdopt$ | async)?.contactPhone}}</span>
               <button md-icon-button class="pm-adopt-share" (click)="onShareClick()">
                 <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
               </button>
@@ -65,6 +63,12 @@ export interface IAdoptDetailsComponent {
         <div class="columns">
           <div class="column is-8 is-offset-2">
             <span class="pm-color-gray pm-font-16">{{(adoptAdopt$ | async)?.description}}</span>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-8 is-offset-2">
+            <div class="pm-font-16 pm-color-gray pm-message-label">Comments <i class="mdi mdi-comment-multiple-outline"></i></div>
+            <app-adopt-comments [adopt]="adoptAdopt$ | async" *ngIf="adoptAdopt$ | async"></app-adopt-comments>
           </div>
         </div>
       </md-card-content>

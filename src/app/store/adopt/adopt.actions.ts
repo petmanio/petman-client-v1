@@ -1,6 +1,10 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
+  IAdoptCommentCreateEventResponse,
+  IAdoptCommentCreateRequest,
+  IAdoptCommentListRequest,
+  IAdoptCommentListResponse,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
   IAdoptGetByIdRequest,
@@ -29,7 +33,18 @@ export const ActionTypes = {
 
   CREATE: type('[Adopt] Create'),
   CREATE_COMPLETE: type('[Adopt] Create Complete'),
-  CREATE_ERROR: type('[Adopt] Create Error')
+  CREATE_ERROR: type('[Adopt] Create Error'),
+
+  COMMENT_LIST: type('[Room] Comment List'),
+  COMMENT_LIST_COMPLETE: type('[Room] Comment Complete'),
+  COMMENT_LIST_ERROR: type('[Room] Comment Error'),
+  COMMENT_LIST_CLEAR: type('[Room] Comment Clear'),
+
+  COMMENT_CREATE: type('[Room] Comment Create'),
+  // TODO: add actions for complete and error
+
+  COMMENT_CREATE_EVENT: type('[Room] Comment Create Event'),
+  // TODO: add actions for complete and error
 };
 
 /**
@@ -110,6 +125,53 @@ export class CreateErrorAction implements Action {
 }
 
 /**
+ * Comment List
+ */
+export class CommentListAction implements Action {
+  type = ActionTypes.COMMENT_LIST;
+
+  constructor(public payload: IAdoptCommentListRequest) { }
+}
+
+export class CommentListCompleteAction implements Action {
+  type = ActionTypes.COMMENT_LIST_COMPLETE;
+
+  constructor(public payload: IAdoptCommentListResponse) { }
+}
+
+export class CommentListErrorAction implements Action {
+  type = ActionTypes.COMMENT_LIST_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+export class CommentListClearAction implements Action {
+  type = ActionTypes.COMMENT_LIST_CLEAR;
+
+  constructor(public payload: any) { }
+}
+
+/**
+ * Comment Create
+ */
+// TODO: add complete and error actions
+export class CommentCreateAction implements Action {
+  type = ActionTypes.COMMENT_CREATE;
+
+  constructor(public payload: IAdoptCommentCreateRequest) { }
+}
+
+/**
+ * Comment Create Event
+ */
+export class CommentCreateEventAction implements Action {
+  type = ActionTypes.COMMENT_CREATE_EVENT;
+
+  constructor(public payload: IAdoptCommentCreateEventResponse) { }
+}
+
+
+/**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
@@ -124,3 +186,9 @@ export type Actions
   | CreateAction
   | CreateCompleteAction
   | CreateErrorAction
+  | CommentListAction
+  | CommentListCompleteAction
+  | CommentListErrorAction
+  | CommentListClearAction
+  | CommentCreateAction
+  | CommentCreateEventAction

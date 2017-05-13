@@ -69,6 +69,8 @@ import {
   AdoptCardComponent,
   AdoptAddComponent,
   AdoptDetailsComponent,
+  AdoptCommentsComponent,
+  AdoptCommentComponent,
   NotificationsComponent,
   ShareDialogComponent,
   MapComponent
@@ -279,6 +281,8 @@ const appRoutes: Routes = [
     AdoptCardComponent,
     AdoptAddComponent,
     AdoptDetailsComponent,
+    AdoptCommentsComponent,
+    AdoptCommentComponent,
     NotificationsComponent,
     ShareDialogComponent,
     MapComponent,

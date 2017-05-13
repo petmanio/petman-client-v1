@@ -120,8 +120,9 @@ export function reducer(state = initialState, action: roomAction.Actions): State
     }
 
     /**
-     * Application Message List
+     * Application Message Create Event
      */
+    // TODO: refactor and use room state for keeping messages
     case roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
       const res: IRoomApplicationMessageCreateEventResponse = action.payload;
       return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});

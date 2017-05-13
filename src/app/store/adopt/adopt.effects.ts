@@ -29,7 +29,9 @@ import * as adoptAction from '../../store/adopt/adopt.actions';
 interface IAdoptEffects {
   getById$: Observable<Action>,
   list$: Observable<Action>,
-  create$: Observable<Action>
+  create$: Observable<Action>,
+  commentList$: Observable<Action>,
+  commentCreate$: Observable<Action>,
 }
 
 @Injectable()
@@ -59,6 +61,23 @@ export class AdoptEffects implements IAdoptEffects {
       return this._adoptService.create(options)
         .map(response => new adoptAction.CreateCompleteAction(response))
         .catch(err => of(new adoptAction.CreateErrorAction(err)))
+    });
+
+  @Effect() commentList$: Observable<Action> = this._actions$
+    .ofType(adoptAction.ActionTypes.COMMENT_LIST)
+    .map((action: adoptAction.CommentListAction) => action.payload)
+    .switchMap(options => {
+      return this._adoptService.getCommentList(options)
+        .map(response => new adoptAction.CommentListCompleteAction(response))
+        .catch(err => of(new adoptAction.CommentListErrorAction(err)))
+    });
+
+  @Effect() commentCreate$: Observable<Action> = this._actions$
+    .ofType(adoptAction.ActionTypes.COMMENT_CREATE)
+    .map((action: adoptAction.CommentCreateAction) => action.payload)
+    .switchMap(options => {
+      // TODO: check complete action
+      return this._adoptService.commentCreate(options)
     });
 
   constructor(private _actions$: Actions,

@@ -120,8 +120,9 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
     }
 
     /**
-     * Application Message List
+     * Application Message Create Event
      */
+    // TODO: refactor and use walker state for keeping messages
     case walkerAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
       const res: IWalkerApplicationMessageCreateEventResponse = action.payload;
       return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});

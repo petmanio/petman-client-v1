@@ -38,6 +38,8 @@ export { AdoptListComponent } from './adopt-list/adopt-list.component';
 export { AdoptCardComponent } from './adopt-card/adopt-card.component';
 export { AdoptAddComponent } from './adopt-add/adopt-add.component';
 export { AdoptDetailsComponent } from './adopt-details/adopt-details.component';
+export { AdoptCommentsComponent } from './adopt-comments/adopt-comments.component';
+export { AdoptCommentComponent } from './adopt-comment/adopt-comment.component';
 export { NotificationsComponent } from './notifications/notifications.component';
 export { ShareDialogComponent } from './share-dialog/share-dialog.component';
 export { MapComponent } from './map/map.component';

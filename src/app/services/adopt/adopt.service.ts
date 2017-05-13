@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import {
+  IAdoptCommentCreateRequest,
+  IAdoptCommentListRequest,
+  IAdoptCommentListResponse,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
   IAdoptGetByIdRequest,
@@ -16,7 +19,9 @@ import { SailsService } from 'angular2-sails';
 export interface IAdoptService {
   getById(options: IAdoptGetByIdRequest): Observable<IAdoptGetByIdResponse>,
   list(options: IAdoptListRequest): Observable<IAdoptListResponse>,
-  create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse>
+  create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse>,
+  getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse>,
+  commentCreate(options: IAdoptCommentCreateRequest): Observable<any>,
 }
 
 @Injectable()
@@ -62,7 +67,6 @@ export class AdoptService implements IAdoptService {
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     formData.append('description', options.description);
-    formData.append('contactPhone', options.contactPhone);
 
     if (options.images && options.images.length) {
       options.images.forEach(file => {
@@ -76,5 +80,27 @@ export class AdoptService implements IAdoptService {
         { headers, withCredentials: true }
       )
       .map(response => response.json());
+  }
+
+  getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse> {
+    const headers = new Headers();
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/list`,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.json());
+  }
+
+  commentCreate(options: IAdoptCommentCreateRequest): Observable<any> {
+    const headers = new Headers();
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .post(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/create`, options,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 }

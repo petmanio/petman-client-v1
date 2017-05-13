@@ -1,5 +1,5 @@
-import { assign } from 'lodash';
-import { IAdoptGetByIdResponse, IAdoptListResponse } from '../../models/api';
+import { assign, clone } from 'lodash';
+import { IAdoptCommentCreateEventResponse, IAdoptCommentListResponse, IAdoptGetByIdResponse, IAdoptListResponse } from '../../models/api';
 import * as adoptAction from './adopt.actions';
 
 export interface State {
@@ -48,6 +48,52 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
     case adoptAction.ActionTypes.GET_BY_ID_ERROR: {
       const error: any = action.payload;
       return assign({}, state, {adopt: null})
+    }
+
+    /**
+     * Comment List
+     */
+    // TODO: use another action for loading more
+    case adoptAction.ActionTypes.COMMENT_LIST_COMPLETE: {
+      const res: IAdoptCommentListResponse = action.payload;
+      if (res.adoptId === state.adopt.id) {
+        const adopt = clone(state.adopt);
+        adopt.commentsCount = res.count;
+        adopt.comments = adopt.comments.concat(res.list);
+        return assign({}, state, { adopt });
+      }
+      return state;
+    }
+
+    case adoptAction.ActionTypes.COMMENT_LIST_ERROR: {
+      const error: any = action.payload;
+      const adopt = clone(state.adopt);
+      adopt.commentsCount = null;
+      adopt.comments = [];
+      return assign({}, state, { adopt });
+    }
+
+    // TODO: use another action for loading more
+    case adoptAction.ActionTypes.COMMENT_LIST_CLEAR: {
+      const error: any = action.payload;
+      const adopt = clone(state.adopt);
+      adopt.commentsCount = null;
+      adopt.comments = [];
+      return assign({}, state, { adopt });
+    }
+
+    /**
+     * Comment Create Event
+     */
+    case adoptAction.ActionTypes.COMMENT_CREATE_EVENT: {
+      const res: IAdoptCommentCreateEventResponse = action.payload;
+      if (res.adopt === state.adopt.id) {
+        const adopt = clone(state.adopt);
+        adopt.commentsCount++;
+        adopt.comments.push(res);
+        return assign({}, state, { adopt });
+      }
+      return state;
     }
 
     default: {

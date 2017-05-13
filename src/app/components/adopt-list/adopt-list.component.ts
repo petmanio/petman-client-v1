@@ -28,7 +28,7 @@ export interface IAdoptListComponent {
           <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
                    [useImagesLoaded]="true"
                    class="columns pm-width-100">
-            <masonry-brick *ngFor="let adoptRow of (adoptList$ | async)?.list"
+            <masonry-brick *ngFor="let adopt of (adoptList$ | async)?.list"
                            class="column is-4-desktop is-6-tablet">
               <app-adopt-card [adopt]="adopt"></app-adopt-card>
             </masonry-brick>
