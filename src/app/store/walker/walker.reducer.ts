@@ -16,6 +16,7 @@ export interface State {
   applicationMessageList: IWalkerApplicationMessageListResponse
 }
 
+// TODO: split room and user new state childs like messages, selectedRoom, etc.
 const initialState: State = {
   list: {
     list: [],

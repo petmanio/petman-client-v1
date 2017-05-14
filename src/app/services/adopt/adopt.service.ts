@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
+import { assign } from 'lodash';
 import { environment } from '../../../environments/environment';
 import {
   IAdoptCommentCreateRequest,
   IAdoptCommentListRequest,
   IAdoptCommentListResponse,
+  IAdoptCommentStreamJoinRequest,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
   IAdoptGetByIdRequest,
@@ -22,6 +24,7 @@ export interface IAdoptService {
   create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse>,
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse>,
   commentCreate(options: IAdoptCommentCreateRequest): Observable<any>,
+  joinComment(options: IAdoptCommentStreamJoinRequest): Observable<any>
 }
 
 @Injectable()
@@ -102,5 +105,11 @@ export class AdoptService implements IAdoptService {
         { headers, withCredentials: true }
       )
       .map(response => response.ok);
+  }
+
+  // TODO: think about using action or not
+  joinComment(options: IAdoptCommentStreamJoinRequest): Observable<any> {
+    options = assign({}, options, { 'x-auth-token':  localStorage.getItem('token') });
+    return this._sailsService.get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/join`, options);
   }
 }

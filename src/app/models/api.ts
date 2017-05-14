@@ -474,6 +474,12 @@ export interface IAdoptCommentCreateRequest {
 export interface IAdoptCommentCreateEventResponse extends IAdoptComment {
 
 }
+
+export interface IAdoptCommentStreamJoinRequest {
+  adoptId: number,
+  'x-auth-token'?: string
+}
+
 /**
  * Notification
  */

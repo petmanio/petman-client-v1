@@ -15,6 +15,7 @@ export interface State {
   applicationMessageList: IRoomApplicationMessageListResponse
 }
 
+// TODO: split room and user new state childs like messages, selectedRoom, etc.
 const initialState: State = {
   list: {
     list: [],

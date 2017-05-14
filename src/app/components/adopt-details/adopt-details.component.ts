@@ -11,6 +11,7 @@ import { UtilService } from '../../services/util/util.service';
 import { IAdopt } from '../../models/api';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
+import { AdoptService } from '../../services/adopt/adopt.service';
 
 export interface IAdoptDetailsComponent {
   formatDate(date): string,
@@ -106,7 +107,8 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
               private _dialog: MdDialog,
               private _snackBar: MdSnackBar,
               private _utilService: UtilService,
-              private _actions$: Actions) {
+              private _actions$: Actions,
+              private _adoptService: AdoptService) {
     this.adoptAdopt$ = _store.select(fromRoot.getAdoptAdopt);
   }
 
@@ -118,6 +120,9 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
         // TODO: use global error handling
         throw new Error('AdoptDetailsComponent: adoptId is not defined');
       }
+
+      // TODO: join on reconnect
+      this._adoptService.joinComment({adoptId: this._adoptId}).subscribe();
       return this._store.dispatch(new adoptAction.GetByIdAction({adoptId: this._adoptId}));
     });
 
