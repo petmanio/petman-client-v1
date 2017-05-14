@@ -97,8 +97,8 @@ export interface IAdoptImage {
 
 export interface IAdoptComment {
   comment: string,
-  adopt: number | IAdopt
-  user: number | IUser,
+  adopt: number
+  user: IUser,
   createdAt: string
 }
 
@@ -108,7 +108,7 @@ export interface IAdopt {
   images?: IAdoptImage[],
   comments?: IAdoptComment[],
   commentsCount?: number,
-  user?: number | IUser,
+  user?: IUser,
   createdAt: string,
 }
 
