@@ -15,7 +15,7 @@ export interface IAdoptCardComponent {
 @Component({
   selector: 'app-adopt-card',
   template: `
-    <md-card class="adopt-card">
+    <md-card>
       <md-card-header>
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + adopt.user.userData.avatar + ')'}"></div>
         <md-card-title>{{adopt.user.userData.firstName}} {{adopt.user.userData.lastName}}</md-card-title>
@@ -29,17 +29,17 @@ export interface IAdoptCardComponent {
         </a>
       </md-card-header>
       <md-divider></md-divider><br/>
-      <!--<img class="pm-cart-image-fixed-300" md-card-image [src]="adopt.images[0] && adopt.images[0].src">-->
       <md-card-content [routerLink]="['/adopt', adopt.id, 'details']" class="pm-cursor-pointer">
+        <img md-card-image [src]="adopt.images[0] && adopt.images[0].src">
         <div class="pm-adopt-description pm-font-16 pm-color-gray">{{adopt.description | appEllipsis:100}}</div>
-        <div class="swiper-container" *ngIf="adopt.images.length" [swiper]="swiperOptions">
-          <div class="swiper-wrapper">
-            <div *ngFor="let image of adopt.images" class="swiper-slide">
-              <img class="pm-carousel-image" [src]="image.src">
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
+        <!--<div class="swiper-container" *ngIf="adopt.images.length" [swiper]="swiperOptions">-->
+          <!--<div class="swiper-wrapper">-->
+            <!--<div *ngFor="let image of adopt.images" class="swiper-slide">-->
+              <!--<img class="pm-carousel-image" [src]="image.src">-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="swiper-pagination"></div>-->
+        <!--</div>-->
       </md-card-content>
       <md-card-actions>
         <div class="pm-adopt-footer">
@@ -53,8 +53,6 @@ export interface IAdoptCardComponent {
     </md-card>
   `,
   styles: [`
-    .adopt-card  {}
-
     md-card-title {
       margin-top: 10px;
     }
