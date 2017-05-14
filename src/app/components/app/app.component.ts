@@ -232,7 +232,11 @@ export class AppComponent implements OnInit, IAppComponent {
       this.sideNavMode = 'push';
     }
 
-    this.showSidenav$.subscribe((event) => this.currentSideNavState = event);
+    this.showSidenav$.subscribe((event) => {
+      this.currentSideNavState = event;
+      // TODO: IE support
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 200);
+    });
   }
 
   onScroll(): void {
