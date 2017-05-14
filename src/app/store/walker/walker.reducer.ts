@@ -106,7 +106,10 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
     // TODO: use another action for loading more
     case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE: {
       const res: IWalkerApplicationMessageListResponse = action.payload;
-      return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
+      if (res.list.length && state.walker.id === res.list[0].walker) {
+        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
+      }
+      return state;
     }
 
     case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_ERROR: {
@@ -125,7 +128,10 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
     // TODO: refactor and use walker state for keeping messages
     case walkerAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
       const res: IWalkerApplicationMessageCreateEventResponse = action.payload;
-      return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
+      if (state.walker.id === res.walker) {
+        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
+      }
+      return state;
     }
 
     default: {

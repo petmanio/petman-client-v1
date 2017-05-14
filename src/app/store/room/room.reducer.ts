@@ -105,7 +105,10 @@ export function reducer(state = initialState, action: roomAction.Actions): State
     // TODO: use another action for loading more
     case roomAction.ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE: {
       const res: IRoomApplicationMessageListResponse = action.payload;
-      return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
+      if (res.list.length && state.room.id === res.list[0].room) {
+        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
+      }
+      return state;
     }
 
     case roomAction.ActionTypes.APPLICATION_MESSAGE_LIST_ERROR: {
@@ -124,7 +127,10 @@ export function reducer(state = initialState, action: roomAction.Actions): State
     // TODO: refactor and use room state for keeping messages
     case roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
       const res: IRoomApplicationMessageCreateEventResponse = action.payload;
-      return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
+      if (state.room.id === res.room) {
+        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
+      }
+      return state;
     }
 
     default: {
