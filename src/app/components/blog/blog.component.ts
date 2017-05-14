@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as blogAction from '../../store/blog/blog.actions';
 
@@ -11,16 +10,22 @@ export interface IBlogComponent {
 
 @Component({
   selector: 'app-blog',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="blog-list" infinite-scroll
-            (scrolled)="onScroll()"
-            [infiniteScrollDistance]="2"
-            [infiniteScrollThrottle]="300"
-            [scrollWindow]="false">
-      <div class="columns" *ngFor="let blogRow of (blogListData$ | async)?.list | chunk">
-        <div class="column" *ngFor="let blog of blogRow">
-          <app-blog-item [blog]="blog"></app-blog-item>
+    <div class="columns">
+      <div class="pm-blog-items" infinite-scroll
+           (scrolled)="onScroll()"
+           [infiniteScrollDistance]="2"
+           [infiniteScrollThrottle]="300"
+           [scrollWindow]="false">
+        <div class="column">
+          <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
+                   [useImagesLoaded]="true"
+                   class="columns pm-width-100">
+            <masonry-brick *ngFor="let blog of (blogList$ | async)?.list"
+                           class="column is-4-desktop is-6-tablet">
+              <app-blog-item [blog]="blog"></app-blog-item>
+            </masonry-brick>
+          </masonry>
         </div>
       </div>
     </div>
@@ -30,49 +35,45 @@ export interface IBlogComponent {
       display: flex;
       justify-content: center;
     }
-    .blog-list {
+    .pm-blog-items {
       overflow: auto;
-      height: calc(100% - 64px);
-      height: -webkit-calc(100% - 64px);
-      height: -moz-calc(100% - 64px);
+      width: 100%;
+      height: calc(100vh - 130px);
+      height: -webkit-calc(100vh - 130px);
+      height: -moz-calc(100vh - 130px);
     }
+
     @media (max-width: 600px) and (orientation: portrait) {
-      .blog-list {
-        height: calc(100% - 56px);
-        height: -webkit-calc(100% - 56px);
-        height: -moz-calc(100% - 56px);
+      .pm-blog-items {
+        height: calc(100vh - 120px);
+        height: -webkit-calc(100vh - 120px);
+        height: -moz-calc(100vh - 120px);
       }
     }
   `]
 })
 export class BlogComponent implements OnInit, IBlogComponent {
-  public blogListData$: Observable<any>;
+  public blogList$: Observable<any>;
   private _skip = 0;
   private _limit = 9;
   private _count: number = null;
 
-  constructor(private store: Store<fromRoot.State>, private router: Router) {
-    this.blogListData$ = store.select(fromRoot.getBlogListData);
+  constructor(private _store: Store<fromRoot.State>) {
+    this.blogList$ = _store.select(fromRoot.getBlogList);
   }
 
   ngOnInit(): void {
-    // TODO: clear list and get new one
-    const listener = this.blogListData$.subscribe((event) => {
-      if (event.count === null) {
-        this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
-        if (listener) {
-          listener.unsubscribe();
-        }
-      } else {
-        this._count = event.count;
-      }
+    this._store.dispatch(new blogAction.ListClearAction({}));
+    this._store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+    this.blogList$.subscribe($event => {
+      this._count = $event.count;
     });
   }
 
   onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
-      this.store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+      this._store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
     }
   }
 }

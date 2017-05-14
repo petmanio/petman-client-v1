@@ -32,8 +32,7 @@ export interface IBlog {
   description: string,
   link: string,
   thumbnail: string,
-  date: string,
-  lang: string
+  icon?: string
 }
 
 export interface ILocation {

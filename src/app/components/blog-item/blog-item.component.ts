@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { IBlog } from '../../models/api';
+import { UtilService } from '../../services/util/util.service';
 
 export interface IBlogItemComponent {
-
+  formatDate(date): string
 }
 
 @Component({
@@ -10,29 +11,50 @@ export interface IBlogItemComponent {
   template: `
     <md-card>
       <md-card-header>
+        <div md-card-avatar *ngIf="blog.icon" class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + blog.icon + ')'}"></div>
         <md-card-title>{{blog.source}}</md-card-title>
-        <md-card-subtitle>{{blog.date | date: 'dd/MM/yyyy'}}</md-card-subtitle>
+        <md-card-subtitle>
+          <span class="pm-font-12 pm-color-gray">
+            {{formatDate(blog.createdAt)}}
+          </span>
+        </md-card-subtitle>
+        <a md-icon-button class="pm-blog-action-open" target="_blank" [href]="blog.link">
+          <md-icon class="pm-font-16 pm-color-gray">open_in_new</md-icon>
+        </a>
       </md-card-header>
-      <img md-card-image [src]="blog.thumbnail">
-      <!--<a [href]="blog.link" target="_blank"><img md-card-image [src]="blog.thumbnail"></a>-->
-      <md-card-content>
-        <p>{{blog.description}}</p>
-      </md-card-content>
-      <md-card-actions>
-        <!--<button md-button>LIKE</button>-->
-        <!--<button md-button>SHARE</button>-->
-        <a md-button [href]="blog.link" target="_blank">READ</a>
-      </md-card-actions>
+      <md-divider></md-divider><br/>
+      <a target="_blank" [href]="blog.link">
+        <md-card-content class="pm-cursor-pointer">
+          <img md-card-image [src]="blog.thumbnail">
+          <div class="pm-blog-description pm-font-16 pm-color-gray">{{blog.description}}</div>
+        </md-card-content>  
+      </a>
     </md-card>
   `,
   styles: [`
-    md-card-title { text-transform: lowercase; }
-    md-card-title:first-letter { text-transform: uppercase; }
+    md-card-title {
+      margin-top: 10px;
+    }
+
+    .pm-blog-description {
+      margin-bottom: 25px;
+    }
+
+    .pm-blog-action-open {
+      margin-left: auto;
+    }
+    
+    a {
+      text-decoration: none;
+    }
   `]
 })
 export class BlogItemComponent implements IBlogItemComponent {
   @Input() blog: IBlog;
-  constructor() {
+  constructor() {}
 
+  formatDate(date): string {
+    // TODO: use angular date filter
+    return UtilService.formatDate(date);
   }
 }

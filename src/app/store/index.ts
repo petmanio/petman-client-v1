@@ -141,9 +141,6 @@ export const getShowSidenav = createSelector(getLayoutState, fromLayout.getShowS
  */
 export const getBlogState = (state: State) => state.blog;
 export const getBlogList = createSelector(getBlogState, fromBlog.getList);
-export const getBlogListData = createSelector(getBlogList, fromBlog.getListData);
-export const getBlogListError = createSelector(getBlogList, fromBlog.getListError);
-// TODO: remove error from state
 
 /**
  * Location Reducers

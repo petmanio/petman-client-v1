@@ -1,44 +1,39 @@
 import { createSelector } from 'reselect';
-import { IBlogListRequest, IBlogListResponse } from '../../models/api';
+import { IBlogListResponse } from '../../models/api';
 import * as blogAction from './blog.actions';
+import { assign } from 'lodash';
+
 
 export interface State {
-  list?: {
-    data?: IBlogListResponse,
-    error?: any
-  }
+  list: IBlogListResponse,
 }
 
 const initialState: State = {
   list: {
-    data: {
-      list: [],
-      count: null
-    },
-    error: null
+    list: [],
+    count: null
   }
 };
 
 export function reducer(state = initialState, action: blogAction.Actions): State {
   switch (action.type) {
+    /**
+     * List
+     */
+    // TODO: use another action for loading more
     case blogAction.ActionTypes.LIST_COMPLETE: {
       const res: IBlogListResponse = action.payload;
-      //use object assign
-      return {
-        list: {
-          data: {
-            list: state.list.data.list.concat(res.list),
-            count: res.count
-          }
-        },
-      };
+      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
 
     case blogAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return {
-        list: { data: { count: null, list: [] }, error: error.status || 'UNKNOWN_ERROR' },
-      };
+      return assign({}, state, { list: { list: [], count: null }});
+    }
+
+    // TODO: use another action for loading more
+    case blogAction.ActionTypes.LIST_CLEAR: {
+      return assign({}, state, { list: { list: [], count: null }});
     }
 
     default: {
@@ -57,5 +52,3 @@ export function reducer(state = initialState, action: blogAction.Actions): State
  */
 
 export const getList = (state: State) => state.list;
-export const getListData = list => list.data;
-export const getListError = list => list.error;

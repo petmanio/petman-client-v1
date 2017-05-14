@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
-import { IBlogListRequest, IBlogListResponse } from "../../models/api";
+import { IBlogListRequest, IBlogListResponse } from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -14,6 +14,7 @@ export const ActionTypes = {
   LIST: type('[Blog] List'),
   LIST_COMPLETE: type('[Blog] List Complete'),
   LIST_ERROR: type('[Blog] List Error'),
+  LIST_CLEAR: type('[Blog] List Clear'),
 };
 
 /**
@@ -22,6 +23,10 @@ export const ActionTypes = {
  * type checking in reducer functions.
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
+ */
+
+/**
+ * List
  */
 export class ListAction implements Action {
   type = ActionTypes.LIST;
@@ -41,6 +46,11 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class ListClearAction implements Action {
+  type = ActionTypes.LIST_CLEAR;
+
+  constructor(public payload: any) { }
+}
 
 /**
  * Export a type alias of all actions in this action group
@@ -49,4 +59,6 @@ export class ListErrorAction implements Action {
 export type Actions
   = ListAction
   | ListCompleteAction
-  | ListErrorAction;
+  | ListErrorAction
+  | ListClearAction
+
