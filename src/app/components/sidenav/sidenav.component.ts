@@ -27,10 +27,11 @@ interface ISidenavComponent {
                         routerLinkActive="is-active">Adopt</app-nav-item>
           <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
                         routerLinkActive="is-active">Blog</app-nav-item>
-          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="help">Vet consultant</app-nav-item>
+          <app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="help" 
+                        class="disabled" hint="comming soon">Vet consultant</app-nav-item>
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
-          <app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>
+          <!--<app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>-->
           <app-nav-item (activate)="onItemActivate.emit()" icon="info">About Us</app-nav-item>
         </md-nav-list>
       </md-sidenav>
@@ -55,7 +56,12 @@ interface ISidenavComponent {
         height: -webkit-calc(100% - 56px);
         height: -moz-calc(100% - 56px);
       }
-    }    
+    }   
+    
+    .disabled {
+      display: block;
+      opacity: 0.5;
+    }
   `]
 })
 export class SidenavComponent implements ISidenavComponent, OnInit {
