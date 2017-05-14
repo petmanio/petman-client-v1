@@ -41,5 +41,6 @@ export { AdoptDetailsComponent } from './adopt-details/adopt-details.component';
 export { AdoptCommentsComponent } from './adopt-comments/adopt-comments.component';
 export { AdoptCommentComponent } from './adopt-comment/adopt-comment.component';
 export { NotificationsComponent } from './notifications/notifications.component';
+export { AboutUsComponent } from './about-us/about-us.component';
 export { ShareDialogComponent } from './share-dialog/share-dialog.component';
 export { MapComponent } from './map/map.component';

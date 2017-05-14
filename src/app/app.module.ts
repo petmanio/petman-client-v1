@@ -72,6 +72,7 @@ import {
   AdoptCommentsComponent,
   AdoptCommentComponent,
   NotificationsComponent,
+  AboutUsComponent,
   ShareDialogComponent,
   MapComponent
 } from './components';
@@ -234,6 +235,16 @@ const appRoutes: Routes = [
     }
   },
   {
+    path: 'about-us',
+    component: AboutUsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      auth: true,
+      toolbarRightButtons: ['ACTIONS'],
+      showSidenav: true
+    }
+  },
+  {
     path: '**',
     redirectTo: '/'
   }
@@ -284,6 +295,7 @@ const appRoutes: Routes = [
     AdoptCommentsComponent,
     AdoptCommentComponent,
     NotificationsComponent,
+    AboutUsComponent,
     ShareDialogComponent,
     MapComponent,
     FitContentsDirective,

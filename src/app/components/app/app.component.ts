@@ -34,7 +34,7 @@ export interface IAppComponent {
       <!--TODO: update layout, sideNav components component-->
       <app-toolbar (toggleMenu)="toggleSidenav($event)">
         <!--TODO: use route config for main route-->
-        <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Petman</span>
+        <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Petman <span class="pm-font-9">beta</span></span>
         <span class="toolbar-spacer"></span>
         <button md-raised-button
                 color="primary"

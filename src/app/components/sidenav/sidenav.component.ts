@@ -32,7 +32,8 @@ interface ISidenavComponent {
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
           <!--<app-nav-item *ngIf="currentUser$ | async" (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>-->
-          <app-nav-item (activate)="onItemActivate.emit()" icon="info">About Us</app-nav-item>
+          <app-nav-item (activate)="onItemActivate.emit()" icon="info" routerLink="/about-us"
+                        routerLinkActive="is-active">About Us</app-nav-item>
         </md-nav-list>
       </md-sidenav>
       <ng-content></ng-content>
