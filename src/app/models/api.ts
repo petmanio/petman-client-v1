@@ -186,6 +186,11 @@ export interface INotificationWalkerApplicationMessageCreate {
   message: number | IWalkerApplicationMessage,
 }
 
+export interface INotificationAdoptComment {
+  comment: number | IAdoptComment,
+  adopt: number | IAdopt
+}
+
 export interface INotification {
   id: number,
   from: number | IUser,
@@ -196,6 +201,7 @@ export interface INotification {
   walkerApplicationCreate: number | INotificationWalkerApplicationCreate,
   walkerApplicationStatusUpdate: number | INotificationWalkerApplicationStatusUpdate,
   walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
+  adoptCommentCreate: number | INotificationAdoptComment,
   seen: boolean,
   createdAt: string
 }

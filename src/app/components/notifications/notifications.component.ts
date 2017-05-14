@@ -63,6 +63,12 @@ export interface INotificationsComponent {
                 new message from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
               </span>
             </div>
+
+            <div *ngIf="notification.adoptCommentCreate">
+               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
+                new comment from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
+              </span>
+            </div>
             
             <div class="pm-font-12 pm-color-gray pm-room-notification-status">{{formatDate(notification.createdAt)}}</div>
           </div>

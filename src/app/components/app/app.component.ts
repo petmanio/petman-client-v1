@@ -261,6 +261,9 @@ export class AppComponent implements OnInit, IAppComponent {
       || notification.walkerApplicationMessageCreate
       || notification.walkerApplicationStatusUpdate)['walker'];
       this._router.navigate(['walker', id, 'details'])
+    } else if (notification.adoptCommentCreate) {
+      const id = notification.adoptCommentCreate['adopt'];
+      this._router.navigate(['adopt', id, 'details'])
     }
   }
 
