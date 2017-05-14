@@ -269,7 +269,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       this._snackBar.open(`Sorry but now edit functionality not available`, null, {
         duration: 3000
       });
-    } else if (this.inProgressApplications.some(application => application.status === 'WAITING')) {
+    } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
       this._snackBar.open(`Sorry but you have in progress application`, null, {
         duration: 3000
       });
@@ -282,7 +282,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this.selectedApplication = application;
   }
 
-  onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {
+  onActionClick(status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {
     const application = clone<IRoomApplication>(this.selectedApplication);
     application.status = status;
 

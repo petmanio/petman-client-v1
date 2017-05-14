@@ -12,13 +12,14 @@ export interface IRoomApplicationActionsComponent {
     <div class="columns pm-application-actions is-mobile pm-background-lightest-gray">
       <div class="column">
         <span class="pm-color-gray pm-font-16 pm-application-status">{{getApplicationStatus(application)}}</span>
-        <button md-button class="pm-fr" *ngIf="application.status === 'WAITING' && room.isOwner" (click)="onActionClick.emit('CONFIRMED')">
+        <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS' 
+          && room.isOwner" (click)="onActionClick.emit('CONFIRMED')">
           Confirm
         </button>
         <button md-button class="pm-fr" *ngIf="application.status === 'CONFIRMED'" (click)="onActionClick.emit('FINISHED')">
           Finish
         </button>
-        <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'WAITING'"
+        <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'IN_PROGRESS'"
                 (click)="onActionClick.emit(room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
           Cancel
         </button>
@@ -40,7 +41,7 @@ export interface IRoomApplicationActionsComponent {
     }
   `]
 })
-export class RoomApplicationActionsComponent {
+export class RoomApplicationActionsComponent implements IRoomApplicationActionsComponent {
   @Input() room: IRoom;
   @Input() application: IRoomApplication;
   @Output() onActionClick = new EventEmitter();
@@ -50,6 +51,9 @@ export class RoomApplicationActionsComponent {
 
   getApplicationStatus(application: IRoomApplication): string {
     let status: string = UtilService.capitalizeFirstChar(application.status);
+    if (application.status === 'IN_PROGRESS') {
+      status = 'In progress';
+    }
     if (this.room.isOwner) {
       if (application.status === 'CANCELED_BY_PROVIDER') {
         status = `Canceled by you`;

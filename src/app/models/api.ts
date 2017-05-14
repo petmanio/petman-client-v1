@@ -57,7 +57,7 @@ export interface IRoomApplication {
   room?: number | IRoom,
   count?: number,
   chats?: IRoomApplicationMessage[],
-  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
+  status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
   finsihedAt: string
@@ -121,7 +121,7 @@ export interface IWalkerApplication {
   walker?: number | IWalker,
   count?: number,
   chats?: IWalkerApplicationMessage[],
-  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
+  status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
   finsihedAt: string

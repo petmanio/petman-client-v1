@@ -8,7 +8,6 @@ import {
   IRoomUpdateApplicationRequest
 } from '../../models/api';
 import * as roomAction from './room.actions';
-import { stat } from 'fs';
 
 export interface State {
   room: IRoomGetByIdResponse,

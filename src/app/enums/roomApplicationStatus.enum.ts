@@ -1,4 +1,4 @@
 export declare enum  RoomApplicationStatus {
-  WAITING,
+  IN_PROGRESS,
   FINISHED
 }

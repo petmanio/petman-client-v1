@@ -76,6 +76,9 @@ export class WalkerApplicationsListComponent implements OnInit, OnChanges, IWalk
 
   getApplicationStatus(application: IWalkerApplication): string {
     let status: string = UtilService.capitalizeFirstChar(application.status);
+    if (application.status === 'IN_PROGRESS') {
+      status = 'In progress';
+    }
     if (this.walker.isOwner) {
       if (application.status === 'CANCELED_BY_PROVIDER') {
         status = `Canceled by you`;

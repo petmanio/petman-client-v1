@@ -76,6 +76,9 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
 
   getApplicationStatus(application: IRoomApplication): string {
     let status: string = UtilService.capitalizeFirstChar(application.status);
+    if (application.status === 'IN_PROGRESS') {
+      status = 'In progress';
+    }
     if (this.room.isOwner) {
       if (application.status === 'CANCELED_BY_PROVIDER') {
         status = `Canceled by you`;
