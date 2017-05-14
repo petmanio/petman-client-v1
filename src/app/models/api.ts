@@ -32,7 +32,8 @@ export interface IBlog {
   description: string,
   link: string,
   thumbnail: string,
-  icon?: string
+  icon?: string,
+  createdAt: string
 }
 
 export interface ILocation {
@@ -59,7 +60,7 @@ export interface IRoomApplication {
   status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
   startedAt: string
   endedAt: string
-  finsihedAt: string
+  finishedAt: string
 }
 
 export interface IRoomApplicationMessage {
