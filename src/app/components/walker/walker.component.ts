@@ -30,7 +30,7 @@ export interface IWalkerComponent {
         </a>
       </md-card-header>
       <md-divider></md-divider><br/>
-      <md-card-content [routerLink]="['/walker', walker.id, 'details']" class="pm-cursor-pointer">
+      <md-card-content [routerLink]="['/walkers', walker.id, 'details']" class="pm-cursor-pointer">
         <div class="pm-walker-description pm-font-16 pm-color-gray">{{walker.description | appEllipsis:100}}</div>
       </md-card-content>
       <md-card-actions>

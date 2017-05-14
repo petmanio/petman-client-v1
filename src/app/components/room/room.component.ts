@@ -25,7 +25,7 @@ export interface IRoomComponent {
             {{formatDate(room.createdAt)}}
           </span>
         </md-card-subtitle>
-        <a md-icon-button class="pm-room-action-open" [routerLink]="['/room', room.id, 'details']">
+        <a md-icon-button class="pm-room-action-open" [routerLink]="['/rooms', room.id, 'details']">
           <md-icon class="pm-font-16 pm-color-gray">open_in_new</md-icon>
         </a>
       </md-card-header>

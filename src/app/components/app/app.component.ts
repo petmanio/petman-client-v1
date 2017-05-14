@@ -254,13 +254,13 @@ export class AppComponent implements OnInit, IAppComponent {
       const id = (notification.roomApplicationCreate
       || notification.roomApplicationMessageCreate
       || notification.roomApplicationStatusUpdate)['room'];
-      this._router.navigate(['room', id, 'details'])
+      this._router.navigate(['rooms', id, 'details'])
     } else if (notification.walkerApplicationCreate || notification.walkerApplicationMessageCreate
       || notification.walkerApplicationStatusUpdate) {
       const id = (notification.walkerApplicationCreate
       || notification.walkerApplicationMessageCreate
       || notification.walkerApplicationStatusUpdate)['walker'];
-      this._router.navigate(['walker', id, 'details'])
+      this._router.navigate(['walkers', id, 'details'])
     } else if (notification.adoptCommentCreate) {
       const id = notification.adoptCommentCreate['adopt'];
       this._router.navigate(['adopt', id, 'details'])
