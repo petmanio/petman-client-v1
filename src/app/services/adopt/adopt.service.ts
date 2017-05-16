@@ -108,8 +108,12 @@ export class AdoptService implements IAdoptService {
   }
 
   // TODO: think about using action or not
+  // TODO: is this right using map
   joinComment(options: IAdoptCommentStreamJoinRequest): Observable<any> {
     options = assign({}, options, { 'x-auth-token':  localStorage.getItem('token') });
-    return this._sailsService.get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/join`, options);
+    return this._sailsService.on('connect')
+      .map(() => {
+        return this._sailsService.get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/join`, options);
+      });
   }
 }
