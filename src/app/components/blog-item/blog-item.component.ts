@@ -15,7 +15,7 @@ export interface IBlogItemComponent {
         <md-card-title>{{blog.source}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
-            {{formatDate(blog.createdAt)}}
+            {{formatDate(blog.sourceCreatedAt || blog.createdAt)}}
           </span>
         </md-card-subtitle>
         <a md-icon-button class="pm-blog-action-open" target="_blank" [href]="blog.link">
@@ -55,6 +55,6 @@ export class BlogItemComponent implements IBlogItemComponent {
 
   formatDate(date): string {
     // TODO: use angular date filter
-    return UtilService.formatDate(date);
+    return UtilService.formatDate(date, 'MMM Y');
   }
 }

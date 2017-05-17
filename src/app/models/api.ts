@@ -33,6 +33,7 @@ export interface IBlog {
   link: string,
   thumbnail: string,
   icon?: string,
+  sourceCreatedAt?: string,
   createdAt: string
 }
 
