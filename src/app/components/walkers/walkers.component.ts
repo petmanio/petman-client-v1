@@ -5,19 +5,17 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { UtilService } from '../../services/util/util.service';
+import { MdSnackBar } from '@angular/material';
+import { IUser } from '../../models/api';
 
 export interface IWalkersComponent {
-  onScroll(): void
+  onScroll(): void,
+  onFabClick(): void
 }
 
 @Component({
   selector: 'app-walkers',
-  template: `
-    <div class="columns">
-      <div class="column">
-        <a md-icon-button class="pm-fr" routerLink="/walkers/add"><md-icon class="pm-color-gray pm-font-30">add_circle_outline</md-icon></a>
-      </div>
-    </div>
+  template: `    
     <div class="columns">
       <div class="pm-walker-items" infinite-scroll
            (scrolled)="onScroll()"
@@ -35,6 +33,9 @@ export interface IWalkersComponent {
           </masonry>
         </div>
       </div>
+      <button md-fab class="pm-fab" (click)="onFabClick()">
+        <md-icon>add</md-icon>
+      </button>
     </div>
   `,
   styles: [`
@@ -62,11 +63,14 @@ export interface IWalkersComponent {
 })
 export class WalkersComponent implements OnInit, IWalkersComponent {
   walkerList$: Observable<any>;
+  currentUser$: Observable<any>;
+  currentUser: IUser;
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
-  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
+  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _snackBar: MdSnackBar) {
     this.walkerList$ = _store.select(fromRoot.getWalkerList);
+    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
@@ -75,12 +79,24 @@ export class WalkersComponent implements OnInit, IWalkersComponent {
     this.walkerList$.subscribe($event => {
       this._count = $event.count;
     });
+
+    this.currentUser$.subscribe($event => this.currentUser = $event);
   }
 
   onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
       this._store.dispatch(new walkerAction.ListAction({ limit: this._limit, skip: this._skip }));
+    }
+  }
+
+  onFabClick(): void {
+    if (this.currentUser) {
+      this._router.navigate(['/walkers/add'])
+    } else {
+      this._snackBar.open(`Please login to add new statement`, null, {
+        duration: 3000
+      });
     }
   }
 }

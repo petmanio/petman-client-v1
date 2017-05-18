@@ -124,9 +124,6 @@ export const getAuthState = (state: State) => state.auth;
 /**
  * Auth Reducers
  */
-export const getAuthLogin = createSelector(getAuthState, fromAuth.getLogin);
-export const getAuthLoginData = createSelector(getAuthLogin, fromAuth.getLoginData);
-export const getAuthLoginError = createSelector(getAuthLogin, fromAuth.getLoginError);
 export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurrentUser);
 // TODO: remove error from state
 

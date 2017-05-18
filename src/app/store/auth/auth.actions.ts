@@ -6,7 +6,7 @@ import {
   IFbLoginRequest,
   IFbLoginResponse,
   IAuthCurrentUserRequest
-} from "../../models/api";
+} from '../../models/api';
 
 /**
  * For each action type in an action group, make a simple
@@ -25,7 +25,9 @@ export const ActionTypes = {
   FB_LOGIN_COMPLETE: type('[Auth] Fb Login Complete'),
   FB_LOGIN_ERROR: type('[Auth] Fb Login Error'),
 
+  GET_CURRENT_USER: type('[Auth] Get Current User'),
   GET_CURRENT_USER_COMPLETE: type('[Auth] Get Current User Complete'),
+  GET_CURRENT_USER_ERROR: type('[Auth] Get Current User Error'),
 
   LOGOUT: type('[Auth] Logout'),
   LOGOUT_COMPLETE: type('[Auth] Logout Complete'),
@@ -75,8 +77,20 @@ export class FbLoginErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class GetCurrentUserAction implements Action {
+  type = ActionTypes.GET_CURRENT_USER;
+
+  constructor(public payload: IAuthCurrentUserRequest) { }
+}
+
 export class GetCurrentUserCompleteAction implements Action {
   type = ActionTypes.GET_CURRENT_USER_COMPLETE;
+
+  constructor(public payload: IAuthCurrentUserRequest) { }
+}
+
+export class GetCurrentUserErrorAction implements Action {
+  type = ActionTypes.GET_CURRENT_USER_ERROR;
 
   constructor(public payload: IAuthCurrentUserRequest) { }
 }
@@ -111,7 +125,9 @@ export type Actions
   | FbLoginAction
   | FbLoginCompleteAction
   | FbLoginErrorAction
+  | GetCurrentUserAction
   | GetCurrentUserCompleteAction
+  | GetCurrentUserErrorAction
   | LogoutAction
   | LogoutCompleteAction
   | LogoutErrorAction;

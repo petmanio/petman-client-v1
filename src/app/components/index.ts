@@ -1,7 +1,7 @@
 export { AppComponent } from './app/app.component';
 export { BlogComponent } from './blog/blog.component';
 export { BlogItemComponent } from './blog-item/blog-item.component';
-export { DashboardComponent } from './dashboard/dashboard.component';
+export { HomeComponent } from './home/home.component';
 export { JoinComponent } from './join/join.component';
 export { LayoutComponent } from './layout/layout.component';
 export { NavItemComponent } from './nav-item/nav-item.component';

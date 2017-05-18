@@ -9,7 +9,7 @@ import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IRoom, IRoomApplication } from '../../models/api';
+import { IRoom, IRoomApplication, IUser } from '../../models/api';
 import { RoomApplicationsListComponent } from '../room-applications-list/room-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
@@ -175,6 +175,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   @ViewChild(RoomApplicationsListComponent) _roomApplicationList;
   // TODO: update attribute name
   roomRoom$: Observable<any>;
+  currentUser$: Observable<any>;
+  currentUser: IUser;
   averageRating: number;
   selectedApplication: IRoomApplication;
   inProgressApplications: IRoomApplication[];
@@ -198,6 +200,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
               private _utilService: UtilService,
               private _actions$: Actions) {
     this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
+    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
@@ -225,6 +228,8 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
         this.averageRating = UtilService.countAverage(this.room.applications.filter(application => application.status === 'FINISHED'));
       }
     });
+
+    this.currentUser$.subscribe($event => this.currentUser = $event);
 
     // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
     // this._actions$
@@ -271,6 +276,10 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
       });
     } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
       this._snackBar.open(`Sorry but you have in progress application`, null, {
+        duration: 3000
+      });
+    } else if (!this.currentUser) {
+      this._snackBar.open(`Please login for apply`, null, {
         duration: 3000
       });
     } else {

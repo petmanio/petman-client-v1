@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
+import * as authAction from '../../store/auth/auth.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
 
 export interface IAppComponent {
@@ -23,7 +24,8 @@ export interface IAppComponent {
   onNotificationMenuOpen(): void,
   onNotificationClick(notification: INotification): void
   logOut(): void,
-  initSocket(): void
+  initSocket(): void,
+  onJoinClick(): void
 }
 
 @Component({
@@ -34,16 +36,14 @@ export interface IAppComponent {
       <!--TODO: update layout, sideNav components component-->
       <app-toolbar (toggleMenu)="toggleSidenav($event)">
         <!--TODO: use route config for main route-->
-        <span class="home" [routerLink]="(currentUser$ | async) ? '/' : '/welcome'">Petman <span class="pm-font-9">beta</span></span>
+        <span class="home" [routerLink]="'/'">Petman <span class="pm-font-9">beta</span></span>
         <span class="toolbar-spacer"></span>
         <button md-raised-button
                 color="primary"
                 routerLink="/join"
-                *ngIf="toolbarRightButtons.indexOf('JOIN') !== -1">
-          Join
-        </button>
+                *ngIf="!(currentUser$ | async)">Join</button>
         <!--TODO: find better solution-->
-        <div *ngIf="toolbarRightButtons.indexOf('ACTIONS') !== -1" class="pm-toolbar-actions">
+        <div class="pm-toolbar-actions" *ngIf="(currentUser$ | async)">
           <button md-icon-button
                   [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
             <md-icon *ngIf="unseenNotificationsCount">notifications</md-icon>
@@ -67,10 +67,10 @@ export interface IAppComponent {
                [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
           <md-menu #menu="mdMenu" [overlapTrigger]="false"
                    yPosition="above" xPosition="before">
-            <button md-menu-item>
-              <md-icon>account_circle</md-icon>
-              <span>Account</span>
-            </button>
+            <!--<button md-menu-item>-->
+              <!--<md-icon>account_circle</md-icon>-->
+              <!--<span>Account</span>-->
+            <!--</button>-->
             <button md-menu-item (click)="logOut()">
               <md-icon>power_settings_new</md-icon>
               <span>Log out</span>
@@ -199,26 +199,32 @@ export class AppComponent implements OnInit, IAppComponent {
       }
     });
 
+    if (UtilService.getCurrentDevice() === 'DESKTOP') {
+      this._store.dispatch(new layout.OpenSidenavAction());
+    } else {
+      this._store.dispatch(new layout.CloseSidenavAction());
+    }
+
     // FIXME: find better way
-    this._router.events.subscribe((event: any) => {
-      if (event instanceof NavigationStart) {
-
-      } else if (event instanceof NavigationEnd) {
-        this._zone.run(() => {
-          this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
-          const showSideNav = this.getRouteDataByKey('showSidenav');
-          if (typeof showSideNav !== 'undefined') {
-            if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
-              this._store.dispatch(new layout.OpenSidenavAction());
-            } else {
-              this._store.dispatch(new layout.CloseSidenavAction());
-            }
-          }
-          this._ref.markForCheck();
-        })
-
-      }
-    });
+    // this._router.events.subscribe((event: any) => {
+    //   if (event instanceof NavigationStart) {
+    //
+    //   } else if (event instanceof NavigationEnd) {
+    //     this._zone.run(() => {
+    //       this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
+    //       const showSideNav = this.getRouteDataByKey('showSidenav');
+    //       if (typeof showSideNav !== 'undefined') {
+    //         if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
+    //           this._store.dispatch(new layout.OpenSidenavAction());
+    //         } else {
+    //           this._store.dispatch(new layout.CloseSidenavAction());
+    //         }
+    //       }
+    //       this._ref.markForCheck();
+    //     })
+    //
+    //   }
+    // });
 
     this.notifications$.subscribe($event => {
       this._count = $event.count;
@@ -237,6 +243,8 @@ export class AppComponent implements OnInit, IAppComponent {
       // TODO: IE support
       setTimeout(() => window.dispatchEvent(new Event('resize')), 200);
     });
+
+    this._store.dispatch(new authAction.GetCurrentUserAction({}))
   }
 
   onScroll(): void {
@@ -310,57 +318,59 @@ export class AppComponent implements OnInit, IAppComponent {
       autoConnect: false,
       environment: environment.production ? 'production' : 'development'
     };
+    this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
+
+    // Room Events
+    this._sailsService.on('roomApplicationMessage').subscribe(message => {
+      this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
+    });
+
+    this._sailsService.on('roomApplicationUpdate').subscribe(update => {
+      this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
+    });
+
+    // TODO: use another action for adding new application
+    this._sailsService.on('roomApplicationCreate').subscribe(application => {
+      this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
+    });
+
+    // Walker Events
+    this._sailsService.on('walkerApplicationMessage').subscribe(message => {
+      this._store.dispatch(new walkerAction.ApplicationMessageCreateEventAction(message))
+    });
+
+    this._sailsService.on('walkerApplicationUpdate').subscribe(update => {
+      this._store.dispatch(new walkerAction.UpdateApplicationCompleteAction(update))
+    });
+
+    // TODO: use another action for adding new application
+    this._sailsService.on('walkerApplicationCreate').subscribe(application => {
+      this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
+    });
+
+    this._sailsService.on('adoptComment').subscribe(comment => {
+      this._store.dispatch(new adoptAction.CommentCreateEventAction(comment));
+    });
+
+    // Notification Event
+    this._sailsService.on('notificationNew').subscribe(notification => {
+      this._store.dispatch(new notificationAction.NewEventAction(notification));
+    });
+    // TODO: reconnect on connection lost
 
     this.currentUser$.subscribe(($event) => {
-      if ($event && (!socketConnection || !socketConnection.connected)) {
-        this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
-
-        this._sailsService.on('connect').subscribe(() => {
-          this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
-        });
-
-        // Room Events
-        this._sailsService.on('roomApplicationMessage').subscribe(message => {
-          this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
-        });
-
-        this._sailsService.on('roomApplicationUpdate').subscribe(update => {
-          this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
-        });
-
-        // TODO: use another action for adding new application
-        this._sailsService.on('roomApplicationCreate').subscribe(application => {
-          this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
-        });
-
-        // Walker Events
-        this._sailsService.on('walkerApplicationMessage').subscribe(message => {
-          this._store.dispatch(new walkerAction.ApplicationMessageCreateEventAction(message))
-        });
-
-        this._sailsService.on('walkerApplicationUpdate').subscribe(update => {
-          this._store.dispatch(new walkerAction.UpdateApplicationCompleteAction(update))
-        });
-
-        // TODO: use another action for adding new application
-        this._sailsService.on('walkerApplicationCreate').subscribe(application => {
-          this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
-        });
-
-        this._sailsService.on('adoptComment').subscribe(comment => {
-          this._store.dispatch(new adoptAction.CommentCreateEventAction(comment));
-        });
-
-        // Notification Event
-        this._sailsService.on('notificationNew').subscribe(notification => {
-          this._store.dispatch(new notificationAction.NewEventAction(notification));
-        });
-        // TODO: reconnect on connection lost
-      } else if (!$event && socketConnection && socketConnection.connected) {
-        // TODO: fix disconnect
-        this._sailsService.disconnect();
+      if ($event) {
+        this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
       }
+      // TODO: fix disconnect
+      // else if (!$event && socketConnection && socketConnection.connected) {
+      //   this._sailsService.disconnect();
+      // }
     });
+  }
+
+  onJoinClick(): void {
+    this._store.dispatch(new authAction.FbLoginAction());
   }
 
   private getRouteDataByKey(key: string): any {

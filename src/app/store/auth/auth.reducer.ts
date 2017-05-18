@@ -1,53 +1,34 @@
-import { createSelector } from 'reselect';
-import { ILoginResponse, IAuthCurrentUserResponse } from '../../models/api';
+import { IAuthCurrentUserResponse, ILoginResponse } from '../../models/api';
+import { assign } from 'lodash';
 import * as authAction from './auth.actions';
 
 export interface State {
-  login?: {
-    data: ILoginResponse,
-    error?: any
-  },
   user?: IAuthCurrentUserResponse
 }
 
-let initialState: State = {
-  login: {
-    data: null,
-    error: null
-  },
+const initialState: State = {
   user: null
 };
 
 export function reducer(state = initialState, action: authAction.Actions): State {
   switch (action.type) {
     case authAction.ActionTypes.LOGIN_COMPLETE: {
-      const res: any = action.payload;
-      //FIXME: why right interface gives an error
-      return {
-        login: { data: Object.assign({}, state.login.data, res) },
-      };
+      const res: ILoginResponse = action.payload;
+      return assign({}, state, { user: res.user });
     }
 
     case authAction.ActionTypes.LOGIN_ERROR: {
       const error: any = action.payload;
-      return {
-        login: { data: null, error: error.status || 'UNKNOWN_ERROR' },
-      };
+      return assign({}, state, { user: null });
     }
 
     case authAction.ActionTypes.GET_CURRENT_USER_COMPLETE: {
-      const res: any = action.payload;
-      return Object.assign({}, {login: state.login, user: res});
+      const res: IAuthCurrentUserResponse = action.payload;
+      return assign({}, state, { user: res });
     }
 
     case authAction.ActionTypes.LOGOUT_COMPLETE: {
-      return {
-        login: {
-          data: null,
-          error: null
-        },
-        user: null
-      };
+      return assign({}, state, { user: null });
     }
 
     default: {
@@ -65,7 +46,4 @@ export function reducer(state = initialState, action: authAction.Actions): State
  * use-case.
  */
 
-export const getLogin = (state: State) => state.login;
-export const getLoginData = login => login.data;
-export const getLoginError = login => login.error;
 export const getCurrentUser = (state: State) => state.user;

@@ -1,12 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-export interface IDashboardComponent {
+export interface IHomeComponent {
 
 }
 
 @Component({
-  selector: 'app-dashboard',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-home',
   template: `
     <div class="columns">
       <div class="column" *ngFor="let i of [1,2,3]">
@@ -39,7 +38,7 @@ export interface IDashboardComponent {
     }
   `]
 })
-export class DashboardComponent implements IDashboardComponent {
+export class HomeComponent implements IHomeComponent {
   constructor() {
 
   }

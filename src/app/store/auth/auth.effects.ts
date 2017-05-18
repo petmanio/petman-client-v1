@@ -32,8 +32,9 @@ import * as authAction from '../../store/auth/auth.actions';
 interface IAuthEffects {
   fbLogin$: Observable<Action>,
   fbLoginComplete$: Observable<void>,
-  login$: Observable<Action>
-  logout$: Observable<Action>
+  login$: Observable<Action>,
+  logout$: Observable<Action>,
+  getCurrentUser$: Observable<Action>,
 }
 
 @Injectable()
@@ -71,6 +72,16 @@ export class AuthEffects implements IAuthEffects {
     .switchMap(() => {
       return this._authService.logout()
         .map(result => new authAction.LogoutCompleteAction({}));
+    });
+
+  @Effect()
+  public getCurrentUser$: Observable<Action> = this._actions$
+    .ofType(authAction.ActionTypes.GET_CURRENT_USER)
+    .map((action: authAction.GetCurrentUserAction) => action.payload)
+    .switchMap(() => {
+      return this._authService.getCurrentUser()
+        .map(response => new authAction.GetCurrentUserCompleteAction(response))
+        .catch(err => of(new authAction.GetCurrentUserErrorAction(err)))
     });
 
   constructor(private _actions$: Actions, private _authService: AuthService) { }

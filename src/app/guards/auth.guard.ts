@@ -7,14 +7,14 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/let';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
 import { AuthService } from '../services/auth/auth.service';
 import * as fromRoot from '../store';
 import * as authAction from '../store/auth/auth.actions';
-import { IAuthCurrentUserRequest, IAuthCurrentUserResponse } from "../models/api";
+import { IAuthCurrentUserResponse } from '../models/api';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
@@ -23,9 +23,9 @@ import { IAuthCurrentUserRequest, IAuthCurrentUserResponse } from "../models/api
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router,
-              private store: Store<fromRoot.State>,
-              private authService: AuthService) { }
+  constructor(private _router: Router,
+              private _store: Store<fromRoot.State>,
+              private _authService: AuthService) { }
 
   /**
    * This is the actual method the router will call when our guard is run.
@@ -40,25 +40,17 @@ export class AuthGuard implements CanActivate {
    * on to the next candidate route. In this case, it will move on
    * to the 404 page.
    */
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    //TODO: first check from state
-    return this.authService.getCurrentUser()
+  canActivate(route: ActivatedRouteSnapshot): Observable<any> {
+    // TODO: first check from state
+    return this._authService.getCurrentUser()
       .map((user: IAuthCurrentUserResponse) => {
-        this.store.dispatch(new authAction.GetCurrentUserCompleteAction(user));
-        if (route.data['auth']) {
-          return true;
-        } else {
-          this.router.navigate(['/']);
-          return false;
-        }
+        this._store.dispatch(new authAction.GetCurrentUserCompleteAction(user));
+        this._router.navigate(['/']);
+        return true;
       })
       .catch(() => {
-        if (route.data['auth']) {
-          this.router.navigate(['/join']);
-          return of(false);
-        } else {
-          return of(true);
-        }
+        this._router.navigate(['/join']);
+        return of(false);
       });
   }
 }

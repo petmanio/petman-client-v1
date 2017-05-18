@@ -9,7 +9,7 @@ import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IWalker, IWalkerApplication } from '../../models/api';
+import { IUser, IWalker, IWalkerApplication } from '../../models/api';
 import { WalkerApplicationsListComponent } from '../walker-applications-list/walker-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { WalkerReviewDialogComponent } from '../walker-review-dialog/walker-review-dialog.component';
@@ -162,6 +162,8 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
   @ViewChild(WalkerApplicationsListComponent) _walkerApplicationList;
   // TODO: update attribute name
   walkerWalker$: Observable<any>;
+  currentUser$: Observable<any>;
+  currentUser: IUser;
   averageRating: number;
   selectedApplication: IWalkerApplication;
   inProgressApplications: IWalkerApplication[];
@@ -185,6 +187,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
               private _utilService: UtilService,
               private _actions$: Actions) {
     this.walkerWalker$ = _store.select(fromRoot.getWalkerWalker);
+    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
@@ -213,6 +216,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
       }
     });
 
+    this.currentUser$.subscribe($event => this.currentUser = $event);
     // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
     // this._actions$
     //   .ofType(walkerAction.ActionTypes.APPLY_COMPLETE)
@@ -257,6 +261,10 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
       });
     } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
       this._snackBar.open(`Sorry but you have in progress application`, null, {
+        duration: 3000
+      });
+    } else if (!this.currentUser) {
+      this._snackBar.open(`Please login for apply`, null, {
         duration: 3000
       });
     } else {

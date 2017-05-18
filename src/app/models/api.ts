@@ -216,7 +216,8 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-  token: string
+  token: string,
+  user: IUser
 }
 
 export interface IFbLoginRequest {

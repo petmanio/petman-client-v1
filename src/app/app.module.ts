@@ -35,7 +35,7 @@ import {
   SidenavComponent,
   ToolbarComponent,
   WelcomeComponent,
-  DashboardComponent,
+  HomeComponent,
   BlogComponent,
   BlogItemComponent,
   JoinComponent,
@@ -96,153 +96,60 @@ import { reducer } from './store';
 
 const appRoutes: Routes = [
   {
-    path: 'welcome',
-    component: WelcomeComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: false,
-      toolbarRightButtons: ['JOIN'],
-      showSidenav: false
-    }
-  },
-  {
     path: 'join',
     component: JoinComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: false,
-      showSidenav: false
-    }
   },
   {
     path: '',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
+    component: HomeComponent
   },
   {
     path: 'blog',
     component: BlogComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'locations',
     component: LocationComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'rooms',
     component: RoomsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'rooms/add',
     component: RoomAddComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'rooms/:roomId/details',
     component: RoomDetailsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'walkers',
     component: WalkersComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'walkers/add',
     component: WalkerAddComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'walkers/:walkerId/details',
     component: WalkerDetailsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'adopt',
     component: AdoptListComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'adopt/add',
     component: AdoptAddComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'adopt/:adoptId/details',
     component: AdoptDetailsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: 'about-us',
     component: AboutUsComponent,
-    canActivate: [AuthGuard],
-    data: {
-      auth: true,
-      toolbarRightButtons: ['ACTIONS'],
-      showSidenav: true
-    }
   },
   {
     path: '**',
@@ -258,7 +165,7 @@ const appRoutes: Routes = [
     SidenavComponent,
     ToolbarComponent,
     WelcomeComponent,
-    DashboardComponent,
+    HomeComponent,
     BlogComponent,
     BlogItemComponent,
     JoinComponent,
