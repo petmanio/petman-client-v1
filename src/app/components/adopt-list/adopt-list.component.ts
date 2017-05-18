@@ -47,16 +47,16 @@ export interface IAdoptListComponent {
     .pm-adopt-items {
       overflow: auto;
       width: 100%;
-      height: calc(100vh - 130px);
-      height: -webkit-calc(100vh - 130px);
-      height: -moz-calc(100vh - 130px);
+      height: calc(100vh - 70px);
+      height: -webkit-calc(100vh - 70px);
+      height: -moz-calc(100vh - 70px);
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
      .pm-adopt-items {
-       height: calc(100vh - 120px);
-       height: -webkit-calc(100vh - 120px);
-       height: -moz-calc(100vh - 120px);
+       height: calc(100vh - 60px);
+       height: -webkit-calc(100vh - 60px);
+       height: -moz-calc(100vh - 60px);
       }
     }
   `]
