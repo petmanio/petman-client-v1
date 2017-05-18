@@ -206,25 +206,26 @@ export class AppComponent implements OnInit, IAppComponent {
     }
 
     // FIXME: find better way
-    // this._router.events.subscribe((event: any) => {
-    //   if (event instanceof NavigationStart) {
-    //
-    //   } else if (event instanceof NavigationEnd) {
-    //     this._zone.run(() => {
-    //       this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
-    //       const showSideNav = this.getRouteDataByKey('showSidenav');
-    //       if (typeof showSideNav !== 'undefined') {
-    //         if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
-    //           this._store.dispatch(new layout.OpenSidenavAction());
-    //         } else {
-    //           this._store.dispatch(new layout.CloseSidenavAction());
-    //         }
-    //       }
-    //       this._ref.markForCheck();
-    //     })
-    //
-    //   }
-    // });
+    this._router.events.subscribe((event: any) => {
+      if (event instanceof NavigationStart) {} else if (event instanceof NavigationEnd) {
+        if (UtilService.getCurrentDevice() !== 'DESKTOP') {
+          this._store.dispatch(new layout.CloseSidenavAction());
+        }
+        // this._zone.run(() => {
+        //   this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
+        //   const showSideNav = this.getRouteDataByKey('showSidenav');
+        //   if (typeof showSideNav !== 'undefined') {
+        //     if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
+        //       this._store.dispatch(new layout.OpenSidenavAction());
+        //     } else {
+        //       this._store.dispatch(new layout.CloseSidenavAction());
+        //     }
+        //   }
+        //   this._ref.markForCheck();
+        // })
+
+      }
+    });
 
     this.notifications$.subscribe($event => {
       this._count = $event.count;
