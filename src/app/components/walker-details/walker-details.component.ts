@@ -174,7 +174,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     pagination: '.swiper-pagination',
     paginationClickable: true,
     autoplay: 3000,
-    loop: true
+    loop: false
   };
   private _walkerId: number;
   private _destroyed$ = new Subject<boolean>();

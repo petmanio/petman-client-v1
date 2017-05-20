@@ -187,7 +187,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     pagination: '.swiper-pagination',
     paginationClickable: true,
     autoplay: 3000,
-    loop: true
+    loop: false
   };
   private _roomId: number;
   private _destroyed$ = new Subject<boolean>();

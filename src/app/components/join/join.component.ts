@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export interface IJoinComponent {
   template: `
     <div class="columns">
       <div class="column pm-login">
-        <button md-raised-button color="primary" (click)="fbLogin()">Login with Facebook</button>
+        <button md-raised-button color="accent" class="pm-accent-color-white" (click)="fbLogin()">Login with Facebook</button>
       </div>
     </div>
   `,
@@ -25,7 +25,16 @@ export interface IJoinComponent {
     .pm-login {
       text-align: center;
       margin-top: 20px;
+      /*noinspection CssUnknownTarget*/
+      background-image: url("/assets/join-cover.jpeg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 400px;
+      align-items: center;
+      justify-content: center;
+      display: flex;
     }
+
     button {
       /*font-size: 20px;*/
     }

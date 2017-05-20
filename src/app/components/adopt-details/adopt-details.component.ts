@@ -96,7 +96,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
     pagination: '.swiper-pagination',
     paginationClickable: true,
     autoplay: 3000,
-    loop: true
+    loop: false
   };
   private _adoptId: number;
   private _destroyed$ = new Subject<boolean>();

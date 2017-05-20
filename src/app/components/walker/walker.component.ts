@@ -98,7 +98,7 @@ export class WalkerComponent implements OnChanges, IWalkerComponent {
     pagination: '.swiper-pagination',
     paginationClickable: true,
     autoplay: 2800 + (Math.random() * 500),
-    loop: true
+    loop: false
   };
   constructor(private _dialog: MdDialog, private _store: Store<fromRoot.State>) {
 
