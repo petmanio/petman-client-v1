@@ -23,6 +23,7 @@ export interface IJoinComponent {
   `,
   styles: [`
     .pm-login {
+      margin: 0.75rem;
       text-align: center;
       margin-top: 20px;
       /*noinspection CssUnknownTarget*/

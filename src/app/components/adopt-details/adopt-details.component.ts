@@ -122,6 +122,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
       }
 
       // TODO: join on reconnect
+      // TODO: remove from app.component, create listener list and push
       this._adoptService.joinComment({adoptId: this._adoptId}).subscribe();
       return this._store.dispatch(new adoptAction.GetByIdAction({adoptId: this._adoptId}));
     });

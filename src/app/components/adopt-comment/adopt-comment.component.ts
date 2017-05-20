@@ -15,6 +15,7 @@ export interface IAdoptCommentComponent {
              [ngStyle]="{'background-image': 'url(' + comment.user.userData.avatar + ')'}"></div>&nbsp;
       </div>
       <div class="column is-11-desktop is-9-mobile">
+        <span class="pm-font-14 pm-color-gray">{{comment.user.userData.firstName}} {{comment.user.userData.firstName}}</span>
         <div class="pm-comment-text pm-background-light-gray">
           <span class="pm-font-12 pm-color-gray">{{comment.comment}}</span>
         </div>
