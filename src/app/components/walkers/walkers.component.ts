@@ -94,9 +94,11 @@ export class WalkersComponent implements OnInit, IWalkersComponent {
     if (this.currentUser) {
       this._router.navigate(['/walkers/add'])
     } else {
-      this._snackBar.open(`Please login to add new statement`, null, {
+      this._snackBar.open(`Please login to add new statement`, 'Login', {
         duration: 3000
-      });
+      })
+        .onAction()
+        .subscribe($event => this._router.navigate(['/join']))
     }
   }
 }

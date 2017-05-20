@@ -39,7 +39,8 @@ export interface IAppComponent {
         <span class="home" [routerLink]="'/'">Petman <span class="pm-font-9">beta</span></span>
         <span class="toolbar-spacer"></span>
         <button md-raised-button
-                color="primary"
+                color="accent"
+                class="pm-accent-color-white"
                 routerLink="/join"
                 *ngIf="!(currentUser$ | async)">Join</button>
         <!--TODO: find better solution-->

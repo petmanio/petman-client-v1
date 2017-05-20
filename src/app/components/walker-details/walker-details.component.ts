@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { clone } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { Subject } from 'rxjs/Subject';
@@ -184,6 +184,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
               private _activatedRoute: ActivatedRoute,
               private _dialog: MdDialog,
               private _snackBar: MdSnackBar,
+              private _router: Router,
               private _utilService: UtilService,
               private _actions$: Actions) {
     this.walkerWalker$ = _store.select(fromRoot.getWalkerWalker);
@@ -264,9 +265,11 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
         duration: 3000
       });
     } else if (!this.currentUser) {
-      this._snackBar.open(`Please login for apply`, null, {
+      this._snackBar.open(`Please login for apply`, 'Login', {
         duration: 3000
-      });
+      })
+        .onAction()
+        .subscribe($event => this._router.navigate(['/join']))
     } else {
       this._store.dispatch(new walkerAction.ApplyAction({walkerId: this._walkerId}));
     }
