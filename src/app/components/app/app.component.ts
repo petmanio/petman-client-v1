@@ -8,13 +8,13 @@ import { UtilService } from '../../services/util/util.service';
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
-import { INotification, IUser } from '../../models/api';
+import * as authAction from '../../store/auth/auth.actions';
+import { INotification } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
-import * as authAction from '../../store/auth/auth.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
 
 export interface IAppComponent {

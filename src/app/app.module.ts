@@ -12,7 +12,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule
+  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule, MdRadioModule,
+  MdSelectModule
 } from '@angular/material';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
@@ -20,6 +21,7 @@ import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { MasonryModule } from 'angular2-masonry';
+import { TranslateModule } from 'ng2-translate';
 import { environment } from '../environments/environment';
 
 // import { DBModule } from '@ngrx/db';
@@ -228,7 +230,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes, { useHash: false }),
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-    MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule,
+    MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule, MdRadioModule,
+    MdSelectModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
@@ -238,6 +241,7 @@ const appRoutes: Routes = [
     SailsModule.forRoot(),
     SwiperModule.forRoot({}),
     MasonryModule,
+    TranslateModule.forRoot(),
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,
