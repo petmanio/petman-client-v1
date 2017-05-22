@@ -35,11 +35,11 @@ export interface IHomeComponent {
       </div>
     </div>
     <div class="columns">
-      <div class="column pm-home-card pm-home-card-locations" routerLink="/locations">
+      <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
         <div class="pm-home-card-overlay"></div>
         <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
       </div>
-      <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
+      <div class="column pm-home-card pm-home-card-locations" routerLink="/locations">
         <div class="pm-home-card-overlay"></div>
         <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
       </div>
@@ -89,7 +89,7 @@ export interface IHomeComponent {
     
     .pm-home-card-sitters {
       /*noinspection CssUnknownTarget*/
-      background-image: url("/assets/pet-happy.jpg");
+      background-image: url("/assets/home.jpeg");
     }
     
     .pm-home-card-walkers {
@@ -109,7 +109,7 @@ export interface IHomeComponent {
 
     .pm-home-card-locations {
       /*noinspection CssUnknownTarget*/
-      background-image: url("/assets/locations.jpg");
+      background-image: url("/assets/clinic.jpg");
     }
   `]
 })
