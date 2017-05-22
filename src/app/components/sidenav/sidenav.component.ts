@@ -75,6 +75,7 @@ interface ISidenavComponent {
     
     .pm-language {
       margin-top: 20px;
+      margin-bottom: 20px;
       display: flex;
       align-content: center;
       justify-content: center;
@@ -99,6 +100,7 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
   currentUser$: Observable<any>;
   constructor(private _router: Router, private _store: Store<fromRoot.State>, private _translate: TranslateService) {
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this._translate.setDefaultLang('en');
   }
 
   ngOnInit(): void {
@@ -112,7 +114,7 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
     });
 
     // TODO: move to app.component
-    this.lang = localStorage.getItem('lang') || 'en';
+    this.lang = localStorage.getItem('lang') || 'am';
     localStorage.setItem('lang', this.lang);
     this._translate.use(this.lang);
   }

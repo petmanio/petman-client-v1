@@ -17,43 +17,35 @@ export interface IRoomReviewsListComponent {
 @Component({
   selector: 'app-room-reviews-list',
   template: `
-    <ul *ngFor="let application of applications">
-      <li class="pm-cursor-pointer pm-background-lightest-gray">
-        <div class="columns is-mobile pm-review-row">
-          <div class="column is-1-desktop is-2-mobile">
-            <div md-card-avatar class="pm-cart-avatar"
-                 [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
+    <ul>
+      <li class="pm-cursor-pointer pm-background-lightest-gray" *ngFor="let application of applications">
+        <div class="pm-review-row">
+          <div md-card-avatar class="pm-cart-avatar"
+               [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
+          <div class="pm-review-name">
+            <span class="pm-font-14 pm-color-gray">
+              {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}</span><br/>
+            <span class="pm-font-12 pm-color-gray">
+              {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}</span>
           </div>
-          <div class="column is-3">
-            <div class="pm-room-review-padding">
-              <span class="pm-font-14 pm-color-gray">
-                {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
-              </span><br/>
+          <div class="pm-review-rating">
+            <div *ngIf="application.rating">
+              <rating [ngModel]="application.rating"
+                      [max]="5"
+                      fullIcon="★"
+                      emptyIcon="☆"
+                      [readonly]="true"
+                      [disabled]="false"
+                      [required]="true"
+                      [float]="true"
+                      [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+              <div><i class="pm-font-12 pm-color-gray">{{application.review}}</i></div>
             </div>
-          </div>
-          <div class="column">
-            <div class="pm-room-review-padding">
-              <div *ngIf="application.rating">
-                <rating [ngModel]="application.rating"
-                        [max]="5"
-                        fullIcon="★"
-                        emptyIcon="☆"
-                        [readonly]="true"
-                        [disabled]="false"
-                        [required]="true"
-                        [float]="true"
-                        [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-                <div><i class="pm-font-12 pm-color-gray">{{application.review || 'There are no review details'}}</i></div>
-              </div>
-              <div *ngIf="room && !application.rating && !room.isOwner && application.consumer.id === (currentUser$ | async)?.id">
-                <span class="pm-color-gray pm-font-14">Write a review</span>
-                <button md-icon-button (click)="onReviewClick(application)">
-                  <md-icon>rate_review</md-icon>
-                </button>
-              </div>
-              <div class="pm-font-12 pm-color-gray pm-room-review-date pm-room-review-padding">
-                {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}
-              </div>
+            <div *ngIf="room && !application.rating && !room.isOwner && application.consumer.id === (currentUser$ | async)?.id">
+              <span class="pm-color-gray pm-font-14">Write a review</span>
+              <button md-icon-button (click)="onReviewClick(application)">
+                <md-icon>rate_review</md-icon>
+              </button>
             </div>
           </div>
         </div>
@@ -64,17 +56,28 @@ export interface IRoomReviewsListComponent {
     :host {
       display: block;
     }
+    
+    .pm-review-rating {
+      width: 150px;
+    }
 
-    .pm-review-row {
-      width: 100%;
+    .pm-review-name {
+      width: 200px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     
-    .pm-room-review-padding {
-      padding-top: 10px;
+    li {
+      margin-bottom: 5px;
     }
 
-    .pm-room-review-date {
-      text-align: right;
+    .pm-review-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      height: 50px;
     }
 
     ul {
@@ -85,7 +88,6 @@ export interface IRoomReviewsListComponent {
 
     md-icon {
       color: #fcdd7f;
-      
     }
   `]
 })

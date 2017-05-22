@@ -93,7 +93,7 @@ export interface IRoomDetailsComponent {
             <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
             <!--<app-room-statistics [applications]="finishedApplications"></app-room-statistics>-->
           <!--</div>-->
-          <div class="column is-10 is-offset-1">
+          <div class="column is-6 is-offset-1">
             <div class="pm-font-16 pm-color-gray pm-history-label">History & reviews <i class="mdi mdi-history"></i></div>
             <app-room-reviews-list [applications]="finishedApplications" [room]="roomRoom$ | async"></app-room-reviews-list>
           </div>

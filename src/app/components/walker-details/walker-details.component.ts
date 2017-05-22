@@ -80,7 +80,7 @@ export interface IWalkerDetailsComponent {
             <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
             <!--<app-walker-statistics [applications]="finishedApplications"></app-walker-statistics>-->
           <!--</div>-->
-          <div class="column is-10 is-offset-1">
+          <div class="column is-6 is-offset-1">
             <div class="pm-font-16 pm-color-gray pm-history-label">History & reviews <i class="mdi mdi-history"></i></div>
             <app-walker-reviews-list [applications]="finishedApplications" [walker]="walkerWalker$ | async"></app-walker-reviews-list>
           </div>
@@ -169,13 +169,6 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
   inProgressApplications: IWalkerApplication[];
   finishedApplications: IWalkerApplication[];
   walker: IWalker;
-  swiperOptions: SwiperConfigInterface = {
-    direction: 'horizontal',
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    autoplay: 3000,
-    loop: false
-  };
   private _walkerId: number;
   private _destroyed$ = new Subject<boolean>();
   private _walkerListener;
