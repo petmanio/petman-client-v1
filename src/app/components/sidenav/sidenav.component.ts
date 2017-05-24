@@ -8,8 +8,7 @@ import * as fromRoot from '../../store';
 import { TranslateService } from 'ng2-translate';
 
 interface ISidenavComponent {
-  onClick($event: Event): void,
-  onLanguageChange($event): void
+  onClick($event: Event): void
 }
 
 @Component({
@@ -38,12 +37,6 @@ interface ISidenavComponent {
           <app-nav-item (activate)="onItemActivate.emit()" icon="info" routerLink="/about-us"
                         routerLinkActive="is-active">About Us</app-nav-item>
         </md-nav-list>
-        <div class="pm-language">
-          <md-select placeholder="Language" (change)="onLanguageChange($event)" [(ngModel)]="lang">
-            <md-option value="en">En</md-option>
-            <md-option value="am">Am</md-option>
-          </md-select>
-        </div>
       </md-sidenav>
       <ng-content></ng-content>
     </md-sidenav-container>
@@ -72,21 +65,6 @@ interface ISidenavComponent {
       display: block;
       opacity: 0.5;
     }
-    
-    .pm-language {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      display: flex;
-      align-content: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-    
-    .pm-language md-select {
-      width: 100px;
-      margin: 0 auto;
-    } 
   `]
 })
 export class SidenavComponent implements ISidenavComponent, OnInit {
@@ -94,13 +72,11 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
   @Input() mode: string;
   @Output() onItemActivate = new EventEmitter();
   @Output() onClose = new EventEmitter();
-  lang: string;
   isHomeActive;
   // TODO: add observable type for all components
   currentUser$: Observable<any>;
-  constructor(private _router: Router, private _store: Store<fromRoot.State>, private _translate: TranslateService) {
+  constructor(private _router: Router, private _store: Store<fromRoot.State>) {
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
-    this._translate.setDefaultLang('en');
   }
 
   ngOnInit(): void {
@@ -112,19 +88,9 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
         // TODO: find more better way
       }
     });
-
-    // TODO: move to app.component
-    this.lang = localStorage.getItem('lang') || 'am';
-    localStorage.setItem('lang', this.lang);
-    this._translate.use(this.lang);
   }
 
   onClick($event: Event): void {
     $event.stopPropagation();
-  }
-
-  onLanguageChange($event): void {
-    this._translate.use(this.lang);
-    localStorage.setItem('lang', this.lang);
   }
 }

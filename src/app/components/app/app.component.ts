@@ -16,6 +16,7 @@ import * as roomAction from '../../store/room/room.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
+import { TranslateService } from 'ng2-translate';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -25,7 +26,8 @@ export interface IAppComponent {
   onNotificationClick(notification: INotification): void
   logOut(): void,
   initSocket(): void,
-  onJoinClick(): void
+  onJoinClick(): void,
+  onLanguageChange($event): void
 }
 
 @Component({
@@ -38,6 +40,12 @@ export interface IAppComponent {
         <!--TODO: use route config for main route-->
         <span class="home" [routerLink]="'/'">Petman <span class="pm-font-9">beta</span></span>
         <span class="toolbar-spacer"></span>
+        <div class="pm-language">
+          <md-select (change)="onLanguageChange($event)" [(ngModel)]="lang">
+            <md-option value="en">En</md-option>
+            <md-option value="am">Am</md-option>
+          </md-select>
+        </div>
         <button md-raised-button
                 color="accent"
                 class="pm-accent-color-white"
@@ -106,6 +114,33 @@ export interface IAppComponent {
       display: flex;
     }
 
+    .pm-language {
+      margin-right: 10px;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .pm-language md-select {
+      margin: 0 auto;
+    }
+    
+    /deep/ .pm-language .mat-select-trigger {
+       min-width: 50px;
+       width: 50px;
+    }
+
+    /deep/ .pm-language .mat-select-value {
+       color: #ffffff;
+     }
+
+    /deep/ .pm-language .mat-select-arrow {
+      color: #ffffff;
+    }
+
+
     /deep/ .mat-menu-panel.pm-notification-menu {
        width: 380px;
        max-width: 380px;
@@ -164,6 +199,7 @@ export class AppComponent implements OnInit, IAppComponent {
   unseenNotificationsCount = 0;
   // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
+  lang: string;
   private _skip = 0;
   private _limit = 10;
   private _count: number = null;
@@ -173,11 +209,13 @@ export class AppComponent implements OnInit, IAppComponent {
               private _ref: ChangeDetectorRef,
               private _zone: NgZone,
               private _utilsService: UtilService,
-              private _sailsService: SailsService) {
+              private _sailsService: SailsService,
+              private _translate: TranslateService) {
     UtilService.initScripts();
     this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
     this.notifications$ = this._store.select(fromRoot.getNotificationList);
+    this._translate.setDefaultLang('en');
 
     // TODO: use mdIconRegistry
     // _mdIconRegistry
@@ -246,7 +284,12 @@ export class AppComponent implements OnInit, IAppComponent {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 200);
     });
 
-    this._store.dispatch(new authAction.GetCurrentUserAction({}))
+    this._store.dispatch(new authAction.GetCurrentUserAction({}));
+
+    // TODO: use action
+    this.lang = localStorage.getItem('lang') || 'am';
+    localStorage.setItem('lang', this.lang);
+    this._translate.use(this.lang);
   }
 
   onScroll(): void {
@@ -262,6 +305,11 @@ export class AppComponent implements OnInit, IAppComponent {
       this._store.dispatch(new notificationAction.SeenAction({ notifications }));
     }
   };
+
+  onLanguageChange($event): void {
+    this._translate.use(this.lang);
+    localStorage.setItem('lang', this.lang);
+  }
 
   onNotificationClick(notification: INotification): void {
     if (notification.roomApplicationCreate || notification.roomApplicationMessageCreate || notification.roomApplicationStatusUpdate) {

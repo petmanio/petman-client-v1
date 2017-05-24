@@ -15,11 +15,11 @@ export interface IHomeComponent {
 @Component({
   selector: 'app-home',
   template: `
-    <div class="columns" *ngIf="!(currentUser$ | async)">
-      <div class="column pm-login">
-        <button md-raised-button color="accent" class="pm-accent-color-white" (click)="fbLogin()">Login with Facebook</button>
-      </div>
-    </div>
+    <!--<div class="columns" *ngIf="!(currentUser$ | async)">-->
+      <!--<div class="column pm-login">-->
+        <!--<button md-raised-button color="accent" class="pm-accent-color-white" (click)="fbLogin()">Login with Facebook</button>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="columns">
       <div class="column pm-home-card pm-home-card-sitters" routerLink="/rooms">
         <div class="pm-home-card-overlay"></div>
