@@ -39,7 +39,9 @@ export const ActionTypes = {
   COMMENT_LIST: type('[Room] Comment List'),
   COMMENT_LIST_COMPLETE: type('[Room] Comment Complete'),
   COMMENT_LIST_ERROR: type('[Room] Comment Error'),
-  COMMENT_LIST_CLEAR: type('[Room] Comment Clear'),
+  COMMENT_LIST_LOAD_MORE: type('[Room] Comment Load More'),
+  COMMENT_LIST_LOAD_MORE_COMPLETE: type('[Room] Comment Load More Complete'),
+  COMMENT_LIST_LOAD_MORE_ERROR: type('[Room] Comment Load More Error'),
 
   COMMENT_CREATE: type('[Room] Comment Create'),
   // TODO: add actions for complete and error
@@ -152,8 +154,20 @@ export class CommentListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class CommentListClearAction implements Action {
-  type = ActionTypes.COMMENT_LIST_CLEAR;
+export class CommentListLoadMoreAction implements Action {
+  type = ActionTypes.COMMENT_LIST_LOAD_MORE;
+
+  constructor(public payload: any) { }
+}
+
+export class CommentListLoadMoreCompleteAction implements Action {
+  type = ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE;
+
+  constructor(public payload: any) { }
+}
+
+export class CommentListLoadMoreErrorAction implements Action {
+  type = ActionTypes.COMMENT_LIST_LOAD_MORE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -197,6 +211,8 @@ export type Actions
   | CommentListAction
   | CommentListCompleteAction
   | CommentListErrorAction
-  | CommentListClearAction
+  | CommentListLoadMoreAction
+  | CommentListLoadMoreCompleteAction
+  | CommentListLoadMoreErrorAction
   | CommentCreateAction
   | CommentCreateEventAction

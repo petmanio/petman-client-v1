@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IAdopt, IUser } from '../../models/api';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { IAdopt, IAdoptComment, IAdoptCommentListResponse, IUser } from '../../models/api';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
@@ -13,8 +13,10 @@ export interface IAdoptCommentsComponent {
   selector: 'app-adopt-comments',
   template: `
     <div class="pm-background-lightest-gray">
+      <div class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+           (click)="loadMore.emit()">Load more <i class="mdi mdi-dots-horizontal"></i></div>
       <ul class="pm-message-list">
-        <li *ngFor="let comment of adopt.comments">
+        <li *ngFor="let comment of comments">
           <app-adopt-comment
             [comment]="comment"></app-adopt-comment>    
         </li>
@@ -56,21 +58,25 @@ export interface IAdoptCommentsComponent {
     .pm-chart-actions input {
       padding: 5px;
     }
+    
+    .pm-load-more {
+      text-align: center;
+      padding-top: 10px;
+    }
 
   `]
 })
 export class AdoptCommentsComponent implements OnInit, OnChanges, IAdoptCommentsComponent {
   @Input() adopt: IAdopt;
+  @Input() comments: IAdoptComment[];
+  @Output() loadMore = new EventEmitter();
   currentUser$: Observable<any>;
-  currentUser: IUser;
   comment = '';
   constructor(private _store: Store<fromRoot.State>) {
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new adoptAction.CommentListAction({ adoptId: this.adopt.id }));
-    this.currentUser$.subscribe($event => this.currentUser = $event);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

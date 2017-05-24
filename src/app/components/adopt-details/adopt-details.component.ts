@@ -8,14 +8,15 @@ import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IAdopt } from '../../models/api';
+import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { AdoptService } from '../../services/adopt/adopt.service';
 
 export interface IAdoptDetailsComponent {
   formatDate(date): string,
-  onShareClick(): void
+  onShareClick(): void,
+  onLoadMoreClick(): void
 }
 
 @Component({
@@ -68,8 +69,13 @@ export interface IAdoptDetailsComponent {
         </div>
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <div class="pm-font-16 pm-color-gray pm-message-label">Comments <i class="mdi mdi-comment-multiple-outline"></i></div>
-            <app-adopt-comments [adopt]="adoptAdopt$ | async" *ngIf="adoptAdopt$ | async"></app-adopt-comments>
+            <div class="pm-font-16 pm-color-gray pm-message-label">
+              {{(comments$ | async)?.total}} comments <i class="mdi mdi-comment-multiple-outline"></i></div>
+            <app-adopt-comments 
+              [adopt]="adoptAdopt$ | async" 
+              *ngIf="adoptAdopt$ | async"
+              [comments]="(comments$ | async)?.list"
+              (loadMore)="onLoadMoreClick()"></app-adopt-comments>
           </div>
         </div>
       </md-card-content>
@@ -90,6 +96,7 @@ export interface IAdoptDetailsComponent {
 export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsComponent {
   // TODO: update attribute name
   adoptAdopt$: Observable<any>;
+  comments$: Observable<IAdoptCommentListResponse>;
   adopt: IAdopt;
   swiperOptions: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -102,6 +109,9 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;
   private _adoptListener;
+  private _skip = 0;
+  private _limit = 5;
+  private _total = null;
   constructor(private _store: Store<fromRoot.State>,
               private _activatedRoute: ActivatedRoute,
               private _dialog: MdDialog,
@@ -110,6 +120,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
               private _actions$: Actions,
               private _adoptService: AdoptService) {
     this.adoptAdopt$ = _store.select(fromRoot.getAdoptAdopt);
+    this.comments$ = _store.select(fromRoot.getAdoptComments);
   }
 
   ngOnInit(): void {
@@ -124,9 +135,11 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
       // TODO: join on reconnect
       // TODO: remove from app.component, create listener list and push
       this._adoptService.joinComment({adoptId: this._adoptId}).subscribe();
-      return this._store.dispatch(new adoptAction.GetByIdAction({adoptId: this._adoptId}));
+      this._store.dispatch(new adoptAction.GetByIdAction({adoptId: this._adoptId}));
+      this._store.dispatch(new adoptAction.CommentListAction({ adoptId: this._adoptId, skip: this._skip, limit: this._limit }));
     });
 
+    this.comments$.subscribe($event => this._total = $event.total);
     this._adoptListener = this.adoptAdopt$.subscribe($event => this.adopt = $event);
   }
 
@@ -135,6 +148,13 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
     this._destroyed$.next(true);
     this._routeListener.unsubscribe();
     this._adoptListener.unsubscribe();
+  }
+
+  onLoadMoreClick(): void {
+    if (this._skip + this._limit < this._total) {
+      this._skip += this._limit;
+      this._store.dispatch(new adoptAction.CommentListLoadMoreAction({ adoptId: this._adoptId, skip: this._skip, limit: this._limit }));
+    }
   }
 
   onShareClick(): void {

@@ -87,11 +87,16 @@ export class AdoptService implements IAdoptService {
 
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse> {
     const headers = new Headers();
+    const params: URLSearchParams = new URLSearchParams();
+
     headers.append('x-auth-token', localStorage.getItem('token'));
+
+    params.set('skip', options.skip.toString());
+    params.set('limit', options.limit.toString());
 
     return this._http
       .get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/list`,
-        { headers, withCredentials: true }
+        { headers, withCredentials: true, search: params }
       )
       .map(response => response.json());
   }

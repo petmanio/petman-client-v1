@@ -172,6 +172,7 @@ export const getAdoptState = (state: State) => state.adopt;
 export const getAdoptList = createSelector(getAdoptState, fromAdopt.getList);
 // TODO: update method and store item names
 export const getAdoptAdopt = createSelector(getAdoptState, fromAdopt.getAdopt);
+export const getAdoptComments = createSelector(getAdoptState, fromAdopt.getComments);
 
 /**
  * Notification Reducers

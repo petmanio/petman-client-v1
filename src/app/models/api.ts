@@ -108,7 +108,6 @@ export interface IAdopt {
   description: string,
   images?: IAdoptImage[],
   comments?: IAdoptComment[],
-  commentsCount?: number,
   user?: IUser,
   createdAt: string,
 }
@@ -458,13 +457,14 @@ export interface IAdoptGetByIdResponse extends IAdopt {}
 
 
 export interface IAdoptCommentListRequest {
-  adoptId: number
+  adoptId: number,
+  skip?: number,
+  limit?: number
 }
 
 export interface IAdoptCommentListResponse {
-  count: number,
-  list: IAdoptComment[],
-  adoptId: number
+  total: number,
+  list: IAdoptComment[]
 }
 
 export interface IAdoptCommentCreateRequest {

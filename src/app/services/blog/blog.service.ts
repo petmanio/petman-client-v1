@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Headers, Http, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
-import { UtilService } from '../util/util.service';
-import { IBlogListRequest, IBlogListResponse } from "../../models/api";
+import { IBlogListRequest, IBlogListResponse } from '../../models/api';
+import { Observable } from 'rxjs/Observable';
 
 export interface IBlogService {
   list(options: IBlogListRequest): Observable<IBlogListResponse>
@@ -18,8 +17,8 @@ export class BlogService implements IBlogService {
   }
 
   list(options: IBlogListRequest): Observable<IBlogListResponse> {
-    let headers = new Headers();
-    let params: URLSearchParams = new URLSearchParams();
+    const headers = new Headers();
+    const params: URLSearchParams = new URLSearchParams();
 
     headers.append('Content-Type', 'application/json');
     headers.append('x-auth-token', localStorage.getItem('token'));

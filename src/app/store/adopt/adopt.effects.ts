@@ -31,6 +31,7 @@ interface IAdoptEffects {
   list$: Observable<Action>,
   create$: Observable<Action>,
   commentList$: Observable<Action>,
+  commentListLoadMore$: Observable<Action>,
   commentCreate$: Observable<Action>,
 }
 
@@ -70,6 +71,16 @@ export class AdoptEffects implements IAdoptEffects {
       return this._adoptService.getCommentList(options)
         .map(response => new adoptAction.CommentListCompleteAction(response))
         .catch(err => of(new adoptAction.CommentListErrorAction(err)))
+    });
+
+
+  @Effect() commentListLoadMore$: Observable<Action> = this._actions$
+    .ofType(adoptAction.ActionTypes.COMMENT_LIST_LOAD_MORE)
+    .map((action: adoptAction.CommentListLoadMoreAction) => action.payload)
+    .switchMap(options => {
+      return this._adoptService.getCommentList(options)
+        .map(response => new adoptAction.CommentListLoadMoreCompleteAction(response))
+        .catch(err => of(new adoptAction.CommentListLoadMoreErrorAction(err)))
     });
 
   @Effect() commentCreate$: Observable<Action> = this._actions$
