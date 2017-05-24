@@ -115,7 +115,6 @@ export interface IAppComponent {
     }
 
     .pm-language {
-      margin-right: 10px;
       display: flex;
       align-content: center;
       justify-content: center;
