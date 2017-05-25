@@ -12,32 +12,32 @@ export interface IAdoptCommentsComponent {
 @Component({
   selector: 'app-adopt-comments',
   template: `
+    <div class="columns is-mobile pm-chat-actions">
+      <div class="column is-10 is-offset-1">
+          <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
+            Please login for leave a comment
+          </span>
+        <md-input-container>
+          <input mdInput
+                 placeholder="Type a message"
+                 name="message"
+                 type="text"
+                 autocomplete="off"
+                 [disabled]="!(currentUser$ | async)"
+                 [(ngModel)]="comment"
+                 (keyup.enter)="onSendComment()"/>
+        </md-input-container>
+      </div>
+    </div>
     <div class="pm-background-lightest-gray">
-      <div class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
-           (click)="loadMore.emit()">Load more <i class="mdi mdi-dots-horizontal"></i></div>
       <ul class="pm-message-list">
         <li *ngFor="let comment of comments">
           <app-adopt-comment
             [comment]="comment"></app-adopt-comment>    
         </li>
       </ul>
-      <div class="columns is-mobile pm-chart-actions">
-        <div class="column is-10 is-offset-1">
-          <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
-            Please login for leave a comment
-          </span>
-          <md-input-container>
-            <input mdInput 
-                   placeholder="Type a message" 
-                   name="message" 
-                   type="text"
-                   autocomplete="off"
-                   [disabled]="!(currentUser$ | async)"
-                   [(ngModel)]="comment"
-                   (keyup.enter)="onSendComment()"/>
-          </md-input-container>
-        </div>
-      </div>
+      <div class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+           (click)="loadMore.emit()">Load more <i class="mdi mdi-dots-horizontal"></i></div>
     </div>
   `,
   styles: [`
@@ -55,13 +55,13 @@ export interface IAdoptCommentsComponent {
       width: 100%;
     }
 
-    .pm-chart-actions input {
+    .pm-chat-actions input {
       padding: 5px;
     }
     
     .pm-load-more {
       text-align: center;
-      padding-top: 10px;
+      padding-bottom: 20px;
     }
 
   `]

@@ -70,13 +70,13 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
     }
 
     case adoptAction.ActionTypes.COMMENT_LIST_ERROR: {
-      return assign({}, state, { comments: { count: null, list: [] } });
+      return assign({}, state, { comments: { total: null, list: [] } });
     }
 
     // TODO: use another action for loading more
     case adoptAction.ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE: {
       const res: IAdoptCommentListResponse = action.payload;
-      return assign({}, state, { comments: { total: state.comments.total, list: res.list.concat(state.comments.list) } });
+      return assign({}, state, { comments: { total: state.comments.total, list: state.comments.list.concat(res.list) } });
     }
 
     /**
@@ -86,7 +86,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
       const res: IAdoptCommentCreateEventResponse = action.payload;
       // TODO: remove if check
       if (res.adopt === state.adopt.id) {
-        return assign({}, state, { comments: { count: state.comments.total, list: state.comments.list.concat(res) } });
+        return assign({}, state, { comments: { total: state.comments.total, list: [res].concat(state.comments.list) } });
       }
       return state;
     }
