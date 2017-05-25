@@ -257,7 +257,7 @@ export interface ILocationListRequest {
 
 export interface ILocationListResponse {
   list: ILocation[],
-  count: number
+  total: number
 }
 
 export interface ILocationPinsRequest {

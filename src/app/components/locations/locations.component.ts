@@ -33,7 +33,7 @@ export interface ILocationComponent {
       </div>
     </div>
     <div class="columns">
-      <div class="column items-container is-6" [hidden]="isMobile && mapView">
+      <div class="column items-container is-6 pm-background-light-gray" [hidden]="isMobile && mapView">
         <div class="items" infinite-scroll
              (scrolled)="onScroll()"
              [infiniteScrollDistance]="2"
@@ -115,8 +115,8 @@ export class LocationComponent implements OnInit, ILocationComponent {
   public isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   public mapView = false;
   private _skip = 0;
-  private _limit = 9;
-  private _count: number = null;
+  private _limit = 1;
+  private _total: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.locationFilters$ = _store.select(fromRoot.getLocationFilters);
     this.locationList$ = _store.select(fromRoot.getLocationList);
@@ -126,36 +126,20 @@ export class LocationComponent implements OnInit, ILocationComponent {
   ngOnInit(): void {
     // TODO: clear list and get new one
     this._store.dispatch(new locationAction.FiltersAction({}));
-    const listListener = this.locationList$.subscribe((event) => {
-      if (event.count === null) {
-        this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip }));
-        if (listListener) {
-          listListener.unsubscribe();
-        }
-      } else {
-        this._count = event.count;
-      }
-    });
-
-    const pinsListener = this.locationPins$.subscribe((event) => {
-      this._store.dispatch(new locationAction.PinsAction({}));
-      if (pinsListener) {
-        pinsListener.unsubscribe();
-      }
-    });
+    this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip }));
+    this._store.dispatch(new locationAction.PinsAction({}));
   }
 
   onScroll(): void {
-    if (this._skip + this._limit < this._count) {
+    if (this._skip + this._limit < this._total) {
       this._skip += this._limit;
-      this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip,
+      this._store.dispatch(new locationAction.ListLoadMoreAction({ limit: this._limit, skip: this._skip,
         categories: this.activeFilters.categories }));
     }
   }
 
   onFilterChange(): void {
     this._skip = 0;
-    this._store.dispatch(new locationAction.ListClearAction({}));
     this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip,
       categories: this.activeFilters.categories }));
     this._store.dispatch(new locationAction.PinsAction({ categories: this.activeFilters.categories }));
@@ -197,7 +181,6 @@ export class LocationComponent implements OnInit, ILocationComponent {
     }
 
     this._skip = 0;
-    this._store.dispatch(new locationAction.ListClearAction({}));
     this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip,
       categories: this.activeFilters.categories }));
     this._store.dispatch(new locationAction.PinsAction({ categories: this.activeFilters.categories }));

@@ -39,6 +39,7 @@ export const ActionTypes = {
   COMMENT_LIST: type('[Room] Comment List'),
   COMMENT_LIST_COMPLETE: type('[Room] Comment Complete'),
   COMMENT_LIST_ERROR: type('[Room] Comment Error'),
+
   COMMENT_LIST_LOAD_MORE: type('[Room] Comment Load More'),
   COMMENT_LIST_LOAD_MORE_COMPLETE: type('[Room] Comment Load More Complete'),
   COMMENT_LIST_LOAD_MORE_ERROR: type('[Room] Comment Load More Error'),
@@ -154,16 +155,19 @@ export class CommentListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Comment load more
+ */
 export class CommentListLoadMoreAction implements Action {
   type = ActionTypes.COMMENT_LIST_LOAD_MORE;
 
-  constructor(public payload: any) { }
+  constructor(public payload: IAdoptCommentListRequest) { }
 }
 
 export class CommentListLoadMoreCompleteAction implements Action {
   type = ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE;
 
-  constructor(public payload: any) { }
+  constructor(public payload: IAdoptCommentListResponse) { }
 }
 
 export class CommentListLoadMoreErrorAction implements Action {

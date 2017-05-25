@@ -32,13 +32,12 @@ import * as locationAction from '../../store/location/location.actions';
 interface ILocationEffects {
   filters$: Observable<Action>,
   list$: Observable<Action>,
+  listLoadMore$: Observable<Action>,
   pins$: Observable<Action>
 }
 
 @Injectable()
 export class LocationEffects implements ILocationEffects {
-  constructor(private actions$: Actions, private locationService: LocationService, private store: Store<fromRoot.State>) { }
-
   @Effect()
   public filters$: Observable<Action> = this.actions$
     .ofType(locationAction.ActionTypes.FILTERS)
@@ -60,6 +59,16 @@ export class LocationEffects implements ILocationEffects {
     });
 
   @Effect()
+  public listLoadMore$: Observable<Action> = this.actions$
+    .ofType(locationAction.ActionTypes.LIST_LOAD_MORE)
+    .map((action: locationAction.ListLoadMoreAction) => action.payload)
+    .switchMap(options => {
+      return this.locationService.list(options)
+        .map(response => new locationAction.ListLoadMoreCompleteAction(response))
+        .catch(err => of(new locationAction.ListLoadMoreErrorAction(err)))
+    });
+
+  @Effect()
   public pins$: Observable<Action> = this.actions$
     .ofType(locationAction.ActionTypes.PINS)
     .map((action: locationAction.PinsAction) => action.payload)
@@ -68,4 +77,6 @@ export class LocationEffects implements ILocationEffects {
         .map(response => new locationAction.PinsCompleteAction(response))
         .catch(err => of(new locationAction.PinsErrorAction(err)))
     });
+
+  constructor(private actions$: Actions, private locationService: LocationService, private store: Store<fromRoot.State>) { }
 }

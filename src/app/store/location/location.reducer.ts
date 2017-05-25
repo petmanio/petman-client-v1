@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { assign } from 'lodash';
 import { ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsResponse } from '../../models/api';
 import * as locationAction from './location.actions';
 
@@ -11,7 +12,7 @@ export interface State {
 const initialState: State = {
   list: {
     list: [],
-    count: null
+    total: null
   },
   pins: [],
   filters: {}
@@ -19,81 +20,57 @@ const initialState: State = {
 
 export function reducer(state = initialState, action: locationAction.Actions): State {
   switch (action.type) {
+    /**
+     * Filters
+     */
     case locationAction.ActionTypes.FILTERS_COMPLETE: {
       const res: ILocationFiltersResponse = action.payload;
-      // TODO: use object assign
-      return {
-        list: state.list,
-        pins: state.pins,
-        filters: res
-      };
+      return assign({}, state, { filters: res });
     }
 
     case locationAction.ActionTypes.FILTERS_ERROR: {
       const error: any = action.payload;
-      return {
-        list: state.list,
-        pins: state.pins,
-        filters: {}
-      };
+      return assign({}, state, { filters: {} });
     }
 
-    // TODO: use another action for loading more
+    /**
+     * List
+     */
     case locationAction.ActionTypes.LIST_COMPLETE: {
       const res: ILocationListResponse = action.payload;
-      // TODO: use object assign
-      return {
-        filters: state.filters,
-        list: {
-          list: state.list.list.concat(res.list),
-          count: res.count
-        },
-        pins: state.pins
-      };
+      return assign({}, state, { list: { total: res.total, list: res.list } });
     }
 
     case locationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return {
-        filters: state.filters,
-        list: {
-          list: [],
-          count: null
-        },
-        pins: state.pins
-      };
+      return assign({}, state, { list: { total: null, list: null } });
     }
 
-    // TODO: use another action for loading more
-    case locationAction.ActionTypes.LIST_CLEAR: {
-      // TODO: use object assign
-      return {
-        filters: state.filters,
-        list: {
-          list: [],
-          count: null
-        },
-        pins: state.pins
-      };
+
+    /**
+     * List
+     */
+    case locationAction.ActionTypes.LIST_LOAD_MORE_COMPLETE: {
+      const res: ILocationListResponse = action.payload;
+      return assign({}, state, { list: { total: null, list: state.list.list.concat(res.list) } });
     }
 
+    case locationAction.ActionTypes.LIST_LOAD_MORE_ERROR: {
+      const error: any = action.payload;
+      return state;
+    }
+
+    /**
+     * Pins
+     */
     case locationAction.ActionTypes.PINS_COMPLETE: {
       const res: ILocationPinsResponse[] = action.payload;
-      // TODO: use object assign
-      return {
-        filters: state.filters,
-        list: state.list,
-        pins: res
-      };
+      return assign({}, state, { pins: res });
     }
 
     case locationAction.ActionTypes.PINS_ERROR: {
       const error: any = action.payload;
-      return {
-        filters: state.filters,
-        list: state.list,
-        pins: []
-      };
+      return assign({}, state, { pins: [] });
     }
 
     default: {

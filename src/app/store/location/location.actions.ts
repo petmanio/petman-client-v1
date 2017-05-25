@@ -17,7 +17,10 @@ export const ActionTypes = {
   LIST: type('[Location] List'),
   LIST_COMPLETE: type('[Location] List Complete'),
   LIST_ERROR: type('[Location] List Error'),
-  LIST_CLEAR: type('[Location] List Clear'),
+
+  LIST_LOAD_MORE: type('[Location] List Load More'),
+  LIST_LOAD_MORE_COMPLETE: type('[Location] List Load More Complete'),
+  LIST_LOAD_MORE_ERROR: type('[Location] List Load More Error'),
 
   FILTERS: type('[Location] Filters'),
   FILTERS_COMPLETE: type('[Location] Filters Complete'),
@@ -34,6 +37,10 @@ export const ActionTypes = {
  * type checking in reducer functions.
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
+ */
+
+/**
+ * List
  */
 export class ListAction implements Action {
   type = ActionTypes.LIST;
@@ -53,12 +60,30 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class ListClearAction implements Action {
-  type = ActionTypes.LIST_CLEAR;
+/**
+ * List Load More
+ */
+export class ListLoadMoreAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE;
+
+  constructor(public payload: ILocationListRequest) { }
+}
+
+export class ListLoadMoreCompleteAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_COMPLETE;
+
+  constructor(public payload: ILocationListResponse) { }
+}
+
+export class ListLoadMoreErrorAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_ERROR;
 
   constructor(public payload: any) { }
 }
 
+/**
+ * Pins
+ */
 export class PinsAction implements Action {
   type = ActionTypes.PINS;
 
@@ -107,7 +132,9 @@ export type Actions
   | ListAction
   | ListCompleteAction
   | ListErrorAction
-  | ListClearAction
+  | ListLoadMoreAction
+  | ListLoadMoreCompleteAction
+  | ListLoadMoreErrorAction
   | PinsAction
   | PinsCompleteAction
   | PinsErrorAction
