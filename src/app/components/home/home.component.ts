@@ -71,7 +71,7 @@ export interface IHomeComponent {
     }
 
     .pm-home-card:hover {
-      color: #fcdd7f; 
+      /*color: #fcdd7f; */
     }
     
     .pm-home-card span {
@@ -84,7 +84,7 @@ export interface IHomeComponent {
       height: 100%;
       position: absolute;
       background: #484848;
-      opacity: 0.4;
+      opacity: 0.3;
     }
     
     .pm-home-card-sitters {

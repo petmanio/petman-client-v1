@@ -128,6 +128,9 @@ export class LocationComponent implements OnInit, ILocationComponent {
     this._store.dispatch(new locationAction.FiltersAction({}));
     this._store.dispatch(new locationAction.ListAction({ limit: this._limit, skip: this._skip }));
     this._store.dispatch(new locationAction.PinsAction({}));
+    this.locationList$.subscribe($event => {
+      this._total = $event.total;
+    });
   }
 
   onScroll(): void {
