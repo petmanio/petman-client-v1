@@ -56,24 +56,23 @@ export class BlogComponent implements OnInit, IBlogComponent {
   public blogList$: Observable<any>;
   private _skip = 0;
   private _limit = 9;
-  private _count: number = null;
+  private _total: number = null;
 
   constructor(private _store: Store<fromRoot.State>) {
     this.blogList$ = _store.select(fromRoot.getBlogList);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new blogAction.ListClearAction({}));
     this._store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
     this.blogList$.subscribe($event => {
-      this._count = $event.count;
+      this._total = $event.total;
     });
   }
 
   onScroll(): void {
-    if (this._skip + this._limit < this._count) {
+    if (this._skip + this._limit < this._total) {
       this._skip += this._limit;
-      this._store.dispatch(new blogAction.ListAction({ limit: this._limit, skip: this._skip }));
+      this._store.dispatch(new blogAction.ListLoadMoreAction({ limit: this._limit, skip: this._skip }));
     }
   }
 }

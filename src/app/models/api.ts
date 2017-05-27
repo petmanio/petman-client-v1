@@ -243,7 +243,7 @@ export interface IBlogListRequest {
 
 export interface IBlogListResponse {
   list: IBlog[],
-  count: number
+  total: number
 }
 
 /**

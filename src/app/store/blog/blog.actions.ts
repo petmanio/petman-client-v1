@@ -14,7 +14,10 @@ export const ActionTypes = {
   LIST: type('[Blog] List'),
   LIST_COMPLETE: type('[Blog] List Complete'),
   LIST_ERROR: type('[Blog] List Error'),
-  LIST_CLEAR: type('[Blog] List Clear'),
+
+  LIST_LOAD_MORE: type('[Blog] List Load More'),
+  LIST_LOAD_MORE_COMPLETE: type('[Blog] List Load more Complete'),
+  LIST_LOAD_MORE_ERROR: type('[Blog] List Load More Error')
 };
 
 /**
@@ -46,8 +49,23 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class ListClearAction implements Action {
-  type = ActionTypes.LIST_CLEAR;
+/**
+ * List Load More
+ */
+export class ListLoadMoreAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE;
+
+  constructor(public payload: IBlogListRequest) { }
+}
+
+export class ListLoadMoreCompleteAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_COMPLETE;
+
+  constructor(public payload: IBlogListResponse) { }
+}
+
+export class ListLoadMoreErrorAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -60,5 +78,6 @@ export type Actions
   = ListAction
   | ListCompleteAction
   | ListErrorAction
-  | ListClearAction
-
+  | ListLoadMoreAction
+  | ListLoadMoreCompleteAction
+  | ListLoadMoreErrorAction

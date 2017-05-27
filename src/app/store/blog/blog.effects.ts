@@ -5,14 +5,11 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/takeUntil';
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
-import { Store } from '@ngrx/store';
 import { BlogService } from '../../services/blog/blog.service';
-import * as fromRoot from '../../store';
 import * as blogAction from '../../store/blog/blog.actions';
 
 /**
@@ -31,19 +28,30 @@ import * as blogAction from '../../store/blog/blog.actions';
 
 interface IBlogEffects {
   list$: Observable<Action>
+  listLoadMore$: Observable<Action>
 }
 
 @Injectable()
 export class BlogEffects implements IBlogEffects {
-  constructor(private actions$: Actions, private blogService: BlogService, private store: Store<fromRoot.State>) { }
-
   @Effect()
-  public list$: Observable<Action> = this.actions$
+  public list$: Observable<Action> = this._actions$
     .ofType(blogAction.ActionTypes.LIST)
     .map((action: blogAction.ListAction) => action.payload)
     .switchMap(options => {
-      return this.blogService.list(options)
+      return this._blogService.list(options)
         .map(response => new blogAction.ListCompleteAction(response))
         .catch(err => of(new blogAction.ListErrorAction(err)))
     });
+
+  @Effect()
+  public listLoadMore$: Observable<Action> = this._actions$
+    .ofType(blogAction.ActionTypes.LIST_LOAD_MORE)
+    .map((action: blogAction.ListLoadMoreAction) => action.payload)
+    .switchMap(options => {
+      return this._blogService.list(options)
+        .map(response => new blogAction.ListLoadMoreCompleteAction(response))
+        .catch(err => of(new blogAction.ListLoadMoreErrorAction(err)))
+    });
+
+  constructor(private _actions$: Actions, private _blogService: BlogService) { }
 }

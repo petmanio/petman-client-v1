@@ -29,8 +29,9 @@ export class UtilService implements IUtilService {
     };
 
     (function(d, s, id) {
+      //noinspection TsLint
       var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
+      if (d.getElementById(id)) { return; }
       js = d.createElement(s); js.id = id;
       js.src = '//connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
@@ -44,13 +45,12 @@ export class UtilService implements IUtilService {
       subject.next(true);
       const pointer = this;
       const intervalId = setInterval(() => {
-          // if (pointer.readyState !== 4) {
-          if (pointer.readyState === 1) {
+          if (pointer.readyState !== 4) {
+          // if (pointer.readyState === 1) {
           return;
         }
         subject.next(false);
         clearInterval(intervalId);
-
       }, 1);
       return proxied.apply(this, [].slice.call(arguments));
     };

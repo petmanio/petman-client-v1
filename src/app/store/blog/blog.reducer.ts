@@ -11,7 +11,7 @@ export interface State {
 const initialState: State = {
   list: {
     list: [],
-    count: null
+    total: null
   }
 };
 
@@ -20,20 +20,27 @@ export function reducer(state = initialState, action: blogAction.Actions): State
     /**
      * List
      */
-    // TODO: use another action for loading more
     case blogAction.ActionTypes.LIST_COMPLETE: {
       const res: IBlogListResponse = action.payload;
-      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
+      return assign({}, state, { list: { list: res.list, total: res.total }});
     }
 
     case blogAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return assign({}, state, { list: { list: [], count: null }});
+      return assign({}, state, { list: { list: [], total: null }});
     }
 
-    // TODO: use another action for loading more
-    case blogAction.ActionTypes.LIST_CLEAR: {
-      return assign({}, state, { list: { list: [], count: null }});
+    /**
+     * List Load More
+     */
+    case blogAction.ActionTypes.LIST_LOAD_MORE_COMPLETE: {
+      const res: IBlogListResponse = action.payload;
+      return assign({}, state, { list: { list: state.list.list.concat(res.list), total: res.total }});
+    }
+
+    case blogAction.ActionTypes.LIST_LOAD_MORE_ERROR: {
+      const error: any = action.payload;
+      return state;
     }
 
     default: {

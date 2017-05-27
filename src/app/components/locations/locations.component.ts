@@ -115,7 +115,7 @@ export class LocationComponent implements OnInit, ILocationComponent {
   public isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   public mapView = false;
   private _skip = 0;
-  private _limit = 1;
+  private _limit = 6;
   private _total: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.locationFilters$ = _store.select(fromRoot.getLocationFilters);
