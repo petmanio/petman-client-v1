@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 rm -rf ./dist/
-./node_modules/.bin/ng build --prod
+./node_modules/.bin/ng build --prod --env=heroku
 cd ./dist/
 
 echo "{\

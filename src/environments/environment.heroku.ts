@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiEndpoint: 'https://api.petman.io',
+  apiEndpoint: 'https://petman-api.herokuapp.com',
   fb: {
-    appId: '424363951255305',
+    appId: '1352754344791293',
     scope: 'public_profile,email'
   },
   mapApiKey: 'AIzaSyCjMDwYXmx_jeTJ2Ha2rM7_V2YBxcA7Gv4'
