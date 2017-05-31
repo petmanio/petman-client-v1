@@ -81,31 +81,31 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
           }
         }
 
-        if (this.showUserLocation && navigator.geolocation && !this.userMarker) {
-          navigator.geolocation.getCurrentPosition((navigatorPosition) => {
-            const position = new this.google.maps.LatLng(navigatorPosition.coords.latitude, navigatorPosition.coords.longitude);
-            const pinMarkerOptions = {
-              position,
-              map: this.map,
-              icon: {
-                url: this._pinIconUser,
-                scaledSize : new google.maps.Size(32, 32),
-              }
-            };
-
-            this.userMarker = new this.google.maps.Marker(pinMarkerOptions);
-            if (this.latlngbounds) {
-              this.latlngbounds.extend(position);
-            }
-
-            if (this.fitBounds) {
-              setTimeout(() => {
-                fitBoundsMapDebounce();
-                this.triggerResize();
-              }, 100);
-            }
-          }, () => {}, {enableHighAccuracy: true})
-        }
+        // if (this.showUserLocation && navigator.geolocation && !this.userMarker) {
+        //   navigator.geolocation.getCurrentPosition((navigatorPosition) => {
+        //     const position = new this.google.maps.LatLng(navigatorPosition.coords.latitude, navigatorPosition.coords.longitude);
+        //     const pinMarkerOptions = {
+        //       position,
+        //       map: this.map,
+        //       icon: {
+        //         url: this._pinIconUser,
+        //         scaledSize : new google.maps.Size(32, 32),
+        //       }
+        //     };
+        //
+        //     this.userMarker = new this.google.maps.Marker(pinMarkerOptions);
+        //     if (this.latlngbounds) {
+        //       this.latlngbounds.extend(position);
+        //     }
+        //
+        //     if (this.fitBounds) {
+        //       setTimeout(() => {
+        //         fitBoundsMapDebounce();
+        //         this.triggerResize();
+        //       }, 100);
+        //     }
+        //   }, () => {}, {enableHighAccuracy: true})
+        // }
 
         fitBoundsMapDebounce();
         this.addMarkers(this.pins);

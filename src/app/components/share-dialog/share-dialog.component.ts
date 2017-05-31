@@ -13,7 +13,7 @@ export interface IShareDialogComponent {
   selector: 'app-room-share-dialog',
   template: `
     <div class="room-share-dialog">
-      <span class="pm-color-gray pm-font-10">
+      <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
         Please login for share
       </span>
       <p class="pm-color-gray pm-font-16">

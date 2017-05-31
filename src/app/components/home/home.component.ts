@@ -57,7 +57,7 @@ export interface IHomeComponent {
     }
     
     .pm-home-card {
-      height: 350px;
+      height: calc((100vh - 112px) / 2);
       text-align: center;
       background-size: cover;
       align-items: center;
@@ -68,6 +68,12 @@ export interface IHomeComponent {
       box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
       cursor: pointer;
       color: #ffffff;
+    }
+
+    @media (max-width: 600px) and (orientation: portrait) {
+      .pm-home-card {
+        height: calc((100vh - 92px) / 2);
+      } 
     }
 
     .pm-home-card:hover {

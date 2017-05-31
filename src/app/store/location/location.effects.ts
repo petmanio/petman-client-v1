@@ -32,7 +32,7 @@ import * as locationAction from '../../store/location/location.actions';
 interface ILocationEffects {
   filters$: Observable<Action>,
   list$: Observable<Action>,
-  listLoadMore$: Observable<Action>,
+  // listLoadMore$: Observable<Action>,
   pins$: Observable<Action>
 }
 
@@ -58,15 +58,15 @@ export class LocationEffects implements ILocationEffects {
         .catch(err => of(new locationAction.ListErrorAction(err)))
     });
 
-  @Effect()
-  public listLoadMore$: Observable<Action> = this.actions$
-    .ofType(locationAction.ActionTypes.LIST_LOAD_MORE)
-    .map((action: locationAction.ListLoadMoreAction) => action.payload)
-    .switchMap(options => {
-      return this.locationService.list(options)
-        .map(response => new locationAction.ListLoadMoreCompleteAction(response))
-        .catch(err => of(new locationAction.ListLoadMoreErrorAction(err)))
-    });
+  // @Effect()
+  // public listLoadMore$: Observable<Action> = this.actions$
+  //   .ofType(locationAction.ActionTypes.LIST_LOAD_MORE)
+  //   .map((action: locationAction.ListLoadMoreAction) => action.payload)
+  //   .switchMap(options => {
+  //     return this.locationService.list(options)
+  //       .map(response => new locationAction.ListLoadMoreCompleteAction(response))
+  //       .catch(err => of(new locationAction.ListLoadMoreErrorAction(err)))
+  //   });
 
   @Effect()
   public pins$: Observable<Action> = this.actions$
