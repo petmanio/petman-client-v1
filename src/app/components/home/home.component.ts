@@ -72,7 +72,7 @@ export interface IHomeComponent {
 
     @media (max-width: 600px) and (orientation: portrait) {
       .pm-home-card {
-        height: calc((100vh - 92px) / 2);
+        height: 300px;
       } 
     }
 
