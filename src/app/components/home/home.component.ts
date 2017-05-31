@@ -21,27 +21,42 @@ export interface IHomeComponent {
       <!--</div>-->
     <!--</div>-->
     <div class="columns">
-      <div class="column pm-home-card pm-home-card-sitters" routerLink="/rooms">
-        <div class="pm-home-card-overlay"></div>
-        <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
-      </div>
-      <div class="column pm-home-card pm-home-card-walkers" routerLink="/walkers">
-        <div class="pm-home-card-overlay"></div>
-        <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
-      </div>
-      <div class="column pm-home-card pm-home-card-adopt" routerLink="/adopt">
-        <div class="pm-home-card-overlay"></div>
-        <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
-      </div>
-    </div>
-    <div class="columns">
       <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
         <div class="pm-home-card-overlay"></div>
-        <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'blog' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'blog_intro' | translate}}</span>
+          </span>
       </div>
       <div class="column pm-home-card pm-home-card-locations" routerLink="/locations">
         <div class="pm-home-card-overlay"></div>
-        <span class="pm-font-20">Lorem Ipsum is simply dummy text of the printing and Lorem Ipsum</span>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'adopt' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'adopt_intro' | translate}}</span>
+          </span>
+      </div>
+      <div class="column pm-home-card pm-home-card-adopt" routerLink="/adopt">
+        <div class="pm-home-card-overlay"></div>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'adopt' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'adopt_intro' | translate}}</span>
+          </span>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column pm-home-card pm-home-card-walkers" routerLink="/walkers">
+        <div class="pm-home-card-overlay"></div>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'walkers' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'walkers_intro' | translate}}</span>
+          </span>
+      </div>
+      <div class="column pm-home-card pm-home-card-sitters" routerLink="/rooms">
+        <div class="pm-home-card-overlay"></div>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'sitters' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'sitters_intro' | translate}}</span>
+          </span>
       </div>
     </div>
   `,
@@ -80,9 +95,9 @@ export interface IHomeComponent {
       /*color: #fcdd7f; */
     }
     
-    .pm-home-card span {
+    .pm-home-card > span {
       z-index: 20;
-      width: 70%;
+      width: 80%;
     }
     
     .pm-home-card-overlay {
@@ -90,7 +105,7 @@ export interface IHomeComponent {
       height: 100%;
       position: absolute;
       background: #484848;
-      opacity: 0.3;
+      opacity: 0.5;
     }
     
     .pm-home-card-sitters {

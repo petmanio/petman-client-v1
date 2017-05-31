@@ -18,24 +18,24 @@ interface ISidenavComponent {
       <md-sidenav [opened]="open" [mode]="mode" color="primary" (close)="onClose.emit()">
         <md-nav-list>
           <app-nav-item (activate)="onItemActivate.emit()" icon="dashboard" routerLink="" [activeClass]="[isHomeActive]">
-            {{'home' | translate}}</app-nav-item>
+            {{'main' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" routerLink="/locations" icon="location_searching" 
-                        routerLinkActive="is-active">{{'locations' | translate}}</app-nav-item>
+                        routerLinkActive="is-active">{{'places' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="favorite" routerLink="/rooms"
-                        routerLinkActive="is-active">Sitters</app-nav-item>
+                        routerLinkActive="is-active">{{'sitters' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="child_friendly" routerLink="/walkers"
-                        routerLinkActive="is-active">Walkers</app-nav-item>
+                        routerLinkActive="is-active">{{'walkers' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="pets" routerLink="/adopt"
-                        routerLinkActive="is-active">Adopt</app-nav-item>
+                        routerLinkActive="is-active">{{'adopt' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
-                        routerLinkActive="is-active">Blog</app-nav-item>
+                        routerLinkActive="is-active">{{'blog' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="help" 
-                        class="disabled" hint="comming soon">Vet consultant</app-nav-item>
+                        class="disabled" hint="{{'coming_soon' | translate}}">{{'wet_consultant' | translate}}</app-nav-item>
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>-->
           <app-nav-item (activate)="onItemActivate.emit()" icon="info" routerLink="/about-us"
-                        routerLinkActive="is-active">About Us</app-nav-item>
+                        routerLinkActive="is-active">{{'about_us' | translate}}</app-nav-item>
         </md-nav-list>
       </md-sidenav>
       <ng-content></ng-content>

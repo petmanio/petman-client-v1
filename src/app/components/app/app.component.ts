@@ -50,7 +50,7 @@ export interface IAppComponent {
                 color="accent"
                 class="pm-accent-color-white"
                 routerLink="/join"
-                *ngIf="!(currentUser$ | async)">Join</button>
+                *ngIf="!(currentUser$ | async)">{{'join_us' | translate}}</button>
         <!--TODO: find better solution-->
         <div class="pm-toolbar-actions" *ngIf="(currentUser$ | async)">
           <button md-icon-button
