@@ -21,7 +21,7 @@ export interface ILocationComponent {
 @Component({
   selector: 'app-locations',
   template: `
-    <div class="colomns">
+    <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
         <md-icon color="primary">location_searching</md-icon>&nbsp;&nbsp;&nbsp;
         <span class="pm-color-gray pm-font-18">{{'locations_intro' | translate}}</span>
@@ -95,9 +95,9 @@ export interface ILocationComponent {
       }
       app-map, .items {
         /* TODO: flexible height */
-        height: calc(100vh - 216px);
-        height: -webkit-calc(100vh - 216px);
-        height: -moz-calc(100vh - 216px);
+        height: calc(100vh - 134px);
+        height: -webkit-calc(100vh - 134px);
+        height: -moz-calc(100vh - 134px);
       }
       .items-container, .map-container {
         padding-top: 0;

@@ -16,7 +16,7 @@ export interface IAdoptListComponent {
 @Component({
   selector: 'app-adopt-list',
   template: `
-    <div class="colomns">
+    <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
         <md-icon color="primary">pets</md-icon>&nbsp;&nbsp;&nbsp;
         <span class="pm-color-gray pm-font-18">{{'adopt_intro' | translate}}</span>
@@ -60,10 +60,10 @@ export interface IAdoptListComponent {
     
     @media (max-width: 600px) and (orientation: portrait) {
       /* TODO: make flexible */
-      .pm-room-items {
-        height: calc(100vh - 140px);
-        height: -webkit-calc(100vh - 140px);
-        height: -moz-calc(100vh - 140px);
+      .pm-adopt-items {
+        height: calc(100vh - 60px);
+        height: -webkit-calc(100vh - 60px);
+        height: -moz-calc(100vh - 60px);
       }
     }
   `]

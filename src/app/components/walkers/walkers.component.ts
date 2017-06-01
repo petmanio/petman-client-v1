@@ -16,7 +16,7 @@ export interface IWalkersComponent {
 @Component({
   selector: 'app-walkers',
   template: `
-    <div class="colomns">
+    <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
         <md-icon color="primary">child_friendly</md-icon>&nbsp;&nbsp;&nbsp;
         <span class="pm-color-gray pm-font-18">{{'walkers_intro' | translate}}</span>
@@ -61,9 +61,9 @@ export interface IWalkersComponent {
     @media (max-width: 600px) and (orientation: portrait) {
       /* TODO: make flexible */
       .pm-walker-items {
-        height: calc(100vh - 140px);
-        height: -webkit-calc(100vh - 140px);
-        height: -moz-calc(100vh - 140px);
+        height: calc(100vh - 60px);
+        height: -webkit-calc(100vh - 60px);
+        height: -moz-calc(100vh - 60px);
       }
     }
   `]

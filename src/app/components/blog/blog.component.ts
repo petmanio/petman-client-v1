@@ -11,7 +11,7 @@ export interface IBlogComponent {
 @Component({
   selector: 'app-blog',
   template: `
-    <div class="colomns">
+    <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
         <md-icon color="primary">public</md-icon>&nbsp;&nbsp;&nbsp;
         <span class="pm-color-gray pm-font-18">{{'blog_intro' | translate}}</span>
@@ -51,9 +51,9 @@ export interface IBlogComponent {
 
     @media (max-width: 600px) and (orientation: portrait) {
       .pm-blog-items {
-        height: calc(100vh - 140px);
-        height: -webkit-calc(100vh - 140px);
-        height: -moz-calc(100vh - 140px);
+        height: calc(100vh - 60px);
+        height: -webkit-calc(100vh - 60px);
+        height: -moz-calc(100vh - 60px);
       }
     }
   `]

@@ -16,7 +16,7 @@ export interface IRoomsComponent {
 @Component({
   selector: 'app-rooms',
   template: `
-    <div class="colomns">
+    <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
         <md-icon color="primary">favorite</md-icon>&nbsp;&nbsp;&nbsp;
         <span class="pm-color-gray pm-font-18">{{'sitters_intro' | translate}}</span>
@@ -61,9 +61,9 @@ export interface IRoomsComponent {
     @media (max-width: 600px) and (orientation: portrait) {
       /* TODO: make flexible */
       .pm-room-items {
-       height: calc(100vh - 140px);
-       height: -webkit-calc(100vh - 140px);
-       height: -moz-calc(100vh - 140px);
+       height: calc(100vh - 60px);
+       height: -webkit-calc(100vh - 60px);
+       height: -moz-calc(100vh - 60px);
       }
     }
   `]
