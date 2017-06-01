@@ -32,7 +32,8 @@ export interface IRoomAddComponent {
           <!--</div>-->
           <div class="columns">
             <md-input-container>
-              <textarea mdInput placeholder="Description" name="description" required [(ngModel)]="room.description"></textarea>
+              <textarea mdInput [placeholder]="'description' | translate"
+                        name="description" required [(ngModel)]="room.description"></textarea>
             </md-input-container>
           </div>
           <div class="columns">
@@ -44,13 +45,16 @@ export interface IRoomAddComponent {
                 [max]="4"
                 [maxFileSize]="1048576"
                 (onFileUploadFinish)="onImageUploaded($event)"
+                [buttonCaption]="'select_images' | translate"
+                [dropBoxMessage]="''"
                 (onRemove)="onImageRemove($event)"></image-upload>
             </div>
           </div>
           <div class="columns is-mobile">
             <div class="column is-4">
               <md-input-container>
-                <input type="number" mdInput placeholder="Cost per day/$" name="cost" required [(ngModel)]="room.cost" min="0"/>
+                <input type="number" mdInput [placeholder]="'daily_price' | translate"
+                       name="cost" required [(ngModel)]="room.cost" min="0"/>
               </md-input-container>
             </div>
             <div class="column is-4">
@@ -63,7 +67,7 @@ export interface IRoomAddComponent {
             <div class="column is-3">
               <button type="submit" class="btn btn-success pm-fr"
                       [color]="(roomForm.form.valid && room.images.length) ? 'primary' : 'warn'"
-                      md-button (click)="(roomForm.form.valid && room.images.length) && onSaveRoom()">Add
+                      md-button (click)="(roomForm.form.valid && room.images.length) && onSaveRoom()">{{'add' | translate}}
               </button>
             </div>
           </div>

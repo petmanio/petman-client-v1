@@ -27,13 +27,15 @@ export interface IWalkerAddComponent {
           <!--</div>-->
           <div class="columns">
             <md-input-container>
-              <textarea mdInput placeholder="Description" name="description" required [(ngModel)]="walker.description"></textarea>
+              <textarea mdInput [placeholder]="'description' | translate"
+                        name="description" required [(ngModel)]="walker.description"></textarea>
             </md-input-container>
           </div>
           <div class="columns is-mobile">
             <div class="column is-4">
               <md-input-container>
-                <input type="number" mdInput placeholder="Cost per day/$" name="cost" required [(ngModel)]="walker.cost" min="0"/>
+                <input type="number" mdInput [placeholder]="'daily_price' | translate"
+                       name="cost" required [(ngModel)]="walker.cost" min="0"/>
               </md-input-container>
             </div>
             <div class="column is-4">
@@ -46,7 +48,7 @@ export interface IWalkerAddComponent {
             <div class="column is-3">
               <button type="submit" class="btn btn-success pm-fr"
                       [color]="(walkerForm.form.valid) ? 'primary' : 'warn'"
-                      md-button (click)="(walkerForm.form.valid) && onSaveWalker()">Add
+                      md-button (click)="(walkerForm.form.valid) && onSaveWalker()">{{'add' | translate}}
               </button>
             </div>
           </div>

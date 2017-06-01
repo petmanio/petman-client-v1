@@ -59,7 +59,7 @@ export interface IRoomDetailsComponent {
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
               <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
-                {{ 'daily_price' | translate:{price: (roomRoom$ | async)?.cost} }}</span>&nbsp;
+                {{ 'price_per_day' | translate:{price: (roomRoom$ | async)?.cost} }}</span>&nbsp;
               <rating [ngModel]="averageRating"
                       [max]="5"
                       fullIcon="★"

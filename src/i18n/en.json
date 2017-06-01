@@ -15,7 +15,7 @@
   "locations_intro": "Find the pettiest places of our city. Pet shops, parks, clinics and much more",
   "join_us": "Join us",
   "login_with_facebook": "Login with facebook",
-  "daily_price": "{{price}} per day",
+  "price_per_day": "{{price}} per day",
   "please_login_to_share": "Please login to share",
   "share_with": "Share with",
   "apply": "Apply",
@@ -37,5 +37,9 @@
   "type_a_message": "Type a message",
   "review": "Review",
   "close": "Close",
-  "save": "Save"
+  "save": "Save",
+  "description": "Description",
+  "daily_price": "Daily price",
+  "add": "Add",
+  "select_images": "Select images"
 }
