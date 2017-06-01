@@ -53,16 +53,17 @@ export interface IRoomsComponent {
     .pm-room-items {
       overflow: auto;
       width: 100%;
-      height: calc(100vh - 70px);
-      height: -webkit-calc(100vh - 70px);
-      height: -moz-calc(100vh - 70px);
+      height: calc(100vh - 125px);
+      height: -webkit-calc(100vh - 125px);
+      height: -moz-calc(100vh - 125px);
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
-     .pm-room-items {
-       height: calc(100vh - 60px);
-       height: -webkit-calc(100vh - 60px);
-       height: -moz-calc(100vh - 60px);
+      /* TODO: make flexible */
+      .pm-room-items {
+       height: calc(100vh - 140px);
+       height: -webkit-calc(100vh - 140px);
+       height: -moz-calc(100vh - 140px);
       }
     }
   `]

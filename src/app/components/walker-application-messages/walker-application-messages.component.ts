@@ -20,15 +20,15 @@ export interface IWalkerApplicationMessagesComponent {
         <li *ngFor="let message of (walkerApplicationMessageList$ | async)?.list">
           <app-walker-application-message
             [message]="message"
-            [currentUser]="currentUser$ | async"></app-walker-application-message>    
+            [currentUser]="currentUser$ | async"></app-walker-application-message>
         </li>
       </ul>
       <div class="columns is-mobile pm-chart-actions">
         <div class="column is-10 is-offset-1">
           <md-input-container>
-            <input mdInput 
-                   placeholder="Type a message" 
-                   name="message" 
+            <input mdInput
+                   [placeholder]="'type_a_message' | translate"
+                   name="message"
                    type="text"
                    autocomplete="off"
                    [(ngModel)]="message"
@@ -37,11 +37,11 @@ export interface IWalkerApplicationMessagesComponent {
           </md-input-container>
         </div>
         <!--<div class="column is-1-desktop is-3-mobile">-->
-          <!--<button md-icon-button -->
-                  <!--(click)="onSendMessage()"-->
-                  <!--[disabled]="!message || isMessageSendDisabled()">-->
-            <!--<md-icon>send</md-icon>-->
-          <!--</button>-->
+        <!--<button md-icon-button -->
+        <!--(click)="onSendMessage()"-->
+        <!--[disabled]="!message || isMessageSendDisabled()">-->
+        <!--<md-icon>send</md-icon>-->
+        <!--</button>-->
         <!--</div>-->
       </div>
     </div>
@@ -103,7 +103,7 @@ export class WalkerApplicationMessagesComponent implements OnInit, OnChanges, IW
 
   isMessageSendDisabled(): boolean {
     return this.application.status === 'CANCELED_BY_CONSUMER' ||
-        this.application.status === 'CANCELED_BY_PROVIDER' ||
-        this.application.status === 'FINISHED'
+      this.application.status === 'CANCELED_BY_PROVIDER' ||
+      this.application.status === 'FINISHED'
   }
 }

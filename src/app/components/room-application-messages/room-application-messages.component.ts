@@ -27,7 +27,7 @@ export interface IRoomApplicationMessagesComponent {
         <div class="column is-10 is-offset-1">
           <md-input-container>
             <input mdInput 
-                   placeholder="Type a message" 
+                   [placeholder]="'type_a_message' | translate" 
                    name="message" 
                    type="text"
                    autocomplete="off"

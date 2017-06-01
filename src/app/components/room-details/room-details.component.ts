@@ -58,7 +58,8 @@ export interface IRoomDetailsComponent {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{(roomRoom$ | async)?.cost}}$ / day</span>&nbsp;
+              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
+                {{ 'daily_price' | translate:{price: (roomRoom$ | async)?.cost} }}</span>&nbsp;
               <rating [ngModel]="averageRating"
                       [max]="5"
                       fullIcon="★"
@@ -69,10 +70,10 @@ export interface IRoomDetailsComponent {
                       [float]="true"
                       [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
               <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="!(roomRoom$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-gray">Apply &nbsp;<i class="mdi mdi-plus"></i></span>
+                <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
               </button>
               <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="(roomRoom$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-gray">Edit &nbsp;<i class="mdi mdi-table-edit"></i></span>
+                <!--<span class="pm-font-14 pm-color-gray">{{'edit' | translate}} &nbsp;<i class="mdi mdi-table-edit"></i></span>-->
               </button>
               &nbsp;&nbsp;
               <button md-icon-button (click)="onShareClick()">
@@ -94,24 +95,25 @@ export interface IRoomDetailsComponent {
             <!--<app-room-statistics [applications]="finishedApplications"></app-room-statistics>-->
           <!--</div>-->
           <div class="column is-6 is-offset-1">
-            <div class="pm-font-16 pm-color-gray pm-history-label">History & reviews <i class="mdi mdi-history"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-history-label">{{'history' | translate}} <i class="mdi mdi-history"></i></div>
             <app-room-reviews-list [applications]="finishedApplications" [room]="roomRoom$ | async"></app-room-reviews-list>
           </div>
         </div>
         <div class="columns">
           <div class="column is-4-desktop is-5-tablet is-offset-1">
-            <span class="pm-font-16 pm-color-gray">{{(roomRoom$ | async)?.isOwner ? 'Application requests' : 'My applications'}} 
+            <span class="pm-font-16 pm-color-gray">
+              {{(roomRoom$ | async)?.isOwner ? ('application_requests' | translate) : ('my_applications' | translate)}} 
               <i class="mdi mdi-application"></i></span>
             <app-room-applications-list [applications]="inProgressApplications"
                                         [room]="roomRoom$ | async"
                                         (onApplicationClick)="onApplicationSelect($event)"></app-room-applications-list>
           </div>
           <div class="column is-6-desktop is-5-tablet pm-application-info-window" *ngIf="selectedApplication">
-            <div class="pm-font-16 pm-color-gray pm-action-label">Status <i class="mdi mdi-check-all"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-action-label">{{'status' | translate}} <i class="mdi mdi-check-all"></i></div>
             <app-room-application-actions [room]="roomRoom$ | async"
                                           [application]="selectedApplication"
                                           (onActionClick)="onActionClick($event)"></app-room-application-actions>
-            <div class="pm-font-16 pm-color-gray pm-message-label">Chat history <i class="mdi mdi-wechat"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-message-label">{{'chat_history' | translate}} <i class="mdi mdi-wechat"></i></div>
             <app-room-application-messages [room]="roomRoom$ | async"
                                            [application]="selectedApplication"></app-room-application-messages>
           </div>

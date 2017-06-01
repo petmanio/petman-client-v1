@@ -35,7 +35,8 @@ export interface IWalkerComponent {
       </md-card-content>
       <md-card-actions>
         <div class="pm-walker-footer">
-          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{walker.cost}}$ / day</span>&nbsp;
+          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash"></i>
+            {{ 'daily_price' | translate:{price: walker.cost} }}</span>&nbsp;
           <rating [ngModel]="averageRating"
                   [max]="5"
                   fullIcon="★"
@@ -58,7 +59,7 @@ export interface IWalkerComponent {
     md-card-title {
       margin-top: 10px;
     }
-    
+
     .pm-walker-description {
       margin-bottom: 25px;
     }
@@ -66,7 +67,7 @@ export interface IWalkerComponent {
     .pm-carousel-image {
       height: 300px;
     }
-    
+
     .swiper-container {
       width: calc(100% + 48px);
       margin: 0 -24px 16px -24px;
@@ -78,7 +79,7 @@ export interface IWalkerComponent {
         margin: 16px -16px;
       }
     }
-    
+
     .pm-walker-action-open, .pm-walker-action-share {
       margin-left: auto;
     }

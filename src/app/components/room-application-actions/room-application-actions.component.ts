@@ -11,17 +11,17 @@ export interface IRoomApplicationActionsComponent {
   template: `
     <div class="columns pm-application-actions is-mobile pm-background-lightest-gray">
       <div class="column">
-        <span class="pm-color-gray pm-font-16 pm-application-status">{{getApplicationStatus(application)}}</span>
+        <span class="pm-color-gray pm-font-16 pm-application-status">{{application.status | translate}}</span>
         <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS' 
           && room.isOwner" (click)="onActionClick.emit('CONFIRMED')">
-          Confirm
+          {{'confirm' | translate}}
         </button>
         <button md-button class="pm-fr" *ngIf="application.status === 'CONFIRMED'" (click)="onActionClick.emit('FINISHED')">
-          Finish
+          {{'finish' | translate}}
         </button>
         <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'IN_PROGRESS'"
                 (click)="onActionClick.emit(room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
-          Cancel
+          {{'cancel' | translate}}
         </button>
       </div>
     </div>
@@ -50,6 +50,7 @@ export class RoomApplicationActionsComponent implements IRoomApplicationActionsC
   }
 
   getApplicationStatus(application: IRoomApplication): string {
+    // TODO: update status translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
     if (application.status === 'IN_PROGRESS') {
       status = 'In progress';

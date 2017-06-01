@@ -13,7 +13,7 @@ export interface IWalkerReviewDialogComponent {
       <div class="columns">
         <div class="column">
           <md-input-container>
-            <input mdInput type="text" autocomplete="off" placeholder="Review" [(ngModel)]="reviewOptions.review">
+            <input mdInput type="text" autocomplete="off" [placeholder]="'review' | translate" [(ngModel)]="reviewOptions.review">
           </md-input-container>
         </div>
       </div>
@@ -31,8 +31,8 @@ export interface IWalkerReviewDialogComponent {
         </div>
       </div>
       <div class="column">
-        <button (click)="close()" md-button>Close</button>
-        <button md-button (click)="apply()" [disabled]="!reviewOptions.rating">Apply</button>
+        <button (click)="close()" md-button>{{'close' | translate}}</button>
+        <button md-button (click)="apply()" [disabled]="!reviewOptions.rating">{{'save' | translate}}</button>
       </div>
     </div>
   `,
@@ -40,14 +40,14 @@ export interface IWalkerReviewDialogComponent {
     .walker-review-dialog {
       overflow: hidden;
     }
-    
+
     .pm-review-rating {
       text-align: center;
     }
 
     /deep/ .pm-review-rating .star-icon {
-       font-size: 35px !important;
-     }
+             font-size: 35px !important;
+           }
     }
   `]
 })

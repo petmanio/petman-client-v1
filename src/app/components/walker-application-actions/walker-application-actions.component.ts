@@ -11,17 +11,17 @@ export interface IWalkerApplicationActionsComponent {
   template: `
     <div class="columns pm-application-actions is-mobile pm-background-lightest-gray">
       <div class="column">
-        <span class="pm-color-gray pm-font-16 pm-application-status">{{getApplicationStatus(application)}}</span>
-        <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS' && walker.isOwner" 
-                (click)="onActionClick.emit('CONFIRMED')">
-          Confirm
+        <span class="pm-color-gray pm-font-16 pm-application-status">{{application.status | translate}}</span>
+        <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS' 
+          && walker.isOwner" (click)="onActionClick.emit('CONFIRMED')">
+          {{'confirm' | translate}}
         </button>
         <button md-button class="pm-fr" *ngIf="application.status === 'CONFIRMED'" (click)="onActionClick.emit('FINISHED')">
-          Finish
+          {{'finish' | translate}}
         </button>
         <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'IN_PROGRESS'"
                 (click)="onActionClick.emit(walker.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
-          Cancel
+          {{'cancel' | translate}}
         </button>
       </div>
     </div>
@@ -30,18 +30,18 @@ export interface IWalkerApplicationActionsComponent {
     :host {
       display: block;
     }
-    
+
     .pm-application-actions {
       height: 60px;
     }
-    
+
     .pm-application-status {
       margin-top: 10px;
       display: inline-block;
     }
   `]
 })
-export class WalkerApplicationActionsComponent {
+export class WalkerApplicationActionsComponent implements IWalkerApplicationActionsComponent {
   @Input() walker: IWalker;
   @Input() application: IWalkerApplication;
   @Output() onActionClick = new EventEmitter();
@@ -50,6 +50,7 @@ export class WalkerApplicationActionsComponent {
   }
 
   getApplicationStatus(application: IWalkerApplication): string {
+    // TODO: update status translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
     if (application.status === 'IN_PROGRESS') {
       status = 'In progress';

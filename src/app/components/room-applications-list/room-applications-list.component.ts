@@ -24,7 +24,9 @@ export interface IRoomApplicationsListComponent {
               <span class="pm-font-14 pm-color-gray pm-room-application-status">
                 {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
               </span><br/>
-              <span class="pm-font-12 pm-color-gray pm-room-application-status">{{getApplicationStatus(application)}}</span>
+              <span class="pm-font-12 pm-color-gray pm-room-application-status">
+                 {{application.status | translate}}
+              </span>
             </div>
             <div class="pm-font-12 pm-color-gray pm-room-application-status">{{formatDate(application.createdAt)}}</div>
           </div>
@@ -75,6 +77,7 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
   }
 
   getApplicationStatus(application: IRoomApplication): string {
+    // TODO: update canceled translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
     if (application.status === 'IN_PROGRESS') {
       status = 'In progress';

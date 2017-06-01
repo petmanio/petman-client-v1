@@ -9,7 +9,7 @@ import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IUser, IWalker, IWalkerApplication } from '../../models/api';
+import { IWalker, IWalkerApplication, IUser } from '../../models/api';
 import { WalkerApplicationsListComponent } from '../walker-applications-list/walker-applications-list.component';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { WalkerReviewDialogComponent } from '../walker-review-dialog/walker-review-dialog.component';
@@ -19,6 +19,7 @@ export interface IWalkerDetailsComponent {
   onRatingRowClick(): void
   onApplicationSelect(application: IWalkerApplication): void,
   onActionClick(status: string): void,
+  onShareClick(): void,
   formatDate(date): string
 }
 
@@ -45,7 +46,8 @@ export interface IWalkerDetailsComponent {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i> {{(walkerWalker$ | async)?.cost}}$ / day</span>&nbsp;
+              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
+                {{ 'daily_price' | translate:{price: (walkerWalker$ | async)?.cost} }}</span>&nbsp;
               <rating [ngModel]="averageRating"
                       [max]="5"
                       fullIcon="★"
@@ -56,10 +58,10 @@ export interface IWalkerDetailsComponent {
                       [float]="true"
                       [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
               <button md-button class="pm-walker-action-apply-edit" (click)="onRatingRowClick()" *ngIf="!(walkerWalker$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-gray">Apply &nbsp;<i class="mdi mdi-plus"></i></span>
+                <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
               </button>
               <button md-button class="pm-walker-action-apply-edit" (click)="onRatingRowClick()" *ngIf="(walkerWalker$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-gray">Edit &nbsp;<i class="mdi mdi-table-edit"></i></span>
+                <!--<span class="pm-font-14 pm-color-gray">{{'edit' | translate}} &nbsp;<i class="mdi mdi-table-edit"></i></span>-->
               </button>
               &nbsp;&nbsp;
               <button md-icon-button (click)="onShareClick()">
@@ -77,28 +79,29 @@ export interface IWalkerDetailsComponent {
         </div>
         <div class="columns">
           <!--<div class="column column is-4 is-offset-1">-->
-            <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
-            <!--<app-walker-statistics [applications]="finishedApplications"></app-walker-statistics>-->
+          <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
+          <!--<app-walker-statistics [applications]="finishedApplications"></app-walker-statistics>-->
           <!--</div>-->
           <div class="column is-6 is-offset-1">
-            <div class="pm-font-16 pm-color-gray pm-history-label">History & reviews <i class="mdi mdi-history"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-history-label">{{'history' | translate}} <i class="mdi mdi-history"></i></div>
             <app-walker-reviews-list [applications]="finishedApplications" [walker]="walkerWalker$ | async"></app-walker-reviews-list>
           </div>
         </div>
         <div class="columns">
           <div class="column is-4-desktop is-5-tablet is-offset-1">
-            <span class="pm-font-16 pm-color-gray">{{(walkerWalker$ | async)?.isOwner ? 'Application requests' : 'My applications'}} 
+            <span class="pm-font-16 pm-color-gray">
+              {{(walkerWalker$ | async)?.isOwner ? ('application_requests' | translate) : ('my_applications' | translate)}} 
               <i class="mdi mdi-application"></i></span>
             <app-walker-applications-list [applications]="inProgressApplications"
                                         [walker]="walkerWalker$ | async"
                                         (onApplicationClick)="onApplicationSelect($event)"></app-walker-applications-list>
           </div>
           <div class="column is-6-desktop is-5-tablet pm-application-info-window" *ngIf="selectedApplication">
-            <div class="pm-font-16 pm-color-gray pm-action-label">Status <i class="mdi mdi-check-all"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-action-label">{{'status' | translate}} <i class="mdi mdi-check-all"></i></div>
             <app-walker-application-actions [walker]="walkerWalker$ | async"
                                           [application]="selectedApplication"
                                           (onActionClick)="onActionClick($event)"></app-walker-application-actions>
-            <div class="pm-font-16 pm-color-gray pm-message-label">Chat history <i class="mdi mdi-wechat"></i></div>
+            <div class="pm-font-16 pm-color-gray pm-message-label">{{'chat_history' | translate}} <i class="mdi mdi-wechat"></i></div>
             <app-walker-application-messages [walker]="walkerWalker$ | async"
                                            [application]="selectedApplication"></app-walker-application-messages>
           </div>
@@ -114,7 +117,7 @@ export interface IWalkerDetailsComponent {
       max-height: 640px;
       overflow-x: auto;
     }
-    
+
     app-walker-application-messages {
       /*min-height: 200px;*/
       max-height: 500px;
@@ -125,13 +128,13 @@ export interface IWalkerDetailsComponent {
       max-height: 500px;
       overflow-x: auto;
     }
-    
+
     .pm-message-label {
       margin-top: 20px;
       padding-right: 10px;
       text-align: right;
     }
-    
+
     .pm-action-label {
       margin-top: 0;
       text-align: right;
@@ -177,8 +180,8 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
               private _activatedRoute: ActivatedRoute,
               private _dialog: MdDialog,
               private _snackBar: MdSnackBar,
-              private _router: Router,
               private _utilService: UtilService,
+              private _router: Router,
               private _actions$: Actions) {
     this.walkerWalker$ = _store.select(fromRoot.getWalkerWalker);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
@@ -211,6 +214,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     });
 
     this.currentUser$.subscribe($event => this.currentUser = $event);
+
     // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
     // this._actions$
     //   .ofType(walkerAction.ActionTypes.APPLY_COMPLETE)

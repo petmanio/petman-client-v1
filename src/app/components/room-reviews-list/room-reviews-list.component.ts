@@ -42,7 +42,7 @@ export interface IRoomReviewsListComponent {
               <div><i class="pm-font-12 pm-color-gray">{{application.review}}</i></div>
             </div>
             <div *ngIf="room && !application.rating && !room.isOwner && application.consumer.id === (currentUser$ | async)?.id">
-              <span class="pm-color-gray pm-font-14">Write a review</span>
+              <span class="pm-color-gray pm-font-14">{{'write_a_review' | translate}}</span>
               <button md-icon-button (click)="onReviewClick(application)">
                 <md-icon>rate_review</md-icon>
               </button>

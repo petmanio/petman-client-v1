@@ -12,8 +12,8 @@ export interface IWalkerApplicationsListComponent {
   template: `
     <ul>
       <li *ngFor="let application of applications; let i = index;" class="pm-cursor-pointer"
-                    [ngClass]="{'selected': i === selected}"
-                    (click)="onApplicationClick.emit(application); selected = i">
+          [ngClass]="{'selected': i === selected}"
+          (click)="onApplicationClick.emit(application); selected = i">
         <div class="columns is-mobile pm-application-row">
           <div class="column is-2">
             <div md-card-avatar class="pm-cart-avatar"
@@ -24,7 +24,9 @@ export interface IWalkerApplicationsListComponent {
               <span class="pm-font-14 pm-color-gray pm-walker-application-status">
                 {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
               </span><br/>
-              <span class="pm-font-12 pm-color-gray pm-walker-application-status">{{getApplicationStatus(application)}}</span>
+              <span class="pm-font-12 pm-color-gray pm-walker-application-status">
+                 {{application.status | translate}}
+              </span>
             </div>
             <div class="pm-font-12 pm-color-gray pm-walker-application-status">{{formatDate(application.createdAt)}}</div>
           </div>
@@ -36,7 +38,7 @@ export interface IWalkerApplicationsListComponent {
     :host {
       display: block;
     }
-    
+
     .pm-application-row {
       width: 100%;
       height: 65px;
@@ -75,6 +77,7 @@ export class WalkerApplicationsListComponent implements OnInit, OnChanges, IWalk
   }
 
   getApplicationStatus(application: IWalkerApplication): string {
+    // TODO: update canceled translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
     if (application.status === 'IN_PROGRESS') {
       status = 'In progress';

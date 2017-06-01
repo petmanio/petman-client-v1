@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { UtilService } from '../../services/util/util.service';
-import { MdSnackBar } from '@angular/material';
 import { IUser } from '../../models/api';
+import { MdSnackBar } from '@angular/material';
 
 export interface IWalkersComponent {
   onScroll(): void,
@@ -15,7 +15,13 @@ export interface IWalkersComponent {
 
 @Component({
   selector: 'app-walkers',
-  template: `    
+  template: `
+    <div class="colomns">
+      <div class="column pm-page-intro">
+        <md-icon color="primary">child_friendly</md-icon>&nbsp;&nbsp;&nbsp;
+        <span class="pm-color-gray pm-font-18">{{'walkers_intro' | translate}}</span>
+      </div>
+    </div>
     <div class="columns">
       <div class="pm-walker-items" infinite-scroll
            (scrolled)="onScroll()"
@@ -47,16 +53,17 @@ export interface IWalkersComponent {
     .pm-walker-items {
       overflow: auto;
       width: 100%;
-      height: calc(100vh - 130px);
-      height: -webkit-calc(100vh - 130px);
-      height: -moz-calc(100vh - 130px);
+      height: calc(100vh - 125px);
+      height: -webkit-calc(100vh - 125px);
+      height: -moz-calc(100vh - 125px);
     }
-    
+
     @media (max-width: 600px) and (orientation: portrait) {
-     .pm-walker-items {
-       height: calc(100vh - 120px);
-       height: -webkit-calc(100vh - 120px);
-       height: -moz-calc(100vh - 120px);
+      /* TODO: make flexible */
+      .pm-walker-items {
+        height: calc(100vh - 140px);
+        height: -webkit-calc(100vh - 140px);
+        height: -moz-calc(100vh - 140px);
       }
     }
   `]

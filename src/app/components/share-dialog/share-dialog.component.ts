@@ -14,10 +14,10 @@ export interface IShareDialogComponent {
   template: `
     <div class="room-share-dialog">
       <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
-        Please login for share
+        {{'please_login_to_share' | translate}}
       </span>
       <p class="pm-color-gray pm-font-16">
-        Share on
+        {{'share_with' | translate}}
       </p>
       <div (click)="onShare('facebook')" 
            [class]="(currentUser$ | async) ? 'pm-cursor-pointer' : 'disabled'">
