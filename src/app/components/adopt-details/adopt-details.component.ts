@@ -70,7 +70,7 @@ export interface IAdoptDetailsComponent {
         <div class="columns">
           <div class="column is-8 is-offset-2">
             <div class="pm-font-16 pm-color-gray pm-message-label">
-              {{(comments$ | async)?.total}} comments <i class="mdi mdi-comment-multiple-outline"></i></div>
+              {{'comment_total' | translate:{total: (comments$ | async)?.total} }} <i class="mdi mdi-comment-multiple-outline"></i></div>
             <app-adopt-comments 
               [adopt]="adoptAdopt$ | async" 
               *ngIf="adoptAdopt$ | async"

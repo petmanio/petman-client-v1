@@ -82,7 +82,7 @@ export interface IAppComponent {
             <!--</button>-->
             <button md-menu-item (click)="logOut()">
               <md-icon>power_settings_new</md-icon>
-              <span>Log out</span>
+              <span>{{'log_out' | translate}}</span>
             </button>
           </md-menu>
         </div>

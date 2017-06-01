@@ -19,7 +19,7 @@ export interface IAdoptCommentsComponent {
           </span>
         <md-input-container>
           <input mdInput
-                 placeholder="Type a message"
+                 [placeholder]="'type_a_message' | translate"
                  name="message"
                  type="text"
                  autocomplete="off"
@@ -37,7 +37,7 @@ export interface IAdoptCommentsComponent {
         </li>
       </ul>
       <div class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
-           (click)="loadMore.emit()">Load more <i class="mdi mdi-dots-horizontal"></i></div>
+           (click)="loadMore.emit()">{{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
     </div>
   `,
   styles: [`
