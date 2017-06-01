@@ -9,13 +9,13 @@ export interface ILocationItemComponent {
 @Component({
   selector: 'app-location',
   template: `
-    <md-card>
+    <md-card (click)="onShowPin.emit(location)" class="pm-cursor-pointer">
       <md-card-header>
         <md-card-title>{{location.name}}</md-card-title>
         <md-card-subtitle>{{location.description}}</md-card-subtitle>
-        <button md-icon-button class="pm-room-action-show-map" (click)="onShowPin.emit(location)">
-          <md-icon class="pm-font-16 pm-color-blue">location_on</md-icon>
-        </button>
+        <!--<button md-icon-button class="pm-room-action-show-map" (click)="onShowPin.emit(location)">-->
+          <!--<md-icon class="pm-font-16 pm-color-blue">location_on</md-icon>-->
+        <!--</button>-->
       </md-card-header>
       <md-divider></md-divider><br/>
       <img md-card-image [src]="location.thumbnail">

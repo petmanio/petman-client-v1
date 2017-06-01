@@ -39,8 +39,8 @@ export interface ILocationComponent {
       </div>
     </div>
     <div class="columns">
-      <div class="column items-container is-6 pm-background-light-gray" [hidden]="isMobile && mapView">
-        <div class="items" infinite-scroll
+      <div class="column items-container is-6" [hidden]="isMobile && mapView">
+        <div class="items pm-background-light-gray" infinite-scroll
              (scrolled)="onScroll()"
              [infiniteScrollDistance]="2"
              [infiniteScrollThrottle]="300"
@@ -81,9 +81,9 @@ export interface ILocationComponent {
       overflow: auto;
     }
     app-map, .items {
-      height: calc(100vh - 220px);
-      height: -webkit-calc(100vh - 220px);
-      height: -moz-calc(100vh - 220px);
+      height: calc(100vh - 202px);
+      height: -webkit-calc(100vh - 202px);
+      height: -moz-calc(100vh - 202px);
     }
     md-chip {
       cursor: pointer;
@@ -94,9 +94,10 @@ export interface ILocationComponent {
         margin-top: 10px !important;
       }
       app-map, .items {
-        height: calc(100vh - 205px);
-        height: -webkit-calc(100vh - 205px);
-        height: -moz-calc(100vh - 205px);
+        /* TODO: flexible height */
+        height: calc(100vh - 216px);
+        height: -webkit-calc(100vh - 216px);
+        height: -moz-calc(100vh - 216px);
       }
       .items-container, .map-container {
         padding-top: 0;
