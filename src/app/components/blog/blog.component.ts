@@ -11,6 +11,12 @@ export interface IBlogComponent {
 @Component({
   selector: 'app-blog',
   template: `
+    <div class="colomns">
+      <div class="column pm-page-intro">
+        <md-icon color="primary">public</md-icon>&nbsp;&nbsp;&nbsp;
+        <span class="pm-color-gray pm-font-18">{{'blog_intro' | translate}}</span>
+      </div>
+    </div>
     <div class="columns">
       <div class="pm-blog-items" infinite-scroll
            (scrolled)="onScroll()"
@@ -38,16 +44,16 @@ export interface IBlogComponent {
     .pm-blog-items {
       overflow: auto;
       width: 100%;
-      height: calc(100vh - 70px);
-      height: -webkit-calc(100vh - 70px);
-      height: -moz-calc(100vh - 70px);
+      height: calc(100vh - 125px);
+      height: -webkit-calc(100vh - 125px);
+      height: -moz-calc(100vh - 125px);
     }
 
     @media (max-width: 600px) and (orientation: portrait) {
       .pm-blog-items {
-        height: calc(100vh - 60px);
-        height: -webkit-calc(100vh - 60px);
-        height: -moz-calc(100vh - 60px);
+        height: calc(100vh - 140px);
+        height: -webkit-calc(100vh - 140px);
+        height: -moz-calc(100vh - 140px);
       }
     }
   `]

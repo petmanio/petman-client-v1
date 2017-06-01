@@ -29,8 +29,8 @@ interface ISidenavComponent {
                         routerLinkActive="is-active">{{'adopt' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
                         routerLinkActive="is-active">{{'blog' | translate}}</app-nav-item>
-          <app-nav-item (activate)="onItemActivate.emit()" icon="help" 
-                        class="disabled" hint="{{'coming_soon' | translate}}">{{'wet_consultant' | translate}}</app-nav-item>
+          <!--<app-nav-item (activate)="onItemActivate.emit()" icon="help" -->
+                        <!--class="disabled" hint="{{'coming_soon' | translate}}">{{'wet_consultant' | translate}}</app-nav-item>-->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>-->

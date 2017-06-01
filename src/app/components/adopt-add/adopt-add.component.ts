@@ -25,7 +25,8 @@ export interface IAdoptAddComponent {
         <form #adoptForm="ngForm">
           <div class="columns">
             <md-input-container>
-              <textarea mdInput placeholder="Description" name="description" required [(ngModel)]="adopt.description"></textarea>
+              <textarea mdInput [placeholder]="'description' | translate"
+                        name="description" required [(ngModel)]="adopt.description"></textarea>
             </md-input-container>
           </div>
           <div class="columns">
@@ -35,6 +36,8 @@ export interface IAdoptAddComponent {
                 [max]="4"
                 [maxFileSize]="1048576"
                 (onFileUploadFinish)="onImageUploaded($event)"
+                [buttonCaption]="'select_images' | translate"
+                [dropBoxMessage]="''"
                 (onRemove)="onImageRemove($event)"></image-upload>
             </div>
           </div>
@@ -44,7 +47,7 @@ export interface IAdoptAddComponent {
             <div class="column">
               <button type="submit" class="btn btn-success pm-fr"
                       [color]="(adoptForm.form.valid && adopt.images.length) ? 'primary' : 'warn'"
-                      md-button (click)="(adoptForm.form.valid && adopt.images.length) && onSaveAdopt()">Add
+                      md-button (click)="(adoptForm.form.valid && adopt.images.length) && onSaveAdopt()">{{'add' | translate}}
               </button>
             </div>
           </div>
