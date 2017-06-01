@@ -16,6 +16,12 @@ export interface IRoomsComponent {
 @Component({
   selector: 'app-rooms',
   template: `
+    <div class="colomns">
+      <div class="column pm-page-intro">
+        <md-icon color="primary">favorite</md-icon>&nbsp;&nbsp;&nbsp;
+        <span class="pm-color-gray pm-font-18">{{'sitters_intro' | translate}}</span>
+      </div>
+    </div>
     <div class="columns">
       <div class="pm-room-items" infinite-scroll
            (scrolled)="onScroll()"

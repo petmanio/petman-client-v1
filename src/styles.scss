@@ -210,6 +210,20 @@ date-input-polyfill {
   color: #ffffff !important;
 }
 
+.pm-page-intro {
+  align-items: center;
+  display: flex;
+  margin-bottom: 0;
+  md-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 35px;
+  }
+  span {
+    //margin-left: 20px;
+  }
+}
+
 // TODO: why defualt styles not working on first loag on homepage
 .mat-card-avatar {
   height: 40px;

@@ -64,6 +64,7 @@ export interface INotificationsComponent {
               </span>
             </div>
 
+            <!--Adopt-->
             <div *ngIf="notification.adoptCommentCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
                 new comment from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>

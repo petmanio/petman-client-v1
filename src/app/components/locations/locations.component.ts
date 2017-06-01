@@ -21,6 +21,12 @@ export interface ILocationComponent {
 @Component({
   selector: 'app-locations',
   template: `
+    <div class="colomns">
+      <div class="column pm-page-intro">
+        <md-icon color="primary">location_searching</md-icon>&nbsp;&nbsp;&nbsp;
+        <span class="pm-color-gray pm-font-18">{{'locations_intro' | translate}}</span>
+      </div>
+    </div>
     <div class="columns is-mobile filters">
       <div class="column is-8 is-8-mobile">
         <md-chip-list>
@@ -60,8 +66,8 @@ export interface ILocationComponent {
   `,
   styles: [`
     .filters {
-      margin-top: 15px !important;
-      margin-left: 15px !important;
+      /*margin-top: 15px !important;*/
+      /*margin-left: 15px !important;*/
     }
     md-slide-toggle {
       margin: 0;
@@ -75,9 +81,9 @@ export interface ILocationComponent {
       overflow: auto;
     }
     app-map, .items {
-      height: calc(100vh - 160px);
-      height: -webkit-calc(100vh - 160px);
-      height: -moz-calc(100vh - 160px);
+      height: calc(100vh - 220px);
+      height: -webkit-calc(100vh - 220px);
+      height: -moz-calc(100vh - 220px);
     }
     md-chip {
       cursor: pointer;
@@ -88,9 +94,9 @@ export interface ILocationComponent {
         margin-top: 10px !important;
       }
       app-map, .items {
-        height: calc(100vh - 125px);
-        height: -webkit-calc(100vh - 125px);
-        height: -moz-calc(100vh - 125px);
+        height: calc(100vh - 205px);
+        height: -webkit-calc(100vh - 205px);
+        height: -moz-calc(100vh - 205px);
       }
       .items-container, .map-container {
         padding-top: 0;
