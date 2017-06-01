@@ -101,7 +101,7 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
     if (this.currentUser) {
       this._router.navigate(['/rooms/add'])
     } else {
-      this._snackBar.open(`Please login to add new statement`, 'Login', {
+      this._snackBar.open(`Please login`, 'Login', {
         duration: 3000
       })
         .onAction()

@@ -15,7 +15,7 @@ export interface IAdoptCommentsComponent {
     <div class="columns is-mobile pm-chat-actions">
       <div class="column is-10 is-offset-1">
           <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
-            Please login for leave a comment
+            {{'please_login' | translate}}
           </span>
         <md-input-container>
           <input mdInput

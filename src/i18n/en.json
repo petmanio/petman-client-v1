@@ -49,5 +49,6 @@
   "new_comment_from": "New comment from {{name}}",
   "log_out": "Log out",
   "comment_total": "{{total}} comments",
-  "load_more": "Load more"
+  "load_more": "Load more",
+  "please_login": "Please login"
 }

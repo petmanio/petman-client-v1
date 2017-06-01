@@ -282,7 +282,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
         duration: 3000
       });
     } else if (!this.currentUser) {
-      this._snackBar.open(`Please login for apply`, 'Login', {
+      this._snackBar.open(`Please login`, 'Login', {
         duration: 3000
       })
         .onAction()
