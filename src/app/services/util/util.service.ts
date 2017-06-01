@@ -36,6 +36,20 @@ export class UtilService implements IUtilService {
       js.src = '//connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+    if (environment.production) {
+      const currdate: any = new Date();
+      const gaNewElem: any = {};
+      const gaElems: any = {};
+
+      (function(i: any, s, o, g, r, a, m){i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function(){
+          (i[r].q = i[r].q || []).push(arguments)}, i[r].l = 1 * currdate; a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga', gaNewElem, gaElems);
+
+      ga('create', environment.gaId, 'auto');
+      ga('send', 'pageview');
+    }
   }
 
   static XHRListener(): Observable<boolean> {
