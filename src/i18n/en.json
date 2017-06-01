@@ -43,5 +43,9 @@
   "add": "Add",
   "about_us_content": "We are a couple of crazy petlovers, who is eager to transform the love and passion for pets into highly rewarding, loving and fun experiences. Our dream is to become super-helpful for all the petlovers and super-friends for all the pets!",
   "select_images": "Select images",
+  "new_request_from": "New request from {{name}}",
+  "application_status_update": "{{name}} has updated application status",
+  "new_message_from": "New message from {{name}}",
+  "new_comment_from": "New comment from {{name}}",
   "a": "b"
 }

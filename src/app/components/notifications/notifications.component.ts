@@ -23,51 +23,47 @@ export interface INotificationsComponent {
             <!--Sitter-->
             <div *ngIf="notification.roomApplicationCreate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
-                <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
-                applied to your application
+                {{'new_request_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <div *ngIf="notification.roomApplicationStatusUpdate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
-                <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
-                changed application status from {{getApplicationStatus(notification.roomApplicationStatusUpdate.prevStatus)}} to
-                {{getApplicationStatus(notification.roomApplicationStatusUpdate.currentStatus)}}
+                <!--TODO: add status text-->
+      {{'application_status_update' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <div *ngIf="notification.roomApplicationMessageCreate">
                <span class="pm-font-12 pm-color-gray pm-room-notification-status">
-                new message from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
+                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <!--Walker-->
             <div *ngIf="notification.walkerApplicationCreate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
-                applied to your application
+                {{'new_request_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <div *ngIf="notification.walkerApplicationStatusUpdate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
-                changed application status from {{getApplicationStatus(notification.walkerApplicationStatusUpdate.prevStatus)}} to
-                {{getApplicationStatus(notification.walkerApplicationStatusUpdate.currentStatus)}}
+               <!--TODO: add status text-->
+      {{'application_status_update' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <div *ngIf="notification.walkerApplicationMessageCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                new message from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
+                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
             <!--Adopt-->
             <div *ngIf="notification.adoptCommentCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                new comment from <b>{{notification.from.userData.firstName}} {{notification.from.userData.lastName}}</b>
+                {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
             
