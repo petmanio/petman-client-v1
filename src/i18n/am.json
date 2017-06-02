@@ -15,7 +15,7 @@
   "locations_intro": "Ծանոթացեք քաղաքի ամենակենդանական վայրերին՝ խանութներ, զբոսայգիներ, կլինիկաներ և ավելին",
   "join_us": "Գրանցվել",
   "login_with_facebook": "մուտք facebook֊ով",
-  "price_per_day": "{{price}} դրամ օրեկան",
+  "price_per_day": "{{price}} դրամ օրական",
   "please_login_to_share": "Խնդրում ենք մուտք գործել համակարգ",
   "share_with": "Կիսվել",
   "apply": "Դիմել",
@@ -50,5 +50,6 @@
   "log_out": "Ելք",
   "comment_total": "{{total}} մեկնաբանություն",
   "load_more": "Տեսնել ավելին",
-  "please_login": "Խնդրում ենք մուտք գործել համակարգ"
+  "please_login": "Խնդրում ենք մուտք գործել համակարգ",
+  "no_notifications_yet": "Ոչ ծանուցումներ չկան"
 }

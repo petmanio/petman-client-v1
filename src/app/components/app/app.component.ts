@@ -67,7 +67,7 @@ export interface IAppComponent {
                  [infiniteScrollThrottle]="300"
                  [scrollWindow]="false">
               <div *ngIf="!(notifications$ | async)?.list.length" class="pm-font-14 pm-color-gray pm-text-center pm-no-notifications">
-                No notifications yet</div>
+                {{'no_notifications_yet' | translate}}</div>
               <app-notifications [notifications]="(notifications$ | async)?.list" 
                                  (onNotificationClick)="onNotificationClick($event)"></app-notifications>
             </div>

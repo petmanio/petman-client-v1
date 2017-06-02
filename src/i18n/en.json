@@ -50,5 +50,6 @@
   "log_out": "Log out",
   "comment_total": "{{total}} comments",
   "load_more": "Load more",
-  "please_login": "Please login"
+  "please_login": "Please login",
+  "no_notifications_yet": "No notifications yet"
 }

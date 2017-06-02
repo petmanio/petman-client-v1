@@ -17,7 +17,7 @@ export interface IJoinComponent {
   template: `
     <div class="columns">
       <div class="column pm-login">
-        <button md-raised-button color="accent" class="pm-accent-color-white" (click)="fbLogin()">
+        <button md-raised-button class="pm-button-facebook" (click)="fbLogin()">
           {{'login_with_facebook' | translate}}</button>
       </div>
     </div>
