@@ -28,7 +28,7 @@ export interface IRoomReviewsListComponent {
             <span class="pm-font-12 pm-color-gray">
               {{formatDate(application.createdAt)}} - {{formatDate(application.finsihedAt)}}</span>
           </div>
-          <div class="pm-review-rating">
+          <div class="pm-review-rating-item">
             <div *ngIf="application.rating">
               <rating [ngModel]="application.rating"
                       [max]="5"
@@ -57,7 +57,7 @@ export interface IRoomReviewsListComponent {
       display: block;
     }
     
-    .pm-review-rating {
+    .pm-review-rating-item {
       width: 150px;
     }
 
