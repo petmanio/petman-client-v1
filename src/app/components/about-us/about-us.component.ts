@@ -10,6 +10,10 @@ export interface IAboutUpComponent {
       <div class="column">
         <div class="pm-about-us-content">
           <span class="pm-color-gray">{{'about_us_content' | translate}}</span>
+          <div>
+            <div class="fb-like" data-href="https://www.facebook.com/petman.io/"
+                 data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="false"></div>
+          </div>
         </div>
       </div>
     </div>

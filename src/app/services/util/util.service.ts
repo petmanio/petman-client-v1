@@ -31,9 +31,9 @@ export class UtilService implements IUtilService {
     (function(d, s, id) {
       //noinspection TsLint
       var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) { return; }
+      if (d.getElementById(id)) { return };
       js = d.createElement(s); js.id = id;
-      js.src = '//connect.facebook.net/en_US/sdk.js';
+      js.src = `//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=${environment.fb.appId}`;
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
