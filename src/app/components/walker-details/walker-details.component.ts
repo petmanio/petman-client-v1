@@ -14,6 +14,7 @@ import { WalkerApplicationsListComponent } from '../walker-applications-list/wal
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { WalkerReviewDialogComponent } from '../walker-review-dialog/walker-review-dialog.component';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
+import { TranslateService } from 'ng2-translate';
 
 export interface IWalkerDetailsComponent {
   onRatingRowClick(): void
@@ -182,6 +183,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
               private _snackBar: MdSnackBar,
               private _utilService: UtilService,
               private _router: Router,
+              private _translateService: TranslateService,
               private _actions$: Actions) {
     this.walkerWalker$ = _store.select(fromRoot.getWalkerWalker);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
@@ -254,15 +256,15 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
 
   onRatingRowClick(): void {
     if (this.walker.isOwner) {
-      this._snackBar.open(`Sorry but now edit functionality not available`, null, {
-        duration: 3000
-      });
+      // this._snackBar.open(`Sorry but now edit functionality not available`, null, {
+      //   duration: 3000
+      // });
     } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
-      this._snackBar.open(`Sorry but you have in progress application`, null, {
+      this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
         duration: 3000
       });
     } else if (!this.currentUser) {
-      this._snackBar.open(`Please login`, 'Login', {
+      this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
         duration: 3000
       })
         .onAction()

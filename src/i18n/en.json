@@ -51,5 +51,7 @@
   "comment_total": "{{total}} comments",
   "load_more": "Load more",
   "please_login": "Please login",
-  "no_notifications_yet": "No notifications yet"
+  "no_notifications_yet": "No notifications yet",
+  "login": "Login",
+  "sorry_you_have_unfinished_application": "Sorry, but you have unfinished application"
 }

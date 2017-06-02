@@ -7,6 +7,7 @@ import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
 import { IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
+import { TranslateService } from 'ng2-translate';
 
 export interface IRoomsComponent {
   onScroll(): void,
@@ -75,7 +76,10 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
-  constructor(private _store: Store<fromRoot.State>, private _router: Router, private _snackBar: MdSnackBar) {
+  constructor(private _store: Store<fromRoot.State>,
+              private _router: Router,
+              private _snackBar: MdSnackBar,
+              private _translateService: TranslateService) {
     this.roomList$ = _store.select(fromRoot.getRoomList);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
@@ -101,7 +105,7 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
     if (this.currentUser) {
       this._router.navigate(['/rooms/add'])
     } else {
-      this._snackBar.open(`Please login`, 'Login', {
+      this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
         duration: 3000
       })
         .onAction()

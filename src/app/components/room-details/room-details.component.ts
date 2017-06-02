@@ -14,6 +14,7 @@ import { RoomApplicationsListComponent } from '../room-applications-list/room-ap
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
+import { TranslateService } from 'ng2-translate';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void
@@ -201,6 +202,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
               private _snackBar: MdSnackBar,
               private _utilService: UtilService,
               private _router: Router,
+              private _translateService: TranslateService,
               private _actions$: Actions) {
     this.roomRoom$ = _store.select(fromRoot.getRoomRoom);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
@@ -274,15 +276,15 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
 
   onRatingRowClick(): void {
     if (this.room.isOwner) {
-      this._snackBar.open(`Sorry but now edit functionality not available`, null, {
-        duration: 3000
-      });
+      // this._snackBar.open(`Sorry but now edit functionality not available`, null, {
+      //   duration: 3000
+      // });
     } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
-      this._snackBar.open(`Sorry but you have in progress application`, null, {
+      this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
         duration: 3000
       });
     } else if (!this.currentUser) {
-      this._snackBar.open(`Please login`, 'Login', {
+      this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
         duration: 3000
       })
         .onAction()
