@@ -109,11 +109,16 @@ export class AdoptCardComponent implements OnChanges, IAdoptCardComponent {
         // TODO: create url via router
         if (shareOptions === 'facebook') {
           const fbShareOptions = {
-            method: 'feed',
-            name: 'Petman',
-            link: `${location.origin}/adopt/${this.adopt.id}/details`,
-            picture: this.adopt.images[0].src,
-            description: this.adopt.description
+            method: 'share_open_graph',
+            action_type: 'og.shares',
+            action_properties: JSON.stringify({
+              object : {
+                'og:url': `${location.origin}/adopt/${this.adopt.id}/details`,
+                'og:title': 'Petman',
+                'og:description': this.adopt.description,
+                'og:image': this.adopt.images[0].src
+              }
+            })
           };
 
           // TODO: shate using dispatch

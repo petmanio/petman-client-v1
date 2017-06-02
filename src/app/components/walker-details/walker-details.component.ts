@@ -240,10 +240,15 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
         // TODO: create url via router
         if (shareOptions === 'facebook') {
           const fbShareOptions = {
-            method: 'feed',
-            name: 'Petman',
-            link: `${location.origin}/walkers/${this.walker.id}/details`,
-            description: this.walker.description
+            method: 'share_open_graph',
+            action_type: 'og.shares',
+            action_properties: JSON.stringify({
+              object : {
+                'og:url': `${location.origin}/walkers/${this.walker.id}/details`,
+                'og:title': 'Petman',
+                'og:description': this.walker.description
+              }
+            })
           };
 
           // TODO: shate using dispatch

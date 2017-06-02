@@ -121,13 +121,17 @@ export class RoomComponent implements OnChanges, IRoomComponent {
         // TODO: create url via router
         if (shareOptions === 'facebook') {
           const fbShareOptions = {
-            method: 'feed',
-            name: 'Petman',
-            link: `${location.origin}/rooms/${this.room.id}/details`,
-            picture: this.room.images[0].src,
-            description: this.room.description
+            method: 'share_open_graph',
+            action_type: 'og.shares',
+            action_properties: JSON.stringify({
+              object : {
+                'og:url': `${location.origin}/rooms/${this.room.id}/details`,
+                'og:title': 'Petman',
+                'og:description': this.room.description,
+                'og:image': this.room.images[0].src
+              }
+            })
           };
-
           // TODO: shate using dispatch
           // this._store.dispatch(new roomAction.ShareOnFacebookAction(fbShareOptions));
           FB.ui(fbShareOptions, response => {});

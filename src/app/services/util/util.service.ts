@@ -20,24 +20,24 @@ export class UtilService implements IUtilService {
       FB.init({
         appId : environment.fb.appId,
         xfbml : true,
-        version : 'v2.8'
+        version : 'v2.9'
       });
-
+      // FB.AppEvents.logPageView();
       FB.getLoginStatus(response => {
         if (response.status === 'connected') {} else if (response.status === 'not_authorized') {} else {}
       });
     };
 
-    (function(d, s, id) {
+    (function(d, s, id){
       //noinspection TsLint
       var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) { return };
+      if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = `//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=${environment.fb.appId}`;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    if (environment.production) {
+    if (environment.gaId) {
       const currdate: any = new Date();
       const gaNewElem: any = {};
       const gaElems: any = {};
