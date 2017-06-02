@@ -31,8 +31,8 @@ export interface IHomeComponent {
       <div class="column pm-home-card pm-home-card-locations" routerLink="/locations">
         <div class="pm-home-card-overlay"></div>
         <span>
-            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'adopt' | translate}}</span><br><br>
-            <span class="pm-font-16">{{'adopt_intro' | translate}}</span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'places' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'places_intro' | translate}}</span>
           </span>
       </div>
       <div class="column pm-home-card pm-home-card-adopt" routerLink="/adopt">
