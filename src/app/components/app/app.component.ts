@@ -33,6 +33,12 @@ export interface IAppComponent {
 @Component({
   selector: 'app-root',
   template: `
+    <div id="page-loader" *ngIf="showSpinner">
+      <!--<div class="cssload-loader"></div>-->
+      <div class="cssload-container">
+        <div class="cssload-whirlpool"></div>
+      </div>
+    </div>
     <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
     <app-layout>
       <!--TODO: update layout, sideNav components component-->
@@ -193,6 +199,7 @@ export class AppComponent implements OnInit, IAppComponent {
   notifications: INotification[];
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
+  showSpinner: boolean = true;
   currentSideNavState: boolean;
   // TODO: improve notification status system
   unseenNotificationsCount = 0;
@@ -226,6 +233,8 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   ngOnInit(): void {
+    // TODO: find better way
+    setTimeout(() => this.showSpinner = false, 400);
     let notificationListReceived;
     this.currentUser$.subscribe(($event) => {
       if ($event && !notificationListReceived) {
