@@ -29,10 +29,12 @@ export interface ILocationComponent {
     </div>
     <div class="columns is-mobile filters">
       <div class="column is-8 is-8-mobile">
-        <md-chip-list>
-          <md-chip  *ngFor="let category of (locationFilters$ | async)?.categories" (click)="onChipClick(category)" 
-                    [selected]="activeFilters.categories.indexOf(category.id) !== -1">{{category.name}}</md-chip>
-        </md-chip-list>
+        <div class="pm-filters-row">
+          <md-chip-list>
+            <md-chip  *ngFor="let category of (locationFilters$ | async)?.categories" (click)="onChipClick(category)"
+                      [selected]="activeFilters.categories.indexOf(category.id) !== -1">{{category.name}}</md-chip>
+          </md-chip-list>
+        </div>
       </div>
       <div class="column is-4 is-4-mobile">
         <md-slide-toggle *ngIf="isMobile" [(ngModel)]="mapView" (change)="onSlideChange()">Map</md-slide-toggle>
@@ -72,10 +74,13 @@ export interface ILocationComponent {
     md-slide-toggle {
       margin: 0;
     }
-    md-chip-list {
+    .pm-filters-row {
       display: block;
       overflow: auto;
       white-space: nowrap;
+    }
+    /deep/ .pm-filters-row  .mat-chip-list-wrapper {
+     flex-wrap: nowrap;
     }
     .items {
       overflow: auto;
