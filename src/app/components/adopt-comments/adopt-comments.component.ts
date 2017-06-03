@@ -31,12 +31,13 @@ export interface IAdoptCommentsComponent {
     </div>
     <div class="pm-background-lightest-gray">
       <ul class="pm-message-list">
-        <li *ngFor="let comment of comments">
+        <li *ngFor="let comment of comments.list">
           <app-adopt-comment
             [comment]="comment"></app-adopt-comment>    
         </li>
       </ul>
-      <div class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+      <div *ngIf="comments.total > comments.list.length" 
+            class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
            (click)="loadMore.emit()">{{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
     </div>
   `,
@@ -68,7 +69,7 @@ export interface IAdoptCommentsComponent {
 })
 export class AdoptCommentsComponent implements OnInit, OnChanges, IAdoptCommentsComponent {
   @Input() adopt: IAdopt;
-  @Input() comments: IAdoptComment[];
+  @Input() comments: IAdoptCommentListResponse;
   @Output() loadMore = new EventEmitter();
   currentUser$: Observable<any>;
   comment = '';

@@ -86,7 +86,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
       const res: IAdoptCommentCreateEventResponse = action.payload;
       // TODO: remove if check
       if (res.adopt === state.adopt.id) {
-        return assign({}, state, { comments: { total: state.comments.total, list: [res].concat(state.comments.list) } });
+        return assign({}, state, { comments: { total: state.comments.total + 1, list: [res].concat(state.comments.list) } });
       }
       return state;
     }

@@ -74,7 +74,7 @@ export interface IAdoptDetailsComponent {
             <app-adopt-comments 
               [adopt]="adoptAdopt$ | async" 
               *ngIf="adoptAdopt$ | async"
-              [comments]="(comments$ | async)?.list"
+              [comments]="comments$ | async"
               (loadMore)="onLoadMoreClick()"></app-adopt-comments>
           </div>
         </div>
