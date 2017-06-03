@@ -14,7 +14,7 @@ import { WalkerApplicationsListComponent } from '../walker-applications-list/wal
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { WalkerReviewDialogComponent } from '../walker-review-dialog/walker-review-dialog.component';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IWalkerDetailsComponent {
   onRatingRowClick(): void

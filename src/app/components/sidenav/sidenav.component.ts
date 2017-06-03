@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as applicationAction from '../../store/notification/notification.actions';
 import * as fromRoot from '../../store';
-import { TranslateService } from 'ng2-translate';
 
 interface ISidenavComponent {
   onClick($event: Event): void

@@ -16,7 +16,7 @@ import * as roomAction from '../../store/room/room.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IAppComponent {
   closeSidenav(): void,
@@ -33,7 +33,7 @@ export interface IAppComponent {
 @Component({
   selector: 'app-root',
   template: `
-    <div id="page-loader" *ngIf="showSpinner">
+    <div id="page-loader">
       <!--<div class="cssload-loader"></div>-->
       <div class="cssload-container">
         <div class="cssload-whirlpool"></div>
@@ -234,7 +234,10 @@ export class AppComponent implements OnInit, IAppComponent {
 
   ngOnInit(): void {
     // TODO: find better way
-    setTimeout(() => this.showSpinner = false, 400);
+    setTimeout(() => {
+      const el = document.getElementById('page-loader');
+      el.remove();
+    }, 500);
     let notificationListReceived;
     this.currentUser$.subscribe(($event) => {
       if ($event && !notificationListReceived) {

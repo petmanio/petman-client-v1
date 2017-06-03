@@ -14,7 +14,7 @@ import { RoomApplicationsListComponent } from '../room-applications-list/room-ap
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../room-review-dialog/room-review-dialog.component';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IRoomDetailsComponent {
   onRatingRowClick(): void

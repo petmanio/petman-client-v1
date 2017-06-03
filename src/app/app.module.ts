@@ -21,9 +21,13 @@ import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { MasonryModule } from 'angular2-masonry';
-import { TranslateModule } from 'ng2-translate';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from '../environments/environment';
 
+export function HttpLoaderFactory(http: Http) {
+  return new TranslateHttpLoader(http, 'i18n/', '.json');
+}
 // import { DBModule } from '@ngrx/db';
 // import { ImageCropperModule } from 'ng2-img-cropper';
 // import { ImageUploadModule } from 'ng2-imageupload';
@@ -241,7 +245,13 @@ const appRoutes: Routes = [
     SailsModule.forRoot(),
     SwiperModule.forRoot({}),
     MasonryModule,
-    TranslateModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
+    }),
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,

@@ -7,7 +7,7 @@ import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
 import { IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IRoomsComponent {
   onScroll(): void,
