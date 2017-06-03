@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -69,7 +69,7 @@ export interface IRoomsComponent {
     }
   `]
 })
-export class RoomsComponent implements OnInit, IRoomsComponent {
+export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   roomList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
@@ -85,13 +85,16 @@ export class RoomsComponent implements OnInit, IRoomsComponent {
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new roomAction.ListClearAction({}));
     this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
     this.roomList$.subscribe($event => {
       this._count = $event.count;
     });
 
     this.currentUser$.subscribe($event => this.currentUser = $event);
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new roomAction.ListClearAction({}));
   }
 
   onScroll(): void {

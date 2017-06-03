@@ -46,6 +46,9 @@ export function reducer(state = initialState, action: locationAction.Actions): S
       return assign({}, state, { list: { total: null, list: null } });
     }
 
+    case locationAction.ActionTypes.LIST_CLEAR: {
+      return assign({}, state, { list: { total: null, list: null } });
+    }
 
     /**
      * List

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -69,7 +69,7 @@ export interface IWalkersComponent {
     }
   `]
 })
-export class WalkersComponent implements OnInit, IWalkersComponent {
+export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   walkerList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
@@ -85,13 +85,16 @@ export class WalkersComponent implements OnInit, IWalkersComponent {
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new walkerAction.ListClearAction({}));
     this._store.dispatch(new walkerAction.ListAction({ limit: this._limit, skip: this._skip }));
     this.walkerList$.subscribe($event => {
       this._count = $event.count;
     });
 
     this.currentUser$.subscribe($event => this.currentUser = $event);
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new walkerAction.ListClearAction({}));
   }
 
   onScroll(): void {

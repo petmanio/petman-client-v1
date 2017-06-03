@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -69,7 +69,7 @@ export interface IAdoptListComponent {
     }
   `]
 })
-export class AdoptListComponent implements OnInit, IAdoptListComponent {
+export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponent {
   adoptList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
@@ -85,13 +85,16 @@ export class AdoptListComponent implements OnInit, IAdoptListComponent {
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new adoptAction.ListClearAction({}));
     this._store.dispatch(new adoptAction.ListAction({ limit: this._limit, skip: this._skip }));
     this.adoptList$.subscribe($event => {
       this._count = $event.count;
     });
 
     this.currentUser$.subscribe($event => this.currentUser = $event);
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new adoptAction.ListClearAction({}));
   }
 
   onScroll(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -110,7 +110,7 @@ export interface ILocationComponent {
     }
   `]
 })
-export class LocationComponent implements OnInit, ILocationComponent {
+export class LocationComponent implements OnInit, OnDestroy, ILocationComponent {
   @ViewChild(MapComponent) map;
   public activeFilters = {
     categories: [''],
@@ -143,6 +143,10 @@ export class LocationComponent implements OnInit, ILocationComponent {
     this.locationList$.subscribe($event => {
       this._total = $event.total;
     });
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new locationAction.ListClearAction({}));
   }
 
   onScroll(): void {

@@ -17,6 +17,7 @@ export const ActionTypes = {
   LIST: type('[Location] List'),
   LIST_COMPLETE: type('[Location] List Complete'),
   LIST_ERROR: type('[Location] List Error'),
+  LIST_CLEAR: type('[Location] List Clear'),
 
   LIST_LOAD_MORE: type('[Location] List Load More'),
   LIST_LOAD_MORE_COMPLETE: type('[Location] List Load More Complete'),
@@ -56,6 +57,12 @@ export class ListCompleteAction implements Action {
 
 export class ListErrorAction implements Action {
   type = ActionTypes.LIST_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+export class ListClearAction implements Action {
+  type = ActionTypes.LIST_CLEAR;
 
   constructor(public payload: any) { }
 }
@@ -120,7 +127,6 @@ export class FiltersErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
-
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -132,6 +138,7 @@ export type Actions
   | ListAction
   | ListCompleteAction
   | ListErrorAction
+  | ListClearAction
   | ListLoadMoreAction
   | ListLoadMoreCompleteAction
   | ListLoadMoreErrorAction
