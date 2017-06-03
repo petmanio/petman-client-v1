@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
@@ -58,7 +58,7 @@ export interface IBlogComponent {
     }
   `]
 })
-export class BlogComponent implements OnInit, IBlogComponent {
+export class BlogComponent implements OnInit, OnDestroy, IBlogComponent {
   public blogList$: Observable<any>;
   private _skip = 0;
   private _limit = 9;
@@ -73,6 +73,10 @@ export class BlogComponent implements OnInit, IBlogComponent {
     this.blogList$.subscribe($event => {
       this._total = $event.total;
     });
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new blogAction.ListClearAction({}));
   }
 
   onScroll(): void {

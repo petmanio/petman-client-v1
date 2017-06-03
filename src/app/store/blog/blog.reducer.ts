@@ -30,6 +30,11 @@ export function reducer(state = initialState, action: blogAction.Actions): State
       return assign({}, state, { list: { list: [], total: null }});
     }
 
+    case blogAction.ActionTypes.LIST_CLEAR: {
+      const error: any = action.payload;
+      return assign({}, state, { list: { list: [], total: null }});
+    }
+
     /**
      * List Load More
      */

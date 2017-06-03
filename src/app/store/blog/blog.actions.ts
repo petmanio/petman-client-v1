@@ -14,6 +14,7 @@ export const ActionTypes = {
   LIST: type('[Blog] List'),
   LIST_COMPLETE: type('[Blog] List Complete'),
   LIST_ERROR: type('[Blog] List Error'),
+  LIST_CLEAR: type('[Blog] List Clear'),
 
   LIST_LOAD_MORE: type('[Blog] List Load More'),
   LIST_LOAD_MORE_COMPLETE: type('[Blog] List Load more Complete'),
@@ -49,6 +50,12 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class ListClearAction implements Action {
+  type = ActionTypes.LIST_CLEAR;
+
+  constructor(public payload: any) { }
+}
+
 /**
  * List Load More
  */
@@ -78,6 +85,7 @@ export type Actions
   = ListAction
   | ListCompleteAction
   | ListErrorAction
+  | ListClearAction
   | ListLoadMoreAction
   | ListLoadMoreCompleteAction
   | ListLoadMoreErrorAction
