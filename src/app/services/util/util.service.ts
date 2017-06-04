@@ -9,7 +9,8 @@ import * as roomAction from '../../store/room/room.actions';
 import * as moment from 'moment';
 
 export interface IUtilService {
-  initSocket(): void
+  initSocket(): void,
+  playNotificationSound(): void
   // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
@@ -113,7 +114,14 @@ export class UtilService implements IUtilService {
     }, 0);
   }
 
+  private _notificationSound = new Audio('/assets/trembling.mp3');
+
   constructor(private _sailsService: SailsService, private _store: Store<fromRoot.State>) {}
+
+  playNotificationSound(): void {
+    this._notificationSound.play();
+  }
+
 
   initSocket(): void {
     window['io'].sails.reconnection = true;

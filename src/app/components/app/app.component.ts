@@ -416,6 +416,7 @@ export class AppComponent implements OnInit, IAppComponent {
     // Notification Event
     this._sailsService.on('notificationNew').subscribe(notification => {
       this._store.dispatch(new notificationAction.NewEventAction(notification));
+      this._utilsService.playNotificationSound();
     });
     // TODO: reconnect on connection lost
 
