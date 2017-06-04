@@ -195,7 +195,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
       this._walkerId = parseInt(params['walkerId'], 10);
       if (!this._walkerId) {
         // TODO: use global error handling
-        throw new Error('WalkerDetailsComponent: walkerId is not defined');
+        // throw new Error('WalkerDetailsComponent: walkerId is not defined');
       }
       return this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
     });
@@ -225,6 +225,14 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     //     this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
     //   })
     //   .subscribe();
+
+    this._actions$
+      .ofType(walkerAction.ActionTypes.GET_BY_ID_ERROR)
+      .takeUntil(this._destroyed$)
+      .do((action) => {
+        this._router.navigate(['/']);
+      })
+      .subscribe();
   }
 
   ngOnDestroy(): void {

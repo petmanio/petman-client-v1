@@ -244,6 +244,14 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     //     this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
     //   })
     //   .subscribe();
+
+    this._actions$
+      .ofType(roomAction.ActionTypes.GET_BY_ID_ERROR)
+      .takeUntil(this._destroyed$)
+      .do((action) => {
+        this._router.navigate(['/']);
+      })
+      .subscribe();
   }
 
   ngOnDestroy(): void {

@@ -3,7 +3,7 @@ import { MdDialog, MdSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import { Subject } from 'rxjs/Subject';
@@ -117,6 +117,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
               private _dialog: MdDialog,
               private _snackBar: MdSnackBar,
               private _utilService: UtilService,
+              private _router: Router,
               private _actions$: Actions,
               private _adoptService: AdoptService) {
     this.adoptAdopt$ = _store.select(fromRoot.getAdoptAdopt);
@@ -141,6 +142,14 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
 
     this.comments$.subscribe($event => this._total = $event.total);
     this._adoptListener = this.adoptAdopt$.subscribe($event => this.adopt = $event);
+
+    this._actions$
+      .ofType(adoptAction.ActionTypes.GET_BY_ID_ERROR)
+      .takeUntil(this._destroyed$)
+      .do((action) => {
+        this._router.navigate(['/']);
+      })
+      .subscribe();
   }
 
   ngOnDestroy(): void {
