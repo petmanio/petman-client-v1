@@ -51,11 +51,11 @@ export function reducer(state = initialState, action: locationAction.Actions): S
     }
 
     /**
-     * List
+     * List Load More
      */
     case locationAction.ActionTypes.LIST_LOAD_MORE_COMPLETE: {
       const res: ILocationListResponse = action.payload;
-      return assign({}, state, { list: { total: null, list: state.list.list.concat(res.list) } });
+      return assign({}, state, { list: { total: state.list.total, list: state.list.list.concat(res.list) } });
     }
 
     case locationAction.ActionTypes.LIST_LOAD_MORE_ERROR: {
