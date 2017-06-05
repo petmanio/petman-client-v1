@@ -7,6 +7,8 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import * as moment from 'moment';
+import { Meta } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IUtilService {
   initSocket(): void,
@@ -116,12 +118,14 @@ export class UtilService implements IUtilService {
 
   private _notificationSound = new Audio('/assets/trembling.mp3');
 
-  constructor(private _sailsService: SailsService, private _store: Store<fromRoot.State>) {}
+  constructor(private _sailsService: SailsService,
+              private _store: Store<fromRoot.State>,
+              private _meta: Meta,
+              private _translate: TranslateService) {}
 
   playNotificationSound(): void {
     this._notificationSound.play();
   }
-
 
   initSocket(): void {
     window['io'].sails.reconnection = true;
