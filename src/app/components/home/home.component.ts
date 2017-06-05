@@ -106,6 +106,8 @@ export interface IHomeComponent {
       position: absolute;
       background: #484848;
       opacity: 0.5;
+      top: 0;
+      left: 0;
     }
     
     .pm-home-card-sitters {
