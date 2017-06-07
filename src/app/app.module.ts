@@ -35,22 +35,32 @@ export function HttpLoaderFactory(http: Http) {
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
 
 import {
-  AppComponent,
-  LayoutComponent,
+  AppContainer,
+  LayoutContainer,
+  WelcomeContainer,
+  HomeContainer,
+  BlogContainer,
+  JoinContainer,
+  LocationContainer,
+  RoomsContainer,
+  RoomContainer,
+  RoomAddContainer,
+  RoomDetailsContainer,
+  WalkersContainer,
+  WalkerAddContainer,
+  WalkerDetailsContainer,
+  AdoptListContainer,
+  AdoptAddContainer,
+  AdoptDetailsContainer,
+  AboutUsContainer,
+} from './containers';
+
+import {
   NavItemComponent,
   SidenavComponent,
   ToolbarComponent,
-  WelcomeComponent,
-  HomeComponent,
-  BlogComponent,
   BlogItemComponent,
-  JoinComponent,
-  LocationComponent,
   LocationItemComponent,
-  RoomsComponent,
-  RoomComponent,
-  RoomAddComponent,
-  RoomDetailsComponent,
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
   RoomApplicationActionsComponent,
@@ -60,10 +70,7 @@ import {
   RoomReviewsListComponent,
   RoomReviewDialogComponent,
   RoomStatisticsComponent,
-  WalkersComponent,
   WalkerComponent,
-  WalkerAddComponent,
-  WalkerDetailsComponent,
   WalkerApplyDialogComponent,
   WalkerApplicationActionsComponent,
   WalkerApplicationMessagesComponent,
@@ -71,18 +78,15 @@ import {
   WalkerApplicationsListComponent,
   WalkerReviewsListComponent,
   WalkerReviewDialogComponent,
-  AdoptListComponent,
   AdoptCardComponent,
-  AdoptAddComponent,
-  AdoptDetailsComponent,
   AdoptCommentsComponent,
   AdoptCommentComponent,
   NotificationsComponent,
-  AboutUsComponent,
   ShareDialogComponent,
   MapComponent
 } from './components';
 import { FitContentsDirective } from './directives';
+
 import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
 import {
   AuthService,
@@ -103,59 +107,59 @@ import { reducer } from './store';
 const appRoutes: Routes = [
   {
     path: 'join',
-    component: JoinComponent,
+    component: JoinContainer,
   },
   {
     path: '',
-    component: HomeComponent
+    component: HomeContainer
   },
   {
     path: 'blog',
-    component: BlogComponent,
+    component: BlogContainer,
   },
   {
     path: 'locations',
-    component: LocationComponent,
+    component: LocationContainer,
   },
   {
     path: 'rooms',
-    component: RoomsComponent,
+    component: RoomsContainer,
   },
   {
     path: 'rooms/add',
-    component: RoomAddComponent,
+    component: RoomAddContainer,
   },
   {
     path: 'rooms/:roomId/details',
-    component: RoomDetailsComponent,
+    component: RoomDetailsContainer,
   },
   {
     path: 'walkers',
-    component: WalkersComponent,
+    component: WalkersContainer,
   },
   {
     path: 'walkers/add',
-    component: WalkerAddComponent,
+    component: WalkerAddContainer,
   },
   {
     path: 'walkers/:walkerId/details',
-    component: WalkerDetailsComponent,
+    component: WalkerDetailsContainer,
   },
   {
     path: 'adopt',
-    component: AdoptListComponent,
+    component: AdoptListContainer,
   },
   {
     path: 'adopt/add',
-    component: AdoptAddComponent,
+    component: AdoptAddContainer,
   },
   {
     path: 'adopt/:adoptId/details',
-    component: AdoptDetailsComponent,
+    component: AdoptDetailsContainer,
   },
   {
     path: 'about-us',
-    component: AboutUsComponent,
+    component: AboutUsContainer,
   },
   {
     path: '**',
@@ -165,22 +169,36 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LayoutComponent,
+    /**
+     * Containers
+     */
+    AppContainer,
+    LayoutContainer,
+    WelcomeContainer,
+    HomeContainer,
+    BlogContainer,
+    JoinContainer,
+    LocationContainer,
+    RoomsContainer,
+    RoomContainer,
+    RoomAddContainer,
+    RoomDetailsContainer,
+    WalkersContainer,
+    WalkerAddContainer,
+    WalkerDetailsContainer,
+    AdoptListContainer,
+    AdoptAddContainer,
+    AdoptDetailsContainer,
+    AboutUsContainer,
+
+    /**
+     * Components
+     */
     NavItemComponent,
     SidenavComponent,
     ToolbarComponent,
-    WelcomeComponent,
-    HomeComponent,
-    BlogComponent,
     BlogItemComponent,
-    JoinComponent,
-    LocationComponent,
     LocationItemComponent,
-    RoomsComponent,
-    RoomComponent,
-    RoomAddComponent,
-    RoomDetailsComponent,
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
     RoomApplicationActionsComponent,
@@ -190,10 +208,7 @@ const appRoutes: Routes = [
     RoomReviewsListComponent,
     RoomReviewDialogComponent,
     RoomStatisticsComponent,
-    WalkersComponent,
     WalkerComponent,
-    WalkerAddComponent,
-    WalkerDetailsComponent,
     WalkerApplyDialogComponent,
     WalkerApplicationActionsComponent,
     WalkerApplicationMessagesComponent,
@@ -201,14 +216,10 @@ const appRoutes: Routes = [
     WalkerApplicationsListComponent,
     WalkerReviewsListComponent,
     WalkerReviewDialogComponent,
-    AdoptListComponent,
     AdoptCardComponent,
-    AdoptAddComponent,
-    AdoptDetailsComponent,
     AdoptCommentsComponent,
     AdoptCommentComponent,
     NotificationsComponent,
-    AboutUsComponent,
     ShareDialogComponent,
     MapComponent,
     FitContentsDirective,
@@ -276,6 +287,6 @@ const appRoutes: Routes = [
     NotificationService,
     UtilService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppContainer]
 })
 export class AppModule { }

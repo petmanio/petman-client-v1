@@ -1,19 +1,8 @@
-export { AppComponent } from './app/app.component';
-export { BlogComponent } from './blog/blog.component';
 export { BlogItemComponent } from './blog-item/blog-item.component';
-export { HomeComponent } from './home/home.component';
-export { JoinComponent } from './join/join.component';
-export { LayoutComponent } from './layout/layout.component';
 export { NavItemComponent } from './nav-item/nav-item.component';
-export { LocationComponent } from './locations/locations.component';
 export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
-export { WelcomeComponent } from './welcome/welcome.component';
-export { RoomsComponent } from './rooms/rooms.component';
-export { RoomComponent } from './room/room.component';
-export { RoomAddComponent } from './room-add/room-add.component';
-export { RoomDetailsComponent } from './room-details/room-details.component';
 export { RoomRatingRowComponent } from './room-rating-row/room-rating-row.component';
 export { RoomApplyDialogComponent } from './room-apply-dialog/room-apply-dialog.component';
 export { RoomApplicationActionsComponent } from './room-application-actions/room-application-actions.component';
@@ -23,10 +12,7 @@ export { RoomApplicationsListComponent } from './room-applications-list/room-app
 export { RoomReviewsListComponent } from './room-reviews-list/room-reviews-list.component';
 export { RoomReviewDialogComponent } from './room-review-dialog/room-review-dialog.component';
 export { RoomStatisticsComponent } from './room-statistics/room-statistics.component';
-export { WalkersComponent } from './walkers/walkers.component';
 export { WalkerComponent } from './walker/walker.component';
-export { WalkerAddComponent } from './walker-add/walker-add.component';
-export { WalkerDetailsComponent } from './walker-details/walker-details.component';
 export { WalkerApplyDialogComponent } from './walker-apply-dialog/walker-apply-dialog.component';
 export { WalkerApplicationActionsComponent } from './walker-application-actions/walker-application-actions.component';
 export { WalkerApplicationMessagesComponent } from './walker-application-messages/walker-application-messages.component';
@@ -34,13 +20,10 @@ export { WalkerApplicationMessageComponent } from './walker-application-message/
 export { WalkerApplicationsListComponent } from './walker-applications-list/walker-applications-list.component';
 export { WalkerReviewsListComponent } from './walker-reviews-list/walker-reviews-list.component';
 export { WalkerReviewDialogComponent } from './walker-review-dialog/walker-review-dialog.component';
-export { AdoptListComponent } from './adopt-list/adopt-list.component';
 export { AdoptCardComponent } from './adopt-card/adopt-card.component';
-export { AdoptAddComponent } from './adopt-add/adopt-add.component';
-export { AdoptDetailsComponent } from './adopt-details/adopt-details.component';
 export { AdoptCommentsComponent } from './adopt-comments/adopt-comments.component';
 export { AdoptCommentComponent } from './adopt-comment/adopt-comment.component';
 export { NotificationsComponent } from './notifications/notifications.component';
-export { AboutUsComponent } from './about-us/about-us.component';
 export { ShareDialogComponent } from './share-dialog/share-dialog.component';
 export { MapComponent } from './map/map.component';
+
