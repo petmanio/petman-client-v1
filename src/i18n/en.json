@@ -53,5 +53,7 @@
   "please_login": "Please login",
   "no_notifications_yet": "No notifications yet",
   "login": "Login",
-  "sorry_you_have_unfinished_application": "Sorry, but you have unfinished application"
+  "sorry_you_have_unfinished_application": "Sorry, but you have unfinished application",
+  "page_not_found": "Page not found :(",
+  "page_not_found_content": "Maybe the page you are looking for has been removed, or you typed in the wrong URL."
 }

@@ -249,7 +249,7 @@ export class RoomDetailsContainer implements OnInit, OnDestroy, IRoomDetailsCont
       .ofType(roomAction.ActionTypes.GET_BY_ID_ERROR)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['/']);
+        this._router.navigate(['404']);
       })
       .subscribe();
   }

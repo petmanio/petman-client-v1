@@ -53,6 +53,7 @@ import {
   AdoptAddContainer,
   AdoptDetailsContainer,
   AboutUsContainer,
+  NotFoundContainer
 } from './containers';
 
 import {
@@ -162,8 +163,12 @@ const appRoutes: Routes = [
     component: AboutUsContainer,
   },
   {
+    path: '404',
+    component: NotFoundContainer
+  },
+  {
     path: '**',
-    redirectTo: '/'
+    redirectTo: '404'
   }
 ];
 
@@ -190,6 +195,7 @@ const appRoutes: Routes = [
     AdoptAddContainer,
     AdoptDetailsContainer,
     AboutUsContainer,
+    NotFoundContainer,
 
     /**
      * Components

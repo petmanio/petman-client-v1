@@ -147,7 +147,7 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
       .ofType(adoptAction.ActionTypes.GET_BY_ID_ERROR)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['/']);
+        this._router.navigate(['404']);
       })
       .subscribe();
   }

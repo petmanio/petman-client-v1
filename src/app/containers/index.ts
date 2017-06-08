@@ -16,3 +16,4 @@ export { AdoptListContainer } from './adopt-list/adopt-list.container';
 export { AdoptAddContainer } from './adopt-add/adopt-add.container';
 export { AdoptDetailsContainer } from './adopt-details/adopt-details.container';
 export { AboutUsContainer } from './about-us/about-us.container';
+export { NotFoundContainer } from './not-found/not-found.container';

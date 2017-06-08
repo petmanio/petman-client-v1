@@ -230,7 +230,7 @@ export class WalkerDetailsContainer implements OnInit, OnDestroy, IWalkerDetails
       .ofType(walkerAction.ActionTypes.GET_BY_ID_ERROR)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['/']);
+        this._router.navigate(['404']);
       })
       .subscribe();
   }
