@@ -44,7 +44,7 @@ export interface IRoomContainer {
       </md-card-content>
       <md-card-actions>
         <div class="pm-room-footer">
-          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash"></i>
+          <span class="pm-font-14 pm-color-gray" *ngIf="room"><i class="mdi mdi-cash"></i>
             {{ 'price_per_day' | translate:{price: room.cost} }}</span>&nbsp;
           <rating [ngModel]="averageRating"
                   [max]="5"

@@ -35,7 +35,7 @@ export interface IWalkerComponent {
       </md-card-content>
       <md-card-actions>
         <div class="pm-walker-footer">
-          <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash"></i>
+          <span class="pm-font-14 pm-color-gray" *ngIf="walker"><i class="mdi mdi-cash"></i>
             {{ 'price_per_day' | translate:{price: walker.cost} }}</span>&nbsp;
           <rating [ngModel]="averageRating"
                   [max]="5"

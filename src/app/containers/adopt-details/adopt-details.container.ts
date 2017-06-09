@@ -75,7 +75,8 @@ export interface IAdoptDetailsContainer {
         </div>
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <div class="pm-font-16 pm-color-gray pm-message-label">
+            <!--TODO: how another text if there are no comments-->
+            <div class="pm-font-16 pm-color-gray pm-message-label" *ngIf="(comments$ | async).total">
               {{'comment_total' | translate:{total: (comments$ | async)?.total} }} <i class="mdi mdi-comment-multiple-outline"></i></div>
             <app-adopt-comments 
               [adopt]="adoptAdopt$ | async" 

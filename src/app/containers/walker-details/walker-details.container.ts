@@ -49,7 +49,7 @@ export interface IWalkerDetailsContainer {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
+              <span class="pm-font-14 pm-color-gray" *ngIf="walkerWalker$ | async"><i class="mdi mdi-cash-usd"></i>
                 {{ 'price_per_day' | translate:{price: (walkerWalker$ | async)?.cost} }}</span>&nbsp;
               <rating [ngModel]="averageRating"
                       [max]="5"
