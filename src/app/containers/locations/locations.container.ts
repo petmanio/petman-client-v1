@@ -86,9 +86,9 @@ export interface ILocationContainer {
       overflow: auto;
     }
     app-map, .items {
-      height: calc(100vh - 202px);
-      height: -webkit-calc(100vh - 202px);
-      height: -moz-calc(100vh - 202px);
+      height: calc(100vh - 204px);
+      height: -webkit-calc(100vh - 204px);
+      height: -moz-calc(100vh - 204px);
     }
     md-chip {
       cursor: pointer;
@@ -100,9 +100,9 @@ export interface ILocationContainer {
       }
       app-map, .items {
         /* TODO: flexible height */
-        height: calc(100vh - 134px);
-        height: -webkit-calc(100vh - 134px);
-        height: -moz-calc(100vh - 134px);
+        height: calc(100vh - 136px);
+        height: -webkit-calc(100vh - 136px);
+        height: -moz-calc(100vh - 136px);
       }
       .items-container, .map-container {
         padding-top: 0;
@@ -127,7 +127,7 @@ export class LocationContainer implements OnInit, OnDestroy, ILocationContainer 
   public isMobile = UtilService.getCurrentDevice() !== 'DESKTOP';
   public mapView = false;
   private _skip = 0;
-  private _limit = 6;
+  private _limit = 10;
   private _total: number = null;
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _utilService: UtilService) {
     this.locationFilters$ = _store.select(fromRoot.getLocationFilters);
