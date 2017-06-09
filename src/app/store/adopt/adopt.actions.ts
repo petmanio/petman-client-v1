@@ -7,6 +7,8 @@ import {
   IAdoptCommentListResponse,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
+  IAdoptDeleteByIdRequest,
+  IAdoptDeleteByIdResponse,
   IAdoptGetByIdRequest,
   IAdoptGetByIdResponse,
   IAdoptListRequest,
@@ -26,6 +28,10 @@ export const ActionTypes = {
   GET_BY_ID_COMPLETE: type('[Adopt] Get By Id Complete'),
   GET_BY_ID_ERROR: type('[Adopt] Get By Id Error'),
   GET_BY_ID_CLEAR: type('[Adopt] Get By Id Clear'),
+
+  DELETE_BY_ID: type('[Adopt] Delete By Id'),
+  DELETE_BY_ID_COMPLETE: type('[Adopt] Delete By Id Complete'),
+  DELETE_BY_ID_ERROR: type('[Adopt] Delete By IdError'),
 
   LIST: type('[Adopt] List'),
   LIST_COMPLETE: type('[Adopt] List Complete'),
@@ -85,6 +91,28 @@ export class GetByIdClearAction implements Action {
 
   constructor(public payload: any) { }
 }
+
+/**
+ * Delete By Id
+ */
+export class DeleteByIdAction implements Action {
+  type = ActionTypes.DELETE_BY_ID;
+
+  constructor(public payload: IAdoptDeleteByIdRequest) { }
+}
+
+export class DeleteByIdCompleteAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+
+  constructor(public payload: IAdoptDeleteByIdResponse) { }
+}
+
+export class DeleteByIdErrorAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 
 /**
  * List
@@ -205,6 +233,9 @@ export type Actions
   | GetByIdCompleteAction
   | GetByIdErrorAction
   | GetByIdClearAction
+  | DeleteByIdAction
+  | DeleteByIdCompleteAction
+  | DeleteByIdErrorAction
   | ListAction
   | ListCompleteAction
   | ListErrorAction

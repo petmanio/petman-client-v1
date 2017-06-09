@@ -12,8 +12,10 @@ import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { AdoptService } from '../../services/adopt/adopt.service';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 export interface IAdoptDetailsContainer {
+  onDeleteClick(): void,
   formatDate(date): string,
   onShareClick(): void,
   onLoadMoreClick(): void
@@ -54,6 +56,10 @@ export interface IAdoptDetailsContainer {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
+              <button md-button class="pm-adopt-action-apply-edit" color="warn" (click)="onDeleteClick()"
+                      *ngIf="(adoptAdopt$ | async)?.isOwner">
+                <span class="pm-font-14 pm-color-red">{{'delete' | translate}} &nbsp;<i class="mdi mdi-delete"></i></span>
+              </button>
               <button md-icon-button class="pm-adopt-share" (click)="onShareClick()">
                 <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
               </button>
@@ -83,13 +89,17 @@ export interface IAdoptDetailsContainer {
   `,
   styles: [`
     .pm-adopt-share {
-      margin-left: auto;
+      /*margin-left: auto;*/
     }
     
     .pm-details-actions {
       display: flex;
       flex-direction: row;
       align-items: center;
+    }
+
+    .pm-adopt-action-apply-edit {
+      margin-left: auto;
     }
   `]
 })
@@ -190,7 +200,21 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
           FB.ui(fbShareOptions, response => {});
         }
       }
-    })
+    });
+  }
+
+  onDeleteClick(): void {
+    const _dialogRef = this._dialog.open(ConfirmDialogComponent);
+    _dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this._store.dispatch(new adoptAction.DeleteByIdAction({adoptId: this.adopt.id}));
+        this._actions$
+          .ofType(adoptAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .takeUntil(this._destroyed$)
+          .do(() => this._router.navigate(['adopt']))
+          .subscribe();
+      }
+    });
   }
 
   formatDate(date): string {

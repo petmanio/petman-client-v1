@@ -5,26 +5,28 @@ import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import {
   IWalkerApplicationMessageCreateRequest,
-  IWalkerApplicationMessageJoinRequest,
   IWalkerApplicationMessageListRequest,
   IWalkerApplicationMessageListResponse,
   IWalkerApplyRequest,
   IWalkerApplyResponse,
   IWalkerCreateRequest,
   IWalkerCreateResponse,
+  IWalkerDeleteByIdRequest,
+  IWalkerDeleteByIdResponse,
   IWalkerGetByIdRequest,
   IWalkerGetByIdResponse,
   IWalkerListRequest,
-  IWalkerListResponse, IWalkerShareOnFacebookRequest,
+  IWalkerListResponse,
+  IWalkerShareOnFacebookRequest,
   IWalkerUpdateApplicationRequest,
   IWalkerUpdateApplicationResponse
 } from '../../models/api';
 import { SailsService } from 'angular2-sails';
-import { assign } from 'lodash';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IWalkerService {
   getById(options: IWalkerGetByIdRequest): Observable<IWalkerGetByIdResponse>,
+  deleteById(options: IWalkerDeleteByIdRequest): Observable<IWalkerDeleteByIdResponse>,
   list(options: IWalkerListRequest): Observable<IWalkerListResponse>,
   create(options: IWalkerCreateRequest): Observable<IWalkerCreateResponse>,
   apply(options: IWalkerApplyRequest): Observable<IWalkerApplyResponse>,
@@ -51,6 +53,19 @@ export class WalkerService implements IWalkerService {
         { headers, withCredentials: true }
       )
       .map(response => response.json());
+  }
+
+  deleteById(options: IWalkerDeleteByIdRequest): Observable<IWalkerDeleteByIdResponse> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .delete(`${environment.apiEndpoint}/api/walker/${options.walkerId}`,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 
   list(options: IWalkerListRequest): Observable<IWalkerListResponse> {

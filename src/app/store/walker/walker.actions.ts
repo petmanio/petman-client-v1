@@ -1,11 +1,22 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IWalkerListRequest, IWalkerListResponse, IWalkerCreateRequest, IWalkerCreateResponse, IWalkerGetByIdRequest,
-  IWalkerGetByIdResponse, IWalkerApplyRequest, IWalkerApplyResponse, IWalkerUpdateApplicationRequest, IWalkerUpdateApplicationResponse,
-  IWalkerApplicationMessageListRequest, IWalkerApplicationMessageListResponse, IWalkerApplicationMessageJoinRequest,
-  IWalkerApplicationMessageCreateRequest, IWalkerApplicationMessageCreateEventResponse, IWalkerShareOnFacebookRequest,
-  IWalkerShareOnFacebookResponse
+  IWalkerApplicationMessageCreateEventResponse,
+  IWalkerApplicationMessageCreateRequest,
+  IWalkerApplicationMessageListRequest,
+  IWalkerApplicationMessageListResponse,
+  IWalkerApplyRequest,
+  IWalkerApplyResponse,
+  IWalkerCreateRequest,
+  IWalkerCreateResponse, IWalkerDeleteByIdRequest, IWalkerDeleteByIdResponse,
+  IWalkerGetByIdRequest,
+  IWalkerGetByIdResponse,
+  IWalkerListRequest,
+  IWalkerListResponse,
+  IWalkerShareOnFacebookRequest,
+  IWalkerShareOnFacebookResponse,
+  IWalkerUpdateApplicationRequest,
+  IWalkerUpdateApplicationResponse
 } from '../../models/api';
 
 /**
@@ -20,6 +31,10 @@ export const ActionTypes = {
   GET_BY_ID: type('[Walker] Get By Id'),
   GET_BY_ID_COMPLETE: type('[Walker] Get By Id Complete'),
   GET_BY_ID_ERROR: type('[Walker] Get By Id Error'),
+
+  DELETE_BY_ID: type('[Walker] Delete By Id'),
+  DELETE_BY_ID_COMPLETE: type('[Walker] Delete By Id Complete'),
+  DELETE_BY_ID_ERROR: type('[Walker] Delete By IdError'),
 
   LIST: type('[Walker] List'),
   LIST_COMPLETE: type('[Walker] List Complete'),
@@ -79,6 +94,27 @@ export class GetByIdCompleteAction implements Action {
 
 export class GetByIdErrorAction implements Action {
   type = ActionTypes.GET_BY_ID_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+/**
+ * Delete By Id
+ */
+export class DeleteByIdAction implements Action {
+  type = ActionTypes.DELETE_BY_ID;
+
+  constructor(public payload: IWalkerDeleteByIdRequest) { }
+}
+
+export class DeleteByIdCompleteAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+
+  constructor(public payload: IWalkerDeleteByIdResponse) { }
+}
+
+export class DeleteByIdErrorAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -248,6 +284,9 @@ export type Actions
   = GetByIdAction
   | GetByIdCompleteAction
   | GetByIdErrorAction
+  | DeleteByIdAction
+  | DeleteByIdCompleteAction
+  | DeleteByIdErrorAction
   | ListAction
   | ListCompleteAction
   | ListErrorAction

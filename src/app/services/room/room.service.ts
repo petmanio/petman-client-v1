@@ -11,7 +11,7 @@ import {
   IRoomApplyRequest,
   IRoomApplyResponse,
   IRoomCreateRequest,
-  IRoomCreateResponse,
+  IRoomCreateResponse, IRoomDeleteByIdRequest, IRoomDeleteByIdResponse,
   IRoomGetByIdRequest,
   IRoomGetByIdResponse,
   IRoomListRequest,
@@ -25,6 +25,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IRoomService {
   getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse>,
+  deleteById(options: IRoomDeleteByIdRequest): Observable<IRoomDeleteByIdResponse>,
   list(options: IRoomListRequest): Observable<IRoomListResponse>,
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse>,
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>,
@@ -51,6 +52,19 @@ export class RoomService implements IRoomService {
         { headers, withCredentials: true }
       )
       .map(response => response.json());
+  }
+
+  deleteById(options: IRoomDeleteByIdRequest): Observable<IRoomDeleteByIdResponse> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .delete(`${environment.apiEndpoint}/api/room/${options.roomId}`,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 
   list(options: IRoomListRequest): Observable<IRoomListResponse> {

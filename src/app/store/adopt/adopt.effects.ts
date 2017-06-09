@@ -28,6 +28,7 @@ import * as adoptAction from '../../store/adopt/adopt.actions';
 
 interface IAdoptEffects {
   getById$: Observable<Action>,
+  deleteById$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   commentList$: Observable<Action>,
@@ -44,6 +45,15 @@ export class AdoptEffects implements IAdoptEffects {
       return this._adoptService.getById(options)
         .map(response => new adoptAction.GetByIdCompleteAction(response))
         .catch(err => of(new adoptAction.GetByIdErrorAction(err)))
+    });
+
+  @Effect() deleteById$: Observable<Action> = this._actions$
+    .ofType(adoptAction.ActionTypes.DELETE_BY_ID)
+    .map((action: adoptAction.DeleteByIdAction) => action.payload)
+    .switchMap(options => {
+      return this._adoptService.deleteById(options)
+        .map(response => new adoptAction.DeleteByIdCompleteAction(response))
+        .catch(err => of(new adoptAction.DeleteByIdErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$

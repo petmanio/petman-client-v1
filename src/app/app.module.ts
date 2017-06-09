@@ -84,7 +84,8 @@ import {
   AdoptCommentComponent,
   NotificationsComponent,
   ShareDialogComponent,
-  MapComponent
+  MapComponent,
+  ConfirmDialogComponent
 } from './components';
 import { FitContentsDirective } from './directives';
 
@@ -228,6 +229,7 @@ const appRoutes: Routes = [
     NotificationsComponent,
     ShareDialogComponent,
     MapComponent,
+    ConfirmDialogComponent,
     FitContentsDirective,
     EllipsisPipe,
     KeysPipe,
@@ -240,7 +242,8 @@ const appRoutes: Routes = [
     RoomReviewDialogComponent,
     WalkerApplyDialogComponent,
     WalkerReviewDialogComponent,
-    ShareDialogComponent
+    ShareDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,

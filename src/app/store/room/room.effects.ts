@@ -28,6 +28,7 @@ import * as roomAction from '../../store/room/room.actions';
 
 interface IRoomEffects {
   getById$: Observable<Action>,
+  deleteById$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>,
@@ -46,6 +47,15 @@ export class RoomEffects implements IRoomEffects {
       return this._roomService.getById(options)
         .map(response => new roomAction.GetByIdCompleteAction(response))
         .catch(err => of(new roomAction.GetByIdErrorAction(err)))
+    });
+
+  @Effect() deleteById$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.DELETE_BY_ID)
+    .map((action: roomAction.DeleteByIdAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.deleteById(options)
+        .map(response => new roomAction.DeleteByIdCompleteAction(response))
+        .catch(err => of(new roomAction.DeleteByIdErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$

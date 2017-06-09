@@ -11,6 +11,8 @@ import {
   IAdoptCommentStreamJoinRequest,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
+  IAdoptDeleteByIdRequest,
+  IAdoptDeleteByIdResponse,
   IAdoptGetByIdRequest,
   IAdoptGetByIdResponse,
   IAdoptListRequest,
@@ -20,6 +22,7 @@ import { SailsService } from 'angular2-sails';
 
 export interface IAdoptService {
   getById(options: IAdoptGetByIdRequest): Observable<IAdoptGetByIdResponse>,
+  deleteById(options: IAdoptDeleteByIdRequest): Observable<IAdoptDeleteByIdResponse>,
   list(options: IAdoptListRequest): Observable<IAdoptListResponse>,
   create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse>,
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse>,
@@ -44,6 +47,19 @@ export class AdoptService implements IAdoptService {
         { headers, withCredentials: true }
       )
       .map(response => response.json());
+  }
+
+  deleteById(options: IAdoptDeleteByIdRequest): Observable<IAdoptDeleteByIdResponse> {
+    const headers = new Headers();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .delete(`${environment.apiEndpoint}/api/adopt/${options.adoptId}`,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 
   list(options: IAdoptListRequest): Observable<IAdoptListResponse> {

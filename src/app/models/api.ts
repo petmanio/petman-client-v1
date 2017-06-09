@@ -301,6 +301,12 @@ export interface IRoomGetByIdRequest {
 
 export interface IRoomGetByIdResponse extends IRoom {}
 
+export interface IRoomDeleteByIdRequest {
+  roomId: number
+}
+
+export interface IRoomDeleteByIdResponse {}
+
 export interface IRoomApplyRequest {
   roomId: number
 }
@@ -377,6 +383,12 @@ export interface IWalkerGetByIdRequest {
 
 export interface IWalkerGetByIdResponse extends IWalker {}
 
+export interface IWalkerDeleteByIdRequest {
+  walkerId: number
+}
+
+export interface IWalkerDeleteByIdResponse {}
+
 export interface IWalkerApplyRequest {
   walkerId: number
 }
@@ -448,6 +460,12 @@ export interface IAdoptGetByIdRequest {
 }
 
 export interface IAdoptGetByIdResponse extends IAdopt {}
+
+export interface IAdoptDeleteByIdRequest {
+  adoptId: number
+}
+
+export interface IAdoptDeleteByIdResponse {}
 
 export interface IAdoptGetByIdRequest {
   adoptId: number

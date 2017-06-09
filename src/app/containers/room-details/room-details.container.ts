@@ -15,9 +15,11 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { RoomReviewDialogComponent } from '../../components/room-review-dialog/room-review-dialog.component';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 export interface IRoomDetailsContainer {
-  onRatingRowClick(): void
+  onRatingRowClick(): void,
+  onDeleteClick(): void,
   onApplicationSelect(application: IRoomApplication): void,
   onActionClick(status: string): void,
   onShareClick(): void,
@@ -73,10 +75,10 @@ export interface IRoomDetailsContainer {
               <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="!(roomRoom$ | async)?.isOwner">
                 <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
               </button>
-              <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()" *ngIf="(roomRoom$ | async)?.isOwner">
-                <!--<span class="pm-font-14 pm-color-gray">{{'edit' | translate}} &nbsp;<i class="mdi mdi-table-edit"></i></span>-->
+              <button md-button class="pm-room-action-apply-edit" color="warn" (click)="onDeleteClick()"
+                      *ngIf="(roomRoom$ | async)?.isOwner">
+                <span class="pm-font-14 pm-color-red">{{'delete' | translate}} &nbsp;<i class="mdi mdi-delete"></i></span>
               </button>
-              &nbsp;&nbsp;
               <button md-icon-button (click)="onShareClick()">
                 <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
               </button>
@@ -284,15 +286,25 @@ export class RoomDetailsContainer implements OnInit, OnDestroy, IRoomDetailsCont
           FB.ui(fbShareOptions, response => {});
         }
       }
-    })
+    });
+  }
+
+  onDeleteClick(): void {
+    const _dialogRef = this._dialog.open(ConfirmDialogComponent);
+    _dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this._store.dispatch(new roomAction.DeleteByIdAction({roomId: this.room.id}));
+        this._actions$
+          .ofType(roomAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .takeUntil(this._destroyed$)
+          .do(() => this._router.navigate(['rooms']))
+          .subscribe();
+      }
+    });
   }
 
   onRatingRowClick(): void {
-    if (this.room.isOwner) {
-      // this._snackBar.open(`Sorry but now edit functionality not available`, null, {
-      //   duration: 3000
-      // });
-    } else if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
+    if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
       this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
         duration: 3000
       });

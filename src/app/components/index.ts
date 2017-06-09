@@ -26,4 +26,5 @@ export { AdoptCommentComponent } from './adopt-comment/adopt-comment.component';
 export { NotificationsComponent } from './notifications/notifications.component';
 export { ShareDialogComponent } from './share-dialog/share-dialog.component';
 export { MapComponent } from './map/map.component';
+export { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 

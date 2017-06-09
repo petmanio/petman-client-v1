@@ -1,11 +1,24 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IRoomListRequest, IRoomListResponse, IRoomCreateRequest, IRoomCreateResponse, IRoomGetByIdRequest,
-  IRoomGetByIdResponse, IRoomApplyRequest, IRoomApplyResponse, IRoomUpdateApplicationRequest, IRoomUpdateApplicationResponse,
-  IRoomApplicationMessageListRequest, IRoomApplicationMessageListResponse, IRoomApplicationMessageJoinRequest,
-  IRoomApplicationMessageCreateRequest, IRoomApplicationMessageCreateEventResponse, IRoomShareOnFacebookRequest,
-  IRoomShareOnFacebookResponse
+  IRoomApplicationMessageCreateEventResponse,
+  IRoomApplicationMessageCreateRequest,
+  IRoomApplicationMessageListRequest,
+  IRoomApplicationMessageListResponse,
+  IRoomApplyRequest,
+  IRoomApplyResponse,
+  IRoomCreateRequest,
+  IRoomCreateResponse,
+  IRoomDeleteByIdRequest,
+  IRoomDeleteByIdResponse,
+  IRoomGetByIdRequest,
+  IRoomGetByIdResponse,
+  IRoomListRequest,
+  IRoomListResponse,
+  IRoomShareOnFacebookRequest,
+  IRoomShareOnFacebookResponse,
+  IRoomUpdateApplicationRequest,
+  IRoomUpdateApplicationResponse
 } from '../../models/api';
 
 /**
@@ -20,6 +33,10 @@ export const ActionTypes = {
   GET_BY_ID: type('[Room] Get By Id'),
   GET_BY_ID_COMPLETE: type('[Room] Get By Id Complete'),
   GET_BY_ID_ERROR: type('[Room] Get By Id Error'),
+
+  DELETE_BY_ID: type('[Room] Delete By Id'),
+  DELETE_BY_ID_COMPLETE: type('[Room] Delete By Id Complete'),
+  DELETE_BY_ID_ERROR: type('[Room] Delete By IdError'),
 
   LIST: type('[Room] List'),
   LIST_COMPLETE: type('[Room] List Complete'),
@@ -79,6 +96,27 @@ export class GetByIdCompleteAction implements Action {
 
 export class GetByIdErrorAction implements Action {
   type = ActionTypes.GET_BY_ID_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+/**
+ * Delete By Id
+ */
+export class DeleteByIdAction implements Action {
+  type = ActionTypes.DELETE_BY_ID;
+
+  constructor(public payload: IRoomDeleteByIdRequest) { }
+}
+
+export class DeleteByIdCompleteAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+
+  constructor(public payload: IRoomDeleteByIdResponse) { }
+}
+
+export class DeleteByIdErrorAction implements Action {
+  type = ActionTypes.DELETE_BY_ID_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -248,6 +286,9 @@ export type Actions
   = GetByIdAction
   | GetByIdCompleteAction
   | GetByIdErrorAction
+  | DeleteByIdAction
+  | DeleteByIdCompleteAction
+  | DeleteByIdErrorAction
   | ListAction
   | ListCompleteAction
   | ListErrorAction

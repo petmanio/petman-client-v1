@@ -28,6 +28,7 @@ import * as walkerAction from '../../store/walker/walker.actions';
 
 interface IWalkerEffects {
   getById$: Observable<Action>,
+  deleteById$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>,
@@ -46,6 +47,15 @@ export class WalkerEffects implements IWalkerEffects {
       return this._walkerService.getById(options)
         .map(response => new walkerAction.GetByIdCompleteAction(response))
         .catch(err => of(new walkerAction.GetByIdErrorAction(err)))
+    });
+
+  @Effect() deleteById$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.DELETE_BY_ID)
+    .map((action: walkerAction.DeleteByIdAction) => action.payload)
+    .switchMap(options => {
+      return this._walkerService.deleteById(options)
+        .map(response => new walkerAction.DeleteByIdCompleteAction(response))
+        .catch(err => of(new walkerAction.DeleteByIdErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
