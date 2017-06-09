@@ -52,6 +52,9 @@ import {
   AdoptListContainer,
   AdoptAddContainer,
   AdoptDetailsContainer,
+  LostFoundListContainer,
+  LostFoundAddContainer,
+  LostFoundDetailsContainer,
   AboutUsContainer,
   NotFoundContainer
 } from './containers';
@@ -82,6 +85,9 @@ import {
   AdoptCardComponent,
   AdoptCommentsComponent,
   AdoptCommentComponent,
+  LostFoundCardComponent,
+  LostFoundCommentsComponent,
+  LostFoundCommentComponent,
   NotificationsComponent,
   ShareDialogComponent,
   MapComponent,
@@ -98,9 +104,19 @@ import {
   RoomService,
   WalkerService,
   AdoptService,
+  LostFoundService,
   NotificationService
 } from './services';
-import { AuthEffects, BlogEffects, LocationEffects, RoomEffects, WalkerEffects, AdoptEffects, NotificationEffects } from './store';
+import {
+  AuthEffects,
+  BlogEffects,
+  LocationEffects,
+  RoomEffects,
+  WalkerEffects,
+  AdoptEffects,
+  NotificationEffects,
+  LostFoundEffects
+} from './store';
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
@@ -160,6 +176,18 @@ const appRoutes: Routes = [
     component: AdoptDetailsContainer,
   },
   {
+    path: 'lost-found',
+    component: LostFoundListContainer,
+  },
+  {
+    path: 'lost-found/add',
+    component: LostFoundAddContainer,
+  },
+  {
+    path: 'lost-found/:lostFoundId/details',
+    component: LostFoundDetailsContainer,
+  },
+  {
     path: 'about-us',
     component: AboutUsContainer,
   },
@@ -195,6 +223,9 @@ const appRoutes: Routes = [
     AdoptListContainer,
     AdoptAddContainer,
     AdoptDetailsContainer,
+    LostFoundListContainer,
+    LostFoundAddContainer,
+    LostFoundDetailsContainer,
     AboutUsContainer,
     NotFoundContainer,
 
@@ -226,6 +257,9 @@ const appRoutes: Routes = [
     AdoptCardComponent,
     AdoptCommentsComponent,
     AdoptCommentComponent,
+    LostFoundCardComponent,
+    LostFoundCommentsComponent,
+    LostFoundCommentComponent,
     NotificationsComponent,
     ShareDialogComponent,
     MapComponent,
@@ -282,6 +316,7 @@ const appRoutes: Routes = [
     EffectsModule.run(RoomEffects),
     EffectsModule.run(WalkerEffects),
     EffectsModule.run(AdoptEffects),
+    EffectsModule.run(LostFoundEffects),
     EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],
@@ -293,6 +328,7 @@ const appRoutes: Routes = [
     RoomService,
     WalkerService,
     AdoptService,
+    LostFoundService,
     NotificationService,
     UtilService
   ],

@@ -1,18 +1,18 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IAdoptCommentCreateEventResponse,
-  IAdoptCommentCreateRequest,
-  IAdoptCommentListRequest,
-  IAdoptCommentListResponse,
-  IAdoptCreateRequest,
-  IAdoptCreateResponse,
-  IAdoptDeleteByIdRequest,
-  IAdoptDeleteByIdResponse,
-  IAdoptGetByIdRequest,
-  IAdoptGetByIdResponse,
-  IAdoptListRequest,
-  IAdoptListResponse
+  ILostFoundCommentCreateEventResponse,
+  ILostFoundCommentCreateRequest,
+  ILostFoundCommentListRequest,
+  ILostFoundCommentListResponse,
+  ILostFoundCreateRequest,
+  ILostFoundCreateResponse,
+  ILostFoundDeleteByIdRequest,
+  ILostFoundDeleteByIdResponse,
+  ILostFoundGetByIdRequest,
+  ILostFoundGetByIdResponse,
+  ILostFoundListRequest,
+  ILostFoundListResponse
 } from '../../models/api';
 
 /**
@@ -24,36 +24,36 @@ import {
  * action types in the application are unique.
  */
 export const ActionTypes = {
-  GET_BY_ID: type('[Adopt] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[Adopt] Get By Id Complete'),
-  GET_BY_ID_ERROR: type('[Adopt] Get By Id Error'),
-  GET_BY_ID_CLEAR: type('[Adopt] Get By Id Clear'),
+  GET_BY_ID: type('[LostFound] Get By Id'),
+  GET_BY_ID_COMPLETE: type('[LostFound] Get By Id Complete'),
+  GET_BY_ID_ERROR: type('[LostFound] Get By Id Error'),
+  GET_BY_ID_CLEAR: type('[LostFound] Get By Id Clear'),
 
-  DELETE_BY_ID: type('[Adopt] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[Adopt] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[Adopt] Delete By IdError'),
+  DELETE_BY_ID: type('[LostFound] Delete By Id'),
+  DELETE_BY_ID_COMPLETE: type('[LostFound] Delete By Id Complete'),
+  DELETE_BY_ID_ERROR: type('[LostFound] Delete By IdError'),
 
-  LIST: type('[Adopt] List'),
-  LIST_COMPLETE: type('[Adopt] List Complete'),
-  LIST_ERROR: type('[Adopt] List Error'),
-  LIST_CLEAR: type('[Adopt] List Clear'),
+  LIST: type('[LostFound] List'),
+  LIST_COMPLETE: type('[LostFound] List Complete'),
+  LIST_ERROR: type('[LostFound] List Error'),
+  LIST_CLEAR: type('[LostFound] List Clear'),
 
-  CREATE: type('[Adopt] Create'),
-  CREATE_COMPLETE: type('[Adopt] Create Complete'),
-  CREATE_ERROR: type('[Adopt] Create Error'),
+  CREATE: type('[LostFound] Create'),
+  CREATE_COMPLETE: type('[LostFound] Create Complete'),
+  CREATE_ERROR: type('[LostFound] Create Error'),
 
-  COMMENT_LIST: type('[Adopt] Comment List'),
-  COMMENT_LIST_COMPLETE: type('[Adopt] Comment Complete'),
-  COMMENT_LIST_ERROR: type('[Adopt] Comment Error'),
+  COMMENT_LIST: type('[LostFound] Comment List'),
+  COMMENT_LIST_COMPLETE: type('[LostFound] Comment Complete'),
+  COMMENT_LIST_ERROR: type('[LostFound] Comment Error'),
 
-  COMMENT_LIST_LOAD_MORE: type('[Adopt] Comment Load More'),
-  COMMENT_LIST_LOAD_MORE_COMPLETE: type('[Adopt] Comment Load More Complete'),
-  COMMENT_LIST_LOAD_MORE_ERROR: type('[Adopt] Comment Load More Error'),
+  COMMENT_LIST_LOAD_MORE: type('[LostFound] Comment Load More'),
+  COMMENT_LIST_LOAD_MORE_COMPLETE: type('[LostFound] Comment Load More Complete'),
+  COMMENT_LIST_LOAD_MORE_ERROR: type('[LostFound] Comment Load More Error'),
 
-  COMMENT_CREATE: type('[Adopt] Comment Create'),
+  COMMENT_CREATE: type('[LostFound] Comment Create'),
   // TODO: add actions for complete and error
 
-  COMMENT_CREATE_EVENT: type('[Adopt] Comment Create Event'),
+  COMMENT_CREATE_EVENT: type('[LostFound] Comment Create Event'),
   // TODO: add actions for complete and error
 };
 
@@ -71,13 +71,13 @@ export const ActionTypes = {
 export class GetByIdAction implements Action {
   type = ActionTypes.GET_BY_ID;
 
-  constructor(public payload: IAdoptGetByIdRequest) { }
+  constructor(public payload: ILostFoundGetByIdRequest) { }
 }
 
 export class GetByIdCompleteAction implements Action {
   type = ActionTypes.GET_BY_ID_COMPLETE;
 
-  constructor(public payload: IAdoptGetByIdResponse) { }
+  constructor(public payload: ILostFoundGetByIdResponse) { }
 }
 
 export class GetByIdErrorAction implements Action {
@@ -98,13 +98,13 @@ export class GetByIdClearAction implements Action {
 export class DeleteByIdAction implements Action {
   type = ActionTypes.DELETE_BY_ID;
 
-  constructor(public payload: IAdoptDeleteByIdRequest) { }
+  constructor(public payload: ILostFoundDeleteByIdRequest) { }
 }
 
 export class DeleteByIdCompleteAction implements Action {
   type = ActionTypes.DELETE_BY_ID_COMPLETE;
 
-  constructor(public payload: IAdoptDeleteByIdResponse) { }
+  constructor(public payload: ILostFoundDeleteByIdResponse) { }
 }
 
 export class DeleteByIdErrorAction implements Action {
@@ -120,13 +120,13 @@ export class DeleteByIdErrorAction implements Action {
 export class ListAction implements Action {
   type = ActionTypes.LIST;
 
-  constructor(public payload: IAdoptListRequest) { }
+  constructor(public payload: ILostFoundListRequest) { }
 }
 
 export class ListCompleteAction implements Action {
   type = ActionTypes.LIST_COMPLETE;
 
-  constructor(public payload: IAdoptListResponse) { }
+  constructor(public payload: ILostFoundListResponse) { }
 }
 
 export class ListErrorAction implements Action {
@@ -147,13 +147,13 @@ export class ListClearAction implements Action {
 export class CreateAction implements Action {
   type = ActionTypes.CREATE;
 
-  constructor(public payload: IAdoptCreateRequest) { }
+  constructor(public payload: ILostFoundCreateRequest) { }
 }
 
 export class CreateCompleteAction implements Action {
   type = ActionTypes.CREATE_COMPLETE;
 
-  constructor(public payload: IAdoptCreateResponse) { }
+  constructor(public payload: ILostFoundCreateResponse) { }
 }
 
 export class CreateErrorAction implements Action {
@@ -168,13 +168,13 @@ export class CreateErrorAction implements Action {
 export class CommentListAction implements Action {
   type = ActionTypes.COMMENT_LIST;
 
-  constructor(public payload: IAdoptCommentListRequest) { }
+  constructor(public payload: ILostFoundCommentListRequest) { }
 }
 
 export class CommentListCompleteAction implements Action {
   type = ActionTypes.COMMENT_LIST_COMPLETE;
 
-  constructor(public payload: IAdoptCommentListResponse) { }
+  constructor(public payload: ILostFoundCommentListResponse) { }
 }
 
 export class CommentListErrorAction implements Action {
@@ -189,13 +189,13 @@ export class CommentListErrorAction implements Action {
 export class CommentListLoadMoreAction implements Action {
   type = ActionTypes.COMMENT_LIST_LOAD_MORE;
 
-  constructor(public payload: IAdoptCommentListRequest) { }
+  constructor(public payload: ILostFoundCommentListRequest) { }
 }
 
 export class CommentListLoadMoreCompleteAction implements Action {
   type = ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE;
 
-  constructor(public payload: IAdoptCommentListResponse) { }
+  constructor(public payload: ILostFoundCommentListResponse) { }
 }
 
 export class CommentListLoadMoreErrorAction implements Action {
@@ -211,7 +211,7 @@ export class CommentListLoadMoreErrorAction implements Action {
 export class CommentCreateAction implements Action {
   type = ActionTypes.COMMENT_CREATE;
 
-  constructor(public payload: IAdoptCommentCreateRequest) { }
+  constructor(public payload: ILostFoundCommentCreateRequest) { }
 }
 
 /**
@@ -220,7 +220,7 @@ export class CommentCreateAction implements Action {
 export class CommentCreateEventAction implements Action {
   type = ActionTypes.COMMENT_CREATE_EVENT;
 
-  constructor(public payload: IAdoptCommentCreateEventResponse) { }
+  constructor(public payload: ILostFoundCommentCreateEventResponse) { }
 }
 
 

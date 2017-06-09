@@ -5,16 +5,16 @@ import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as fromRoot from '../../store';
-import * as adoptAction from '../../store/adopt/adopt.actions';
+import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
+import { ILostFound, ILostFoundCommentListResponse } from '../../models/api';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
-import { AdoptService } from '../../services/adopt/adopt.service';
+import { LostFoundService } from '../../services/lostFound/lostFound.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
-export interface IAdoptDetailsContainer {
+export interface ILostFoundDetailsContainer {
   onDeleteClick(): void,
   formatDate(date): string,
   onShareClick(): void,
@@ -22,7 +22,7 @@ export interface IAdoptDetailsContainer {
 }
 
 @Component({
-  selector: 'app-adopt-details',
+  selector: 'app-lost-found-details',
   template: `
     <md-card>
       <md-card-content>
@@ -30,22 +30,27 @@ export interface IAdoptDetailsContainer {
           <div class="column is-10 is-offset-1">
             <md-card-header>
               <div md-card-avatar class="pm-cart-avatar"
-                   [ngStyle]="{'background-image': 'url(' + (adoptAdopt$ | async)?.user.userData.avatar + ')'}"></div>
+                   [ngStyle]="{'background-image': 'url(' + (lostFoundLostFound$ | async)?.user.userData.avatar + ')'}"></div>
               <md-card-title>
-                {{(adoptAdopt$ | async)?.user.userData.firstName}} {{(adoptAdopt$ | async)?.user.userData.lastName}}</md-card-title>
+                {{(lostFoundLostFound$ | async)?.user.userData.firstName}} {{(lostFoundLostFound$ | async)?.user.userData.lastName}}
+              </md-card-title>
               <md-card-subtitle>
               <span class="pm-font-12 pm-color-gray">
-                {{formatDate((adoptAdopt$ | async)?.createdAt)}}
+                {{formatDate((lostFoundLostFound$ | async)?.createdAt)}}
               </span>
               </md-card-subtitle>
+              <md-chip-list *ngIf="(lostFoundLostFound$ | async)?.type">
+                <md-chip>
+                  {{(lostFoundLostFound$ | async)?.type | translate}}</md-chip>
+              </md-chip-list>
             </md-card-header>
           </div>
         </div>
         <div class="columns">
           <div class="column is-10 is-offset-1">
-            <div class="swiper-container" *ngIf="(adoptAdopt$ | async)?.images.length" [swiper]="swiperOptions">
+            <div class="swiper-container" *ngIf="(lostFoundLostFound$ | async)?.images.length" [swiper]="swiperOptions">
               <div class="swiper-wrapper">
-                <div *ngFor="let image of (adoptAdopt$ | async)?.images" class="swiper-slide">
+                <div *ngFor="let image of (lostFoundLostFound$ | async)?.images" class="swiper-slide">
                   <img class="pm-carousel-image" [src]="image.src">
                 </div>
               </div>
@@ -56,11 +61,11 @@ export interface IAdoptDetailsContainer {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <button md-button class="pm-adopt-action-apply-edit" color="warn" (click)="onDeleteClick()"
-                      *ngIf="(adoptAdopt$ | async)?.isOwner">
+              <button md-button class="pm-lost-found-action-apply-edit" color="warn" (click)="onDeleteClick()"
+                      *ngIf="(lostFoundLostFound$ | async)?.isOwner">
                 <span class="pm-font-14 pm-color-red">{{'delete' | translate}} &nbsp;<i class="mdi mdi-delete"></i></span>
               </button>
-              <button md-icon-button class="pm-adopt-share" (click)="onShareClick()">
+              <button md-icon-button class="pm-lost-found-share" (click)="onShareClick()">
                 <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
               </button>
             </div>
@@ -70,7 +75,7 @@ export interface IAdoptDetailsContainer {
         </div>
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <span class="pm-color-gray pm-font-16">{{(adoptAdopt$ | async)?.description}}</span>
+            <span class="pm-color-gray pm-font-16">{{(lostFoundLostFound$ | async)?.description}}</span>
           </div>
         </div>
         <div class="columns">
@@ -78,18 +83,18 @@ export interface IAdoptDetailsContainer {
             <!--TODO: show another text if there are no comments-->
             <div class="pm-font-16 pm-color-gray pm-message-label" *ngIf="(comments$ | async)?.total">
               {{'comment_total' | translate:{total: (comments$ | async)?.total} }} <i class="mdi mdi-comment-multiple-outline"></i></div>
-            <app-adopt-comments 
-              [adopt]="adoptAdopt$ | async" 
-              *ngIf="adoptAdopt$ | async"
+            <app-lost-found-comments 
+              [lostFound]="lostFoundLostFound$ | async" 
+              *ngIf="lostFoundLostFound$ | async"
               [comments]="comments$ | async"
-              (loadMore)="onLoadMoreClick()"></app-adopt-comments>
+              (loadMore)="onLoadMoreClick()"></app-lost-found-comments>
           </div>
         </div>
       </md-card-content>
     </md-card>
   `,
   styles: [`
-    .pm-adopt-share {
+    .pm-lost-found-share {
       /*margin-left: auto;*/
     }
     
@@ -100,16 +105,20 @@ export interface IAdoptDetailsContainer {
       justify-content: flex-end;
     }
 
-    .pm-adopt-action-apply-edit {
+    .pm-lost-found-action-apply-edit {
       /*margin-left: auto;*/
+    }
+    
+    md-chip-list {
+      margin-left: auto;
     }
   `]
 })
-export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsContainer {
+export class LostFoundDetailsContainer implements OnInit, OnDestroy, ILostFoundDetailsContainer {
   // TODO: update attribute name
-  adoptAdopt$: Observable<any>;
-  comments$: Observable<IAdoptCommentListResponse>;
-  adopt: IAdopt;
+  lostFoundLostFound$: Observable<any>;
+  comments$: Observable<ILostFoundCommentListResponse>;
+  lostFound: ILostFound;
   swiperOptions: SwiperConfigInterface = {
     direction: 'horizontal',
     pagination: '.swiper-pagination',
@@ -117,10 +126,10 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
     autoplay: 3000,
     loop: false
   };
-  private _adoptId: number;
+  private _lostFoundId: number;
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;
-  private _adoptListener;
+  private _lostFoundListener;
   private _skip = 0;
   private _limit = 5;
   private _total = null;
@@ -131,32 +140,32 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
               private _utilService: UtilService,
               private _router: Router,
               private _actions$: Actions,
-              private _adoptService: AdoptService) {
-    this.adoptAdopt$ = _store.select(fromRoot.getAdoptAdopt);
-    this.comments$ = _store.select(fromRoot.getAdoptComments);
+              private _lostFoundService: LostFoundService) {
+    this.lostFoundLostFound$ = _store.select(fromRoot.getLostFoundLostFound);
+    this.comments$ = _store.select(fromRoot.getLostFoundComments);
   }
 
   ngOnInit(): void {
     // TODO: remove listener on destroy
     this._routeListener = this._activatedRoute.params.subscribe((params: Params) => {
-      this._adoptId = parseInt(params['adoptId'], 10);
-      if (!this._adoptId) {
+      this._lostFoundId = parseInt(params['lostFoundId'], 10);
+      if (!this._lostFoundId) {
         // TODO: use global error handling
-        throw new Error('AdoptDetailsContainer: adoptId is not defined');
+        throw new Error('LostFoundDetailsContainer: lostFoundId is not defined');
       }
 
       // TODO: join on reconnect
       // TODO: remove from app.component, create listener list and push
-      this._adoptService.joinComment({adoptId: this._adoptId}).subscribe();
-      this._store.dispatch(new adoptAction.GetByIdAction({adoptId: this._adoptId}));
-      this._store.dispatch(new adoptAction.CommentListAction({ adoptId: this._adoptId, skip: this._skip, limit: this._limit }));
+      this._lostFoundService.joinComment({lostFoundId: this._lostFoundId}).subscribe();
+      this._store.dispatch(new lostFoundAction.GetByIdAction({lostFoundId: this._lostFoundId}));
+      this._store.dispatch(new lostFoundAction.CommentListAction({ lostFoundId: this._lostFoundId, skip: this._skip, limit: this._limit }));
     });
 
     this.comments$.subscribe($event => this._total = $event.total);
-    this._adoptListener = this.adoptAdopt$.subscribe($event => this.adopt = $event);
+    this._lostFoundListener = this.lostFoundLostFound$.subscribe($event => this.lostFound = $event);
 
     this._actions$
-      .ofType(adoptAction.ActionTypes.GET_BY_ID_ERROR)
+      .ofType(lostFoundAction.ActionTypes.GET_BY_ID_ERROR)
       .takeUntil(this._destroyed$)
       .do((action) => {
         this._router.navigate(['404']);
@@ -165,16 +174,17 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
   }
 
   ngOnDestroy(): void {
-    this._store.dispatch(new adoptAction.GetByIdClearAction({}));
+    this._store.dispatch(new lostFoundAction.GetByIdClearAction({}));
     this._destroyed$.next(true);
     this._routeListener.unsubscribe();
-    this._adoptListener.unsubscribe();
+    this._lostFoundListener.unsubscribe();
   }
 
   onLoadMoreClick(): void {
     if (this._skip + this._limit < this._total) {
       this._skip += this._limit;
-      this._store.dispatch(new adoptAction.CommentListLoadMoreAction({ adoptId: this._adoptId, skip: this._skip, limit: this._limit }));
+      this._store.dispatch(new lostFoundAction.CommentListLoadMoreAction({
+        lostFoundId: this._lostFoundId, skip: this._skip, limit: this._limit }));
     }
   }
 
@@ -189,10 +199,10 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
             action_type: 'og.shares',
             action_properties: JSON.stringify({
               object : {
-                'og:url': `${location.origin}/adopt/${this.adopt.id}/details`,
+                'og:url': `${location.origin}/lost-found/${this.lostFound.id}/details`,
                 'og:title': 'Petman',
-                'og:description': this.adopt.description,
-                'og:image': this.adopt.images[0].src
+                'og:description': this.lostFound.description,
+                'og:image': this.lostFound.images[0].src
               }
             })
           };
@@ -209,11 +219,11 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
     const _dialogRef = this._dialog.open(ConfirmDialogComponent);
     _dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        this._store.dispatch(new adoptAction.DeleteByIdAction({adoptId: this.adopt.id}));
+        this._store.dispatch(new lostFoundAction.DeleteByIdAction({lostFoundId: this.lostFound.id}));
         this._actions$
-          .ofType(adoptAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .ofType(lostFoundAction.ActionTypes.DELETE_BY_ID_COMPLETE)
           .takeUntil(this._destroyed$)
-          .do(() => this._router.navigate(['adopt']))
+          .do(() => this._router.navigate(['lost-found']))
           .subscribe();
       }
     });

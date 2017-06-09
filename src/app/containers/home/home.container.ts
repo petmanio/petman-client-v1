@@ -14,18 +14,20 @@ export interface IHomeContainer {
 
 @Component({
   selector: 'app-home',
-  template: `
-    <!--<div class="columns" *ngIf="!(currentUser$ | async)">-->
-      <!--<div class="column pm-login">-->
-        <!--<button md-raised-button color="accent" class="pm-accent-color-white" (click)="fbLogin()">Login with Facebook</button>-->
-      <!--</div>-->
-    <!--</div>-->
+  template: `    
     <div class="columns">
-      <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
+      <div class="column pm-home-card pm-home-card-adopt" routerLink="/adopt">
         <div class="pm-home-card-overlay"></div>
         <span>
-            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'blog' | translate}}</span><br><br>
-            <span class="pm-font-16">{{'blog_intro' | translate}}</span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'adopt' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'adopt_intro' | translate}}</span>
+          </span>
+      </div>
+      <div class="column pm-home-card pm-home-card-walkers" routerLink="/walkers">
+        <div class="pm-home-card-overlay"></div>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'walkers' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'walkers_intro' | translate}}</span>
           </span>
       </div>
       <div class="column pm-home-card pm-home-card-locations" routerLink="/locations">
@@ -35,27 +37,27 @@ export interface IHomeContainer {
             <span class="pm-font-16">{{'locations_intro' | translate}}</span>
           </span>
       </div>
-      <div class="column pm-home-card pm-home-card-adopt" routerLink="/adopt">
-        <div class="pm-home-card-overlay"></div>
-        <span>
-            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'adopt' | translate}}</span><br><br>
-            <span class="pm-font-16">{{'adopt_intro' | translate}}</span>
-          </span>
-      </div>
     </div>
     <div class="columns">
-      <div class="column pm-home-card pm-home-card-walkers" routerLink="/walkers">
+      <div class="column pm-home-card pm-home-card-lost-found" routerLink="/lost-found">
         <div class="pm-home-card-overlay"></div>
         <span>
-            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'walkers' | translate}}</span><br><br>
-            <span class="pm-font-16">{{'walkers_intro' | translate}}</span>
-          </span>
+          <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'lost_or_found' | translate}}</span><br><br>
+          <span class="pm-font-16">{{'lost_or_found_intro' | translate}}</span>
+        </span>
       </div>
       <div class="column pm-home-card pm-home-card-sitters" routerLink="/rooms">
         <div class="pm-home-card-overlay"></div>
         <span>
             <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'sitters' | translate}}</span><br><br>
             <span class="pm-font-16">{{'sitters_intro' | translate}}</span>
+          </span>
+      </div>
+      <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
+        <div class="pm-home-card-overlay"></div>
+        <span>
+            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'blog' | translate}}</span><br><br>
+            <span class="pm-font-16">{{'blog_intro' | translate}}</span>
           </span>
       </div>
     </div>
@@ -123,6 +125,11 @@ export interface IHomeContainer {
     .pm-home-card-adopt {
       /*noinspection CssUnknownTarget*/
       background-image: url("/assets/adopt.jpg");
+    }
+
+    .pm-home-card-lost-found {
+      /*noinspection CssUnknownTarget*/
+      background-image: url("/assets/lost-found.jpg");
     }
 
     .pm-home-card-blog {

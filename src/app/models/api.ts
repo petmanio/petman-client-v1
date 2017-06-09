@@ -112,6 +112,27 @@ export interface IAdopt {
   createdAt: string,
 }
 
+export interface ILostFoundImage {
+  src: string,
+}
+
+export interface ILostFoundComment {
+  comment: string,
+  lostFound: number
+  user: IUser,
+  createdAt: string
+}
+
+export interface ILostFound {
+  id: number,
+  description: string,
+  images?: ILostFoundImage[],
+  comments?: ILostFoundComment[],
+  user?: IUser,
+  type: 'LOST' | 'FOUND'
+  createdAt: string,
+}
+
 export interface IWalkerApplication {
   id: number,
   rating: number,
@@ -191,6 +212,11 @@ export interface INotificationAdoptComment {
   adopt: number | IAdopt
 }
 
+export interface INotificationLostFoundComment {
+  comment: number | ILostFoundComment,
+  adopt: number | ILostFound
+}
+
 export interface INotification {
   id: number,
   from: number | IUser,
@@ -202,6 +228,7 @@ export interface INotification {
   walkerApplicationStatusUpdate: number | INotificationWalkerApplicationStatusUpdate,
   walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
   adoptCommentCreate: number | INotificationAdoptComment,
+  lostFoundCommentCreate: number | INotificationLostFoundComment,
   seen: boolean,
   createdAt: string
 }
@@ -497,6 +524,72 @@ export interface IAdoptCommentCreateEventResponse extends IAdoptComment {
 
 export interface IAdoptCommentStreamJoinRequest {
   adoptId: number,
+  'x-auth-token'?: string
+}
+
+/**
+ * LostFound
+ */
+export interface ILostFoundListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface ILostFoundListResponse {
+  list: ILostFound[],
+  count: number
+}
+
+export interface ILostFoundCreateRequest {
+  description: string,
+  type: 'LOST' | 'FOUND',
+  images: File[],
+}
+
+export interface ILostFoundCreateResponse extends ILostFound {}
+
+export interface ILostFoundGetByIdRequest {
+  lostFoundId: number
+}
+
+export interface ILostFoundGetByIdResponse extends ILostFound {}
+
+export interface ILostFoundDeleteByIdRequest {
+  lostFoundId: number
+}
+
+export interface ILostFoundDeleteByIdResponse {}
+
+export interface ILostFoundGetByIdRequest {
+  lostFoundId: number
+}
+
+export interface ILostFoundGetByIdResponse extends ILostFound {}
+
+
+export interface ILostFoundCommentListRequest {
+  lostFoundId: number,
+  skip?: number,
+  limit?: number
+}
+
+export interface ILostFoundCommentListResponse {
+  total: number,
+  list: ILostFoundComment[]
+}
+
+export interface ILostFoundCommentCreateRequest {
+  lostFoundId: number,
+  comment: string
+}
+
+// TODO: add ILostFoundCommentCreateResponse interface
+export interface ILostFoundCommentCreateEventResponse extends ILostFoundComment {
+
+}
+
+export interface ILostFoundCommentStreamJoinRequest {
+  lostFoundId: number,
   'x-auth-token'?: string
 }
 

@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
+import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -199,7 +200,7 @@ export class AppContainer implements OnInit, IAppContainer {
   notifications: INotification[];
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
-  showSpinner: boolean = true;
+  showSpinner = true;
   currentSideNavState: boolean;
   // TODO: improve notification status system
   unseenNotificationsCount = 0;
@@ -337,6 +338,9 @@ export class AppContainer implements OnInit, IAppContainer {
     } else if (notification.adoptCommentCreate) {
       const id = notification.adoptCommentCreate['adopt'];
       this._router.navigate(['adopt', id, 'details'])
+    } else if (notification.lostFoundCommentCreate) {
+      const id = notification.lostFoundCommentCreate['lostFound'];
+      this._router.navigate(['lost-found', id, 'details'])
     }
   }
 
@@ -411,6 +415,10 @@ export class AppContainer implements OnInit, IAppContainer {
 
     this._sailsService.on('adoptComment').subscribe(comment => {
       this._store.dispatch(new adoptAction.CommentCreateEventAction(comment));
+    });
+
+    this._sailsService.on('lostFoundComment').subscribe(comment => {
+      this._store.dispatch(new lostFoundAction.CommentCreateEventAction(comment));
     });
 
     // Notification Event

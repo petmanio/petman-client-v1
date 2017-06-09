@@ -23,6 +23,9 @@ export { WalkerReviewDialogComponent } from './walker-review-dialog/walker-revie
 export { AdoptCardComponent } from './adopt-card/adopt-card.component';
 export { AdoptCommentsComponent } from './adopt-comments/adopt-comments.component';
 export { AdoptCommentComponent } from './adopt-comment/adopt-comment.component';
+export { LostFoundCardComponent } from './lost-found-card/lost-found-card.component';
+export { LostFoundCommentsComponent } from './lost-found-comments/lost-found-comments.component';
+export { LostFoundCommentComponent } from './lost-found-comment/lost-found-comment.component';
 export { NotificationsComponent } from './notifications/notifications.component';
 export { ShareDialogComponent } from './share-dialog/share-dialog.component';
 export { MapComponent } from './map/map.component';

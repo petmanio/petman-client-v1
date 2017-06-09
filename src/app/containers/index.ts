@@ -17,3 +17,6 @@ export { AdoptAddContainer } from './adopt-add/adopt-add.container';
 export { AdoptDetailsContainer } from './adopt-details/adopt-details.container';
 export { AboutUsContainer } from './about-us/about-us.container';
 export { NotFoundContainer } from './not-found/not-found.container';
+export { LostFoundListContainer } from './lost-found-list/lost-found-list.container';
+export { LostFoundAddContainer } from './lost-found-add/lost-found-add.container';
+export { LostFoundDetailsContainer } from './lost-found-details/lost-found-details.container';

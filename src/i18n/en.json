@@ -4,6 +4,7 @@
   "sitters": "Sitters",
   "walkers": "Walkers",
   "adopt": "Adopt",
+  "lost_or_found": "Lost or found",
   "blog": "Blog",
   "wet_consultant": "Vet consultant",
   "about_us": "About us",
@@ -11,6 +12,7 @@
   "sitters_intro": "Leaving for a vacation? Give your pet into trusted hands. Pet-lovers will honestly take care of them!",
   "walkers_intro": "Let's walk together! We'll be happy to introduce your pet with all the secret petty places of our city",
   "adopt_intro": "Hey! It's love from the first sight! I want to make some trouble at your apartment ;)",
+  "lost_or_found_intro": "",
   "blog_intro": "Lot's of interesting articles from all over the world",
   "locations_intro": "Find the pettiest places of our city. Pet shops, parks, clinics and much more",
   "join_us": "Join us",
@@ -56,5 +58,9 @@
   "sorry_you_have_unfinished_application": "Sorry, but you have unfinished application",
   "page_not_found": "Page not found :(",
   "page_not_found_content": "Maybe the page you are looking for has been removed, or you typed in the wrong URL.",
-  "delete": "Delete"
+  "delete": "Delete",
+  "lost": "Lost",
+  "found": "Found",
+  "LOST": "LOST",
+  "FOUND": "FOUND"
 }

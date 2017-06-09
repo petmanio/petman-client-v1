@@ -66,6 +66,13 @@ export interface INotificationsComponent {
                 {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
+
+            <!--LostFound-->
+            <div *ngIf="notification.lostFoundCommentCreate">
+               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
+                {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+              </span>
+            </div>
             
             <div class="pm-font-12 pm-color-gray pm-room-notification-status">{{formatDate(notification.createdAt)}}</div>
           </div>

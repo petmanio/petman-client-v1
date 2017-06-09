@@ -3,6 +3,7 @@ export { BlogEffects } from './blog/blog.effects';
 export { RoomEffects } from './room/room.effects';
 export { WalkerEffects } from './walker/walker.effects';
 export { AdoptEffects } from './adopt/adopt.effects';
+export { LostFoundEffects } from './lostFound/lostFound.effects';
 export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
 
@@ -53,6 +54,7 @@ import * as fromLocation from './location/location.reducer';
 import * as fromRoom from './room/room.reducer';
 import * as fromWalker from './walker/walker.reducer';
 import * as fromAdopt from './adopt/adopt.reducer';
+import * as fromLostFound from './lostFound/lostFound.reducer';
 import * as fromNotification from './notification/notification.reducer';
 
 /**
@@ -66,6 +68,7 @@ export interface State {
   room: fromRoom.State,
   walker: fromWalker.State,
   adopt: fromAdopt.State,
+  lostFound: fromLostFound.State,
   notification: fromNotification.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
@@ -86,6 +89,7 @@ const reducers = {
   room: fromRoom.reducer,
   walker: fromWalker.reducer,
   adopt: fromAdopt.reducer,
+  lostFound: fromLostFound.reducer,
   notification: fromNotification.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
@@ -173,6 +177,15 @@ export const getAdoptList = createSelector(getAdoptState, fromAdopt.getList);
 // TODO: update method and store item names
 export const getAdoptAdopt = createSelector(getAdoptState, fromAdopt.getAdopt);
 export const getAdoptComments = createSelector(getAdoptState, fromAdopt.getComments);
+
+/**
+ * LostFound Reducers
+ */
+export const getLostFoundState = (state: State) => state.lostFound;
+export const getLostFoundList = createSelector(getLostFoundState, fromLostFound.getList);
+// TODO: update method and store item names
+export const getLostFoundLostFound = createSelector(getLostFoundState, fromLostFound.getLostFound);
+export const getLostFoundComments = createSelector(getLostFoundState, fromLostFound.getComments);
 
 /**
  * Notification Reducers
