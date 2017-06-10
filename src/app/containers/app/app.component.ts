@@ -241,7 +241,7 @@ export class AppComponent implements OnInit, IAppComponent {
     // TODO: find better way
     setTimeout(() => {
       const el = document.getElementById('page-loader');
-      el.remove();
+      el.parentElement.removeChild(el);
     }, 500);
     let notificationListReceived;
     this.currentUser$.subscribe(($event) => {
