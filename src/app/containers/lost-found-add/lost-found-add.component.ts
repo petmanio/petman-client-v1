@@ -4,29 +4,29 @@ import { clone, remove } from 'lodash';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import * as fromRoot from '../../store';
-import * as adoptAction from '../../store/adopt/adopt.actions';
+import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 import { Subject } from 'rxjs/Subject';
 import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
 // TODO: add loader after before preview
 // TODO: add image resize functionality
-export interface IAdoptAddContainer {
+export interface ILostFoundAddComponent {
   onImageUploaded($event: FileHolder): void,
   onImageRemove($event: FileHolder): void,
-  onSaveAdopt(): void
+  onSaveLostFound(): void
 }
 
 @Component({
-  selector: 'app-adopt-add',
+  selector: 'app-lost-found-add',
   template: `
     <div class="columns">
-      <div class="column pm-adopt-add-container is-6 is-offset-3">
-        <form #adoptForm="ngForm">
+      <div class="column pm-lost-found-add-container is-6 is-offset-3">
+        <form #lostFoundForm="ngForm">
           <div class="columns">
             <md-input-container>
               <textarea mdInput [placeholder]="'description' | translate"
-                        name="description" required [(ngModel)]="adopt.description"></textarea>
+                        name="description" required [(ngModel)]="lostFound.description"></textarea>
             </md-input-container>
           </div>
           <div class="columns">
@@ -43,11 +43,15 @@ export interface IAdoptAddContainer {
           </div>
           <div class="columns is-mobile">
             <div class="column is-4">
+              <md-radio-group class="example-radio-group" required  name="type" [(ngModel)]="lostFound.type">
+                <md-radio-button value="LOST">{{'lost' | translate}}</md-radio-button>
+                <md-radio-button value="FOUND">{{'found' | translate}}</md-radio-button>
+              </md-radio-group>
             </div>
             <div class="column">
               <button type="submit" class="btn btn-success pm-fr"
-                      [color]="(adoptForm.form.valid && adopt.images.length) ? 'primary' : 'warn'"
-                      md-button (click)="(adoptForm.form.valid && adopt.images.length) && onSaveAdopt()">{{'add' | translate}}
+                      [color]="(lostFoundForm.form.valid && lostFound.images.length) ? 'primary' : 'warn'"
+                      md-button (click)="(lostFoundForm.form.valid && lostFound.images.length) && onSaveLostFound()">{{'add' | translate}}
               </button>
             </div>
           </div>
@@ -57,7 +61,7 @@ export interface IAdoptAddContainer {
 
   `,
   styles: [`
-    .pm-adopt-add-container {
+    .pm-lost-found-add-container {
       margin-top: 15px;
     }
 
@@ -66,7 +70,7 @@ export interface IAdoptAddContainer {
     }
 
     @media (max-width: 600px) and (orientation: portrait) {
-      .pm-adopt-add-container {
+      .pm-lost-found-add-container {
         padding-top: 0;
       }
 
@@ -76,10 +80,10 @@ export interface IAdoptAddContainer {
     }
   `]
 })
-export class AdoptAddContainer implements OnInit, OnDestroy, IAdoptAddContainer {
+export class LostFoundAddComponent implements OnInit, OnDestroy, ILostFoundAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
   // TODO: Add model
-  adopt: any = {
+  lostFound: any = {
     images: []
   };
   private _destroyed$ = new Subject<boolean>();
@@ -90,10 +94,10 @@ export class AdoptAddContainer implements OnInit, OnDestroy, IAdoptAddContainer 
 
   ngOnInit(): void {
     this._actions$
-      .ofType(adoptAction.ActionTypes.CREATE_COMPLETE)
+      .ofType(lostFoundAction.ActionTypes.CREATE_COMPLETE)
       .takeUntil(this._destroyed$)
       .do((action) => {
-        this._router.navigate(['adopt', action.payload.id, 'details']);
+        this._router.navigate(['lost-found', action.payload.id, 'details']);
       })
       .subscribe();
 
@@ -104,18 +108,18 @@ export class AdoptAddContainer implements OnInit, OnDestroy, IAdoptAddContainer 
   }
 
   onImageUploaded($event: FileHolder): void {
-    this.adopt = Object.assign(this.adopt, {images: this.adopt.images.concat($event)});
+    this.lostFound = Object.assign(this.lostFound, {images: this.lostFound.images.concat($event)});
     this._ref.detectChanges();
   }
 
   onImageRemove($event: FileHolder): void {
-    remove(this.adopt.images, (image: any) => image.src === $event.src);
+    remove(this.lostFound.images, (image: any) => image.src === $event.src);
   }
 
-  onSaveAdopt(): void {
-    const formData = clone(this.adopt);
+  onSaveLostFound(): void {
+    const formData = clone(this.lostFound);
     formData.images = formData.images.map(image => image.file);
-    this._store.dispatch(new adoptAction.CreateAction(formData));
+    this._store.dispatch(new lostFoundAction.CreateAction(formData));
   }
 
 }

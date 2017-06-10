@@ -19,7 +19,7 @@ import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 import * as notificationAction from '../../store/notification/notification.actions';
 import { TranslateService } from '@ngx-translate/core';
 
-export interface IAppContainer {
+export interface IAppComponent {
   closeSidenav(): void,
   toggleSidenav($event: Event): void,
   onScroll(): void,
@@ -192,7 +192,7 @@ export interface IAppContainer {
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppContainer implements OnInit, IAppContainer {
+export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
   // TODO: import model
   currentUser$: Observable<any>;

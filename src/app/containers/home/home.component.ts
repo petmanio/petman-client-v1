@@ -8,7 +8,7 @@ import * as authAction from '../../store/auth/auth.actions';
 import { Actions } from '@ngrx/effects';
 import { Subject } from 'rxjs/Subject';
 
-export interface IHomeContainer {
+export interface IHomeComponent {
   fbLogin(): void
 }
 
@@ -143,7 +143,7 @@ export interface IHomeContainer {
     }
   `]
 })
-export class HomeContainer implements OnInit, OnDestroy, IHomeContainer {
+export class HomeComponent implements OnInit, OnDestroy, IHomeComponent {
   currentUser$: Observable<any>;
   private _destroyed$ = new Subject<boolean>();
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _actions$: Actions) {

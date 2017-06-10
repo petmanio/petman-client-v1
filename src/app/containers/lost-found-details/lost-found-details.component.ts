@@ -14,7 +14,7 @@ import { ShareDialogComponent } from '../../components/share-dialog/share-dialog
 import { LostFoundService } from '../../services/lostFound/lostFound.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
-export interface ILostFoundDetailsContainer {
+export interface ILostFoundDetailsComponent {
   onDeleteClick(): void,
   formatDate(date): string,
   onShareClick(): void,
@@ -114,7 +114,7 @@ export interface ILostFoundDetailsContainer {
     }
   `]
 })
-export class LostFoundDetailsContainer implements OnInit, OnDestroy, ILostFoundDetailsContainer {
+export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundDetailsComponent {
   // TODO: update attribute name
   lostFoundLostFound$: Observable<any>;
   comments$: Observable<ILostFoundCommentListResponse>;
@@ -151,7 +151,7 @@ export class LostFoundDetailsContainer implements OnInit, OnDestroy, ILostFoundD
       this._lostFoundId = parseInt(params['lostFoundId'], 10);
       if (!this._lostFoundId) {
         // TODO: use global error handling
-        throw new Error('LostFoundDetailsContainer: lostFoundId is not defined');
+        throw new Error('LostFoundDetailsComponent: lostFoundId is not defined');
       }
 
       // TODO: join on reconnect

@@ -19,4 +19,4 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class LayoutContainer { }
+export class LayoutComponent { }

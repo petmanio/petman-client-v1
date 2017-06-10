@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-export interface IAboutUpContainer {
+export interface IAboutUpComponent {
 }
 
 @Component({
@@ -34,7 +34,7 @@ export interface IAboutUpContainer {
     }
   `]
 })
-export class AboutUsContainer implements IAboutUpContainer {
+export class AboutUsComponent implements IAboutUpComponent {
   constructor() {
   }
 }

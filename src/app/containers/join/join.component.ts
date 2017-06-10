@@ -8,7 +8,7 @@ import * as authAction from '../../store/auth/auth.actions';
 import { Actions } from '@ngrx/effects';
 import { Subject } from 'rxjs/Subject';
 
-export interface IJoinContainer {
+export interface IJoinComponent {
   fbLogin(): void
 }
 
@@ -42,7 +42,7 @@ export interface IJoinContainer {
     }
   `]
 })
-export class JoinContainer implements OnInit, OnDestroy, IJoinContainer {
+export class JoinComponent implements OnInit, OnDestroy, IJoinComponent {
   currentUser$: Observable<any>;
   private _destroyed$ = new Subject<boolean>();
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _actions$: Actions) {

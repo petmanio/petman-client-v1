@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 // TODO: fix stars on mobile firefox
-export interface IRoomContainer {
+export interface IRoomComponent {
   formatDate(date): string,
   onShareClick(): void
 }
@@ -100,7 +100,7 @@ export interface IRoomContainer {
     }
   `]
 })
-export class RoomContainer implements OnChanges, IRoomContainer {
+export class RoomComponent implements OnChanges, IRoomComponent {
   @Input() room: IRoom;
   averageRating: number;
   swiperOptions: SwiperConfigInterface = {

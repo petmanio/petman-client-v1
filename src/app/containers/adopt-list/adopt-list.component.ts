@@ -3,39 +3,39 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
-import * as roomAction from '../../store/room/room.actions';
+import * as adoptAction from '../../store/adopt/adopt.actions';
 import { UtilService } from '../../services/util/util.service';
 import { IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 
-export interface IRoomsContainer {
+export interface IAdoptListComponent {
   onScroll(): void,
   onFabClick(): void
 }
 
 @Component({
-  selector: 'app-rooms',
+  selector: 'app-adopt-list',
   template: `
     <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
-        <md-icon color="primary">favorite</md-icon>&nbsp;&nbsp;&nbsp;
-        <span class="pm-color-gray pm-font-18">{{'sitters_intro' | translate}}</span>
+        <md-icon color="primary">pets</md-icon>&nbsp;&nbsp;&nbsp;
+        <span class="pm-color-gray pm-font-18">{{'adopt_intro' | translate}}</span>
       </div>
     </div>
     <div class="columns">
-      <div class="pm-room-items" infinite-scroll
+      <div class="pm-adopt-items" infinite-scroll
            (scrolled)="onScroll()"
            [infiniteScrollDistance]="2"
            [infiniteScrollThrottle]="300"
            [scrollWindow]="false">
         <div class="column">
           <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
-                   [useImagesLoaded]="true" 
+                   [useImagesLoaded]="true"
                    class="columns pm-width-100">
-            <masonry-brick *ngFor="let room of (roomList$ | async)?.list" 
+            <masonry-brick *ngFor="let adopt of (adoptList$ | async)?.list"
                            class="column is-4-desktop is-6-tablet">
-              <app-room [room]="room"></app-room>
+              <app-adopt-card [adopt]="adopt"></app-adopt-card>
             </masonry-brick>
           </masonry>
         </div>
@@ -50,8 +50,8 @@ export interface IRoomsContainer {
       display: flex;
       justify-content: center;
     }
-
-    .pm-room-items {
+    
+    .pm-adopt-items {
       overflow: auto;
       width: 100%;
       height: calc(100vh - 125px);
@@ -61,16 +61,16 @@ export interface IRoomsContainer {
     
     @media (max-width: 600px) and (orientation: portrait) {
       /* TODO: make flexible */
-      .pm-room-items {
-       height: calc(100vh - 60px);
-       height: -webkit-calc(100vh - 60px);
-       height: -moz-calc(100vh - 60px);
+      .pm-adopt-items {
+        height: calc(100vh - 60px);
+        height: -webkit-calc(100vh - 60px);
+        height: -moz-calc(100vh - 60px);
       }
     }
   `]
 })
-export class RoomsContainer implements OnInit, OnDestroy, IRoomsContainer {
-  roomList$: Observable<any>;
+export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponent {
+  adoptList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
   private _skip = 0;
@@ -80,13 +80,13 @@ export class RoomsContainer implements OnInit, OnDestroy, IRoomsContainer {
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
-    this.roomList$ = _store.select(fromRoot.getRoomList);
+    this.adoptList$ = _store.select(fromRoot.getAdoptList);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
-    this.roomList$.subscribe($event => {
+    this._store.dispatch(new adoptAction.ListAction({ limit: this._limit, skip: this._skip }));
+    this.adoptList$.subscribe($event => {
       this._count = $event.count;
     });
 
@@ -94,19 +94,19 @@ export class RoomsContainer implements OnInit, OnDestroy, IRoomsContainer {
   }
 
   ngOnDestroy(): void {
-    this._store.dispatch(new roomAction.ListClearAction({}));
+    this._store.dispatch(new adoptAction.ListClearAction({}));
   }
 
   onScroll(): void {
     if (this._skip + this._limit < this._count) {
       this._skip += this._limit;
-      this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
+      this._store.dispatch(new adoptAction.ListAction({ limit: this._limit, skip: this._skip }));
     }
   }
 
   onFabClick(): void {
     if (this.currentUser) {
-      this._router.navigate(['/rooms/add'])
+      this._router.navigate(['/adopt/add'])
     } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
         duration: 3000

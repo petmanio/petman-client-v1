@@ -35,28 +35,28 @@ export function HttpLoaderFactory(http: Http) {
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
 
 import {
-  AppContainer,
-  LayoutContainer,
-  WelcomeContainer,
-  HomeContainer,
-  BlogContainer,
-  JoinContainer,
-  LocationContainer,
-  RoomsContainer,
-  RoomContainer,
-  RoomAddContainer,
-  RoomDetailsContainer,
-  WalkersContainer,
-  WalkerAddContainer,
-  WalkerDetailsContainer,
-  AdoptListContainer,
-  AdoptAddContainer,
-  AdoptDetailsContainer,
-  LostFoundListContainer,
-  LostFoundAddContainer,
-  LostFoundDetailsContainer,
-  AboutUsContainer,
-  NotFoundContainer
+  AppComponent,
+  LayoutComponent,
+  WelcomeComponent,
+  HomeComponent,
+  BlogComponent,
+  JoinComponent,
+  LocationComponent,
+  RoomsComponent,
+  RoomComponent,
+  RoomAddComponent,
+  RoomDetailsComponent,
+  WalkersComponent,
+  WalkerAddComponent,
+  WalkerDetailsComponent,
+  AdoptListComponent,
+  AdoptAddComponent,
+  AdoptDetailsComponent,
+  LostFoundListComponent,
+  LostFoundAddComponent,
+  LostFoundDetailsComponent,
+  AboutUsComponent,
+  NotFoundComponent
 } from './containers';
 
 import {
@@ -125,75 +125,75 @@ import { reducer } from './store';
 const appRoutes: Routes = [
   {
     path: 'join',
-    component: JoinContainer,
+    component: JoinComponent,
   },
   {
     path: '',
-    component: HomeContainer
+    component: HomeComponent
   },
   {
     path: 'blog',
-    component: BlogContainer,
+    component: BlogComponent,
   },
   {
     path: 'locations',
-    component: LocationContainer,
+    component: LocationComponent,
   },
   {
     path: 'rooms',
-    component: RoomsContainer,
+    component: RoomsComponent,
   },
   {
     path: 'rooms/add',
-    component: RoomAddContainer,
+    component: RoomAddComponent,
   },
   {
     path: 'rooms/:roomId/details',
-    component: RoomDetailsContainer,
+    component: RoomDetailsComponent,
   },
   {
     path: 'walkers',
-    component: WalkersContainer,
+    component: WalkersComponent,
   },
   {
     path: 'walkers/add',
-    component: WalkerAddContainer,
+    component: WalkerAddComponent,
   },
   {
     path: 'walkers/:walkerId/details',
-    component: WalkerDetailsContainer,
+    component: WalkerDetailsComponent,
   },
   {
     path: 'adopt',
-    component: AdoptListContainer,
+    component: AdoptListComponent,
   },
   {
     path: 'adopt/add',
-    component: AdoptAddContainer,
+    component: AdoptAddComponent,
   },
   {
     path: 'adopt/:adoptId/details',
-    component: AdoptDetailsContainer,
+    component: AdoptDetailsComponent,
   },
   {
     path: 'lost-found',
-    component: LostFoundListContainer,
+    component: LostFoundListComponent,
   },
   {
     path: 'lost-found/add',
-    component: LostFoundAddContainer,
+    component: LostFoundAddComponent,
   },
   {
     path: 'lost-found/:lostFoundId/details',
-    component: LostFoundDetailsContainer,
+    component: LostFoundDetailsComponent,
   },
   {
     path: 'about-us',
-    component: AboutUsContainer,
+    component: AboutUsComponent,
   },
   {
     path: '404',
-    component: NotFoundContainer
+    component: NotFoundComponent
   },
   {
     path: '**',
@@ -204,30 +204,30 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     /**
-     * Containers
+     * Components
      */
-    AppContainer,
-    LayoutContainer,
-    WelcomeContainer,
-    HomeContainer,
-    BlogContainer,
-    JoinContainer,
-    LocationContainer,
-    RoomsContainer,
-    RoomContainer,
-    RoomAddContainer,
-    RoomDetailsContainer,
-    WalkersContainer,
-    WalkerAddContainer,
-    WalkerDetailsContainer,
-    AdoptListContainer,
-    AdoptAddContainer,
-    AdoptDetailsContainer,
-    LostFoundListContainer,
-    LostFoundAddContainer,
-    LostFoundDetailsContainer,
-    AboutUsContainer,
-    NotFoundContainer,
+    AppComponent,
+    LayoutComponent,
+    WelcomeComponent,
+    HomeComponent,
+    BlogComponent,
+    JoinComponent,
+    LocationComponent,
+    RoomsComponent,
+    RoomComponent,
+    RoomAddComponent,
+    RoomDetailsComponent,
+    WalkersComponent,
+    WalkerAddComponent,
+    WalkerDetailsComponent,
+    AdoptListComponent,
+    AdoptAddComponent,
+    AdoptDetailsComponent,
+    LostFoundListComponent,
+    LostFoundAddComponent,
+    LostFoundDetailsComponent,
+    AboutUsComponent,
+    NotFoundComponent,
 
     /**
      * Components
@@ -332,6 +332,6 @@ const appRoutes: Routes = [
     NotificationService,
     UtilService
   ],
-  bootstrap: [AppContainer]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

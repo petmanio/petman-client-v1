@@ -14,7 +14,7 @@ import { ShareDialogComponent } from '../../components/share-dialog/share-dialog
 import { AdoptService } from '../../services/adopt/adopt.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
-export interface IAdoptDetailsContainer {
+export interface IAdoptDetailsComponent {
   onDeleteClick(): void,
   formatDate(date): string,
   onShareClick(): void,
@@ -105,7 +105,7 @@ export interface IAdoptDetailsContainer {
     }
   `]
 })
-export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsContainer {
+export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsComponent {
   // TODO: update attribute name
   adoptAdopt$: Observable<any>;
   comments$: Observable<IAdoptCommentListResponse>;
@@ -142,7 +142,7 @@ export class AdoptDetailsContainer implements OnInit, OnDestroy, IAdoptDetailsCo
       this._adoptId = parseInt(params['adoptId'], 10);
       if (!this._adoptId) {
         // TODO: use global error handling
-        throw new Error('AdoptDetailsContainer: adoptId is not defined');
+        throw new Error('AdoptDetailsComponent: adoptId is not defined');
       }
 
       // TODO: join on reconnect

@@ -17,7 +17,7 @@ import { ShareDialogComponent } from '../../components/share-dialog/share-dialog
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
-export interface IWalkerDetailsContainer {
+export interface IWalkerDetailsComponent {
   onRatingRowClick(): void,
   onDeleteClick(): void,
   onApplicationSelect(application: IWalkerApplication): void,
@@ -165,7 +165,7 @@ export interface IWalkerDetailsContainer {
 
   `]
 })
-export class WalkerDetailsContainer implements OnInit, OnDestroy, IWalkerDetailsContainer {
+export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetailsComponent {
   @ViewChild(WalkerApplicationsListComponent) _walkerApplicationList;
   // TODO: update attribute name
   walkerWalker$: Observable<any>;
@@ -198,7 +198,7 @@ export class WalkerDetailsContainer implements OnInit, OnDestroy, IWalkerDetails
       this._walkerId = parseInt(params['walkerId'], 10);
       if (!this._walkerId) {
         // TODO: use global error handling
-        // throw new Error('WalkerDetailsContainer: walkerId is not defined');
+        // throw new Error('WalkerDetailsComponent: walkerId is not defined');
       }
       return this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
     });

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-export interface INotFoundContainer {
+export interface INotFoundComponent {
 }
 
 @Component({
@@ -17,7 +17,7 @@ export interface INotFoundContainer {
    
   `]
 })
-export class NotFoundContainer implements INotFoundContainer {
+export class NotFoundComponent implements INotFoundComponent {
   constructor() {
   }
 }

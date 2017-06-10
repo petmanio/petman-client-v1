@@ -13,7 +13,7 @@ const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
 // TODO: add image resize functionality
-export interface IRoomAddContainer {
+export interface IRoomAddComponent {
   onImageUploaded($event: FileHolder): void,
   onImageRemove($event: FileHolder): void,
   onSaveRoom(): void
@@ -99,9 +99,9 @@ export interface IRoomAddContainer {
     }
   `]
 })
-export class RoomAddContainer implements OnInit, OnDestroy, IRoomAddContainer {
+export class RoomAddComponent implements OnInit, OnDestroy, IRoomAddComponent {
   @ViewChild(ImageUploadComponent) private _imageUploadComponent;
-  // @ViewChild('cropper') private _cropper: ImageCropperContainer;
+  // @ViewChild('cropper') private _cropper: ImageCropperComponent;
   // TODO: UPGRADE fix after upgrade
   room: any = {
     images: []

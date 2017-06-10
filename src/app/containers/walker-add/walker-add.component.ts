@@ -10,7 +10,7 @@ import { MdSnackBar } from '@angular/material';
 const smartcrop = require('smartcrop');
 
 // TODO: add loader after before preview
-export interface IWalkerAddContainer {
+export interface IWalkerAddComponent {
   onSaveWalker(): void
 }
 
@@ -80,7 +80,7 @@ export interface IWalkerAddContainer {
     }
   `]
 })
-export class WalkerAddContainer implements OnInit, OnDestroy, IWalkerAddContainer {
+export class WalkerAddComponent implements OnInit, OnDestroy, IWalkerAddComponent {
   // TODO: add model type
   walker: any = {};
   private _destroyed$ = new Subject<boolean>();

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as blogAction from '../../store/blog/blog.actions';
 
-export interface IBlogContainer {
+export interface IBlogComponent {
   onScroll(): void
 }
 
@@ -58,7 +58,7 @@ export interface IBlogContainer {
     }
   `]
 })
-export class BlogContainer implements OnInit, OnDestroy, IBlogContainer {
+export class BlogComponent implements OnInit, OnDestroy, IBlogComponent {
   public blogList$: Observable<any>;
   private _skip = 0;
   private _limit = 9;

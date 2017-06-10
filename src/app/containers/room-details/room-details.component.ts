@@ -17,7 +17,7 @@ import { ShareDialogComponent } from '../../components/share-dialog/share-dialog
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
-export interface IRoomDetailsContainer {
+export interface IRoomDetailsComponent {
   onRatingRowClick(): void,
   onDeleteClick(): void,
   onApplicationSelect(application: IRoomApplication): void,
@@ -176,7 +176,7 @@ export interface IRoomDetailsContainer {
 
   `]
 })
-export class RoomDetailsContainer implements OnInit, OnDestroy, IRoomDetailsContainer {
+export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComponent {
   @ViewChild(RoomApplicationsListComponent) _roomApplicationList;
   // TODO: update attribute name
   roomRoom$: Observable<any>;
@@ -216,7 +216,7 @@ export class RoomDetailsContainer implements OnInit, OnDestroy, IRoomDetailsCont
       this._roomId = parseInt(params['roomId'], 10);
       if (!this._roomId) {
         // TODO: use global error handling
-        throw new Error('RoomDetailsContainer: roomId is not defined');
+        throw new Error('RoomDetailsComponent: roomId is not defined');
       }
       return this._store.dispatch(new roomAction.GetByIdAction({roomId: this._roomId}));
     });
