@@ -39,6 +39,10 @@ export interface ILostFoundListComponent {
             </masonry-brick>
           </masonry>
         </div>
+        <div *ngIf="(lostFoundList$ | async)?.count > (lostFoundList$ | async)?.list.length"
+             class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+             (click)="onScroll(); $event.stopPropagation()">
+          {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
       </div>
       <button md-fab class="pm-fab" (click)="onFabClick()">
         <md-icon>add</md-icon>

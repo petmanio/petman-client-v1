@@ -19,7 +19,7 @@ export interface IAdoptListComponent {
   template: `
     <div class="colomns is-hidden-mobile">
       <div class="column pm-page-intro">
-        <md-icon color="primary">pets</md-icon>&nbsp;&nbsp;&nbsp;
+        <md-icon color="primary">pets</md-icon>
         <span class="pm-color-gray pm-font-18">{{'adopt_intro' | translate}}</span>
       </div>
     </div>
@@ -39,6 +39,10 @@ export interface IAdoptListComponent {
             </masonry-brick>
           </masonry>
         </div>
+        <div *ngIf="(adoptList$ | async)?.count > (adoptList$ | async)?.list.length"
+             class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+             (click)="onScroll(); $event.stopPropagation()">
+          {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
       </div>
       <button md-fab class="pm-fab" (click)="onFabClick()">
         <md-icon>add</md-icon>

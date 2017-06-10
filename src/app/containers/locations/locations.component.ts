@@ -59,6 +59,10 @@ export interface ILocationComponent {
               </masonry>
             </div>
           </div>
+          <div *ngIf="(locationList$ | async)?.total > (locationList$ | async)?.list.length"
+               class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+               (click)="onScroll(); $event.stopPropagation()">
+            {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
         </div>
       </div>
       <div class="column is-6 map-container" [hidden]="isMobile && !mapView">

@@ -43,11 +43,11 @@ export function reducer(state = initialState, action: locationAction.Actions): S
 
     case locationAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return assign({}, state, { list: { total: null, list: null } });
+      return assign({}, state, { list: { total: null, list: [] } });
     }
 
     case locationAction.ActionTypes.LIST_CLEAR: {
-      return assign({}, state, { list: { total: null, list: null } });
+      return assign({}, state, { list: { total: null, list: [] } });
     }
 
     /**

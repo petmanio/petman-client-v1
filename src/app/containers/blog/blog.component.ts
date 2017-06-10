@@ -33,6 +33,10 @@ export interface IBlogComponent {
             </masonry-brick>
           </masonry>
         </div>
+        <div *ngIf="(blogList$ | async)?.total > (blogList$ | async)?.list.length"
+             class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+             (click)="onScroll(); $event.stopPropagation()">
+          {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
       </div>
     </div>
   `,

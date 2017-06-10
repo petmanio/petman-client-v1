@@ -77,6 +77,10 @@ export interface IAppComponent {
                 {{'no_notifications_yet' | translate}}</div>
               <app-notifications [notifications]="(notifications$ | async)?.list" 
                                  (onNotificationClick)="onNotificationClick($event)"></app-notifications>
+              <div *ngIf="(notifications$ | async)?.count > (notifications$ | async)?.list.length"
+                   class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+                   (click)="onScroll(); $event.stopPropagation()">
+                {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
             </div>
           </md-menu>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"

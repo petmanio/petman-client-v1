@@ -238,6 +238,11 @@ date-input-polyfill {
   color: #ffffff !important;
 }
 
+.pm-load-more {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
 #page-loader {
   position: absolute;
   top: 0;
@@ -254,7 +259,6 @@ date-input-polyfill {
   justify-content: center;
   display: flex;
 }
-
 
 .cssload-loader{
   display:block;
@@ -317,8 +321,6 @@ date-input-polyfill {
   100%{-moz-transform:rotateZ(360deg);}
 }
 
-
-
 .cssload-container{
   position:relative;
 }
@@ -372,8 +374,6 @@ date-input-polyfill {
   -webkit-animation: cssload-rotate 2300ms linear infinite;
   -moz-animation: cssload-rotate 2300ms linear infinite;
 }
-
-
 
 @keyframes cssload-rotate {
   100% {

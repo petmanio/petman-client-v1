@@ -59,11 +59,6 @@ export interface IAdoptCommentsComponent {
     .pm-chat-actions input {
       padding: 5px;
     }
-    
-    .pm-load-more {
-      text-align: center;
-      padding-bottom: 20px;
-    }
 
   `]
 })
