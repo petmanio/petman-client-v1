@@ -24,7 +24,7 @@ export interface IAdoptDetailsComponent {
 @Component({
   selector: 'app-adopt-details',
   template: `
-    <md-card>
+    <md-card *ngIf="adoptAdopt$ | async">
       <md-card-content>
         <div class="columns">
           <div class="column is-10 is-offset-1">

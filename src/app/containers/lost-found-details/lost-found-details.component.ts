@@ -24,7 +24,7 @@ export interface ILostFoundDetailsComponent {
 @Component({
   selector: 'app-lost-found-details',
   template: `
-    <md-card>
+    <md-card *ngIf="lostFoundLostFound$ | async">
       <md-card-content>
         <div class="columns">
           <div class="column is-10 is-offset-1">

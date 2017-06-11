@@ -29,7 +29,7 @@ export interface IRoomDetailsComponent {
 @Component({
   selector: 'app-room-details',
   template: `
-    <md-card>
+    <md-card *ngIf="roomRoom$ | async">
       <md-card-content>
         <div class="columns">
           <div class="column is-10 is-offset-1">
@@ -61,7 +61,7 @@ export interface IRoomDetailsComponent {
         <div class="columns">
           <div class="column column is-10 is-offset-1">
             <div class="pm-details-actions">
-              <span class="pm-font-14 pm-color-gray" *ngIf="roomRoom$ | async"><i class="mdi mdi-cash-usd"></i>
+              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
                 {{ 'price_per_day' | translate:{price: (roomRoom$ | async)?.cost} }}</span>&nbsp;
               <rating [ngModel]="averageRating"
                       [max]="5"
