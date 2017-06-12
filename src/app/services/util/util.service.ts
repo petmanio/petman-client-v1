@@ -157,7 +157,7 @@ export class UtilService implements IUtilService {
   }
 
   updateMeta(): void {
-    this._meta.updateTag({ property: 'og:title', content: 'Petman adopt' });
+    this._meta.updateTag({ property: '', content: '' });
   }
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {
