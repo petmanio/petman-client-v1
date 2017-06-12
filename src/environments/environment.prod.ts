@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  apiEndpoint: 'https://api.petman.io',
+  // TODO: use relative path
+  apiEndpoint: 'https://petman.io',
   fb: {
     appId: '424363951255305',
     scope: 'public_profile,email'

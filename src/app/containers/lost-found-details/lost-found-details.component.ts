@@ -194,17 +194,23 @@ export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundD
       if (shareOptions) {
         // TODO: create url via router
         if (shareOptions === 'facebook') {
+          // const fbShareOptions = {
+          //   method: 'share_open_graph',
+          //   action_type: 'og.shares',
+          //   action_properties: JSON.stringify({
+          //     object : {
+          //       'og:url': `${location.origin}/lost-found/${this.lostFound.id}/details`,
+          //       'og:title': 'Petman',
+          //       'og:description': this.lostFound.description,
+          //       'og:image': this.lostFound.images[0].src
+          //     }
+          //   })
+          // };
+
           const fbShareOptions = {
-            method: 'share_open_graph',
-            action_type: 'og.shares',
-            action_properties: JSON.stringify({
-              object : {
-                'og:url': `${location.origin}/lost-found/${this.lostFound.id}/details`,
-                'og:title': 'Petman',
-                'og:description': this.lostFound.description,
-                'og:image': this.lostFound.images[0].src
-              }
-            })
+            method: 'share',
+            href: `${location.origin}/lost-found/${this.lostFound.id}/details`,
+            hashtag: '#Petman'
           };
 
           // TODO: shate using dispatch

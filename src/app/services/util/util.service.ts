@@ -12,12 +12,15 @@ import { TranslateService } from '@ngx-translate/core';
 
 export interface IUtilService {
   initSocket(): void,
-  playNotificationSound(): void
+  playNotificationSound(): void,
+  updateMeta(): void
   // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
 @Injectable()
 export class UtilService implements IUtilService {
+  private _notificationSound = new Audio('/assets/trembling.mp3');
+
   static initScripts() {
     (<any>window).fbAsyncInit = () => {
       FB.init({
@@ -36,7 +39,7 @@ export class UtilService implements IUtilService {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) {return;}
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js";
+      js.src = '//connect.facebook.net/en_US/sdk.js';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
@@ -116,8 +119,6 @@ export class UtilService implements IUtilService {
     }, 0);
   }
 
-  private _notificationSound = new Audio('/assets/trembling.mp3');
-
   constructor(private _sailsService: SailsService,
               private _store: Store<fromRoot.State>,
               private _meta: Meta,
@@ -153,6 +154,10 @@ export class UtilService implements IUtilService {
     };
 
     connect();
+  }
+
+  updateMeta(): void {
+    this._meta.updateTag({ property: '', content: '' });
   }
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {

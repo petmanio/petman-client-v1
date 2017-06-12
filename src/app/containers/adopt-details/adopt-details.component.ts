@@ -184,17 +184,23 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
       if (shareOptions) {
         // TODO: create url via router
         if (shareOptions === 'facebook') {
+          // const fbShareOptions = {
+          //   method: 'share_open_graph',
+          //   action_type: 'og.shares',
+          //   action_properties: JSON.stringify({
+          //     object : {
+          //       'og:url': `${location.origin}/adopt/${this.adopt.id}/details`,
+          //       'og:title': 'Petman',
+          //       'og:description': this.adopt.description,
+          //       'og:image': this.adopt.images[0].src
+          //     }
+          //   })
+          // };
+
           const fbShareOptions = {
-            method: 'share_open_graph',
-            action_type: 'og.shares',
-            action_properties: JSON.stringify({
-              object : {
-                'og:url': `${location.origin}/adopt/${this.adopt.id}/details`,
-                'og:title': 'Petman',
-                'og:description': this.adopt.description,
-                'og:image': this.adopt.images[0].src
-              }
-            })
+            method: 'share',
+            href: `${location.origin}/adopt/${this.adopt.id}/details`,
+            hashtag: '#Petman'
           };
 
           // TODO: shate using dispatch
