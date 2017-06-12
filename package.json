@@ -1,6 +1,6 @@
 {
   "name": "petman-client",
-  "version": "0.12.7",
+  "version": "0.13.0",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
