@@ -1,5 +1,6 @@
 import { Component, AfterViewChecked, Input, OnChanges, SimpleChanges } from '@angular/core';
 const GoogleMapsLoader = require('google-maps');
+const MarkerClusterer = require('node-js-marker-clusterer');
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
 import * as lodash from 'lodash';
@@ -9,11 +10,12 @@ GoogleMapsLoader.KEY = environment.mapApiKey;
 
 export interface IMapComponent {
   triggerResize(): void,
-  addMarker(pin: any): void
-  addMarkers(pins: any): void,
+  createMarker(pin: any): void
+  createMarkers(pins: any): void,
   clearMap(): void,
   highlightPin(pin: any): void,
   panTo(pin: any): void,
+  setZoom(level): void,
   fitBoundsMap(): void,
   setIconToAllActivePins(icon: string): void,
   addInfoWindowListener(marker: any): void,
@@ -58,8 +60,8 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
   private _activePins: any[] = [];
   private _markerMoveInterVal = 1000;
   private _infoWindowMaxWidth = 200;
+  private _markerClusterer: any;
   constructor(private _utilService: UtilService) {
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -108,8 +110,9 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
         // }
 
         fitBoundsMapDebounce();
-        this.addMarkers(this.pins);
+        this.createMarkers(this.pins);
         this.triggerResize();
+        this._markerClusterer = new MarkerClusterer(this.map, this.markers, {imagePath: '/assets/marker-clusterer/m'});
       });
     }
   }
@@ -137,15 +140,15 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     // }
   }
 
-  addMarkers(pins: any): void {
-    this.markers = this.pins.map((pin) => this.addMarker(pin));
+  createMarkers(pins: any): void {
+    this.markers = this.pins.map((pin) => this.createMarker(pin));
   }
 
-  addMarker(pin: any): void {
+  createMarker(pin: any): void {
     const position = new this.google.maps.LatLng(pin.lat, pin.lng);
     const pinMarkerOptions = {
       position,
-      map: this.map,
+      // map: this.map,
       icon: {
         url: this._pinIcon,
         scaledSize : new google.maps.Size(32, 32),
@@ -209,6 +212,10 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
     if (activePin) {
       this.map.panTo(activePin.getPosition());
     }
+  }
+
+  setZoom(level): void {
+    this.map.setZoom(level);
   }
 
   fitBoundsMap(): void {

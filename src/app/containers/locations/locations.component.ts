@@ -176,10 +176,12 @@ export class LocationComponent implements OnInit, OnDestroy, ILocationComponent 
       setTimeout(() => {
         this.map.highlightPin(pin);
         this.map.panTo(pin);
+        this.map.setZoom(17);
       }, 200);
     } else {
       this.map.highlightPin(pin);
       this.map.panTo(pin);
+      this.map.setZoom(17);
     }
   }
 
