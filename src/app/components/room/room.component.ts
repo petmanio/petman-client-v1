@@ -3,7 +3,7 @@ import { IRoom } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MdDialog } from '@angular/material';
-import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
+import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';

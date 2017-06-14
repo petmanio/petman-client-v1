@@ -227,7 +227,7 @@ export class AppComponent implements OnInit, IAppComponent {
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
     this.notifications$ = this._store.select(fromRoot.getNotificationList);
     this._translate.setDefaultLang('en');
-
+    this._utilsService.registerNewIcons();
     // TODO: use mdIconRegistry
     // _mdIconRegistry
     //   .addSvgIcon('thumb-up',

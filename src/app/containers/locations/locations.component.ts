@@ -11,7 +11,7 @@ import { ILocation } from '../../models/api';
 
 // TODO: rename
 // TODO: rename css class names
-export interface ILocationComponent {
+export interface ILocationsComponent {
   onScroll(): void,
   onFilterChange(): void,
   onSlideChange(): void,
@@ -114,7 +114,7 @@ export interface ILocationComponent {
     }
   `]
 })
-export class LocationComponent implements OnInit, OnDestroy, ILocationComponent {
+export class LocationsComponent implements OnInit, OnDestroy, ILocationsComponent {
   @ViewChild(MapComponent) map;
   public activeFilters = {
     categories: [''],

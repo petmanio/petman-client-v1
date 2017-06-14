@@ -37,13 +37,11 @@ export function HttpLoaderFactory(http: Http) {
 import {
   AppComponent,
   LayoutComponent,
-  WelcomeComponent,
   HomeComponent,
   BlogComponent,
   JoinComponent,
-  LocationComponent,
+  LocationsComponent,
   RoomsComponent,
-  RoomComponent,
   RoomAddComponent,
   RoomDetailsComponent,
   WalkersComponent,
@@ -56,7 +54,8 @@ import {
   LostFoundAddComponent,
   LostFoundDetailsComponent,
   AboutUsComponent,
-  NotFoundComponent
+  NotFoundComponent,
+  QuestionsComponent
 } from './containers';
 
 import {
@@ -65,6 +64,7 @@ import {
   ToolbarComponent,
   BlogItemComponent,
   LocationItemComponent,
+  RoomComponent,
   RoomRatingRowComponent,
   RoomApplyDialogComponent,
   RoomApplicationActionsComponent,
@@ -120,101 +120,22 @@ import {
 import { AuthGuard } from './guards';
 
 import { reducer } from './store';
-// import { schema } from './db';
+import { appRoutes } from './app.routes';
 
-const appRoutes: Routes = [
-  {
-    path: 'join',
-    component: JoinComponent,
-  },
-  {
-    path: '',
-    component: HomeComponent
-  },
-  {
-    path: 'blog',
-    component: BlogComponent,
-  },
-  {
-    path: 'locations',
-    component: LocationComponent,
-  },
-  {
-    path: 'rooms',
-    component: RoomsComponent,
-  },
-  {
-    path: 'rooms/add',
-    component: RoomAddComponent,
-  },
-  {
-    path: 'rooms/:roomId/details',
-    component: RoomDetailsComponent,
-  },
-  {
-    path: 'walkers',
-    component: WalkersComponent,
-  },
-  {
-    path: 'walkers/add',
-    component: WalkerAddComponent,
-  },
-  {
-    path: 'walkers/:walkerId/details',
-    component: WalkerDetailsComponent,
-  },
-  {
-    path: 'adopt',
-    component: AdoptListComponent,
-  },
-  {
-    path: 'adopt/add',
-    component: AdoptAddComponent,
-  },
-  {
-    path: 'adopt/:adoptId/details',
-    component: AdoptDetailsComponent,
-  },
-  {
-    path: 'lost-found',
-    component: LostFoundListComponent,
-  },
-  {
-    path: 'lost-found/add',
-    component: LostFoundAddComponent,
-  },
-  {
-    path: 'lost-found/:lostFoundId/details',
-    component: LostFoundDetailsComponent,
-  },
-  {
-    path: 'about-us',
-    component: AboutUsComponent,
-  },
-  {
-    path: '404',
-    component: NotFoundComponent
-  },
-  {
-    path: '**',
-    redirectTo: '404'
-  }
-];
+// import { schema } from './db';
 
 @NgModule({
   declarations: [
     /**
-     * Components
+     * Containers
      */
     AppComponent,
     LayoutComponent,
-    WelcomeComponent,
     HomeComponent,
     BlogComponent,
     JoinComponent,
-    LocationComponent,
+    LocationsComponent,
     RoomsComponent,
-    RoomComponent,
     RoomAddComponent,
     RoomDetailsComponent,
     WalkersComponent,
@@ -228,6 +149,7 @@ const appRoutes: Routes = [
     LostFoundDetailsComponent,
     AboutUsComponent,
     NotFoundComponent,
+    QuestionsComponent,
 
     /**
      * Components
@@ -237,6 +159,7 @@ const appRoutes: Routes = [
     ToolbarComponent,
     BlogItemComponent,
     LocationItemComponent,
+    RoomComponent,
     RoomRatingRowComponent,
     RoomApplyDialogComponent,
     RoomApplicationActionsComponent,
