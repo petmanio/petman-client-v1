@@ -15,6 +15,7 @@
   "lost_or_found_intro": "If your pet is missing, or if you have found an animal, report it to us and we will do our best to ensure a happy reunion.",
   "blog_intro": "Lot's of interesting articles from all over the world",
   "locations_intro": "Find the pettiest places of our city. Pet shops, parks, clinics and much more",
+  "questions_intro": "",
   "join_us": "Join us",
   "login_with_facebook": "Login with facebook",
   "price_per_day": "{{price}} amd per day",
@@ -62,5 +63,7 @@
   "lost": "Lost",
   "found": "Found",
   "LOST": "LOST",
-  "FOUND": "FOUND"
+  "FOUND": "FOUND",
+  "questions": "Questions",
+  "feed": "Feed"
 }
