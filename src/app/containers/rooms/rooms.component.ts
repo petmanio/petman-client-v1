@@ -33,6 +33,25 @@ export interface IRoomsComponent {
           <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
                    [useImagesLoaded]="true" 
                    class="columns pm-width-100">
+            <!--TODO: fix, without ngRepeat brick does not work-->
+            <masonry-brick *ngFor="let _ of [0]"
+                           class="column is-4-desktop is-6-tablet">
+              <md-card [routerLink]="['/rooms/add']" class="pm-cursor-pointer" *ngIf="currentUser$ | async">
+                <md-card-header>
+                  <div md-card-avatar class="pm-cart-avatar"  
+                       [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                  <md-card-title></md-card-title>
+                  <md-card-subtitle>
+                    <span class="pm-font-12 pm-color-gray">
+                      {{'add_new_application' | translate}}
+                    </span>
+                  </md-card-subtitle>
+                  <a md-icon-button class="pm-action-add">
+                    <md-icon class="pm-font-16 pm-color-gray">add</md-icon>
+                  </a>
+                </md-card-header>
+              </md-card>
+            </masonry-brick>
             <masonry-brick *ngFor="let room of (roomList$ | async)?.list" 
                            class="column is-4-desktop is-6-tablet">
               <app-room [room]="room"></app-room>

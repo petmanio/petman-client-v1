@@ -62,5 +62,6 @@
   "lost": "Lost",
   "found": "Found",
   "LOST": "LOST",
-  "FOUND": "FOUND"
+  "FOUND": "FOUND",
+  "add_new_application": "Add new application"
 }
