@@ -105,6 +105,7 @@ import {
   WalkerService,
   AdoptService,
   LostFoundService,
+  QuestionService,
   NotificationService
 } from './services';
 import {
@@ -114,6 +115,7 @@ import {
   RoomEffects,
   WalkerEffects,
   AdoptEffects,
+  QuestionEffects,
   NotificationEffects,
   LostFoundEffects
 } from './store';
@@ -240,6 +242,7 @@ import { appRoutes } from './app.routes';
     EffectsModule.run(WalkerEffects),
     EffectsModule.run(AdoptEffects),
     EffectsModule.run(LostFoundEffects),
+    EffectsModule.run(QuestionEffects),
     EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],
@@ -252,6 +255,7 @@ import { appRoutes } from './app.routes';
     WalkerService,
     AdoptService,
     LostFoundService,
+    QuestionService,
     NotificationService,
     UtilService
   ],

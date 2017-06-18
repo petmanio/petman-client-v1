@@ -33,9 +33,10 @@ export interface IQuestionsComponent {
           <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
                    [useImagesLoaded]="true"
                    class="columns pm-width-100">
+            <masonry-brick class="column is-4-desktop is-6-tablet" *ngFor="let _ of [0]">Test</masonry-brick>
             <masonry-brick *ngFor="let question of (questionList$ | async)?.list"
                            class="column is-4-desktop is-6-tablet">
-              <app-question [question]="question"></app-question>
+              <!--<app-question [question]="question"></app-question>-->
             </masonry-brick>
           </masonry>
         </div>
@@ -53,6 +54,13 @@ export interface IQuestionsComponent {
     md-card-title {
       display: flex;
       justify-content: center;
+    }
+
+    .brick {
+      width: 200px;
+      background: green;
+      margin: 5px;
+      padding: 15px;
     }
 
     .pm-question-items {
@@ -77,6 +85,9 @@ export class QuestionsComponent implements OnInit, OnDestroy, IQuestionsComponen
   questionList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
+  bricks = [
+    {title: 'Brick 1'}
+  ];
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -84,21 +95,21 @@ export class QuestionsComponent implements OnInit, OnDestroy, IQuestionsComponen
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
-    this.questionList$ = _store.select(fromRoot.getQuestionList);
+    // this.questionList$ = _store.select(fromRoot.getQuestionList);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
     this._store.dispatch(new questionAction.ListAction({ limit: this._limit, skip: this._skip }));
-    this.questionList$.subscribe($event => {
-      this._count = $event.count;
-    });
+    // this.questionList$.subscribe($event => {
+    //   this._count = $event.count;
+    // });
 
     this.currentUser$.subscribe($event => this.currentUser = $event);
   }
 
   ngOnDestroy(): void {
-    this._store.dispatch(new questionAction.ListClearAction({}));
+    this._store.dispatch(new questionAction.ClearAction({}));
   }
 
   onScroll(): void {

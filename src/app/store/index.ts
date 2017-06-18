@@ -4,6 +4,7 @@ export { RoomEffects } from './room/room.effects';
 export { WalkerEffects } from './walker/walker.effects';
 export { AdoptEffects } from './adopt/adopt.effects';
 export { LostFoundEffects } from './lostFound/lostFound.effects';
+export { QuestionEffects } from './question/question.effects';
 export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
 
@@ -55,6 +56,7 @@ import * as fromRoom from './room/room.reducer';
 import * as fromWalker from './walker/walker.reducer';
 import * as fromAdopt from './adopt/adopt.reducer';
 import * as fromLostFound from './lostFound/lostFound.reducer';
+import * as fromQuestion from './question/question.reducer';
 import * as fromNotification from './notification/notification.reducer';
 
 /**
@@ -69,6 +71,7 @@ export interface State {
   walker: fromWalker.State,
   adopt: fromAdopt.State,
   lostFound: fromLostFound.State,
+  question: fromQuestion.State,
   notification: fromNotification.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
@@ -90,6 +93,7 @@ const reducers = {
   walker: fromWalker.reducer,
   adopt: fromAdopt.reducer,
   lostFound: fromLostFound.reducer,
+  question: fromQuestion.reducer,
   notification: fromNotification.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
@@ -186,6 +190,14 @@ export const getLostFoundList = createSelector(getLostFoundState, fromLostFound.
 // TODO: update method and store item names
 export const getLostFoundLostFound = createSelector(getLostFoundState, fromLostFound.getLostFound);
 export const getLostFoundComments = createSelector(getLostFoundState, fromLostFound.getComments);
+
+/**
+ * Question Reducers
+ */
+export const getQuestionState = (state: State) => state.question;
+export const getQuestionList = createSelector(getQuestionState, fromQuestion.getList);
+// TODO: update method and store item names
+export const getQuestionQuestion = createSelector(getQuestionState, fromQuestion.getQuestion);
 
 /**
  * Notification Reducers

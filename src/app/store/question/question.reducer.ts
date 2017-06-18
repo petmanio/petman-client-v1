@@ -1,94 +1,56 @@
 import { assign } from 'lodash';
-import { IAdoptCommentCreateEventResponse, IAdoptCommentListResponse, IAdoptGetByIdResponse, IAdoptListResponse } from '../../models/api';
-import * as adoptAction from './question.actions';
+import {
+  IQuestionGetByIdResponse,
+  IQuestionListResponse
+} from '../../models/api';
+import * as questionAction from './question.actions';
 
 export interface State {
-  adopt: IAdoptGetByIdResponse,
-  list: IAdoptListResponse,
-  comments: IAdoptCommentListResponse
+  question: IQuestionGetByIdResponse,
+  list: IQuestionListResponse
 }
 
 const initialState: State = {
   list: {
     list: [],
-    count: null
+    total: null
   },
-  adopt: null,
-  comments: {
-    total: null,
-    list: []
-  }
+  question: null,
 };
 
-export function reducer(state = initialState, action: adoptAction.Actions): State {
+export function reducer(state = initialState, action: questionAction.Actions): State {
   switch (action.type) {
     /**
      * List
      */
-    // TODO: use another action for loading more
-    case adoptAction.ActionTypes.LIST_COMPLETE: {
-      const res: IAdoptListResponse = action.payload;
-      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
+    case questionAction.ActionTypes.LIST_COMPLETE: {
+      const res: IQuestionListResponse = action.payload;
+      return assign({}, state, { list: { list: state.list.list.concat(res.list), total: res.total }});
     }
 
-    case adoptAction.ActionTypes.LIST_ERROR: {
+    case questionAction.ActionTypes.LIST_ERROR: {
       const error: any = action.payload;
-      return assign({}, state, { list: { list: [], count: null }});
-    }
-
-    // TODO: use another action for loading more
-    case adoptAction.ActionTypes.LIST_CLEAR: {
-      return assign({}, state, { list: { list: [], count: null }});
+      return assign({}, state, { list: { list: [], total: null }});
     }
 
     /**
      * Get By Id
      */
-    case adoptAction.ActionTypes.GET_BY_ID_COMPLETE: {
-      const res: IAdoptGetByIdResponse = action.payload;
-      // TODO: use object assign
-      return assign({}, state, {adopt: res});
+    case questionAction.ActionTypes.GET_BY_ID_COMPLETE: {
+      const res: IQuestionGetByIdResponse = action.payload;
+      return assign({}, state, {question: res});
     }
 
-    case adoptAction.ActionTypes.GET_BY_ID_ERROR: {
+    case questionAction.ActionTypes.GET_BY_ID_ERROR: {
       const error: any = action.payload;
-      return assign({}, state, {adopt: null})
-    }
-
-    case adoptAction.ActionTypes.GET_BY_ID_CLEAR: {
-      const error: any = action.payload;
-      return assign({}, state, {adopt: null})
+      return assign({}, state, {question: null})
     }
 
     /**
-     * Comment List
+     * Clear
      */
-    // TODO: use another action for loading more
-    case adoptAction.ActionTypes.COMMENT_LIST_COMPLETE: {
-      const res: IAdoptCommentListResponse = action.payload;
-      return assign({}, state, { comments: { total: res.total, list: res.list } });
-    }
-
-    case adoptAction.ActionTypes.COMMENT_LIST_ERROR: {
-      return assign({}, state, { comments: { total: null, list: [] } });
-    }
-
-    // TODO: use another action for loading more
-    case adoptAction.ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE: {
-      const res: IAdoptCommentListResponse = action.payload;
-      return assign({}, state, { comments: { total: state.comments.total, list: state.comments.list.concat(res.list) } });
-    }
-
-    /**
-     * Comment Create Event
-     */
-    case adoptAction.ActionTypes.COMMENT_CREATE_EVENT: {
-      const res: IAdoptCommentCreateEventResponse = action.payload;
-      // TODO: remove if check
-      if (res.adopt === state.adopt.id) {
-        return assign({}, state, { comments: { total: state.comments.total + 1, list: [res].concat(state.comments.list) } });
-      }
-      return state;
+    case questionAction.ActionTypes.CLEAR: {
+      return assign({}, initialState);
     }
 
     default: {
@@ -107,6 +69,5 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
  */
 
 export const getList = (state: State) => state.list;
-export const getAdopt = (state: State) => state.adopt;
-export const getComments = (state: State) => state.comments;
+export const getQuestion = (state: State) => state.question;
 
