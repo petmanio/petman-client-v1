@@ -36,10 +36,14 @@ export interface IRoomsComponent {
             <!--TODO: fix, without ngRepeat brick does not work-->
             <masonry-brick *ngFor="let _ of [0]"
                            class="column is-4-desktop is-6-tablet">
-              <md-card [routerLink]="['/rooms/add']" class="pm-cursor-pointer" *ngIf="currentUser$ | async">
+              <md-card [routerLink]="[currentUser ? '/rooms/add' : '/join']" class="pm-cursor-pointer">
                 <md-card-header>
-                  <div md-card-avatar class="pm-cart-avatar"  
+                  <div md-card-avatar class="pm-cart-avatar"
+                       *ngIf="currentUser$ | async"
                        [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                  <div md-card-avatar class="pm-cart-avatar"
+                       *ngIf="!(currentUser$ | async)"
+                       [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
                   <md-card-title></md-card-title>
                   <md-card-subtitle>
                     <span class="pm-font-12 pm-color-gray">

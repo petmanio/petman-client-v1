@@ -36,17 +36,21 @@ export interface ILostFoundListComponent {
             <!--TODO: fix, without ngRepeat brick does not work-->
             <masonry-brick *ngFor="let _ of [0]"
                            class="column is-4-desktop is-6-tablet">
-              <md-card [routerLink]="['/lost-found/add']" class="pm-cursor-pointer" *ngIf="currentUser$ | async">
+              <md-card [routerLink]="[currentUser ? '/lost-found/add' : '/join']" class="pm-cursor-pointer">
                 <md-card-header>
                   <div md-card-avatar class="pm-cart-avatar"
+                       *ngIf="currentUser$ | async"
                        [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                  <div md-card-avatar class="pm-cart-avatar"
+                       *ngIf="!(currentUser$ | async)"
+                       [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
                   <md-card-title></md-card-title>
                   <md-card-subtitle>
                     <span class="pm-font-12 pm-color-gray">
                       {{'add_new_application' | translate}}
                     </span>
                   </md-card-subtitle>
-                  <a md-icon-button class="pm-action-add" [routerLink]="['/rooms/add']">
+                  <a md-icon-button class="pm-action-add">
                     <md-icon class="pm-font-16 pm-color-gray">add</md-icon>
                   </a>
                 </md-card-header>
@@ -77,9 +81,9 @@ export interface ILostFoundListComponent {
     .pm-lost-found-items {
       overflow: auto;
       width: 100%;
-      height: calc(100vh - 125px);
-      height: -webkit-calc(100vh - 125px);
-      height: -moz-calc(100vh - 125px);
+      height: calc(100vh - 130px);
+      height: -webkit-calc(100vh - 130px);
+      height: -moz-calc(100vh - 130px);
     }
     
     @media (max-width: 600px) and (orientation: portrait) {
