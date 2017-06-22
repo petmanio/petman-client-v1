@@ -5,7 +5,8 @@ import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
 import * as lodash from 'lodash';
 import { IPin } from '../../models/api';
-
+import { markerClustererOptions } from '../../../util';
+// TODO: use map style from map component
 GoogleMapsLoader.KEY = environment.mapApiKey;
 
 export interface IMapComponent {
@@ -112,7 +113,7 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
         fitBoundsMapDebounce();
         this.createMarkers(this.pins);
         this.triggerResize();
-        this._markerClusterer = new MarkerClusterer(this.map, this.markers, {imagePath: '/assets/marker-clusterer/m'});
+        this._markerClusterer = new MarkerClusterer(this.map, this.markers, markerClustererOptions);
       });
     }
   }
@@ -262,6 +263,9 @@ export class MapComponent implements AfterViewChecked, OnChanges, IMapComponent 
   deleteMarkers(): void {
     if (this.markers) {
       this.markers.forEach(m => m.setMap(null));
+    }
+    if (this._markerClusterer) {
+      this._markerClusterer.clearMarkers();
     }
     // if (this.userMarker) {
     //   this.userMarker.setMap(null);

@@ -32,3 +32,26 @@ export const mapStyles = [{
   featureType: 'water',
   stylers: [{hue: '#0078FF'}, {saturation: -13.200000000000003}, {lightness: 2.4000000000000057}, {gamma: 1}]
 }, {featureType: 'poi', stylers: [{hue: '#00FF6A'}, {saturation: -1.0989010989011234}, {lightness: 11.200000000000017}, {gamma: 1}]}]
+
+export const markerClustererOptions = {
+  styles: [
+    {
+      width: 36,
+      height: 36,
+      url: '/assets/dot_2.png',
+      textColor: '#fff'
+    },
+    {
+      width: 43,
+      height: 36,
+      url: '/assets/dot_3.png',
+      textColor: '#fff'
+    },
+    {
+      width: 50,
+      height: 36,
+      url: '/assets/dot_4.png',
+      textColor: '#fff'
+    }
+  ]
+};
