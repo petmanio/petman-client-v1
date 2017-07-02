@@ -208,12 +208,12 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
         this.walker = $event;
         this.inProgressApplications = this.walker.applications.filter(application => application.status !== 'FINISHED');
         this.finishedApplications = this.walker.applications.filter(application => application.status === 'FINISHED');
-        if (this.inProgressApplications.length) {
-          this.selectedApplication = this.inProgressApplications[0];
-          this._walkerApplicationList.selected = 0;
-        } else {
-          this.selectedApplication = null;
-        }
+        // if (this.inProgressApplications.length) {
+        //   this.selectedApplication = this.inProgressApplications[0];
+        //   this._walkerApplicationList.selected = 0;
+        // } else {
+        //   this.selectedApplication = null;
+        // }
         this.averageRating = UtilService.countAverage(this.walker.applications.filter(application => application.status === 'FINISHED'));
       }
     });

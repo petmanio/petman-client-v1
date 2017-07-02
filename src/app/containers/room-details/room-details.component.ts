@@ -226,12 +226,12 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
         this.room = $event;
         this.inProgressApplications = this.room.applications.filter(application => application.status !== 'FINISHED');
         this.finishedApplications = this.room.applications.filter(application => application.status === 'FINISHED');
-        if (this.inProgressApplications.length) {
-          this.selectedApplication = this.inProgressApplications[0];
-          this._roomApplicationList.selected = 0;
-        } else {
-          this.selectedApplication = null;
-        }
+        // if (this.inProgressApplications.length) {
+        //   this.selectedApplication = this.inProgressApplications[0];
+        //   this._roomApplicationList.selected = 0;
+        // } else {
+        //   this.selectedApplication = null;
+        // }
         this.averageRating = UtilService.countAverage(this.room.applications.filter(application => application.status === 'FINISHED'));
       }
     });
