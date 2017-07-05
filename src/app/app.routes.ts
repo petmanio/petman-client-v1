@@ -18,7 +18,7 @@ import {
   LostFoundDetailsComponent,
   AboutUsComponent,
   NotFoundComponent,
-  QuestionsComponent
+  // QuestionsComponent
 } from './containers';
 
 export const appRoutes: Routes = [
@@ -86,10 +86,10 @@ export const appRoutes: Routes = [
     path: 'lost-found/:lostFoundId/details',
     component: LostFoundDetailsComponent,
   },
-  {
-    path: 'questions',
-    component: QuestionsComponent,
-  },
+  // {
+  //   path: 'questions',
+  //   component: QuestionsComponent,
+  // },
   {
     path: 'about-us',
     component: AboutUsComponent,

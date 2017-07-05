@@ -55,7 +55,7 @@ import {
   LostFoundDetailsComponent,
   AboutUsComponent,
   NotFoundComponent,
-  QuestionsComponent
+  // QuestionsComponent
 } from './containers';
 
 import {
@@ -151,7 +151,7 @@ import { appRoutes } from './app.routes';
     LostFoundDetailsComponent,
     AboutUsComponent,
     NotFoundComponent,
-    QuestionsComponent,
+    // QuestionsComponent,
 
     /**
      * Components
@@ -242,7 +242,7 @@ import { appRoutes } from './app.routes';
     EffectsModule.run(WalkerEffects),
     EffectsModule.run(AdoptEffects),
     EffectsModule.run(LostFoundEffects),
-    EffectsModule.run(QuestionEffects),
+    // EffectsModule.run(QuestionEffects),
     EffectsModule.run(NotificationEffects),
     // DBModule.provideDB(schema),
   ],

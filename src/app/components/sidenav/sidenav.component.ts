@@ -28,9 +28,9 @@ interface ISidenavComponent {
                         routerLinkActive="is-active">{{'adopt' | translate}}</app-nav-item>
           <app-nav-item (activate)="onItemActivate.emit()" icon="search" routerLink="/lost-found"
                         routerLinkActive="is-active">{{'lost_or_found' | translate}}</app-nav-item>
-          <app-nav-item (activate)="onItemActivate.emit()" svgIcon="pet_health" routerLink="/questions"
-                        routerLinkActive="is-active">
-            {{'wet_consultant' | translate}}</app-nav-item>
+          <!--<app-nav-item (activate)="onItemActivate.emit()" svgIcon="pet_health" routerLink="/questions"-->
+                        <!--routerLinkActive="is-active">-->
+            <!--{{'wet_consultant' | translate}}</app-nav-item>-->
           <app-nav-item (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
                         routerLinkActive="is-active">{{'blog' | translate}}</app-nav-item>
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
