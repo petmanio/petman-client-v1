@@ -7,13 +7,15 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import * as moment from 'moment';
-import { Meta } from '@angular/platform-browser';
+import { DomSanitizer, Meta } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
+import { MdIconRegistry } from '@angular/material';
 
 export interface IUtilService {
   initSocket(): void,
   playNotificationSound(): void,
-  updateMeta(): void
+  updateMeta(): void,
+  registerNewIcons(): void
   // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
@@ -122,7 +124,9 @@ export class UtilService implements IUtilService {
   constructor(private _sailsService: SailsService,
               private _store: Store<fromRoot.State>,
               private _meta: Meta,
-              private _translate: TranslateService) {}
+              private _translate: TranslateService,
+              private _mdIconRegistry: MdIconRegistry,
+              private _sanitizer: DomSanitizer) {}
 
   playNotificationSound(): void {
     this._notificationSound.play();
@@ -158,6 +162,10 @@ export class UtilService implements IUtilService {
 
   updateMeta(): void {
     this._meta.updateTag({ property: '', content: '' });
+  }
+
+  registerNewIcons(): void {
+    this._mdIconRegistry.addSvgIcon('pet_health',  this._sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/stethoscope.svg'));
   }
 
   // getLatLngBound(coordinates: Coordinates[]): Subject<any> {

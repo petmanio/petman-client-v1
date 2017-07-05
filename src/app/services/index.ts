@@ -6,5 +6,6 @@ export { RoomService } from './room/room.service';
 export { WalkerService } from './walker/walker.service';
 export { AdoptService } from './adopt/adopt.service';
 export { LostFoundService } from './lostFound/lostFound.service';
+export { QuestionService } from './question/question.service';
 export { NotificationService } from './notification/notification.service';
 export { UtilService } from './util/util.service';

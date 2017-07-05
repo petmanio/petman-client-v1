@@ -3,6 +3,7 @@ export { NavItemComponent } from './nav-item/nav-item.component';
 export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
+export { RoomComponent } from './room/room.component';
 export { RoomRatingRowComponent } from './room-rating-row/room-rating-row.component';
 export { RoomApplyDialogComponent } from './room-apply-dialog/room-apply-dialog.component';
 export { RoomApplicationActionsComponent } from './room-application-actions/room-application-actions.component';

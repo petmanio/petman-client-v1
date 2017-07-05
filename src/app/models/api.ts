@@ -171,6 +171,45 @@ export interface IWalker {
   createdAt: string
 }
 
+export interface IQuestion {
+  id: number,
+  user: IUser,
+  text: string,
+  answers: IQuestionAnswer[],
+  comments: IQuestionComment[],
+  isOwner?: boolean,
+  createdAt: string
+  deletedAt: string
+}
+
+export interface IQuestionComment {
+  id: number,
+  user: IUser,
+  question: number,
+  text: string,
+  createdAt: string,
+  deletedAt: string
+}
+
+export interface IQuestionAnswer {
+  id: number,
+  user: IUser,
+  question: number,
+  text: string,
+  votes: IQuestionAnswerVote[],
+  createdAt: string
+  deletedAt: string
+}
+
+export interface IQuestionAnswerVote {
+  id: number,
+  user: IUser,
+  answer: number,
+  reaction: -1 | 0 | 1,
+  createdAt: string
+  deletedAt: string
+}
+
 export interface INotificationRoomApplicationStatusUpdate {
   room: number | IRoom,
   application: number | IRoomApplication,
@@ -592,6 +631,37 @@ export interface ILostFoundCommentStreamJoinRequest {
   lostFoundId: number,
   'x-auth-token'?: string
 }
+
+/**
+ * Question
+ */
+export interface IQuestionListRequest {
+  skip: number,
+  limit: number
+}
+
+export interface IQuestionListResponse {
+  list: IWalker[],
+  total: number
+}
+
+export interface IQuestionCreateRequest {
+  text: string
+}
+
+export interface IQuestionCreateResponse extends IQuestion {}
+
+export interface IQuestionGetByIdRequest {
+  questionId: number
+}
+
+export interface IQuestionGetByIdResponse extends IQuestion {}
+
+export interface IQuestionDeleteByIdRequest {
+  questionId: number
+}
+
+export interface IQuestionDeleteByIdResponse {}
 
 /**
  * Notification
