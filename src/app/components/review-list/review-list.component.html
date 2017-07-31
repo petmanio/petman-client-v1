@@ -1,0 +1,28 @@
+<ul>
+  <li class="pm-background-lightest-gray" *ngFor="let review of reviews">
+    <div class="pm-review-row">
+      <div md-card-avatar class="pm-cart-avatar"
+           [ngStyle]="{'background-image': 'url(' + review.user.userData.avatar + ')'}"></div>&nbsp;
+      <div class="pm-review-name">
+            <span class="pm-font-14 pm-color-gray">
+              {{review.user.userData.firstName}} {{review.user.userData.lastName}}</span><br/>
+        <span class="pm-font-12 pm-color-gray">
+              {{review.updatedAt | appFormatDate}}</span>
+      </div>
+      <div class="pm-review-rating-item">
+        <div>
+          <div><i class="pm-font-12 pm-color-gray">{{review.review}}</i></div>
+          <rating [ngModel]="review.rating"
+                  [max]="5"
+                  fullIcon="★"
+                  emptyIcon="☆"
+                  [readonly]="true"
+                  [disabled]="false"
+                  [required]="true"
+                  [float]="true"
+                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
