@@ -1,69 +1,19 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
-import { IRoom, IRoomApplication } from '../../models/api';
-import { UtilService } from '../../services/util/util.service';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { IRoomApplication } from '../../models/api';
 
 export interface IRoomApplicationsListComponent {
-  getApplicationStatus(application: IRoomApplication): string,
-  formatDate(date): string
+  checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean
 }
 
 @Component({
   selector: 'app-room-applications-list',
-  template: `
-    <ul>
-      <li *ngFor="let application of applications; let i = index;" class="pm-cursor-pointer"
-                    [ngClass]="{'selected': i === selected}"
-                    (click)="onApplicationClick.emit(application); selected = i">
-        <div class="columns is-mobile pm-application-row">
-          <div class="column is-2">
-            <div md-card-avatar class="pm-cart-avatar"
-                 [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
-          </div>
-          <div class="column is-10">
-            <div>
-              <span class="pm-font-14 pm-color-gray pm-room-application-status">
-                {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
-              </span><br/>
-              <span class="pm-font-12 pm-color-gray pm-room-application-status">
-                 {{application.status | translate}}
-              </span>
-            </div>
-            <div class="pm-font-12 pm-color-gray pm-room-application-status">{{formatDate(application.createdAt)}}</div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
-    
-    .pm-application-row {
-      width: 100%;
-      height: 65px;
-    }
+  templateUrl: './room-applications-list.component.html',
+  styleUrls: ['./room-applications-list.component.scss']
 
-    .pm-room-application-status {
-      text-align: right;
-    }
-
-    li.selected {
-      background-color: #f8f8f8;
-    }
-
-    ul {
-      height: auto;
-      list-style: none;
-      padding-left: 5px;
-    }
-  `]
 })
 export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomApplicationsListComponent {
-  @Input() room: IRoom;
   @Input() applications: IRoomApplication[];
-  @Output() onApplicationClick = new EventEmitter();
-  selected;
+  applicationDetailsVisibilityMap: {[id: number]: boolean} = {};
   constructor() {
 
   }
@@ -76,34 +26,20 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
 
   }
 
-  getApplicationStatus(application: IRoomApplication): string {
-    // TODO: update canceled translation
-    let status: string = UtilService.capitalizeFirstChar(application.status);
-    if (application.status === 'IN_PROGRESS') {
-      status = 'In progress';
-    }
-    if (this.room.isOwner) {
-      if (application.status === 'CANCELED_BY_PROVIDER') {
-        status = `Canceled by you`;
-      }
-      if (application.status === 'CANCELED_BY_CONSUMER') {
-        status = `Canceled by ${application.consumer.userData.firstName} ${application.consumer.userData.lastName}`;
-      }
-
-    } else {
-      if (application.status === 'CANCELED_BY_PROVIDER') {
-        status = `Canceled by ${this.room.user.userData.firstName} ${this.room.user.userData.lastName}`;
-      }
-      if (application.status === 'CANCELED_BY_CONSUMER') {
-        status = `Canceled by you`;
-      }
+  checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean {
+    let status = false;
+    switch (condition) {
+      case 'IN_PROGRESS':
+        status = application.status === 'IN_PROGRESS';
+        break;
+      case 'WAITING':
+        status = application.status === 'WAITING';
+        break;
+      case 'FINISHED':
+        status = ['CANCELED_BY_PROVIDER', 'CANCELED_BY_CONSUMER', 'FINISHED'].indexOf(application.status) !== -1;
+        break;
     }
 
     return status;
-  }
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
   }
 }

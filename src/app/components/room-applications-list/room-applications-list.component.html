@@ -1,0 +1,50 @@
+<div>
+  <ul class="labels">
+    <li class="waiting pm-color-gray pm-font-14">{{'WAITING' | translate}}</li>
+    <li class="in-progress pm-color-gray pm-font-14">{{'IN_PROGRESS' | translate}}</li>
+    <li class="finished pm-color-gray pm-font-14">{{'FINISHED' | translate}}</li>
+  </ul>
+</div>
+<div *ngFor="let application of applications" class="pm-application-row"
+     [ngClass]="{active: applicationDetailsVisibilityMap[application.id]}"
+     (click)="applicationDetailsVisibilityMap[application.id] = !applicationDetailsVisibilityMap[application.id]">
+  <ul class="circles">
+    <li class="waiting">
+      <div class="circle-item"
+           [ngClass]="{active: checkApplicationsStatus(application, 'WAITING')}"
+           [style.background-image]="checkApplicationsStatus(application, 'WAITING') ?
+           'url(' + application.consumer.userData.avatar + ')' : null"><span>1</span></div>
+    </li>
+    <li class="in-progress">
+      <div class="circle-item"
+           [ngClass]="{active: checkApplicationsStatus(application, 'IN_PROGRESS')}"
+           [style.background-image]="checkApplicationsStatus(application, 'IN_PROGRESS') ?
+           'url(' + application.consumer.userData.avatar + ')' : null"><span>2</span></div>
+    </li>
+    <li class="finished">
+      <div class="circle-item"
+           [ngClass]="{active: checkApplicationsStatus(application, 'FINISHED')}"
+           [style.background-image]="checkApplicationsStatus(application, 'FINISHED') ?
+           'url(' + application.consumer.userData.avatar + ')' : null"><span>3</span></div>
+    </li>
+  </ul>
+  <div class="details" [hidden]="!applicationDetailsVisibilityMap[application.id]">
+    <div class="columns is-mobile pm-application-row">
+      <div class="column is-2">
+        <div md-card-avatar class="pm-cart-avatar"
+             [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
+      </div>
+      <div class="column is-10">
+        <div>
+          <span class="pm-font-14 pm-color-gray pm-walker-application-status">
+            {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
+          </span><br/>
+          <span class="pm-font-12 pm-color-gray pm-walker-application-status">
+             {{application.status | translate}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
