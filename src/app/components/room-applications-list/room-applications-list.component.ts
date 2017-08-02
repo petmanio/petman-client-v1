@@ -1,8 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { IRoomApplication } from '../../models/api';
+import { Component, Input, OnInit } from '@angular/core';
+import { IRoom, IRoomApplication } from '../../models/api';
 
 export interface IRoomApplicationsListComponent {
-  checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean
+  checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean,
+  onChangeStatus(application: IRoomApplication, status: 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER'| 'FINISHED' | 'IN_PROGRESS'): void,
+  onRateClick(application: IRoomApplication): void
 }
 
 @Component({
@@ -11,18 +13,15 @@ export interface IRoomApplicationsListComponent {
   styleUrls: ['./room-applications-list.component.scss']
 
 })
-export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomApplicationsListComponent {
+export class RoomApplicationsListComponent implements OnInit, IRoomApplicationsListComponent {
   @Input() applications: IRoomApplication[];
-  applicationDetailsVisibilityMap: {[id: number]: boolean} = {};
+  @Input() room: IRoom;
+  activeApplicationId: number;
   constructor() {
 
   }
 
   ngOnInit(): void {
-
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
 
   }
 
@@ -41,5 +40,13 @@ export class RoomApplicationsListComponent implements OnInit, OnChanges, IRoomAp
     }
 
     return status;
+  }
+
+  onChangeStatus(application: IRoomApplication, status: 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER'| 'FINISHED' | 'IN_PROGRESS'): void {
+
+  }
+
+  onRateClick(application: IRoomApplication): void {
+
   }
 }

@@ -3,12 +3,12 @@
     background-color: #f8f8f8;
   }
   &.active {
-    background-color: #6fb5fc;
+    background-color: #f8f8f8;
   }
 }
 .details {
   background: #ffffff;
-  border: dotted 1px #6fb5fc;
+  border: dotted 1px #f8f8f8;
   border-top: none;
 }
 ul {
@@ -35,7 +35,7 @@ ul {
         width: 50px;
         height: 50px;
         border-radius: 100%;
-        background: #f1f0f0;
+        background: #fcdd7f;
         line-height: 50px;
         background-size: cover;
         span {
@@ -55,10 +55,10 @@ ul {
         position: absolute;
         background: #fcdd7f;
         width: 100%;
-        height: 4px;
+        height: 2px;
         top: 50%;
         margin-left: 25px;
-        margin-top: -2px;
+        margin-top: -1px;
       }
       &:last-child {
         padding-right: 0;

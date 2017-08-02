@@ -6,35 +6,36 @@
   </ul>
 </div>
 <div *ngFor="let application of applications" class="pm-application-row"
-     [ngClass]="{active: applicationDetailsVisibilityMap[application.id]}"
-     (click)="applicationDetailsVisibilityMap[application.id] = !applicationDetailsVisibilityMap[application.id]">
-  <ul class="circles">
+     [ngClass]="{active: activeApplicationId === application.id}">
+  <ul class="circles" (click)="activeApplicationId = (activeApplicationId === application.id ? null : application.id)">
     <li class="waiting">
       <div class="circle-item"
            [ngClass]="{active: checkApplicationsStatus(application, 'WAITING')}"
            [style.background-image]="checkApplicationsStatus(application, 'WAITING') ?
-           'url(' + application.consumer.userData.avatar + ')' : null"><span>1</span></div>
+           'url(' + application.consumer.userData.avatar + ')' : null">
+        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+      </div>
     </li>
     <li class="in-progress">
       <div class="circle-item"
            [ngClass]="{active: checkApplicationsStatus(application, 'IN_PROGRESS')}"
            [style.background-image]="checkApplicationsStatus(application, 'IN_PROGRESS') ?
-           'url(' + application.consumer.userData.avatar + ')' : null"><span>2</span></div>
+           'url(' + application.consumer.userData.avatar + ')' : null">
+        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+      </div>
     </li>
     <li class="finished">
       <div class="circle-item"
            [ngClass]="{active: checkApplicationsStatus(application, 'FINISHED')}"
            [style.background-image]="checkApplicationsStatus(application, 'FINISHED') ?
-           'url(' + application.consumer.userData.avatar + ')' : null"><span>3</span></div>
+           'url(' + application.consumer.userData.avatar + ')' : null">
+        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+      </div>
     </li>
   </ul>
-  <div class="details" [hidden]="!applicationDetailsVisibilityMap[application.id]">
-    <div class="columns is-mobile pm-application-row">
-      <div class="column is-2">
-        <div md-card-avatar class="pm-cart-avatar"
-             [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
-      </div>
-      <div class="column is-10">
+  <div class="details" [hidden]="activeApplicationId !== application.id">
+    <div class="columns">
+      <div class="column is-4 pm-text-center">
         <div>
           <span class="pm-font-14 pm-color-gray pm-walker-application-status">
             {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
@@ -43,6 +44,33 @@
              {{application.status | translate}}
           </span>
         </div>
+      </div>
+      <div class="column is-8 pm-text-center">
+        <button md-button>
+          {{'open_conversation' | translate}}
+        </button>
+        <button md-button *ngIf="application.status === 'WAITING'
+          && room.isOwner" (click)="onChangeStatus('IN_PROGRESS')">
+          {{'confirm' | translate}}
+        </button>
+        <button md-button *ngIf="application.status === 'IN_PROGRESS'" (click)="onChangeStatus('FINISHED')">
+          {{'finish' | translate}}
+        </button>
+        <button md-button color="warn" *ngIf="application.status === 'WAITING'"
+                (click)="onChangeStatus(room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
+          {{'cancel' | translate}}
+        </button>
+        <button md-button color="accent"
+                *ngIf="application.status === 'FINISHED' && !room.isOwner && !room.rating"
+                (click)="onRateClick(application)">
+          {{'rate' | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <div class="clearfix"></div>
+        <div class="pm-font-12 pm-color-gray pm-text-right">{{application.createdAt | appFormatDate}}</div>
       </div>
     </div>
   </div>
