@@ -91,7 +91,7 @@ export class WalkerAddComponent implements OnInit, OnDestroy, IWalkerAddComponen
 
   ngOnInit(): void {
     this._actions$
-      .ofType(walkerAction.ActionTypes.CREATE_COMPLETE)
+      .ofType(walkerAction.ActionTypes.CREATE_SUCCESS)
       .takeUntil(this._destroyed$)
       .do((action) => {
         this._router.navigate(['walkers', action.payload.id, 'details']);

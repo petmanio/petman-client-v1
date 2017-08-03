@@ -45,14 +45,14 @@ export class AuthEffects implements IAuthEffects {
     .map((action: authAction.FbLoginAction) => action.payload)
     .switchMap(options => {
       return this._authService.fbLogin()
-        .map(response => new authAction.FbLoginCompleteAction(response))
+        .map(response => new authAction.FbLoginSuccessAction(response))
         .catch(err => of(new authAction.LoginErrorAction(err)))
     });
 
   @Effect()
   public fbLoginComplete$: Observable<any> = this._actions$
-    .ofType(authAction.ActionTypes.FB_LOGIN_COMPLETE)
-    .map((action: authAction.FbLoginCompleteAction) => action.payload)
+    .ofType(authAction.ActionTypes.FB_LOGIN_SUCCESS)
+    .map((action: authAction.FbLoginSuccessAction) => action.payload)
     .switchMap((options: any) => of(new authAction.LoginAction({fb: options})));
 
   @Effect()
@@ -61,7 +61,7 @@ export class AuthEffects implements IAuthEffects {
     .map((action: authAction.LoginAction) => action.payload)
     .switchMap(options => {
       return this._authService.login(options)
-        .map(response => new authAction.LoginCompleteAction(response))
+        .map(response => new authAction.LoginSuccessAction(response))
         .catch(err => of(new authAction.LoginErrorAction(err)))
     });
 
@@ -71,7 +71,7 @@ export class AuthEffects implements IAuthEffects {
     // .map((action: authAction.LogoutAction) => action.payload)
     .switchMap(() => {
       return this._authService.logout()
-        .map(result => new authAction.LogoutCompleteAction({}));
+        .map(result => new authAction.LogoutSuccessAction({}));
     });
 
   @Effect()
@@ -80,7 +80,7 @@ export class AuthEffects implements IAuthEffects {
     .map((action: authAction.GetCurrentUserAction) => action.payload)
     .switchMap(() => {
       return this._authService.getCurrentUser()
-        .map(response => new authAction.GetCurrentUserCompleteAction(response))
+        .map(response => new authAction.GetCurrentUserSuccessAction(response))
         .catch(err => of(new authAction.GetCurrentUserErrorAction(err)))
     });
 

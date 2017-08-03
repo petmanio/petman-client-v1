@@ -90,7 +90,7 @@ export class AdoptAddComponent implements OnInit, OnDestroy, IAdoptAddComponent 
 
   ngOnInit(): void {
     this._actions$
-      .ofType(adoptAction.ActionTypes.CREATE_COMPLETE)
+      .ofType(adoptAction.ActionTypes.CREATE_SUCCESS)
       .takeUntil(this._destroyed$)
       .do((action) => {
         this._router.navigate(['adopt', action.payload.id, 'details']);

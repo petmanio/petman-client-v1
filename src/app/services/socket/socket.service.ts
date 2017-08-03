@@ -70,12 +70,12 @@ export class SocketService implements ISocketService {
   }
 
   listenRoomApplicationMessage(): void {
-    this.on('roomApplicationMessage')
-      .subscribe($event => {
-        if ($event) {
-          this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
-        }
-      });
+    // this.on('roomApplicationMessage')
+    //   .subscribe($event => {
+    //     if ($event) {
+    //       this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
+    //     }
+    //   });
   }
 }
 

@@ -18,19 +18,19 @@ import {
  */
 export const ActionTypes = {
   LOGIN: type('[Auth] Login'),
-  LOGIN_COMPLETE: type('[Auth] Login Complete'),
+  LOGIN_SUCCESS: type('[Auth] Login Success'),
   LOGIN_ERROR: type('[Auth] Login Error'),
 
   FB_LOGIN: type('[Auth] Fb Login'),
-  FB_LOGIN_COMPLETE: type('[Auth] Fb Login Complete'),
+  FB_LOGIN_SUCCESS: type('[Auth] Fb Login Success'),
   FB_LOGIN_ERROR: type('[Auth] Fb Login Error'),
 
   GET_CURRENT_USER: type('[Auth] Get Current User'),
-  GET_CURRENT_USER_COMPLETE: type('[Auth] Get Current User Complete'),
+  GET_CURRENT_USER_SUCCESS: type('[Auth] Get Current User Success'),
   GET_CURRENT_USER_ERROR: type('[Auth] Get Current User Error'),
 
   LOGOUT: type('[Auth] Logout'),
-  LOGOUT_COMPLETE: type('[Auth] Logout Complete'),
+  LOGOUT_SUCCESS: type('[Auth] Logout Success'),
   LOGOUT_ERROR: type('[Auth] Logout Error'),
 };
 
@@ -47,8 +47,8 @@ export class LoginAction implements Action {
   constructor(public payload: ILoginRequest) { }
 }
 
-export class LoginCompleteAction implements Action {
-  type = ActionTypes.LOGIN_COMPLETE;
+export class LoginSuccessAction implements Action {
+  type = ActionTypes.LOGIN_SUCCESS;
 
   constructor(public payload: ILoginResponse) { }
 }
@@ -65,8 +65,8 @@ export class FbLoginAction implements Action {
   constructor(public payload?: IFbLoginRequest) { }
 }
 
-export class FbLoginCompleteAction implements Action {
-  type = ActionTypes.FB_LOGIN_COMPLETE;
+export class FbLoginSuccessAction implements Action {
+  type = ActionTypes.FB_LOGIN_SUCCESS;
 
   constructor(public payload: IFbLoginResponse) { }
 }
@@ -83,8 +83,8 @@ export class GetCurrentUserAction implements Action {
   constructor(public payload: IAuthCurrentUserRequest) { }
 }
 
-export class GetCurrentUserCompleteAction implements Action {
-  type = ActionTypes.GET_CURRENT_USER_COMPLETE;
+export class GetCurrentUserSuccessAction implements Action {
+  type = ActionTypes.GET_CURRENT_USER_SUCCESS;
 
   constructor(public payload: IAuthCurrentUserRequest) { }
 }
@@ -101,8 +101,8 @@ export class LogoutAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class LogoutCompleteAction implements Action {
-  type = ActionTypes.LOGOUT_COMPLETE;
+export class LogoutSuccessAction implements Action {
+  type = ActionTypes.LOGOUT_SUCCESS;
 
   constructor(public payload: any) { }
 }
@@ -120,14 +120,14 @@ export class LogoutErrorAction implements Action {
  */
 export type Actions
   = LoginAction
-  | LoginCompleteAction
+  | LoginSuccessAction
   | LoginErrorAction
   | FbLoginAction
-  | FbLoginCompleteAction
+  | FbLoginSuccessAction
   | FbLoginErrorAction
   | GetCurrentUserAction
-  | GetCurrentUserCompleteAction
+  | GetCurrentUserSuccessAction
   | GetCurrentUserErrorAction
   | LogoutAction
-  | LogoutCompleteAction
+  | LogoutSuccessAction
   | LogoutErrorAction;

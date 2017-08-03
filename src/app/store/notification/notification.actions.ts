@@ -15,12 +15,12 @@ import {
  */
 export const ActionTypes = {
   LIST: type('[Notification] List'),
-  LIST_COMPLETE: type('[Notification] List Complete'),
+  LIST_SUCCESS: type('[Notification] List Success'),
   LIST_ERROR: type('[Notification] List Error'),
   LIST_CLEAR: type('[Notification] List Clear'),
 
   SEEN: type('[Notification] Seen'),
-  SEEN_COMPLETE: type('[Notification] Seen Complete'),
+  SEEN_SUCCESS: type('[Notification] Seen Success'),
   SEEN_ERROR: type('[Notification] Seen Error'),
 
   NOTIFICATION_NEW_EVENT: type('[Notification] New Event'),
@@ -43,8 +43,8 @@ export class ListAction implements Action {
   constructor(public payload: INotificationListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: INotificationListResponse) { }
 }
@@ -70,8 +70,8 @@ export class SeenAction implements Action {
   constructor(public payload: INotificationSeenRequest) { }
 }
 
-export class SeenCompleteAction implements Action {
-  type = ActionTypes.SEEN_COMPLETE;
+export class SeenSuccessAction implements Action {
+  type = ActionTypes.SEEN_SUCCESS;
 
   constructor(public payload: INotificationSeenResponse) { }
 }
@@ -98,10 +98,10 @@ export class NewEventAction implements Action {
  */
 export type Actions
   = ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | SeenAction
-  | SeenCompleteAction
+  | SeenSuccessAction
   | SeenErrorAction
   | NewEventAction

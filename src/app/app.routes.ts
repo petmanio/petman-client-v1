@@ -21,6 +21,8 @@ import {
   // QuestionsComponent
 } from './containers';
 
+import { AuthGuard, RoomExists } from './guards';
+
 export const appRoutes: Routes = [
   {
     path: 'join',
@@ -45,10 +47,12 @@ export const appRoutes: Routes = [
   {
     path: 'rooms/add',
     component: RoomAddComponent,
+    // canActivate: [ AuthGuard ],
   },
   {
     path: 'rooms/:roomId/details',
     component: RoomDetailsComponent,
+    canActivate: [ RoomExists ],
   },
   {
     path: 'walkers',

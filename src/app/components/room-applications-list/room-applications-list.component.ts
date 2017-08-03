@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IRoom, IRoomApplication } from '../../models/api';
+import { Store } from '@ngrx/store';
+import * as roomAction from '../../store/room/room.actions'
+import * as fromRoot from '../../store';
 
 export interface IRoomApplicationsListComponent {
   checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean,
-  onChangeStatus(application: IRoomApplication, status: 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER'| 'FINISHED' | 'IN_PROGRESS'): void,
+  onChangeStatus(application: IRoomApplication, status: string): void,
   onRateClick(application: IRoomApplication): void
 }
 
@@ -17,7 +20,7 @@ export class RoomApplicationsListComponent implements OnInit, IRoomApplicationsL
   @Input() applications: IRoomApplication[];
   @Input() room: IRoom;
   activeApplicationId: number;
-  constructor() {
+  constructor(private _store: Store<fromRoot.State>) {
 
   }
 
@@ -42,8 +45,10 @@ export class RoomApplicationsListComponent implements OnInit, IRoomApplicationsL
     return status;
   }
 
-  onChangeStatus(application: IRoomApplication, status: 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER'| 'FINISHED' | 'IN_PROGRESS'): void {
-
+  onChangeStatus(application: IRoomApplication, status: string): void {
+    // TODO: try to user without <any> type
+    const roomId: any = application.room;
+    this._store.dispatch(new roomAction.UpdateApplicationStatusAction({roomId, status, applicationId: application.id}));
   }
 
   onRateClick(application: IRoomApplication): void {

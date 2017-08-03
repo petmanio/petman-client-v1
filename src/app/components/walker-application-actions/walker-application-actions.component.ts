@@ -12,14 +12,14 @@ export interface IWalkerApplicationActionsComponent {
     <div class="columns pm-application-actions is-mobile pm-background-lightest-gray">
       <div class="column">
         <span class="pm-color-gray pm-font-16 pm-application-status">{{application.status | translate}}</span>
-        <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS' 
-          && walker.isOwner" (click)="onActionClick.emit('CONFIRMED')">
+        <button md-button class="pm-fr" *ngIf="application.status === 'WAITING' 
+          && walker.isOwner" (click)="onActionClick.emit('IN_PROGRESS')">
           {{'confirm' | translate}}
         </button>
-        <button md-button class="pm-fr" *ngIf="application.status === 'CONFIRMED'" (click)="onActionClick.emit('FINISHED')">
+        <button md-button class="pm-fr" *ngIf="application.status === 'IN_PROGRESS'" (click)="onActionClick.emit('FINISHED')">
           {{'finish' | translate}}
         </button>
-        <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'IN_PROGRESS'"
+        <button md-button class="pm-fr" color="warn" *ngIf="application.status === 'WAITING'"
                 (click)="onActionClick.emit(walker.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
           {{'cancel' | translate}}
         </button>
@@ -52,7 +52,7 @@ export class WalkerApplicationActionsComponent implements IWalkerApplicationActi
   getApplicationStatus(application: IWalkerApplication): string {
     // TODO: update status translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
-    if (application.status === 'IN_PROGRESS') {
+    if (application.status === 'WAITING') {
       status = 'In progress';
     }
     if (this.walker.isOwner) {

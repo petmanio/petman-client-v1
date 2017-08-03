@@ -28,10 +28,10 @@
   "application_requests": "Applications requests",
   "chat_history": "Chat history",
   "status": "Status",
-  "IN_PROGRESS": "In progress",
+  "WAITING": "Waiting",
   "CANCELED_BY_PROVIDER": "Canceled",
   "CANCELED_BY_CONSUMER": "Canceled",
-  "CONFIRMED": "Confirmed",
+  "IN_PROGRESS": "In progress",
   "FINISHED": "Finished",
   "write_a_review": "Write a review",
   "confirm": "Confirm",
@@ -66,5 +66,9 @@
   "FOUND": "FOUND",
   "add_new_application": "Add new application",
   "questions": "Questions",
-  "feed": "Feed"
+  "feed": "Feed",
+  "see_reviews": "See reviews",
+  "no_reviews_yet": "<TRANSLATE>",
+  "rate": "Rate",
+  "open_conversation": "Open conversation"
 }

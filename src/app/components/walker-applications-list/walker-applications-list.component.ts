@@ -79,7 +79,7 @@ export class WalkerApplicationsListComponent implements OnInit, OnChanges, IWalk
   getApplicationStatus(application: IWalkerApplication): string {
     // TODO: update canceled translation
     let status: string = UtilService.capitalizeFirstChar(application.status);
-    if (application.status === 'IN_PROGRESS') {
+    if (application.status === 'WAITING') {
       status = 'In progress';
     }
     if (this.walker.isOwner) {

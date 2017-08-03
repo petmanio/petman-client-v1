@@ -18,7 +18,7 @@
   "questions_intro": "",
   "join_us": "Գրանցվել",
   "login_with_facebook": "մուտք facebook֊ով",
-  "price_per_day": "{{price}} դրամ օրական",
+  "price_per_day": "{{price}} դր. օրական",
   "please_login_to_share": "Խնդրում ենք մուտք գործել համակարգ",
   "share_with": "Կիսվել",
   "apply": "Դիմել",
@@ -28,10 +28,10 @@
   "application_requests": "Դիմումներ",
   "chat_history": "Նամակագրություն",
   "status": "Կարգավիճակ",
-  "IN_PROGRESS": "Սպասվում է",
+  "WAITING": "Սպասվում է",
   "CANCELED_BY_PROVIDER": "Չեղարկված է",
   "CANCELED_BY_CONSUMER": "Չեղարկված է",
-  "CONFIRMED": "Հաստատված է",
+  "IN_PROGRESS": "Ընթացքում",
   "FINISHED": "Ավարտված է",
   "write_a_review": "Write a review",
   "confirm": "Հաստատել",
@@ -66,5 +66,8 @@
   "FOUND": "ԳՏՆՎԵԼ Է",
   "add_new_application": "Ավելացնել նոր հայտարարություն",
   "questions": "Հարցեր",
-  "feed": "Լրահոս"
+  "feed": "Լրահոս",
+  "see_reviews": "Դիտել կարծիքները",
+  "rate": "Գնահատել",
+  "open_conversation": "Բացել նամակագրությունը"
 }

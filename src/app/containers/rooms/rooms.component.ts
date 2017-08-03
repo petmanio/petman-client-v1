@@ -16,85 +16,8 @@ export interface IRoomsComponent {
 
 @Component({
   selector: 'app-rooms',
-  template: `
-    <div class="colomns is-hidden-mobile">
-      <div class="column pm-page-intro">
-        <md-icon color="primary">favorite</md-icon>&nbsp;&nbsp;&nbsp;
-        <span class="pm-color-gray pm-font-18">{{'sitters_intro' | translate}}</span>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="pm-room-items" infinite-scroll
-           (scrolled)="onScroll()"
-           [infiniteScrollDistance]="2"
-           [infiniteScrollThrottle]="300"
-           [scrollWindow]="false">
-        <div class="column">
-          <masonry [options]="{ transitionDuration: '0.5s', percentPosition: true, resize: true }"
-                   [useImagesLoaded]="true" 
-                   class="columns pm-width-100">
-            <!--TODO: fix, without ngRepeat brick does not work-->
-            <masonry-brick *ngFor="let _ of [0]"
-                           class="column is-4-desktop is-6-tablet">
-              <md-card [routerLink]="[currentUser ? '/rooms/add' : '/join']" class="pm-cursor-pointer">
-                <md-card-header>
-                  <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="currentUser$ | async"
-                       [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
-                  <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="!(currentUser$ | async)"
-                       [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
-                  <md-card-title></md-card-title>
-                  <md-card-subtitle>
-                    <span class="pm-font-12 pm-color-gray">
-                      {{'add_new_application' | translate}}
-                    </span>
-                  </md-card-subtitle>
-                  <a md-icon-button class="pm-action-add">
-                    <md-icon class="pm-font-16 pm-color-gray">add</md-icon>
-                  </a>
-                </md-card-header>
-              </md-card>
-            </masonry-brick>
-            <masonry-brick *ngFor="let room of (roomList$ | async)?.list" 
-                           class="column is-4-desktop is-6-tablet">
-              <app-room [room]="room"></app-room>
-            </masonry-brick>
-          </masonry>
-        </div>
-        <div *ngIf="(roomList$ | async)?.count > (roomList$ | async)?.list.length"
-             class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
-             (click)="onScroll(); $event.stopPropagation()">
-          {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
-      </div>
-      <button md-fab class="pm-fab" (click)="onFabClick()">
-        <md-icon>add</md-icon>
-      </button>
-    </div>
-  `,
-  styles: [`
-    md-card-title {
-      display: flex;
-      justify-content: center;
-    }
-
-    .pm-room-items {
-      overflow: auto;
-      width: 100%;
-      height: calc(100vh - 125px);
-      height: -webkit-calc(100vh - 125px);
-      height: -moz-calc(100vh - 125px);
-    }
-    
-    @media (max-width: 600px) and (orientation: portrait) {
-      /* TODO: make flexible */
-      .pm-room-items {
-       height: calc(100vh - 60px);
-       height: -webkit-calc(100vh - 60px);
-       height: -moz-calc(100vh - 60px);
-      }
-    }
-  `]
+  templateUrl: './rooms.component.html',
+  styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   roomList$: Observable<any>;
@@ -107,21 +30,15 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
-    this.roomList$ = _store.select(fromRoot.getRoomList);
+    // this.roomList$ = _store.select(fromRoot.getRoomList);
     this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
-    this.roomList$.subscribe($event => {
-      this._count = $event.count;
-    });
 
-    this.currentUser$.subscribe($event => this.currentUser = $event);
   }
 
   ngOnDestroy(): void {
-    this._store.dispatch(new roomAction.ListClearAction({}));
   }
 
   onScroll(): void {

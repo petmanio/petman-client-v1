@@ -225,9 +225,9 @@ export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundD
     const _dialogRef = this._dialog.open(ConfirmDialogComponent);
     _dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        this._store.dispatch(new lostFoundAction.DeleteByIdAction({lostFoundId: this.lostFound.id}));
+        this._store.dispatch(new lostFoundAction.DeleteAction({lostFoundId: this.lostFound.id}));
         this._actions$
-          .ofType(lostFoundAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .ofType(lostFoundAction.ActionTypes.DELETE_SUCCESS)
           .takeUntil(this._destroyed$)
           .do(() => this._router.navigate(['lost-found']))
           .subscribe();

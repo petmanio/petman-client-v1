@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http } from '@angular/http';
+import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
   MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule, MdRadioModule,
-  MdSelectModule
+  MdSelectModule, MdPaginatorModule
 } from '@angular/material';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
@@ -64,16 +64,10 @@ import {
   ToolbarComponent,
   BlogItemComponent,
   LocationItemComponent,
+  ReviewListComponent,
   RoomComponent,
-  RoomRatingRowComponent,
-  RoomApplyDialogComponent,
-  RoomApplicationActionsComponent,
-  RoomApplicationMessagesComponent,
-  RoomApplicationMessageComponent,
+  RoomReviewsListDialogComponent,
   RoomApplicationsListComponent,
-  RoomReviewsListComponent,
-  RoomReviewDialogComponent,
-  RoomStatisticsComponent,
   WalkerComponent,
   WalkerApplyDialogComponent,
   WalkerApplicationActionsComponent,
@@ -95,7 +89,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 
-import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe } from './pipes';
+import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe, FormatDatePipe } from './pipes';
 import {
   AuthService,
   BlogService,
@@ -119,10 +113,11 @@ import {
   NotificationEffects,
   LostFoundEffects
 } from './store';
-import { AuthGuard } from './guards';
+import { AuthGuard, RoomExists } from './guards';
 
 import { reducer } from './store';
 import { appRoutes } from './app.routes';
+import { CustomRequestOptions } from './helpers/CustomRequestOptions';
 
 // import { schema } from './db';
 
@@ -161,16 +156,10 @@ import { appRoutes } from './app.routes';
     ToolbarComponent,
     BlogItemComponent,
     LocationItemComponent,
+    ReviewListComponent,
     RoomComponent,
-    RoomRatingRowComponent,
-    RoomApplyDialogComponent,
-    RoomApplicationActionsComponent,
-    RoomApplicationMessagesComponent,
-    RoomApplicationMessageComponent,
+    RoomReviewsListDialogComponent,
     RoomApplicationsListComponent,
-    RoomReviewsListComponent,
-    RoomReviewDialogComponent,
-    RoomStatisticsComponent,
     WalkerComponent,
     WalkerApplyDialogComponent,
     WalkerApplicationActionsComponent,
@@ -193,16 +182,15 @@ import { appRoutes } from './app.routes';
     EllipsisPipe,
     KeysPipe,
     KeysOrderPipe,
-    ChunkPipe
+    ChunkPipe,
+    FormatDatePipe
   ],
   entryComponents: [
-    // TODO: use only one review dialog for whole application
-    RoomApplyDialogComponent,
-    RoomReviewDialogComponent,
     WalkerApplyDialogComponent,
     WalkerReviewDialogComponent,
     ShareDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    RoomReviewsListDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -214,7 +202,7 @@ import { appRoutes } from './app.routes';
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
     MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule, MdRadioModule,
-    MdSelectModule,
+    MdSelectModule, MdPaginatorModule,
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
@@ -247,7 +235,9 @@ import { appRoutes } from './app.routes';
     // DBModule.provideDB(schema),
   ],
   providers: [
+    // { provide: RequestOptions, useClass: CustomRequestOptions },
     AuthGuard,
+    RoomExists,
     AuthService,
     BlogService,
     LocationService,

@@ -3,16 +3,16 @@ import { assign } from 'lodash';
 import * as authAction from './auth.actions';
 
 export interface State {
-  user?: IAuthCurrentUserResponse
+  user?: IAuthCurrentUserResponse,
 }
 
 const initialState: State = {
-  user: null
+  user: null,
 };
 
 export function reducer(state = initialState, action: authAction.Actions): State {
   switch (action.type) {
-    case authAction.ActionTypes.LOGIN_COMPLETE: {
+    case authAction.ActionTypes.LOGIN_SUCCESS: {
       const res: ILoginResponse = action.payload;
       return assign({}, state, { user: res.user });
     }
@@ -22,12 +22,12 @@ export function reducer(state = initialState, action: authAction.Actions): State
       return assign({}, state, { user: null });
     }
 
-    case authAction.ActionTypes.GET_CURRENT_USER_COMPLETE: {
+    case authAction.ActionTypes.GET_CURRENT_USER_SUCCESS: {
       const res: IAuthCurrentUserResponse = action.payload;
       return assign({}, state, { user: res });
     }
 
-    case authAction.ActionTypes.LOGOUT_COMPLETE: {
+    case authAction.ActionTypes.LOGOUT_SUCCESS: {
       return assign({}, state, { user: null });
     }
 

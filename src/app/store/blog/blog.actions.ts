@@ -12,12 +12,12 @@ import { IBlogListRequest, IBlogListResponse } from '../../models/api';
  */
 export const ActionTypes = {
   LIST: type('[Blog] List'),
-  LIST_COMPLETE: type('[Blog] List Complete'),
+  LIST_SUCCESS: type('[Blog] List Success'),
   LIST_ERROR: type('[Blog] List Error'),
   LIST_CLEAR: type('[Blog] List Clear'),
 
   LIST_LOAD_MORE: type('[Blog] List Load More'),
-  LIST_LOAD_MORE_COMPLETE: type('[Blog] List Load more Complete'),
+  LIST_LOAD_MORE_SUCCESS: type('[Blog] List Load more Success'),
   LIST_LOAD_MORE_ERROR: type('[Blog] List Load More Error')
 };
 
@@ -38,8 +38,8 @@ export class ListAction implements Action {
   constructor(public payload: IBlogListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: IBlogListResponse) { }
 }
@@ -65,8 +65,8 @@ export class ListLoadMoreAction implements Action {
   constructor(public payload: IBlogListRequest) { }
 }
 
-export class ListLoadMoreCompleteAction implements Action {
-  type = ActionTypes.LIST_LOAD_MORE_COMPLETE;
+export class ListLoadMoreSuccessAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_SUCCESS;
 
   constructor(public payload: IBlogListResponse) { }
 }
@@ -83,9 +83,9 @@ export class ListLoadMoreErrorAction implements Action {
  */
 export type Actions
   = ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | ListLoadMoreAction
-  | ListLoadMoreCompleteAction
+  | ListLoadMoreSuccessAction
   | ListLoadMoreErrorAction

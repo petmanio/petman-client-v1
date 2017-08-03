@@ -23,7 +23,7 @@ export function reducer(state = initialState, action: questionAction.Actions): S
     /**
      * List
      */
-    case questionAction.ActionTypes.LIST_COMPLETE: {
+    case questionAction.ActionTypes.LIST_SUCCESS: {
       const res: IQuestionListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), total: res.total }});
     }
@@ -36,7 +36,7 @@ export function reducer(state = initialState, action: questionAction.Actions): S
     /**
      * Get By Id
      */
-    case questionAction.ActionTypes.GET_BY_ID_COMPLETE: {
+    case questionAction.ActionTypes.GET_BY_ID_SUCCESS: {
       const res: IQuestionGetByIdResponse = action.payload;
       return assign({}, state, {question: res});
     }

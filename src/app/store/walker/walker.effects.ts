@@ -28,7 +28,7 @@ import * as walkerAction from '../../store/walker/walker.actions';
 
 interface IWalkerEffects {
   getById$: Observable<Action>,
-  deleteById$: Observable<Action>,
+  delete$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>,
@@ -45,17 +45,17 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.GetByIdAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.getById(options)
-        .map(response => new walkerAction.GetByIdCompleteAction(response))
+        .map(response => new walkerAction.GetByIdSuccessAction(response))
         .catch(err => of(new walkerAction.GetByIdErrorAction(err)))
     });
 
-  @Effect() deleteById$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.DELETE_BY_ID)
-    .map((action: walkerAction.DeleteByIdAction) => action.payload)
+  @Effect() delete$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.DELETE)
+    .map((action: walkerAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.deleteById(options)
-        .map(response => new walkerAction.DeleteByIdCompleteAction(response))
-        .catch(err => of(new walkerAction.DeleteByIdErrorAction(err)))
+        .map(response => new walkerAction.DeleteSuccessAction(response))
+        .catch(err => of(new walkerAction.DeleteErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
@@ -63,7 +63,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.list(options)
-        .map(response => new walkerAction.ListCompleteAction(response))
+        .map(response => new walkerAction.ListSuccessAction(response))
         .catch(err => of(new walkerAction.ListErrorAction(err)))
     });
 
@@ -72,7 +72,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.create(options)
-        .map(response => new walkerAction.CreateCompleteAction(response))
+        .map(response => new walkerAction.CreateSuccessAction(response))
         .catch(err => of(new walkerAction.CreateErrorAction(err)))
     });
 
@@ -81,7 +81,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.ApplyAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.apply(options)
-        .map(response => new walkerAction.ApplyCompleteAction(response))
+        .map(response => new walkerAction.ApplySuccessAction(response))
         .catch(err => of(new walkerAction.ApplyErrorAction(err)))
     });
 
@@ -90,7 +90,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.UpdateApplicationAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.updateApplication(options)
-        .map(response => new walkerAction.UpdateApplicationCompleteAction(response))
+        .map(response => new walkerAction.UpdateApplicationSuccessAction(response))
         .catch(err => of(new walkerAction.UpdateApplicationErrorAction(err)))
     });
 
@@ -99,7 +99,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.ApplicationMessageListAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.getApplicationMessageList(options)
-        .map(response => new walkerAction.ApplicationMessageListCompleteAction(response))
+        .map(response => new walkerAction.ApplicationMessageListSuccessAction(response))
         .catch(err => of(new walkerAction.ApplicationMessageListErrorAction(err)))
     });
 
@@ -116,7 +116,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.ShareOnFacebookAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.shareOnFacebook(options)
-        .map(response => new walkerAction.ShareOnFacebookCompleteAction(response))
+        .map(response => new walkerAction.ShareOnFacebookSuccessAction(response))
         .catch(err => of(new walkerAction.ShareOnFacebookErrorAction(err)))
     });
 

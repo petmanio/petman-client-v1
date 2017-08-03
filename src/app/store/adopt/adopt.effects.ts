@@ -28,7 +28,7 @@ import * as adoptAction from '../../store/adopt/adopt.actions';
 
 interface IAdoptEffects {
   getById$: Observable<Action>,
-  deleteById$: Observable<Action>,
+  delete$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   commentList$: Observable<Action>,
@@ -43,17 +43,17 @@ export class AdoptEffects implements IAdoptEffects {
     .map((action: adoptAction.GetByIdAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.getById(options)
-        .map(response => new adoptAction.GetByIdCompleteAction(response))
+        .map(response => new adoptAction.GetByIdSuccessAction(response))
         .catch(err => of(new adoptAction.GetByIdErrorAction(err)))
     });
 
-  @Effect() deleteById$: Observable<Action> = this._actions$
-    .ofType(adoptAction.ActionTypes.DELETE_BY_ID)
-    .map((action: adoptAction.DeleteByIdAction) => action.payload)
+  @Effect() delete$: Observable<Action> = this._actions$
+    .ofType(adoptAction.ActionTypes.DELETE)
+    .map((action: adoptAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.deleteById(options)
-        .map(response => new adoptAction.DeleteByIdCompleteAction(response))
-        .catch(err => of(new adoptAction.DeleteByIdErrorAction(err)))
+        .map(response => new adoptAction.DeleteSuccessAction(response))
+        .catch(err => of(new adoptAction.DeleteErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
@@ -61,7 +61,7 @@ export class AdoptEffects implements IAdoptEffects {
     .map((action: adoptAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.list(options)
-        .map(response => new adoptAction.ListCompleteAction(response))
+        .map(response => new adoptAction.ListSuccessAction(response))
         .catch(err => of(new adoptAction.ListErrorAction(err)))
     });
 
@@ -70,7 +70,7 @@ export class AdoptEffects implements IAdoptEffects {
     .map((action: adoptAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.create(options)
-        .map(response => new adoptAction.CreateCompleteAction(response))
+        .map(response => new adoptAction.CreateSuccessAction(response))
         .catch(err => of(new adoptAction.CreateErrorAction(err)))
     });
 
@@ -79,7 +79,7 @@ export class AdoptEffects implements IAdoptEffects {
     .map((action: adoptAction.CommentListAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.getCommentList(options)
-        .map(response => new adoptAction.CommentListCompleteAction(response))
+        .map(response => new adoptAction.CommentListSuccessAction(response))
         .catch(err => of(new adoptAction.CommentListErrorAction(err)))
     });
 
@@ -89,7 +89,7 @@ export class AdoptEffects implements IAdoptEffects {
     .map((action: adoptAction.CommentListLoadMoreAction) => action.payload)
     .switchMap(options => {
       return this._adoptService.getCommentList(options)
-        .map(response => new adoptAction.CommentListLoadMoreCompleteAction(response))
+        .map(response => new adoptAction.CommentListLoadMoreSuccessAction(response))
         .catch(err => of(new adoptAction.CommentListLoadMoreErrorAction(err)))
     });
 

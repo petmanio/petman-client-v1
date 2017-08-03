@@ -133,7 +133,7 @@ export class NotificationsComponent implements OnInit, OnChanges, INotifications
     let status: string = appStatus.toLowerCase();
     if (appStatus === 'CANCELED_BY_PROVIDER' || appStatus === 'CANCELED_BY_CONSUMER') {
       status = `Canceled`;
-    } else if (appStatus === 'IN_PROGRESS') {
+    } else if (appStatus === 'WAITING') {
       status = 'In progress'
     }
     return status;

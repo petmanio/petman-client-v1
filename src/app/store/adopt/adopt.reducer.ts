@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
      * List
      */
     // TODO: use another action for loading more
-    case adoptAction.ActionTypes.LIST_COMPLETE: {
+    case adoptAction.ActionTypes.LIST_SUCCESS: {
       const res: IAdoptListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
@@ -44,7 +44,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
     /**
      * Get By Id
      */
-    case adoptAction.ActionTypes.GET_BY_ID_COMPLETE: {
+    case adoptAction.ActionTypes.GET_BY_ID_SUCCESS: {
       const res: IAdoptGetByIdResponse = action.payload;
       // TODO: use object assign
       return assign({}, state, {adopt: res});
@@ -64,7 +64,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
      * Comment List
      */
     // TODO: use another action for loading more
-    case adoptAction.ActionTypes.COMMENT_LIST_COMPLETE: {
+    case adoptAction.ActionTypes.COMMENT_LIST_SUCCESS: {
       const res: IAdoptCommentListResponse = action.payload;
       return assign({}, state, { comments: { total: res.total, list: res.list } });
     }
@@ -74,7 +74,7 @@ export function reducer(state = initialState, action: adoptAction.Actions): Stat
     }
 
     // TODO: use another action for loading more
-    case adoptAction.ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE: {
+    case adoptAction.ActionTypes.COMMENT_LIST_LOAD_MORE_SUCCESS: {
       const res: IAdoptCommentListResponse = action.payload;
       return assign({}, state, { comments: { total: state.comments.total, list: state.comments.list.concat(res.list) } });
     }

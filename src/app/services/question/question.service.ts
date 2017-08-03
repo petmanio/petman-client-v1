@@ -7,8 +7,8 @@ import { environment } from '../../../environments/environment';
 import {
   IQuestionCreateRequest,
   IQuestionCreateResponse,
-  IQuestionDeleteByIdRequest,
-  IQuestionDeleteByIdResponse,
+  IQuestionDeleteRequest,
+  IQuestionDeleteResponse,
   IQuestionGetByIdRequest,
   IQuestionGetByIdResponse,
   IQuestionListRequest,
@@ -19,7 +19,7 @@ import { SailsService } from 'angular2-sails';
 export interface IQuestionService {
   create(options: IQuestionCreateRequest): Observable<IQuestionCreateResponse>,
   getById(options: IQuestionGetByIdRequest): Observable<IQuestionGetByIdResponse>,
-  deleteById(options: IQuestionDeleteByIdRequest): Observable<IQuestionDeleteByIdResponse>,
+  deleteById(options: IQuestionDeleteRequest): Observable<IQuestionDeleteResponse>,
   list(options: IQuestionListRequest): Observable<IQuestionListResponse>,
 }
 
@@ -59,7 +59,7 @@ export class QuestionService implements IQuestionService {
       .map(response => response.json());
   }
 
-  deleteById(options: IQuestionDeleteByIdRequest): Observable<IQuestionDeleteByIdResponse> {
+  deleteById(options: IQuestionDeleteRequest): Observable<IQuestionDeleteResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');

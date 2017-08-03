@@ -3,8 +3,8 @@ import { type } from '../../../util';
 import {
   IQuestionCreateRequest,
   IQuestionCreateResponse,
-  IQuestionDeleteByIdRequest,
-  IQuestionDeleteByIdResponse,
+  IQuestionDeleteRequest,
+  IQuestionDeleteResponse,
   IQuestionGetByIdRequest,
   IQuestionGetByIdResponse,
   IQuestionListRequest,
@@ -21,19 +21,19 @@ import {
  */
 export const ActionTypes = {
   GET_BY_ID: type('[Question] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[Question] Get By Id Complete'),
+  GET_BY_ID_SUCCESS: type('[Question] Get By Id Success'),
   GET_BY_ID_ERROR: type('[Question] Get By Id Error'),
 
-  DELETE_BY_ID: type('[Question] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[Question] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[Question] Delete By IdError'),
+  DELETE: type('[Question] Delete By Id'),
+  DELETE_SUCCESS: type('[Question] Delete By Id Success'),
+  DELETE_ERROR: type('[Question] Delete By IdError'),
 
   LIST: type('[Question] List'),
-  LIST_COMPLETE: type('[Question] List Complete'),
+  LIST_SUCCESS: type('[Question] List Success'),
   LIST_ERROR: type('[Question] List Error'),
 
   CREATE: type('[Question] Create'),
-  CREATE_COMPLETE: type('[Question] Create Complete'),
+  CREATE_SUCCESS: type('[Question] Create Success'),
   CREATE_ERROR: type('[Question] Create Error'),
 
   CLEAR: type('[Question] Clear')
@@ -56,8 +56,8 @@ export class GetByIdAction implements Action {
   constructor(public payload: IQuestionGetByIdRequest) { }
 }
 
-export class GetByIdCompleteAction implements Action {
-  type = ActionTypes.GET_BY_ID_COMPLETE;
+export class GetByIdSuccessAction implements Action {
+  type = ActionTypes.GET_BY_ID_SUCCESS;
 
   constructor(public payload: IQuestionGetByIdResponse) { }
 }
@@ -71,20 +71,20 @@ export class GetByIdErrorAction implements Action {
 /**
  * Delete By Id
  */
-export class DeleteByIdAction implements Action {
-  type = ActionTypes.DELETE_BY_ID;
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
 
-  constructor(public payload: IQuestionDeleteByIdRequest) { }
+  constructor(public payload: IQuestionDeleteRequest) { }
 }
 
-export class DeleteByIdCompleteAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
 
-  constructor(public payload: IQuestionDeleteByIdResponse) { }
+  constructor(public payload: IQuestionDeleteResponse) { }
 }
 
-export class DeleteByIdErrorAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_ERROR;
+export class DeleteErrorAction implements Action {
+  type = ActionTypes.DELETE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -99,8 +99,8 @@ export class ListAction implements Action {
   constructor(public payload: IQuestionListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: IQuestionListResponse) { }
 }
@@ -120,8 +120,8 @@ export class CreateAction implements Action {
   constructor(public payload: IQuestionCreateRequest) { }
 }
 
-export class CreateCompleteAction implements Action {
-  type = ActionTypes.CREATE_COMPLETE;
+export class CreateSuccessAction implements Action {
+  type = ActionTypes.CREATE_SUCCESS;
 
   constructor(public payload: IQuestionCreateResponse) { }
 }
@@ -147,16 +147,16 @@ export class ClearAction implements Action {
  */
 export type Actions
   = GetByIdAction
-  | GetByIdCompleteAction
+  | GetByIdSuccessAction
   | GetByIdErrorAction
-  | DeleteByIdAction
-  | DeleteByIdCompleteAction
-  | DeleteByIdErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction
   | ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | CreateAction
-  | CreateCompleteAction
+  | CreateSuccessAction
   | CreateErrorAction
   | ClearAction
 

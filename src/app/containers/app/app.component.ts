@@ -40,7 +40,7 @@ export interface IAppComponent {
         <div class="cssload-whirlpool"></div>
       </div>
     </div>
-    <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
+    <!--<md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>-->
     <app-layout>
       <!--TODO: update layout, sideNav containers container-->
       <app-toolbar (toggleMenu)="toggleSidenav($event)">
@@ -228,13 +228,6 @@ export class AppComponent implements OnInit, IAppComponent {
     this.notifications$ = this._store.select(fromRoot.getNotificationList);
     this._translate.setDefaultLang('en');
     this._utilsService.registerNewIcons();
-    // TODO: use mdIconRegistry
-    // _mdIconRegistry
-    //   .addSvgIcon('thumb-up',
-    //     sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/thumbup-icon.svg'))
-    //   .addSvgIconSetInNamespace('mdi',
-    //     _sanitizer.bypassSecurityTrustResourceUrl('/icon/assets/core-icon-set.svg'))
-    //   .registerFontClassAlias('mdi', 'mdi');
   }
 
   ngOnInit(): void {
@@ -368,7 +361,7 @@ export class AppComponent implements OnInit, IAppComponent {
     localStorage.removeItem('token');
     setTimeout(() => {
       this._router.navigate(['/']);
-      this._store.dispatch(new auth.LogoutCompleteAction({}));
+      this._store.dispatch(new auth.LogoutSuccessAction({}));
     }, 300);
     // location.h_ref = '/';
   }
@@ -390,18 +383,18 @@ export class AppComponent implements OnInit, IAppComponent {
     this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
 
     // Room Events
-    this._sailsService.on('roomApplicationMessage').subscribe(message => {
-      this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
-    });
-
-    this._sailsService.on('roomApplicationUpdate').subscribe(update => {
-      this._store.dispatch(new roomAction.UpdateApplicationCompleteAction(update))
+    // this._sailsService.on('roomApplicationMessage').subscribe(message => {
+    //   this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
+    // });
+    //
+    this._sailsService.on('roomApplicationStatusUpdate').subscribe(update => {
+      this._store.dispatch(new roomAction.UpdateApplicationStatusSuccessAction(update))
     });
 
     // TODO: use another action for adding new application
-    this._sailsService.on('roomApplicationCreate').subscribe(application => {
-      this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
-    });
+    // this._sailsService.on('roomApplicationCreate').subscribe(application => {
+    //   this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
+    // });
 
     // Walker Events
     this._sailsService.on('walkerApplicationMessage').subscribe(message => {
@@ -409,7 +402,7 @@ export class AppComponent implements OnInit, IAppComponent {
     });
 
     this._sailsService.on('walkerApplicationUpdate').subscribe(update => {
-      this._store.dispatch(new walkerAction.UpdateApplicationCompleteAction(update))
+      this._store.dispatch(new walkerAction.UpdateApplicationSuccessAction(update))
     });
 
     // TODO: use another action for adding new application

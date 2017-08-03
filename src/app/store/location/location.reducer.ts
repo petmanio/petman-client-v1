@@ -23,7 +23,7 @@ export function reducer(state = initialState, action: locationAction.Actions): S
     /**
      * Filters
      */
-    case locationAction.ActionTypes.FILTERS_COMPLETE: {
+    case locationAction.ActionTypes.FILTERS_SUCCESS: {
       const res: ILocationFiltersResponse = action.payload;
       return assign({}, state, { filters: res });
     }
@@ -36,7 +36,7 @@ export function reducer(state = initialState, action: locationAction.Actions): S
     /**
      * List
      */
-    case locationAction.ActionTypes.LIST_COMPLETE: {
+    case locationAction.ActionTypes.LIST_SUCCESS: {
       const res: ILocationListResponse = action.payload;
       return assign({}, state, { list: { total: res.total, list: res.list } });
     }
@@ -53,7 +53,7 @@ export function reducer(state = initialState, action: locationAction.Actions): S
     /**
      * List Load More
      */
-    case locationAction.ActionTypes.LIST_LOAD_MORE_COMPLETE: {
+    case locationAction.ActionTypes.LIST_LOAD_MORE_SUCCESS: {
       const res: ILocationListResponse = action.payload;
       return assign({}, state, { list: { total: state.list.total, list: state.list.list.concat(res.list) } });
     }
@@ -66,7 +66,7 @@ export function reducer(state = initialState, action: locationAction.Actions): S
     /**
      * Pins
      */
-    case locationAction.ActionTypes.PINS_COMPLETE: {
+    case locationAction.ActionTypes.PINS_SUCCESS: {
       const res: ILocationPinsResponse[] = action.payload;
       return assign({}, state, { pins: res });
     }

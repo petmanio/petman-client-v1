@@ -38,7 +38,7 @@ export class NotificationEffects implements INotificationEffects {
     .map((action: notificationAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._notificationService.list(options)
-        .map(response => new notificationAction.ListCompleteAction(response))
+        .map(response => new notificationAction.ListSuccessAction(response))
         .catch(err => of(new notificationAction.ListErrorAction(err)))
     });
 
@@ -47,7 +47,7 @@ export class NotificationEffects implements INotificationEffects {
     .map((action: notificationAction.SeenAction) => action.payload)
     .switchMap(options => {
       return this._notificationService.seen(options)
-        .map(response => new notificationAction.SeenCompleteAction(response))
+        .map(response => new notificationAction.SeenSuccessAction(response))
         .catch(err => of(new notificationAction.SeenErrorAction(err)))
     });
 

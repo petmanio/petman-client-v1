@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: lostFoundAction.Actions): 
      * List
      */
     // TODO: use another action for loading more
-    case lostFoundAction.ActionTypes.LIST_COMPLETE: {
+    case lostFoundAction.ActionTypes.LIST_SUCCESS: {
       const res: ILostFoundListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
@@ -44,7 +44,7 @@ export function reducer(state = initialState, action: lostFoundAction.Actions): 
     /**
      * Get By Id
      */
-    case lostFoundAction.ActionTypes.GET_BY_ID_COMPLETE: {
+    case lostFoundAction.ActionTypes.GET_BY_ID_SUCCESS: {
       const res: ILostFoundGetByIdResponse = action.payload;
       // TODO: use object assign
       return assign({}, state, {lostFound: res});
@@ -64,7 +64,7 @@ export function reducer(state = initialState, action: lostFoundAction.Actions): 
      * Comment List
      */
     // TODO: use another action for loading more
-    case lostFoundAction.ActionTypes.COMMENT_LIST_COMPLETE: {
+    case lostFoundAction.ActionTypes.COMMENT_LIST_SUCCESS: {
       const res: ILostFoundCommentListResponse = action.payload;
       return assign({}, state, { comments: { total: res.total, list: res.list } });
     }
@@ -74,7 +74,7 @@ export function reducer(state = initialState, action: lostFoundAction.Actions): 
     }
 
     // TODO: use another action for loading more
-    case lostFoundAction.ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE: {
+    case lostFoundAction.ActionTypes.COMMENT_LIST_LOAD_MORE_SUCCESS: {
       const res: ILostFoundCommentListResponse = action.payload;
       return assign({}, state, { comments: { total: state.comments.total, list: state.comments.list.concat(res.list) } });
     }

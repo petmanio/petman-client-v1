@@ -11,8 +11,8 @@ import {
   ILostFoundCommentStreamJoinRequest,
   ILostFoundCreateRequest,
   ILostFoundCreateResponse,
-  ILostFoundDeleteByIdRequest,
-  ILostFoundDeleteByIdResponse,
+  ILostFoundDeleteRequest,
+  ILostFoundDeleteResponse,
   ILostFoundGetByIdRequest,
   ILostFoundGetByIdResponse,
   ILostFoundListRequest,
@@ -22,7 +22,7 @@ import { SailsService } from 'angular2-sails';
 
 export interface ILostFoundService {
   getById(options: ILostFoundGetByIdRequest): Observable<ILostFoundGetByIdResponse>,
-  deleteById(options: ILostFoundDeleteByIdRequest): Observable<ILostFoundDeleteByIdResponse>,
+  deleteById(options: ILostFoundDeleteRequest): Observable<ILostFoundDeleteResponse>,
   list(options: ILostFoundListRequest): Observable<ILostFoundListResponse>,
   create(options: ILostFoundCreateRequest): Observable<ILostFoundCreateResponse>,
   getCommentList(options: ILostFoundCommentListRequest): Observable<ILostFoundCommentListResponse>,
@@ -49,7 +49,7 @@ export class LostFoundService implements ILostFoundService {
       .map(response => response.json());
   }
 
-  deleteById(options: ILostFoundDeleteByIdRequest): Observable<ILostFoundDeleteByIdResponse> {
+  deleteById(options: ILostFoundDeleteRequest): Observable<ILostFoundDeleteResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');

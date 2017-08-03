@@ -94,7 +94,7 @@ export class LostFoundAddComponent implements OnInit, OnDestroy, ILostFoundAddCo
 
   ngOnInit(): void {
     this._actions$
-      .ofType(lostFoundAction.ActionTypes.CREATE_COMPLETE)
+      .ofType(lostFoundAction.ActionTypes.CREATE_SUCCESS)
       .takeUntil(this._destroyed$)
       .do((action) => {
         this._router.navigate(['lost-found', action.payload.id, 'details']);

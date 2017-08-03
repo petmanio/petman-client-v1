@@ -11,10 +11,10 @@ import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { AuthService } from '../services/auth/auth.service';
-import * as fromRoot from '../store';
-import * as authAction from '../store/auth/auth.actions';
-import { IAuthCurrentUserResponse } from '../models/api';
+import { AuthService } from '../../services/auth/auth.service';
+import * as fromRoot from '../../store';
+import * as authAction from '../../store/auth/auth.actions';
+import { IAuthCurrentUserResponse } from '../../models/api';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
     // TODO: first check from state
     return this._authService.getCurrentUser()
       .map((user: IAuthCurrentUserResponse) => {
-        this._store.dispatch(new authAction.GetCurrentUserCompleteAction(user));
+        this._store.dispatch(new authAction.GetCurrentUserSuccessAction(user));
         this._router.navigate(['/']);
         return true;
       })

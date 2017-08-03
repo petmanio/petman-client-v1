@@ -15,7 +15,7 @@ export interface IRoomReviewsListDialogComponent {
   styleUrls: ['./room-reviews-list-dialog.component.scss']
 })
 export class RoomReviewsListDialogComponent implements OnInit, IRoomReviewsListDialogComponent {
-  limit = 2;
+  limit = 5;
   skip = 0;
   roomId: number;
   reviewList: { total: number, list: IRoomApplication[] };

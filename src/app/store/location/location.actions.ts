@@ -15,20 +15,20 @@ import {
  */
 export const ActionTypes = {
   LIST: type('[Location] List'),
-  LIST_COMPLETE: type('[Location] List Complete'),
+  LIST_SUCCESS: type('[Location] List Success'),
   LIST_ERROR: type('[Location] List Error'),
   LIST_CLEAR: type('[Location] List Clear'),
 
   LIST_LOAD_MORE: type('[Location] List Load More'),
-  LIST_LOAD_MORE_COMPLETE: type('[Location] List Load More Complete'),
+  LIST_LOAD_MORE_SUCCESS: type('[Location] List Load More Success'),
   LIST_LOAD_MORE_ERROR: type('[Location] List Load More Error'),
 
   FILTERS: type('[Location] Filters'),
-  FILTERS_COMPLETE: type('[Location] Filters Complete'),
+  FILTERS_SUCCESS: type('[Location] Filters Success'),
   FILTERS_ERROR: type('[Location] Filters Error'),
 
   PINS: type('[Location] Pins'),
-  PINS_COMPLETE: type('[Location] Pins Complete'),
+  PINS_SUCCESS: type('[Location] Pins Success'),
   PINS_ERROR: type('[Location] Pins Error')
 };
 
@@ -49,8 +49,8 @@ export class ListAction implements Action {
   constructor(public payload: ILocationListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: ILocationListResponse) { }
 }
@@ -76,8 +76,8 @@ export class ListLoadMoreAction implements Action {
   constructor(public payload: ILocationListRequest) { }
 }
 
-export class ListLoadMoreCompleteAction implements Action {
-  type = ActionTypes.LIST_LOAD_MORE_COMPLETE;
+export class ListLoadMoreSuccessAction implements Action {
+  type = ActionTypes.LIST_LOAD_MORE_SUCCESS;
 
   constructor(public payload: ILocationListResponse) { }
 }
@@ -97,8 +97,8 @@ export class PinsAction implements Action {
   constructor(public payload: ILocationPinsRequest) { }
 }
 
-export class PinsCompleteAction implements Action {
-  type = ActionTypes.PINS_COMPLETE;
+export class PinsSuccessAction implements Action {
+  type = ActionTypes.PINS_SUCCESS;
 
   constructor(public payload: ILocationPinsResponse[]) { }
 }
@@ -115,8 +115,8 @@ export class FiltersAction implements Action {
   constructor(public payload: ILocationFiltersRequest) { }
 }
 
-export class FiltersCompleteAction implements Action {
-  type = ActionTypes.FILTERS_COMPLETE;
+export class FiltersSuccessAction implements Action {
+  type = ActionTypes.FILTERS_SUCCESS;
 
   constructor(public payload: ILocationFiltersResponse) { }
 }
@@ -133,15 +133,15 @@ export class FiltersErrorAction implements Action {
  */
 export type Actions
   = FiltersAction
-  | FiltersCompleteAction
+  | FiltersSuccessAction
   | FiltersErrorAction
   | ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | ListLoadMoreAction
-  | ListLoadMoreCompleteAction
+  | ListLoadMoreSuccessAction
   | ListLoadMoreErrorAction
   | PinsAction
-  | PinsCompleteAction
+  | PinsSuccessAction
   | PinsErrorAction

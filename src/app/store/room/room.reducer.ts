@@ -1,137 +1,136 @@
-import { assign, clone, findIndex, pick, cloneDeep } from 'lodash';
-import {
-  IRoomApplication,
-  IRoomApplicationMessageCreateEventResponse,
-  IRoomApplicationMessageListResponse,
-  IRoomGetByIdResponse,
-  IRoomListResponse,
-  IRoomUpdateApplicationRequest
-} from '../../models/api';
-import * as roomAction from './room.actions';
+import { createSelector } from 'reselect';
+import { IRoom, IRoomApplication } from '../../models/api';
+import * as room from './room.actions';
+import { assign, omit, find, cloneDeep } from 'lodash';
+import { getCurrentUser } from '../auth/auth.reducer';
+import { getAuthCurrentUser } from '../index';
 
 export interface State {
-  room: IRoomGetByIdResponse,
-  list: IRoomListResponse,
-  applicationMessageList: IRoomApplicationMessageListResponse
+  ids: string[],
+  entities: { [id: string]: IRoom },
+  selectedRoomId: string,
+  applicationEntities: { [id: string]: { total: number, list: IRoomApplication[]} },
 }
 
-// TODO: split room and user new state childs like messages, selectedRoom, etc.
-const initialState: State = {
-  list: {
-    list: [],
-    count: null
-  },
-  room: null,
-  applicationMessageList: {
-    list: [],
-    count: null
-  }
+export const initialState: State = {
+  ids: [],
+  entities: {},
+  selectedRoomId: null,
+  applicationEntities: {},
 };
 
-export function reducer(state = initialState, action: roomAction.Actions): State {
+export function reducer(state = initialState, action: room.Actions): State {
   switch (action.type) {
     /**
      * List
      */
-    // TODO: use another action for loading more
-    case roomAction.ActionTypes.LIST_COMPLETE: {
-      const res: IRoomListResponse = action.payload;
-      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
-    }
+    case room.ActionTypes.LIST_SUCCESS: {
+      const rooms = action.payload.list;
+      const total = action.payload.total;
+      const newRooms = rooms.filter(room => !state.entities[room.id]);
 
-    case roomAction.ActionTypes.LIST_ERROR: {
-      const error: any = action.payload;
-      return assign({}, state, { list: { list: [], count: null }});
-    }
+      const newRoomIds = newRooms.map(room => room.id);
+      const newRoomEntities = newRooms.reduce((entities: { [id: string]: IRoom }, room: IRoom) => {
+        return assign(entities, {
+          [room.id]: room
+        });
+      }, {});
 
-    // TODO: use another action for loading more
-    case roomAction.ActionTypes.LIST_CLEAR: {
-      return assign({}, state, { list: { list: [], count: null }});
-    }
+      const update = {
+        ids: [ ...state.ids, ...newRoomIds ],
+        entities: Object.assign({}, state.entities, newRoomEntities),
+        total
+      };
 
-    /**
-     * Get By Id
-     */
-    case roomAction.ActionTypes.GET_BY_ID_COMPLETE: {
-      const res: IRoomGetByIdResponse = action.payload;
-      // TODO: use object assign
-      return Object.assign({}, state, {room: res});
-    }
-
-    case roomAction.ActionTypes.GET_BY_ID_ERROR: {
-      const error: any = action.payload;
-      return Object.assign({}, state, {room: null})
+      return assign({}, state, update);
     }
 
     /**
-     * Application Apply
-     * TODO: get room application separately, store into applications
+     * Applications list
      */
-    case roomAction.ActionTypes.APPLY_COMPLETE: {
-      const res: IRoomApplication = action.payload;
-      if (res.room !== state.room.id) {
-        return state
-      } else {
-        const room = cloneDeep(state.room);
-        room.applications.unshift(res);
-        return Object.assign({}, state, { room });
+    case room.ActionTypes.APPLICATION_LIST_SUCCESS: {
+      return assign({}, state, { applicationEntities: { [action.payload.roomId]: omit(action.payload, 'roomId') } })
+    }
+
+    /**
+     * Load
+     */
+    case room.ActionTypes.LOAD_SUCCESS: {
+      const room = action.payload;
+
+      if (state.ids.indexOf(room.id) > -1) {
+        return state;
       }
+
+      const update = {
+        ids: [ ...state.ids, room.id ],
+        entities: assign({}, state.entities, {
+          [room.id]: room
+        })
+      };
+
+      return assign({}, state, update);
     }
 
     /**
-     * Update Application
+     * Create
      */
-    case roomAction.ActionTypes.UPDATE_APPLICATION_COMPLETE: {
-      const res: IRoomUpdateApplicationRequest = action.payload;
-      const applicationIndex = findIndex(state.room.applications, (application) => application.id === res.id);
-      // TODO: without clone
-      const applications = clone(state.room.applications);
-      if (applicationIndex !== -1) {
-        // TODO: merge full object
-        applications[applicationIndex] = assign({}, state.room.applications[applicationIndex], pick(res,
-          ['status', 'review', 'rating', 'finishedAt']));
+    case room.ActionTypes.CREATE_SUCCESS: {
+      const room = action.payload;
+
+      if (state.ids.indexOf(room.id) > -1) {
+        return state;
       }
-      const room = Object.assign({}, state.room, { applications });
-      return Object.assign({}, state, { room: room })
-    }
 
-    case roomAction.ActionTypes.UPDATE_APPLICATION_ERROR: {
-      const error: any = action.payload;
-      return Object.assign({}, state, {})
-    }
+      const update = {
+        ids: [ ...state.ids, room.id ],
+        entities: assign({}, state.entities, {
+          [room.id]: room
+        })
+      };
 
-    /**
-     * Application Message List
-     */
-    // TODO: use another action for loading more
-    case roomAction.ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE: {
-      const res: IRoomApplicationMessageListResponse = action.payload;
-      if (res.list.length && state.room.id === res.list[0].room) {
-        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
-      }
-      return state;
-    }
-
-    case roomAction.ActionTypes.APPLICATION_MESSAGE_LIST_ERROR: {
-      const error: any = action.payload;
-      return assign({}, state, { applicationMessageList: { list: [], count: null }});
-    }
-
-    // TODO: use another action for loading more
-    case roomAction.ActionTypes.APPLICATION_MESSAGE_LIST_CLEAR: {
-      return assign({}, state, { applicationMessageList: { list: [], count: null }});
+      return assign({}, state, update);
     }
 
     /**
-     * Application Message Create Event
+     * Update Application status
      */
-    // TODO: refactor and use room state for keeping messages
-    case roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
-      const res: IRoomApplicationMessageCreateEventResponse = action.payload;
-      if (state.room.id === res.room) {
-        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
+    case room.ActionTypes.UPDATE_APPLICATION_STATUS_SUCCESS: {
+      const roomId = action.payload.roomId;
+      const applicationId = action.payload.applicationId;
+      const status = action.payload.status;
+      const applications = cloneDeep(state.applicationEntities[roomId]);
+      if (applications) {
+        const match = find(applications.list, item => item.id === applicationId);
+        if (match) {
+          match.status = status;
+          return assign({}, state, {
+            applicationEntities: assign({}, state.applicationEntities, {
+              [roomId]: applications
+            })
+          });
+        }
       }
       return state;
+    }
+
+
+    /**
+     * Delete
+     */
+    case room.ActionTypes.DELETE_SUCCESS: {
+      return assign({}, state, {
+        entities: omit(state.entities, action.payload.roomId)
+      });
+    }
+
+    /**
+     * Select
+     */
+    case room.ActionTypes.SELECT: {
+      return assign({}, state, {
+        selectedRoomId: action.payload
+      });
     }
 
     default: {
@@ -149,7 +148,27 @@ export function reducer(state = initialState, action: roomAction.Actions): State
  * use-case.
  */
 
-export const getList = (state: State) => state.list;
-export const getRoom = (state: State) => state.room;
-export const getApplicationMessageList = (state: State) => state.applicationMessageList;
+export const getEntities = (state: State) => state.entities;
 
+export const getIds = (state: State) => state.ids;
+
+export const getSelectedId = (state: State) => state.selectedRoomId;
+
+export const getSelected = createSelector(getEntities, getSelectedId, (entities, selectedId) => {
+  return entities[selectedId];
+});
+
+export const getAll = createSelector(getEntities, getIds, (entities, ids) => {
+  return ids.map(id => entities[id]);
+});
+
+export const getApplicationEntities = (state: State) => state.applicationEntities;
+
+export const getSelectedApplications = createSelector(getApplicationEntities, getSelectedId, (applicationEntities, selectedId) => {
+  return applicationEntities[selectedId] || { total: null, list: [] };
+});
+
+export const getSelectedReviews = createSelector(getSelectedApplications, (applicationList) => {
+  const list = applicationList.list.filter(application => application.review);
+  return { total: list.length, list };
+});

@@ -44,7 +44,7 @@ export class LocationEffects implements ILocationEffects {
     .map((action: locationAction.FiltersAction) => action.payload)
     .switchMap(options => {
       return this.locationService.filters(options)
-        .map(response => new locationAction.FiltersCompleteAction(response))
+        .map(response => new locationAction.FiltersSuccessAction(response))
         .catch(err => of(new locationAction.ListErrorAction(err)))
     });
 
@@ -54,7 +54,7 @@ export class LocationEffects implements ILocationEffects {
     .map((action: locationAction.ListAction) => action.payload)
     .switchMap(options => {
       return this.locationService.list(options)
-        .map(response => new locationAction.ListCompleteAction(response))
+        .map(response => new locationAction.ListSuccessAction(response))
         .catch(err => of(new locationAction.ListErrorAction(err)))
     });
 
@@ -64,7 +64,7 @@ export class LocationEffects implements ILocationEffects {
     .map((action: locationAction.ListLoadMoreAction) => action.payload)
     .switchMap(options => {
       return this.locationService.list(options)
-        .map(response => new locationAction.ListLoadMoreCompleteAction(response))
+        .map(response => new locationAction.ListLoadMoreSuccessAction(response))
         .catch(err => of(new locationAction.ListLoadMoreErrorAction(err)))
     });
 
@@ -74,7 +74,7 @@ export class LocationEffects implements ILocationEffects {
     .map((action: locationAction.PinsAction) => action.payload)
     .switchMap(options => {
       return this.locationService.pins(options)
-        .map(response => new locationAction.PinsCompleteAction(response))
+        .map(response => new locationAction.PinsSuccessAction(response))
         .catch(err => of(new locationAction.PinsErrorAction(err)))
     });
 

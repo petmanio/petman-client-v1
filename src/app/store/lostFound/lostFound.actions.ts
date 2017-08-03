@@ -7,8 +7,8 @@ import {
   ILostFoundCommentListResponse,
   ILostFoundCreateRequest,
   ILostFoundCreateResponse,
-  ILostFoundDeleteByIdRequest,
-  ILostFoundDeleteByIdResponse,
+  ILostFoundDeleteRequest,
+  ILostFoundDeleteResponse,
   ILostFoundGetByIdRequest,
   ILostFoundGetByIdResponse,
   ILostFoundListRequest,
@@ -25,29 +25,29 @@ import {
  */
 export const ActionTypes = {
   GET_BY_ID: type('[LostFound] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[LostFound] Get By Id Complete'),
+  GET_BY_ID_SUCCESS: type('[LostFound] Get By Id Success'),
   GET_BY_ID_ERROR: type('[LostFound] Get By Id Error'),
   GET_BY_ID_CLEAR: type('[LostFound] Get By Id Clear'),
 
-  DELETE_BY_ID: type('[LostFound] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[LostFound] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[LostFound] Delete By IdError'),
+  DELETE: type('[LostFound] Delete By Id'),
+  DELETE_SUCCESS: type('[LostFound] Delete By Id Success'),
+  DELETE_ERROR: type('[LostFound] Delete By IdError'),
 
   LIST: type('[LostFound] List'),
-  LIST_COMPLETE: type('[LostFound] List Complete'),
+  LIST_SUCCESS: type('[LostFound] List Success'),
   LIST_ERROR: type('[LostFound] List Error'),
   LIST_CLEAR: type('[LostFound] List Clear'),
 
   CREATE: type('[LostFound] Create'),
-  CREATE_COMPLETE: type('[LostFound] Create Complete'),
+  CREATE_SUCCESS: type('[LostFound] Create Success'),
   CREATE_ERROR: type('[LostFound] Create Error'),
 
   COMMENT_LIST: type('[LostFound] Comment List'),
-  COMMENT_LIST_COMPLETE: type('[LostFound] Comment Complete'),
+  COMMENT_LIST_SUCCESS: type('[LostFound] Comment Success'),
   COMMENT_LIST_ERROR: type('[LostFound] Comment Error'),
 
   COMMENT_LIST_LOAD_MORE: type('[LostFound] Comment Load More'),
-  COMMENT_LIST_LOAD_MORE_COMPLETE: type('[LostFound] Comment Load More Complete'),
+  COMMENT_LIST_LOAD_MORE_SUCCESS: type('[LostFound] Comment Load More Success'),
   COMMENT_LIST_LOAD_MORE_ERROR: type('[LostFound] Comment Load More Error'),
 
   COMMENT_CREATE: type('[LostFound] Comment Create'),
@@ -74,8 +74,8 @@ export class GetByIdAction implements Action {
   constructor(public payload: ILostFoundGetByIdRequest) { }
 }
 
-export class GetByIdCompleteAction implements Action {
-  type = ActionTypes.GET_BY_ID_COMPLETE;
+export class GetByIdSuccessAction implements Action {
+  type = ActionTypes.GET_BY_ID_SUCCESS;
 
   constructor(public payload: ILostFoundGetByIdResponse) { }
 }
@@ -95,20 +95,20 @@ export class GetByIdClearAction implements Action {
 /**
  * Delete By Id
  */
-export class DeleteByIdAction implements Action {
-  type = ActionTypes.DELETE_BY_ID;
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
 
-  constructor(public payload: ILostFoundDeleteByIdRequest) { }
+  constructor(public payload: ILostFoundDeleteRequest) { }
 }
 
-export class DeleteByIdCompleteAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
 
-  constructor(public payload: ILostFoundDeleteByIdResponse) { }
+  constructor(public payload: ILostFoundDeleteResponse) { }
 }
 
-export class DeleteByIdErrorAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_ERROR;
+export class DeleteErrorAction implements Action {
+  type = ActionTypes.DELETE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -123,8 +123,8 @@ export class ListAction implements Action {
   constructor(public payload: ILostFoundListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: ILostFoundListResponse) { }
 }
@@ -150,8 +150,8 @@ export class CreateAction implements Action {
   constructor(public payload: ILostFoundCreateRequest) { }
 }
 
-export class CreateCompleteAction implements Action {
-  type = ActionTypes.CREATE_COMPLETE;
+export class CreateSuccessAction implements Action {
+  type = ActionTypes.CREATE_SUCCESS;
 
   constructor(public payload: ILostFoundCreateResponse) { }
 }
@@ -171,8 +171,8 @@ export class CommentListAction implements Action {
   constructor(public payload: ILostFoundCommentListRequest) { }
 }
 
-export class CommentListCompleteAction implements Action {
-  type = ActionTypes.COMMENT_LIST_COMPLETE;
+export class CommentListSuccessAction implements Action {
+  type = ActionTypes.COMMENT_LIST_SUCCESS;
 
   constructor(public payload: ILostFoundCommentListResponse) { }
 }
@@ -192,8 +192,8 @@ export class CommentListLoadMoreAction implements Action {
   constructor(public payload: ILostFoundCommentListRequest) { }
 }
 
-export class CommentListLoadMoreCompleteAction implements Action {
-  type = ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE;
+export class CommentListLoadMoreSuccessAction implements Action {
+  type = ActionTypes.COMMENT_LIST_LOAD_MORE_SUCCESS;
 
   constructor(public payload: ILostFoundCommentListResponse) { }
 }
@@ -230,24 +230,24 @@ export class CommentCreateEventAction implements Action {
  */
 export type Actions
   = GetByIdAction
-  | GetByIdCompleteAction
+  | GetByIdSuccessAction
   | GetByIdErrorAction
   | GetByIdClearAction
-  | DeleteByIdAction
-  | DeleteByIdCompleteAction
-  | DeleteByIdErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction
   | ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | CreateAction
-  | CreateCompleteAction
+  | CreateSuccessAction
   | CreateErrorAction
   | CommentListAction
-  | CommentListCompleteAction
+  | CommentListSuccessAction
   | CommentListErrorAction
   | CommentListLoadMoreAction
-  | CommentListLoadMoreCompleteAction
+  | CommentListLoadMoreSuccessAction
   | CommentListLoadMoreErrorAction
   | CommentCreateAction
   | CommentCreateEventAction

@@ -3,16 +3,14 @@ export { NavItemComponent } from './nav-item/nav-item.component';
 export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
+export { ReviewListComponent } from './review-list/review-list.component';
+
 export { RoomComponent } from './room/room.component';
-export { RoomRatingRowComponent } from './room-rating-row/room-rating-row.component';
-export { RoomApplyDialogComponent } from './room-apply-dialog/room-apply-dialog.component';
-export { RoomApplicationActionsComponent } from './room-application-actions/room-application-actions.component';
-export { RoomApplicationMessagesComponent } from './room-application-messages/room-application-messages.component';
-export { RoomApplicationMessageComponent } from './room-application-message/room-application-message.component';
+export { RoomReviewsListDialogComponent } from './room-reviews-list-dialog/room-reviews-list-dialog.component';
 export { RoomApplicationsListComponent } from './room-applications-list/room-applications-list.component';
-export { RoomReviewsListComponent } from './room-reviews-list/room-reviews-list.component';
-export { RoomReviewDialogComponent } from './room-review-dialog/room-review-dialog.component';
-export { RoomStatisticsComponent } from './room-statistics/room-statistics.component';
+
+
+
 export { WalkerComponent } from './walker/walker.component';
 export { WalkerApplyDialogComponent } from './walker-apply-dialog/walker-apply-dialog.component';
 export { WalkerApplicationActionsComponent } from './walker-application-actions/walker-application-actions.component';

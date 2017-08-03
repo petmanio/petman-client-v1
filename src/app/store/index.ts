@@ -21,7 +21,7 @@ import { environment } from '../../environments/environment';
  * takes a value and chains it through every composed function, returning
  * the output.
  *
- * More: https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch5.html
+ * More: https://drboolean.gitrooms.io/mostly-adequate-guide/content/ch5.html
  */
 import { compose } from '@ngrx/core/compose';
 
@@ -52,7 +52,7 @@ import * as fromLayout from './layout/layout.reducer';
 import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromLocation from './location/location.reducer';
-import * as fromRoom from './room/room.reducer';
+import * as fromRooms from './room/room.reducer';
 import * as fromWalker from './walker/walker.reducer';
 import * as fromAdopt from './adopt/adopt.reducer';
 import * as fromLostFound from './lostFound/lostFound.reducer';
@@ -67,7 +67,7 @@ export interface State {
   auth: fromAuth.State,
   blog: fromBlog.State,
   location: fromLocation.State,
-  room: fromRoom.State,
+  rooms: fromRooms.State,
   walker: fromWalker.State,
   adopt: fromAdopt.State,
   lostFound: fromLostFound.State,
@@ -89,7 +89,7 @@ const reducers = {
   auth: fromAuth.reducer,
   blog: fromBlog.reducer,
   location: fromLocation.reducer,
-  room: fromRoom.reducer,
+  rooms: fromRooms.reducer,
   walker: fromWalker.reducer,
   adopt: fromAdopt.reducer,
   lostFound: fromLostFound.reducer,
@@ -119,7 +119,7 @@ export const getAuthState = (state: State) => state.auth;
  * need to make new selectors that wrap them.
  *
  * Once again our compose function comes in handy. From right to left, we
- * first select the auth state then we pass the state to the book
+ * first select the auth state then we pass the state to the room
  * reducer's getAuth selector, finally returning an observable
  * of search results.
  *
@@ -154,15 +154,6 @@ export const getLocationState = (state: State) => state.location;
 export const getLocationList = createSelector(getLocationState, fromLocation.getList);
 export const getLocationFilters = createSelector(getLocationState, fromLocation.getFilters);
 export const getLocationPins = createSelector(getLocationState, fromLocation.getPins);
-
-/**
- * Room Reducers
- */
-export const getRoomState = (state: State) => state.room;
-export const getRoomList = createSelector(getRoomState, fromRoom.getList);
-// TODO: update method and store item names
-export const getRoomRoom = createSelector(getRoomState, fromRoom.getRoom);
-export const getRoomApplicationMessageList = createSelector(getRoomState, fromRoom.getApplicationMessageList);
 
 /**
  * Walker Reducers
@@ -204,3 +195,58 @@ export const getQuestionQuestion = createSelector(getQuestionState, fromQuestion
  */
 export const getNotificationState = (state: State) => state.notification;
 export const getNotificationList = createSelector(getNotificationState, fromNotification.getList);
+
+/**
+ * A selector function is a map function factory. We pass it parameters and it
+ * returns a function that maps from the larger state tree into a smaller
+ * piece of state. This selector simply selects the `rooms` state.
+ *
+ * Selectors are used with the `select` operator.
+ *
+ * ```ts
+ * class MyComponent {
+ * 	constructor(state$: Observable<State>) {
+ * 	  this.roomsState$ = state$.select(getRoomsState);
+ * 	}
+ * }
+ * ```
+ */
+export const getRoomsState = (state: State) => state.rooms;
+
+/**
+ * Every reducer module exports selector functions, however child reducers
+ * have no knowledge of the overall state tree. To make them useable, we
+ * need to make new selectors that wrap them.
+ *
+ * The createSelector function from the reselect library creates
+ * very efficient selectors that are memoized and only recompute when arguments change.
+ * The created selectors can also be composed together to select different
+ * pieces of state.
+ */
+
+/**
+ * Room
+ * @type {Reselect.Selector<State, {[p: string]: IRoom}>}
+ */
+export const getRoomEntities = createSelector(getRoomsState, fromRooms.getEntities);
+export const getRoomIds = createSelector(getRoomsState, fromRooms.getIds);
+export const getSelectedRoomId = createSelector(getRoomsState, fromRooms.getSelectedId);
+export const getSelectedRoom = createSelector(getRoomsState, fromRooms.getSelected);
+export const getSelectedRoomApplications = createSelector(getRoomsState, fromRooms.getSelectedApplications);
+export const getSelectedRoomReviews = createSelector(getRoomsState, fromRooms.getSelectedReviews);
+export const getRoomApplicationEntities = createSelector(getRoomsState, fromRooms.getApplicationEntities);
+
+/**
+ * Mixed
+ * @type {Reselect.Selector<State, string>}
+ */
+export const getSelectedRoomMyApplications = createSelector(getAuthCurrentUser, getSelectedRoomApplications, (currentUser, apps) => {
+    let filtered = { total: null, list: [] };
+    if (currentUser && apps) {
+      const list = apps.list.filter(application => {
+        return application.consumer.id === currentUser.id || application.provider.id === currentUser.id
+      });
+      filtered = { total: list.length, list }
+    }
+    return filtered;
+  });

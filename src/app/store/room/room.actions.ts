@@ -1,24 +1,11 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IRoomApplicationMessageCreateEventResponse,
-  IRoomApplicationMessageCreateRequest,
-  IRoomApplicationMessageListRequest,
-  IRoomApplicationMessageListResponse,
-  IRoomApplyRequest,
-  IRoomApplyResponse,
-  IRoomCreateRequest,
-  IRoomCreateResponse,
-  IRoomDeleteByIdRequest,
-  IRoomDeleteByIdResponse,
-  IRoomGetByIdRequest,
-  IRoomGetByIdResponse,
-  IRoomListRequest,
-  IRoomListResponse,
-  IRoomShareOnFacebookRequest,
-  IRoomShareOnFacebookResponse,
-  IRoomUpdateApplicationRequest,
-  IRoomUpdateApplicationResponse
+  IRoomApplyRequest, IRoomApplyResponse,
+  IRoomCreateRequest, IRoomCreateResponse, IRoomDeleteRequest, IRoomDeleteResponse,
+  IRoomGetByIdRequest, IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse, IRoomApplicationListRequest, IRoomApplicationListResponse,
+  IRoomUpdateApplicationStatusRequest, IRoomUpdateApplicationStatusResponse
+
 } from '../../models/api';
 
 /**
@@ -30,45 +17,35 @@ import {
  * action types in the application are unique.
  */
 export const ActionTypes = {
-  GET_BY_ID: type('[Room] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[Room] Get By Id Complete'),
-  GET_BY_ID_ERROR: type('[Room] Get By Id Error'),
-
-  DELETE_BY_ID: type('[Room] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[Room] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[Room] Delete By IdError'),
-
   LIST: type('[Room] List'),
-  LIST_COMPLETE: type('[Room] List Complete'),
+  LIST_SUCCESS: type('[Room] List Success'),
   LIST_ERROR: type('[Room] List Error'),
-  LIST_CLEAR: type('[Room] List Clear'),
+
+  APPLICATION_LIST: type('[Room] Application List'),
+  APPLICATION_LIST_SUCCESS: type('[Room] Application List Success'),
+  APPLICATION_LIST_ERROR: type('[Room] Application List Error'),
+
+  LOAD: type('[Room] Load'),
+  LOAD_SUCCESS: type('[Room] Load Success'),
+  LOAD_ERROR: type('[Room] Load Error'),
+
+  DELETE: type('[Room] Delete'),
+  DELETE_SUCCESS: type('[Room] Delete Success'),
+  DELETE_ERROR: type('[Room] Delete By Error'),
+
+  SELECT: type('[Room] Select'),
 
   CREATE: type('[Room] Create'),
-  CREATE_COMPLETE: type('[Room] Create Complete'),
+  CREATE_SUCCESS: type('[Room] Create Success'),
   CREATE_ERROR: type('[Room] Create Error'),
 
   APPLY: type('[Room] Apply'),
-  APPLY_COMPLETE: type('[Room] Apply Complete'),
+  APPLY_SUCCESS: type('[Room] Apply Success'),
   APPLY_ERROR: type('[Room] Apply Error'),
 
-  UPDATE_APPLICATION: type('[Room] Update Application'),
-  UPDATE_APPLICATION_COMPLETE: type('[Room] Update Application Complete'),
-  UPDATE_APPLICATION_ERROR: type('[Room] Update Application Error'),
-
-  APPLICATION_MESSAGE_LIST: type('[Room] Application Message List'),
-  APPLICATION_MESSAGE_LIST_COMPLETE: type('[Room] Application Message Complete'),
-  APPLICATION_MESSAGE_LIST_ERROR: type('[Room] Application Message Error'),
-  APPLICATION_MESSAGE_LIST_CLEAR: type('[Room] Application Message Clear'),
-
-  APPLICATION_MESSAGE_CREATE: type('[Room] Application Message Create'),
-  // TODO: add actions for complete and error
-
-  APPLICATION_MESSAGE_CREATE_EVENT: type('[Room] Application Message Create Event'),
-  // TODO: add actions for complete and error
-
-  SHARE_ON_FACEBOOK: type('[Room] Share On Facebook'),
-  SHARE_ON_FACEBOOK_COMPLETE: type('[Room] Share On Facebook Complete'),
-  SHARE_ON_FACEBOOK_ERROR: type('[Room] Share On Facebook Error'),
+  UPDATE_APPLICATION_STATUS: type('[Room] Update Application Status'),
+  UPDATE_APPLICATION_STATUS_SUCCESS: type('[Room] Update Application Status Success'),
+  UPDATE_APPLICATION_STATUS_ERROR: type('[Room] Update Application Status Error')
 };
 
 /**
@@ -80,43 +57,22 @@ export const ActionTypes = {
  */
 
 /**
- * Get By Id
+ * Load
  */
-export class GetByIdAction implements Action {
-  type = ActionTypes.GET_BY_ID;
+export class LoadAction implements Action {
+  type = ActionTypes.LOAD;
 
   constructor(public payload: IRoomGetByIdRequest) { }
 }
 
-export class GetByIdCompleteAction implements Action {
-  type = ActionTypes.GET_BY_ID_COMPLETE;
+export class LoadSuccessAction implements Action {
+  type = ActionTypes.LOAD_SUCCESS;
 
   constructor(public payload: IRoomGetByIdResponse) { }
 }
 
-export class GetByIdErrorAction implements Action {
-  type = ActionTypes.GET_BY_ID_ERROR;
-
-  constructor(public payload: any) { }
-}
-
-/**
- * Delete By Id
- */
-export class DeleteByIdAction implements Action {
-  type = ActionTypes.DELETE_BY_ID;
-
-  constructor(public payload: IRoomDeleteByIdRequest) { }
-}
-
-export class DeleteByIdCompleteAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_COMPLETE;
-
-  constructor(public payload: IRoomDeleteByIdResponse) { }
-}
-
-export class DeleteByIdErrorAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_ERROR;
+export class LoadErrorAction implements Action {
+  type = ActionTypes.LOAD_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -130,8 +86,8 @@ export class ListAction implements Action {
   constructor(public payload: IRoomListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: IRoomListResponse) { }
 }
@@ -142,8 +98,23 @@ export class ListErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class ListClearAction implements Action {
-  type = ActionTypes.LIST_CLEAR;
+/**
+ * Review list
+ */
+export class ApplicationListAction implements Action {
+  type = ActionTypes.APPLICATION_LIST;
+
+  constructor(public payload: IRoomApplicationListRequest) { }
+}
+
+export class ApplicationListSuccessAction implements Action {
+  type = ActionTypes.APPLICATION_LIST_SUCCESS;
+
+  constructor(public payload: IRoomApplicationListResponse) { }
+}
+
+export class ApplicationListErrorAction implements Action {
+  type = ActionTypes.APPLICATION_LIST_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -157,8 +128,8 @@ export class CreateAction implements Action {
   constructor(public payload: IRoomCreateRequest) { }
 }
 
-export class CreateCompleteAction implements Action {
-  type = ActionTypes.CREATE_COMPLETE;
+export class CreateSuccessAction implements Action {
+  type = ActionTypes.CREATE_SUCCESS;
 
   constructor(public payload: IRoomCreateResponse) { }
 }
@@ -170,6 +141,37 @@ export class CreateErrorAction implements Action {
 }
 
 /**
+ * Select
+ */
+export class SelectAction implements Action {
+  readonly type = ActionTypes.SELECT;
+
+  constructor(public payload: string) { }
+}
+
+/**
+ * Delete
+ */
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
+
+  constructor(public payload: IRoomDeleteRequest) { }
+}
+
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
+
+  constructor(public payload: IRoomDeleteResponse) { }
+}
+
+export class DeleteErrorAction implements Action {
+  type = ActionTypes.DELETE_ERROR;
+
+  constructor(public payload: any) { }
+}
+
+
+/**
  * Apply
  */
 export class ApplyAction implements Action {
@@ -178,8 +180,8 @@ export class ApplyAction implements Action {
   constructor(public payload: IRoomApplyRequest) { }
 }
 
-export class ApplyCompleteAction implements Action {
-  type = ActionTypes.APPLY_COMPLETE;
+export class ApplySuccessAction implements Action {
+  type = ActionTypes.APPLY_SUCCESS;
 
   constructor(public payload: IRoomApplyResponse) { }
 }
@@ -191,123 +193,46 @@ export class ApplyErrorAction implements Action {
 }
 
 /**
- * Update Application
+ * Update Application Status
  */
-export class UpdateApplicationAction implements Action {
-  type = ActionTypes.UPDATE_APPLICATION;
+export class UpdateApplicationStatusAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_STATUS;
 
-  constructor(public payload: IRoomUpdateApplicationRequest) { }
+  constructor(public payload: IRoomUpdateApplicationStatusRequest) { }
 }
 
-export class UpdateApplicationCompleteAction implements Action {
-  type = ActionTypes.UPDATE_APPLICATION_COMPLETE;
+export class UpdateApplicationStatusSuccessAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_STATUS_SUCCESS;
 
-  constructor(public payload: IRoomUpdateApplicationResponse) { }
+  constructor(public payload: IRoomUpdateApplicationStatusResponse) { }
 }
 
-export class UpdateApplicationErrorAction implements Action {
-  type = ActionTypes.UPDATE_APPLICATION_ERROR;
+export class UpdateApplicationStatusErrorAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_STATUS_ERROR;
 
   constructor(public payload: any) { }
 }
 
-/**
- * Application Message List
- */
-export class ApplicationMessageListAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_LIST;
-
-  constructor(public payload: IRoomApplicationMessageListRequest) { }
-}
-
-export class ApplicationMessageListCompleteAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE;
-
-  constructor(public payload: IRoomApplicationMessageListResponse) { }
-}
-
-export class ApplicationMessageListErrorAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_LIST_ERROR;
-
-  constructor(public payload: any) { }
-}
-
-export class ApplicationMessageListClearAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_LIST_CLEAR;
-
-  constructor(public payload: any) { }
-}
-
-/**
- * Application Message Create
- */
-// TODO: add complete and error actions
-export class ApplicationMessageCreateAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_CREATE;
-
-  constructor(public payload: IRoomApplicationMessageCreateRequest) { }
-}
-
-/**
- * Application Message Create Event
- */
-export class ApplicationMessageCreateEventAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT;
-
-  constructor(public payload: IRoomApplicationMessageCreateEventResponse) { }
-}
-
-/**
- * Share On Facebook
- */
-export class ShareOnFacebookAction implements Action {
-  type = ActionTypes.SHARE_ON_FACEBOOK;
-
-  constructor(public payload: IRoomShareOnFacebookRequest) { }
-}
-
-export class ShareOnFacebookCompleteAction implements Action {
-  type = ActionTypes.SHARE_ON_FACEBOOK_COMPLETE;
-
-  constructor(public payload: IRoomShareOnFacebookResponse) { }
-}
-
-export class ShareOnFacebookErrorAction implements Action {
-  type = ActionTypes.SHARE_ON_FACEBOOK_ERROR;
-
-  constructor(public payload: any) { }
-}
 
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
 export type Actions
-  = GetByIdAction
-  | GetByIdCompleteAction
-  | GetByIdErrorAction
-  | DeleteByIdAction
-  | DeleteByIdCompleteAction
-  | DeleteByIdErrorAction
-  | ListAction
-  | ListCompleteAction
-  | ListErrorAction
-  | ListClearAction
+  = LoadAction
+  | LoadSuccessAction
+  | LoadErrorAction
   | CreateAction
-  | CreateCompleteAction
+  | CreateSuccessAction
   | CreateErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction
   | ApplyAction
-  | ApplyCompleteAction
+  | ApplySuccessAction
   | ApplyErrorAction
-  | UpdateApplicationAction
-  | UpdateApplicationCompleteAction
-  | UpdateApplicationErrorAction
-  | ApplicationMessageListAction
-  | ApplicationMessageListCompleteAction
-  | ApplicationMessageListErrorAction
-  | ApplicationMessageListClearAction
-  | ApplicationMessageCreateAction
-  | ApplicationMessageCreateEventAction
-  | ShareOnFacebookAction
-  | ShareOnFacebookCompleteAction
-  | ShareOnFacebookErrorAction
+  | UpdateApplicationStatusAction
+  | UpdateApplicationStatusSuccessAction
+  | UpdateApplicationStatusErrorAction
+  | SelectAction
+

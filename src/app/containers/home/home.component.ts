@@ -159,7 +159,7 @@ export class HomeComponent implements OnInit, OnDestroy, IHomeComponent {
     });
 
     this._actions$
-      .ofType(authAction.ActionTypes.LOGIN_COMPLETE)
+      .ofType(authAction.ActionTypes.LOGIN_SUCCESS)
       .takeUntil(this._destroyed$)
       .do((action) => {
         this._router.navigate(['/']);

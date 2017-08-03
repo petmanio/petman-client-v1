@@ -1,3 +1,11 @@
+import { FileHolder } from 'angular2-image-upload/lib/image-upload/image-upload.component';
+
+export interface IPaginatorEvent {
+  length: number,
+  pageIndex: number,
+  pageSize: number
+}
+
 export interface IPin {
   description: string,
   lat: number,
@@ -49,6 +57,14 @@ export interface ILocation {
   type: string
 }
 
+export interface IReview {
+  rating: number,
+  review: string,
+  user: IUser,
+  createdAt: string,
+  updatedAt: string
+}
+
 export interface IRoomApplication {
   id: number,
   rating: number,
@@ -58,7 +74,7 @@ export interface IRoomApplication {
   room?: number | IRoom,
   count?: number,
   chats?: IRoomApplicationMessage[],
-  status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
+  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'IN_PROGRESS' | 'FINISHED',
   startedAt: string
   endedAt: string
   finishedAt: string
@@ -80,7 +96,6 @@ export interface IRoomImage {
 
 export interface IRoom {
   id: number,
-  // name: string,
   description: string,
   cost: number,
   limit?: number,
@@ -89,7 +104,8 @@ export interface IRoom {
   isOwner?: boolean,
   images?: IRoomImage[],
   user?: IUser,
-  createdAt: string
+  createdAt: string,
+  averageRating: number
 }
 
 export interface IAdoptImage {
@@ -142,7 +158,7 @@ export interface IWalkerApplication {
   walker?: number | IWalker,
   count?: number,
   chats?: IWalkerApplicationMessage[],
-  status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED',
+  status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'IN_PROGRESS' | 'FINISHED',
   startedAt: string
   endedAt: string
   finsihedAt: string
@@ -348,40 +364,60 @@ export interface IRoomListRequest {
 
 export interface IRoomListResponse {
   list: IRoom[],
-  count: number
+  total: number
+}
+
+export interface IRoomApplicationListRequest {
+  roomId: number
+}
+
+export interface IRoomApplicationListResponse {
+  list: IRoomApplication[],
+  total: number,
+  roomId?: number // only for front
 }
 
 export interface IRoomCreateRequest {
-  name: string,
   description: string,
   cost: number,
-  limit: number,
-  images: File[],
+  images: any[],
 }
 
 export interface IRoomCreateResponse extends IRoom {}
 
 export interface IRoomGetByIdRequest {
-  roomId: number
+  roomId: number | string
 }
 
 export interface IRoomGetByIdResponse extends IRoom {}
 
-export interface IRoomDeleteByIdRequest {
+export interface IRoomDeleteRequest {
   roomId: number
 }
 
-export interface IRoomDeleteByIdResponse {}
+export interface IRoomDeleteResponse {
+  roomId?: number // only for front
+}
 
 export interface IRoomApplyRequest {
   roomId: number
 }
 
-export interface IRoomApplyResponse {}
+export interface IRoomApplyResponse {
+  roomId?: number // only for front
+}
 
-export interface IRoomUpdateApplicationRequest extends IRoomApplication {}
+export interface IRoomUpdateApplicationStatusRequest {
+  applicationId: number,
+  status: string,
+  roomId?: number // only for front
+}
 
-export interface IRoomUpdateApplicationResponse extends IRoomApplication {}
+export interface IRoomUpdateApplicationStatusResponse {
+  status?: string // only for front
+  applicationId?: number // only for front
+  roomId?: number // only for front
+}
 
 export interface IRoomApplicationMessageListRequest {
   applicationId: number
@@ -449,11 +485,11 @@ export interface IWalkerGetByIdRequest {
 
 export interface IWalkerGetByIdResponse extends IWalker {}
 
-export interface IWalkerDeleteByIdRequest {
+export interface IWalkerDeleteRequest {
   walkerId: number
 }
 
-export interface IWalkerDeleteByIdResponse {}
+export interface IWalkerDeleteResponse {}
 
 export interface IWalkerApplyRequest {
   walkerId: number
@@ -527,11 +563,11 @@ export interface IAdoptGetByIdRequest {
 
 export interface IAdoptGetByIdResponse extends IAdopt {}
 
-export interface IAdoptDeleteByIdRequest {
+export interface IAdoptDeleteRequest {
   adoptId: number
 }
 
-export interface IAdoptDeleteByIdResponse {}
+export interface IAdoptDeleteResponse {}
 
 export interface IAdoptGetByIdRequest {
   adoptId: number
@@ -593,11 +629,11 @@ export interface ILostFoundGetByIdRequest {
 
 export interface ILostFoundGetByIdResponse extends ILostFound {}
 
-export interface ILostFoundDeleteByIdRequest {
+export interface ILostFoundDeleteRequest {
   lostFoundId: number
 }
 
-export interface ILostFoundDeleteByIdResponse {}
+export interface ILostFoundDeleteResponse {}
 
 export interface ILostFoundGetByIdRequest {
   lostFoundId: number
@@ -657,11 +693,11 @@ export interface IQuestionGetByIdRequest {
 
 export interface IQuestionGetByIdResponse extends IQuestion {}
 
-export interface IQuestionDeleteByIdRequest {
+export interface IQuestionDeleteRequest {
   questionId: number
 }
 
-export interface IQuestionDeleteByIdResponse {}
+export interface IQuestionDeleteResponse {}
 
 /**
  * Notification

@@ -4,32 +4,36 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import {
+  IRoomApplicationListRequest,
+  IRoomApplicationListResponse,
   IRoomApplicationMessageCreateRequest,
-  IRoomApplicationMessageJoinRequest,
   IRoomApplicationMessageListRequest,
   IRoomApplicationMessageListResponse,
   IRoomApplyRequest,
   IRoomApplyResponse,
   IRoomCreateRequest,
-  IRoomCreateResponse, IRoomDeleteByIdRequest, IRoomDeleteByIdResponse,
+  IRoomCreateResponse,
+  IRoomDeleteRequest,
+  IRoomDeleteResponse,
   IRoomGetByIdRequest,
   IRoomGetByIdResponse,
   IRoomListRequest,
-  IRoomListResponse, IRoomShareOnFacebookRequest,
-  IRoomUpdateApplicationRequest,
-  IRoomUpdateApplicationResponse
+  IRoomListResponse,
+  IRoomShareOnFacebookRequest,
+  IRoomUpdateApplicationStatusRequest,
+  IRoomUpdateApplicationStatusResponse,
 } from '../../models/api';
 import { SailsService } from 'angular2-sails';
-import { assign } from 'lodash';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IRoomService {
   getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse>,
-  deleteById(options: IRoomDeleteByIdRequest): Observable<IRoomDeleteByIdResponse>,
+  deleteById(options: IRoomDeleteRequest): Observable<IRoomDeleteResponse>,
   list(options: IRoomListRequest): Observable<IRoomListResponse>,
+  applicationList(options: IRoomApplicationListRequest): Observable<IRoomApplicationListResponse>,
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse>,
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>,
-  updateApplication(options: IRoomUpdateApplicationRequest): Observable<IRoomUpdateApplicationResponse>,
+  updateApplicationStatus(options: IRoomUpdateApplicationStatusRequest): Observable<IRoomUpdateApplicationStatusResponse>,
   getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse>,
   applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any>,
   shareOnFacebook(options: IRoomShareOnFacebookRequest): Observable<any>
@@ -54,7 +58,7 @@ export class RoomService implements IRoomService {
       .map(response => response.json());
   }
 
-  deleteById(options: IRoomDeleteByIdRequest): Observable<IRoomDeleteByIdResponse> {
+  deleteById(options: IRoomDeleteRequest): Observable<IRoomDeleteResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
@@ -84,17 +88,28 @@ export class RoomService implements IRoomService {
       .map(response => response.json());
   }
 
+  applicationList(options: IRoomApplicationListRequest): Observable<IRoomApplicationListResponse> {
+    const headers = new Headers();
+    const params: URLSearchParams = new URLSearchParams();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .get(`${environment.apiEndpoint}/api/room/${options.roomId}/applications`,
+        { headers, withCredentials: true, search: params }
+      )
+      .map(response => response.json());
+  }
+
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse> {
     const headers = new Headers();
     const formData: FormData = new FormData();
 
     headers.append('x-auth-token', localStorage.getItem('token'));
 
-    formData.append('name', options.name);
     formData.append('description', options.description);
     formData.append('cost', options.cost);
-    // TODO: functionality for future
-    // formData.append('limit', options.limit);
 
     if (options.images && options.images.length) {
       options.images.forEach(file => {
@@ -121,15 +136,15 @@ export class RoomService implements IRoomService {
       .map(response => response.json());
   }
 
-  updateApplication(options: IRoomUpdateApplicationRequest): Observable<IRoomUpdateApplicationResponse> {
+  updateApplicationStatus(options: IRoomUpdateApplicationStatusRequest): Observable<IRoomUpdateApplicationStatusResponse> {
     const headers = new Headers();
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this._http
-      .put(`${environment.apiEndpoint}/api/room/application/${options.id}`, options,
+      .put(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/status`, options,
         { headers, withCredentials: true }
       )
-      .map(response => response.json());
+      .map(response => response.ok);
   }
 
   getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse> {

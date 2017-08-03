@@ -215,9 +215,9 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
     const _dialogRef = this._dialog.open(ConfirmDialogComponent);
     _dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        this._store.dispatch(new adoptAction.DeleteByIdAction({adoptId: this.adopt.id}));
+        this._store.dispatch(new adoptAction.DeleteAction({adoptId: this.adopt.id}));
         this._actions$
-          .ofType(adoptAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .ofType(adoptAction.ActionTypes.DELETE_SUCCESS)
           .takeUntil(this._destroyed$)
           .do(() => this._router.navigate(['adopt']))
           .subscribe();

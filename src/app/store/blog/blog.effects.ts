@@ -39,7 +39,7 @@ export class BlogEffects implements IBlogEffects {
     .map((action: blogAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._blogService.list(options)
-        .map(response => new blogAction.ListCompleteAction(response))
+        .map(response => new blogAction.ListSuccessAction(response))
         .catch(err => of(new blogAction.ListErrorAction(err)))
     });
 
@@ -49,7 +49,7 @@ export class BlogEffects implements IBlogEffects {
     .map((action: blogAction.ListLoadMoreAction) => action.payload)
     .switchMap(options => {
       return this._blogService.list(options)
-        .map(response => new blogAction.ListLoadMoreCompleteAction(response))
+        .map(response => new blogAction.ListLoadMoreSuccessAction(response))
         .catch(err => of(new blogAction.ListLoadMoreErrorAction(err)))
     });
 

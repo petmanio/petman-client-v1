@@ -7,8 +7,8 @@ import {
   IAdoptCommentListResponse,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
-  IAdoptDeleteByIdRequest,
-  IAdoptDeleteByIdResponse,
+  IAdoptDeleteRequest,
+  IAdoptDeleteResponse,
   IAdoptGetByIdRequest,
   IAdoptGetByIdResponse,
   IAdoptListRequest,
@@ -25,29 +25,29 @@ import {
  */
 export const ActionTypes = {
   GET_BY_ID: type('[Adopt] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[Adopt] Get By Id Complete'),
+  GET_BY_ID_SUCCESS: type('[Adopt] Get By Id Success'),
   GET_BY_ID_ERROR: type('[Adopt] Get By Id Error'),
   GET_BY_ID_CLEAR: type('[Adopt] Get By Id Clear'),
 
-  DELETE_BY_ID: type('[Adopt] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[Adopt] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[Adopt] Delete By IdError'),
+  DELETE: type('[Adopt] Delete By Id'),
+  DELETE_SUCCESS: type('[Adopt] Delete By Id Success'),
+  DELETE_ERROR: type('[Adopt] Delete By IdError'),
 
   LIST: type('[Adopt] List'),
-  LIST_COMPLETE: type('[Adopt] List Complete'),
+  LIST_SUCCESS: type('[Adopt] List Success'),
   LIST_ERROR: type('[Adopt] List Error'),
   LIST_CLEAR: type('[Adopt] List Clear'),
 
   CREATE: type('[Adopt] Create'),
-  CREATE_COMPLETE: type('[Adopt] Create Complete'),
+  CREATE_SUCCESS: type('[Adopt] Create Success'),
   CREATE_ERROR: type('[Adopt] Create Error'),
 
   COMMENT_LIST: type('[Adopt] Comment List'),
-  COMMENT_LIST_COMPLETE: type('[Adopt] Comment Complete'),
+  COMMENT_LIST_SUCCESS: type('[Adopt] Comment Success'),
   COMMENT_LIST_ERROR: type('[Adopt] Comment Error'),
 
   COMMENT_LIST_LOAD_MORE: type('[Adopt] Comment Load More'),
-  COMMENT_LIST_LOAD_MORE_COMPLETE: type('[Adopt] Comment Load More Complete'),
+  COMMENT_LIST_LOAD_MORE_SUCCESS: type('[Adopt] Comment Load More Success'),
   COMMENT_LIST_LOAD_MORE_ERROR: type('[Adopt] Comment Load More Error'),
 
   COMMENT_CREATE: type('[Adopt] Comment Create'),
@@ -74,8 +74,8 @@ export class GetByIdAction implements Action {
   constructor(public payload: IAdoptGetByIdRequest) { }
 }
 
-export class GetByIdCompleteAction implements Action {
-  type = ActionTypes.GET_BY_ID_COMPLETE;
+export class GetByIdSuccessAction implements Action {
+  type = ActionTypes.GET_BY_ID_SUCCESS;
 
   constructor(public payload: IAdoptGetByIdResponse) { }
 }
@@ -95,20 +95,20 @@ export class GetByIdClearAction implements Action {
 /**
  * Delete By Id
  */
-export class DeleteByIdAction implements Action {
-  type = ActionTypes.DELETE_BY_ID;
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
 
-  constructor(public payload: IAdoptDeleteByIdRequest) { }
+  constructor(public payload: IAdoptDeleteRequest) { }
 }
 
-export class DeleteByIdCompleteAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
 
-  constructor(public payload: IAdoptDeleteByIdResponse) { }
+  constructor(public payload: IAdoptDeleteResponse) { }
 }
 
-export class DeleteByIdErrorAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_ERROR;
+export class DeleteErrorAction implements Action {
+  type = ActionTypes.DELETE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -123,8 +123,8 @@ export class ListAction implements Action {
   constructor(public payload: IAdoptListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: IAdoptListResponse) { }
 }
@@ -150,8 +150,8 @@ export class CreateAction implements Action {
   constructor(public payload: IAdoptCreateRequest) { }
 }
 
-export class CreateCompleteAction implements Action {
-  type = ActionTypes.CREATE_COMPLETE;
+export class CreateSuccessAction implements Action {
+  type = ActionTypes.CREATE_SUCCESS;
 
   constructor(public payload: IAdoptCreateResponse) { }
 }
@@ -171,8 +171,8 @@ export class CommentListAction implements Action {
   constructor(public payload: IAdoptCommentListRequest) { }
 }
 
-export class CommentListCompleteAction implements Action {
-  type = ActionTypes.COMMENT_LIST_COMPLETE;
+export class CommentListSuccessAction implements Action {
+  type = ActionTypes.COMMENT_LIST_SUCCESS;
 
   constructor(public payload: IAdoptCommentListResponse) { }
 }
@@ -192,8 +192,8 @@ export class CommentListLoadMoreAction implements Action {
   constructor(public payload: IAdoptCommentListRequest) { }
 }
 
-export class CommentListLoadMoreCompleteAction implements Action {
-  type = ActionTypes.COMMENT_LIST_LOAD_MORE_COMPLETE;
+export class CommentListLoadMoreSuccessAction implements Action {
+  type = ActionTypes.COMMENT_LIST_LOAD_MORE_SUCCESS;
 
   constructor(public payload: IAdoptCommentListResponse) { }
 }
@@ -230,24 +230,24 @@ export class CommentCreateEventAction implements Action {
  */
 export type Actions
   = GetByIdAction
-  | GetByIdCompleteAction
+  | GetByIdSuccessAction
   | GetByIdErrorAction
   | GetByIdClearAction
-  | DeleteByIdAction
-  | DeleteByIdCompleteAction
-  | DeleteByIdErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction
   | ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | CreateAction
-  | CreateCompleteAction
+  | CreateSuccessAction
   | CreateErrorAction
   | CommentListAction
-  | CommentListCompleteAction
+  | CommentListSuccessAction
   | CommentListErrorAction
   | CommentListLoadMoreAction
-  | CommentListLoadMoreCompleteAction
+  | CommentListLoadMoreSuccessAction
   | CommentListLoadMoreErrorAction
   | CommentCreateAction
   | CommentCreateEventAction

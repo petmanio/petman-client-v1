@@ -8,7 +8,7 @@ import {
   IWalkerApplyRequest,
   IWalkerApplyResponse,
   IWalkerCreateRequest,
-  IWalkerCreateResponse, IWalkerDeleteByIdRequest, IWalkerDeleteByIdResponse,
+  IWalkerCreateResponse, IWalkerDeleteRequest, IWalkerDeleteResponse,
   IWalkerGetByIdRequest,
   IWalkerGetByIdResponse,
   IWalkerListRequest,
@@ -29,32 +29,32 @@ import {
  */
 export const ActionTypes = {
   GET_BY_ID: type('[Walker] Get By Id'),
-  GET_BY_ID_COMPLETE: type('[Walker] Get By Id Complete'),
+  GET_BY_ID_SUCCESS: type('[Walker] Get By Id Success'),
   GET_BY_ID_ERROR: type('[Walker] Get By Id Error'),
 
-  DELETE_BY_ID: type('[Walker] Delete By Id'),
-  DELETE_BY_ID_COMPLETE: type('[Walker] Delete By Id Complete'),
-  DELETE_BY_ID_ERROR: type('[Walker] Delete By IdError'),
+  DELETE: type('[Walker] Delete By Id'),
+  DELETE_SUCCESS: type('[Walker] Delete By Id Success'),
+  DELETE_ERROR: type('[Walker] Delete By IdError'),
 
   LIST: type('[Walker] List'),
-  LIST_COMPLETE: type('[Walker] List Complete'),
+  LIST_SUCCESS: type('[Walker] List Success'),
   LIST_ERROR: type('[Walker] List Error'),
   LIST_CLEAR: type('[Walker] List Clear'),
 
   CREATE: type('[Walker] Create'),
-  CREATE_COMPLETE: type('[Walker] Create Complete'),
+  CREATE_SUCCESS: type('[Walker] Create Success'),
   CREATE_ERROR: type('[Walker] Create Error'),
 
   APPLY: type('[Walker] Apply'),
-  APPLY_COMPLETE: type('[Walker] Apply Complete'),
+  APPLY_SUCCESS: type('[Walker] Apply Success'),
   APPLY_ERROR: type('[Walker] Apply Error'),
 
   UPDATE_APPLICATION: type('[Walker] Update Application'),
-  UPDATE_APPLICATION_COMPLETE: type('[Walker] Update Application Complete'),
+  UPDATE_APPLICATION_SUCCESS: type('[Walker] Update Application Success'),
   UPDATE_APPLICATION_ERROR: type('[Walker] Update Application Error'),
 
   APPLICATION_MESSAGE_LIST: type('[Walker] Application Message List'),
-  APPLICATION_MESSAGE_LIST_COMPLETE: type('[Walker] Application Message Complete'),
+  APPLICATION_MESSAGE_LIST_SUCCESS: type('[Walker] Application Message Success'),
   APPLICATION_MESSAGE_LIST_ERROR: type('[Walker] Application Message Error'),
   APPLICATION_MESSAGE_LIST_CLEAR: type('[Walker] Application Message Clear'),
 
@@ -65,7 +65,7 @@ export const ActionTypes = {
   // TODO: add actions for complete and error
 
   SHARE_ON_FACEBOOK: type('[Walker] Share On Facebook'),
-  SHARE_ON_FACEBOOK_COMPLETE: type('[Walker] Share On Facebook Complete'),
+  SHARE_ON_FACEBOOK_SUCCESS: type('[Walker] Share On Facebook Success'),
   SHARE_ON_FACEBOOK_ERROR: type('[Walker] Share On Facebook Error'),
 };
 
@@ -86,8 +86,8 @@ export class GetByIdAction implements Action {
   constructor(public payload: IWalkerGetByIdRequest) { }
 }
 
-export class GetByIdCompleteAction implements Action {
-  type = ActionTypes.GET_BY_ID_COMPLETE;
+export class GetByIdSuccessAction implements Action {
+  type = ActionTypes.GET_BY_ID_SUCCESS;
 
   constructor(public payload: IWalkerGetByIdResponse) { }
 }
@@ -101,20 +101,20 @@ export class GetByIdErrorAction implements Action {
 /**
  * Delete By Id
  */
-export class DeleteByIdAction implements Action {
-  type = ActionTypes.DELETE_BY_ID;
+export class DeleteAction implements Action {
+  type = ActionTypes.DELETE;
 
-  constructor(public payload: IWalkerDeleteByIdRequest) { }
+  constructor(public payload: IWalkerDeleteRequest) { }
 }
 
-export class DeleteByIdCompleteAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_COMPLETE;
+export class DeleteSuccessAction implements Action {
+  type = ActionTypes.DELETE_SUCCESS;
 
-  constructor(public payload: IWalkerDeleteByIdResponse) { }
+  constructor(public payload: IWalkerDeleteResponse) { }
 }
 
-export class DeleteByIdErrorAction implements Action {
-  type = ActionTypes.DELETE_BY_ID_ERROR;
+export class DeleteErrorAction implements Action {
+  type = ActionTypes.DELETE_ERROR;
 
   constructor(public payload: any) { }
 }
@@ -128,8 +128,8 @@ export class ListAction implements Action {
   constructor(public payload: IWalkerListRequest) { }
 }
 
-export class ListCompleteAction implements Action {
-  type = ActionTypes.LIST_COMPLETE;
+export class ListSuccessAction implements Action {
+  type = ActionTypes.LIST_SUCCESS;
 
   constructor(public payload: IWalkerListResponse) { }
 }
@@ -155,8 +155,8 @@ export class CreateAction implements Action {
   constructor(public payload: IWalkerCreateRequest) { }
 }
 
-export class CreateCompleteAction implements Action {
-  type = ActionTypes.CREATE_COMPLETE;
+export class CreateSuccessAction implements Action {
+  type = ActionTypes.CREATE_SUCCESS;
 
   constructor(public payload: IWalkerCreateResponse) { }
 }
@@ -176,8 +176,8 @@ export class ApplyAction implements Action {
   constructor(public payload: IWalkerApplyRequest) { }
 }
 
-export class ApplyCompleteAction implements Action {
-  type = ActionTypes.APPLY_COMPLETE;
+export class ApplySuccessAction implements Action {
+  type = ActionTypes.APPLY_SUCCESS;
 
   constructor(public payload: IWalkerApplyResponse) { }
 }
@@ -197,8 +197,8 @@ export class UpdateApplicationAction implements Action {
   constructor(public payload: IWalkerUpdateApplicationRequest) { }
 }
 
-export class UpdateApplicationCompleteAction implements Action {
-  type = ActionTypes.UPDATE_APPLICATION_COMPLETE;
+export class UpdateApplicationSuccessAction implements Action {
+  type = ActionTypes.UPDATE_APPLICATION_SUCCESS;
 
   constructor(public payload: IWalkerUpdateApplicationResponse) { }
 }
@@ -218,8 +218,8 @@ export class ApplicationMessageListAction implements Action {
   constructor(public payload: IWalkerApplicationMessageListRequest) { }
 }
 
-export class ApplicationMessageListCompleteAction implements Action {
-  type = ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE;
+export class ApplicationMessageListSuccessAction implements Action {
+  type = ActionTypes.APPLICATION_MESSAGE_LIST_SUCCESS;
 
   constructor(public payload: IWalkerApplicationMessageListResponse) { }
 }
@@ -264,8 +264,8 @@ export class ShareOnFacebookAction implements Action {
   constructor(public payload: IWalkerShareOnFacebookRequest) { }
 }
 
-export class ShareOnFacebookCompleteAction implements Action {
-  type = ActionTypes.SHARE_ON_FACEBOOK_COMPLETE;
+export class ShareOnFacebookSuccessAction implements Action {
+  type = ActionTypes.SHARE_ON_FACEBOOK_SUCCESS;
 
   constructor(public payload: IWalkerShareOnFacebookResponse) { }
 }
@@ -282,30 +282,30 @@ export class ShareOnFacebookErrorAction implements Action {
  */
 export type Actions
   = GetByIdAction
-  | GetByIdCompleteAction
+  | GetByIdSuccessAction
   | GetByIdErrorAction
-  | DeleteByIdAction
-  | DeleteByIdCompleteAction
-  | DeleteByIdErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction
   | ListAction
-  | ListCompleteAction
+  | ListSuccessAction
   | ListErrorAction
   | ListClearAction
   | CreateAction
-  | CreateCompleteAction
+  | CreateSuccessAction
   | CreateErrorAction
   | ApplyAction
-  | ApplyCompleteAction
+  | ApplySuccessAction
   | ApplyErrorAction
   | UpdateApplicationAction
-  | UpdateApplicationCompleteAction
+  | UpdateApplicationSuccessAction
   | UpdateApplicationErrorAction
   | ApplicationMessageListAction
-  | ApplicationMessageListCompleteAction
+  | ApplicationMessageListSuccessAction
   | ApplicationMessageListErrorAction
   | ApplicationMessageListClearAction
   | ApplicationMessageCreateAction
   | ApplicationMessageCreateEventAction
   | ShareOnFacebookAction
-  | ShareOnFacebookCompleteAction
+  | ShareOnFacebookSuccessAction
   | ShareOnFacebookErrorAction

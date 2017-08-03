@@ -19,7 +19,7 @@ export function reducer(state = initialState, action: notificationAction.Actions
      * List
      */
     // TODO: use another action for loading more
-    case notificationAction.ActionTypes.LIST_COMPLETE: {
+    case notificationAction.ActionTypes.LIST_SUCCESS: {
       const res: INotificationListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
@@ -37,7 +37,7 @@ export function reducer(state = initialState, action: notificationAction.Actions
     /**
      * Seen
      */
-    case notificationAction.ActionTypes.SEEN_COMPLETE: {
+    case notificationAction.ActionTypes.SEEN_SUCCESS: {
       const res: INotificationSeenResponse = action.payload;
       let list = cloneDeep(state.list.list);
       list = map(list, item => {

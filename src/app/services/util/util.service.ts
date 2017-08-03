@@ -4,19 +4,19 @@ import { SailsService } from 'angular2-sails';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Store } from '@ngrx/store';
+import { pick } from 'lodash';
 import * as fromRoot from '../../store';
-import * as roomAction from '../../store/room/room.actions';
 import * as moment from 'moment';
 import { DomSanitizer, Meta } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MdIconRegistry } from '@angular/material';
+import { IReview } from '../../models/api';
 
 export interface IUtilService {
   initSocket(): void,
   playNotificationSound(): void,
   updateMeta(): void,
   registerNewIcons(): void
-  // getLatLngBound(coordinates: Coordinates[]): Subject<any[]>
 }
 
 @Injectable()
@@ -121,6 +121,16 @@ export class UtilService implements IUtilService {
     }, 0);
   }
 
+  static convertApplicationsListToReviews(applications): IReview[] {
+    // TODO: use <T>
+    return applications.map(application => {
+      application = pick(application, ['rating', 'review', 'consumer', 'createdAt', 'updatedAt']);
+      application.user = application.consumer;
+      delete application.consumer;
+      return application;
+    });
+  }
+
   constructor(private _sailsService: SailsService,
               private _store: Store<fromRoot.State>,
               private _meta: Meta,
@@ -151,7 +161,7 @@ export class UtilService implements IUtilService {
           this._sailsService.on('roomApplicationMessage')
             .subscribe($event => {
               if ($event) {
-                this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
+                // this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
               }
             });
         });
@@ -167,18 +177,4 @@ export class UtilService implements IUtilService {
   registerNewIcons(): void {
     this._mdIconRegistry.addSvgIcon('pet_health',  this._sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/stethoscope.svg'));
   }
-
-  // getLatLngBound(coordinates: Coordinates[]): Subject<any> {
-  //   const boundsSubject: Subject<any> = new Subject();
-  //   this._mapsAPILoader.load().then(() => {
-  //     const bounds: LatLngBounds = new google.maps.LatLngBounds();
-  //     for (const coordinate of coordinates) {
-  //       const point: LatLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
-  //       bounds.extend(point);
-  //     }
-  //     boundsSubject.next(bounds);
-  //   });
-  //
-  //   return boundsSubject;
-  // }
 }

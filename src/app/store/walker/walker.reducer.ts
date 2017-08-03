@@ -35,7 +35,7 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
      * List
      */
     // TODO: use another action for loading more
-    case walkerAction.ActionTypes.LIST_COMPLETE: {
+    case walkerAction.ActionTypes.LIST_SUCCESS: {
       const res: IWalkerListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
     }
@@ -53,7 +53,7 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
     /**
      * Get By Id
      */
-    case walkerAction.ActionTypes.GET_BY_ID_COMPLETE: {
+    case walkerAction.ActionTypes.GET_BY_ID_SUCCESS: {
       const res: IWalkerGetByIdResponse = action.payload;
       // TODO: use object assign
       return Object.assign({}, state, {walker: res});
@@ -68,7 +68,7 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
      * Application Apply
      * TODO: get walker application separately, store into applications
      */
-    case walkerAction.ActionTypes.APPLY_COMPLETE: {
+    case walkerAction.ActionTypes.APPLY_SUCCESS: {
       const res: IWalkerApplication = action.payload;
       if (res.walker !== state.walker.id) {
         return state
@@ -82,7 +82,7 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
     /**
      * Update Application
      */
-    case walkerAction.ActionTypes.UPDATE_APPLICATION_COMPLETE: {
+    case walkerAction.ActionTypes.UPDATE_APPLICATION_SUCCESS: {
       const res: IWalkerUpdateApplicationRequest = action.payload;
       const applicationIndex = findIndex(state.walker.applications, (application) => application.id === res.id);
       // TODO: without clone
@@ -105,7 +105,7 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
      * Application Message List
      */
     // TODO: use another action for loading more
-    case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_COMPLETE: {
+    case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_SUCCESS: {
       const res: IWalkerApplicationMessageListResponse = action.payload;
       if (res.list.length && state.walker.id === res.list[0].walker) {
         return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});

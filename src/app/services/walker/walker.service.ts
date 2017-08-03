@@ -11,8 +11,8 @@ import {
   IWalkerApplyResponse,
   IWalkerCreateRequest,
   IWalkerCreateResponse,
-  IWalkerDeleteByIdRequest,
-  IWalkerDeleteByIdResponse,
+  IWalkerDeleteRequest,
+  IWalkerDeleteResponse,
   IWalkerGetByIdRequest,
   IWalkerGetByIdResponse,
   IWalkerListRequest,
@@ -26,7 +26,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IWalkerService {
   getById(options: IWalkerGetByIdRequest): Observable<IWalkerGetByIdResponse>,
-  deleteById(options: IWalkerDeleteByIdRequest): Observable<IWalkerDeleteByIdResponse>,
+  deleteById(options: IWalkerDeleteRequest): Observable<IWalkerDeleteResponse>,
   list(options: IWalkerListRequest): Observable<IWalkerListResponse>,
   create(options: IWalkerCreateRequest): Observable<IWalkerCreateResponse>,
   apply(options: IWalkerApplyRequest): Observable<IWalkerApplyResponse>,
@@ -55,7 +55,7 @@ export class WalkerService implements IWalkerService {
       .map(response => response.json());
   }
 
-  deleteById(options: IWalkerDeleteByIdRequest): Observable<IWalkerDeleteByIdResponse> {
+  deleteById(options: IWalkerDeleteRequest): Observable<IWalkerDeleteResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');

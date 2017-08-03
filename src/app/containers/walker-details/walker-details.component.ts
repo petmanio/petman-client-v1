@@ -222,7 +222,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
 
     // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
     // this._actions$
-    //   .ofType(walkerAction.ActionTypes.APPLY_COMPLETE)
+    //   .ofType(walkerAction.ActionTypes.APPLY_SUCCESS)
     //   .takeUntil(this._destroyed$)
     //   .do(() => {
     //     this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
@@ -280,9 +280,9 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     const _dialogRef = this._dialog.open(ConfirmDialogComponent);
     _dialogRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
-        this._store.dispatch(new walkerAction.DeleteByIdAction({walkerId: this.walker.id}));
+        this._store.dispatch(new walkerAction.DeleteAction({walkerId: this.walker.id}));
         this._actions$
-          .ofType(walkerAction.ActionTypes.DELETE_BY_ID_COMPLETE)
+          .ofType(walkerAction.ActionTypes.DELETE_SUCCESS)
           .takeUntil(this._destroyed$)
           .do(() => this._router.navigate(['walkers']))
           .subscribe();
@@ -291,7 +291,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
   }
 
   onRatingRowClick(): void {
-    if (this.inProgressApplications.some(application => application.status === 'IN_PROGRESS')) {
+    if (this.inProgressApplications.some(application => application.status === 'WAITING')) {
       this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
         duration: 3000
       });
@@ -310,7 +310,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     this.selectedApplication = application;
   }
 
-  onActionClick(status: 'IN_PROGRESS' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'CONFIRMED' | 'FINISHED'): void {
+  onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'IN_PROGRESS' | 'FINISHED'): void {
     const application = clone<IWalkerApplication>(this.selectedApplication);
     application.status = status;
 

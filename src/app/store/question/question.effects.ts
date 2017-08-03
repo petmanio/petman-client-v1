@@ -28,7 +28,7 @@ import * as questionAction from '../../store/question/question.actions';
 
 interface IQuestionEffects {
   getById$: Observable<Action>,
-  deleteById$: Observable<Action>,
+  delete$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>
 }
@@ -40,17 +40,17 @@ export class QuestionEffects implements IQuestionEffects {
     .map((action: questionAction.GetByIdAction) => action.payload)
     .switchMap(options => {
       return this._questionService.getById(options)
-        .map(response => new questionAction.GetByIdCompleteAction(response))
+        .map(response => new questionAction.GetByIdSuccessAction(response))
         .catch(err => of(new questionAction.GetByIdErrorAction(err)))
     });
 
-  @Effect() deleteById$: Observable<Action> = this._actions$
-    .ofType(questionAction.ActionTypes.DELETE_BY_ID)
-    .map((action: questionAction.DeleteByIdAction) => action.payload)
+  @Effect() delete$: Observable<Action> = this._actions$
+    .ofType(questionAction.ActionTypes.DELETE)
+    .map((action: questionAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._questionService.deleteById(options)
-        .map(response => new questionAction.DeleteByIdCompleteAction(response))
-        .catch(err => of(new questionAction.DeleteByIdErrorAction(err)))
+        .map(response => new questionAction.DeleteSuccessAction(response))
+        .catch(err => of(new questionAction.DeleteErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
@@ -58,7 +58,7 @@ export class QuestionEffects implements IQuestionEffects {
     .map((action: questionAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._questionService.list(options)
-        .map(response => new questionAction.ListCompleteAction(response))
+        .map(response => new questionAction.ListSuccessAction(response))
         .catch(err => of(new questionAction.ListErrorAction(err)))
     });
 
@@ -67,7 +67,7 @@ export class QuestionEffects implements IQuestionEffects {
     .map((action: questionAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this._questionService.create(options)
-        .map(response => new questionAction.CreateCompleteAction(response))
+        .map(response => new questionAction.CreateSuccessAction(response))
         .catch(err => of(new questionAction.CreateErrorAction(err)))
     });
 

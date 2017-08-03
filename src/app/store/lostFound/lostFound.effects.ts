@@ -28,7 +28,7 @@ import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 
 interface ILostFoundEffects {
   getById$: Observable<Action>,
-  deleteById$: Observable<Action>,
+  delete$: Observable<Action>,
   list$: Observable<Action>,
   create$: Observable<Action>,
   commentList$: Observable<Action>,
@@ -43,17 +43,17 @@ export class LostFoundEffects implements ILostFoundEffects {
     .map((action: lostFoundAction.GetByIdAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.getById(options)
-        .map(response => new lostFoundAction.GetByIdCompleteAction(response))
+        .map(response => new lostFoundAction.GetByIdSuccessAction(response))
         .catch(err => of(new lostFoundAction.GetByIdErrorAction(err)))
     });
 
-  @Effect() deleteById$: Observable<Action> = this._actions$
-    .ofType(lostFoundAction.ActionTypes.DELETE_BY_ID)
-    .map((action: lostFoundAction.DeleteByIdAction) => action.payload)
+  @Effect() delete$: Observable<Action> = this._actions$
+    .ofType(lostFoundAction.ActionTypes.DELETE)
+    .map((action: lostFoundAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.deleteById(options)
-        .map(response => new lostFoundAction.DeleteByIdCompleteAction(response))
-        .catch(err => of(new lostFoundAction.DeleteByIdErrorAction(err)))
+        .map(response => new lostFoundAction.DeleteSuccessAction(response))
+        .catch(err => of(new lostFoundAction.DeleteErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
@@ -61,7 +61,7 @@ export class LostFoundEffects implements ILostFoundEffects {
     .map((action: lostFoundAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.list(options)
-        .map(response => new lostFoundAction.ListCompleteAction(response))
+        .map(response => new lostFoundAction.ListSuccessAction(response))
         .catch(err => of(new lostFoundAction.ListErrorAction(err)))
     });
 
@@ -70,7 +70,7 @@ export class LostFoundEffects implements ILostFoundEffects {
     .map((action: lostFoundAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.create(options)
-        .map(response => new lostFoundAction.CreateCompleteAction(response))
+        .map(response => new lostFoundAction.CreateSuccessAction(response))
         .catch(err => of(new lostFoundAction.CreateErrorAction(err)))
     });
 
@@ -79,7 +79,7 @@ export class LostFoundEffects implements ILostFoundEffects {
     .map((action: lostFoundAction.CommentListAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.getCommentList(options)
-        .map(response => new lostFoundAction.CommentListCompleteAction(response))
+        .map(response => new lostFoundAction.CommentListSuccessAction(response))
         .catch(err => of(new lostFoundAction.CommentListErrorAction(err)))
     });
 
@@ -89,7 +89,7 @@ export class LostFoundEffects implements ILostFoundEffects {
     .map((action: lostFoundAction.CommentListLoadMoreAction) => action.payload)
     .switchMap(options => {
       return this._lostFoundService.getCommentList(options)
-        .map(response => new lostFoundAction.CommentListLoadMoreCompleteAction(response))
+        .map(response => new lostFoundAction.CommentListLoadMoreSuccessAction(response))
         .catch(err => of(new lostFoundAction.CommentListLoadMoreErrorAction(err)))
     });
 

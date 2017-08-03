@@ -11,8 +11,8 @@ import {
   IAdoptCommentStreamJoinRequest,
   IAdoptCreateRequest,
   IAdoptCreateResponse,
-  IAdoptDeleteByIdRequest,
-  IAdoptDeleteByIdResponse,
+  IAdoptDeleteRequest,
+  IAdoptDeleteResponse,
   IAdoptGetByIdRequest,
   IAdoptGetByIdResponse,
   IAdoptListRequest,
@@ -22,7 +22,7 @@ import { SailsService } from 'angular2-sails';
 
 export interface IAdoptService {
   getById(options: IAdoptGetByIdRequest): Observable<IAdoptGetByIdResponse>,
-  deleteById(options: IAdoptDeleteByIdRequest): Observable<IAdoptDeleteByIdResponse>,
+  deleteById(options: IAdoptDeleteRequest): Observable<IAdoptDeleteResponse>,
   list(options: IAdoptListRequest): Observable<IAdoptListResponse>,
   create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse>,
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse>,
@@ -49,7 +49,7 @@ export class AdoptService implements IAdoptService {
       .map(response => response.json());
   }
 
-  deleteById(options: IAdoptDeleteByIdRequest): Observable<IAdoptDeleteByIdResponse> {
+  deleteById(options: IAdoptDeleteRequest): Observable<IAdoptDeleteResponse> {
     const headers = new Headers();
 
     headers.append('Content-Type', 'application/json');

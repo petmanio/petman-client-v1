@@ -50,14 +50,14 @@
           {{'open_conversation' | translate}}
         </button>
         <button md-button *ngIf="application.status === 'WAITING'
-          && room.isOwner" (click)="onChangeStatus('IN_PROGRESS')">
+          && room.isOwner" (click)="onChangeStatus(application, 'IN_PROGRESS')">
           {{'confirm' | translate}}
         </button>
-        <button md-button *ngIf="application.status === 'IN_PROGRESS'" (click)="onChangeStatus('FINISHED')">
+        <button md-button *ngIf="application.status === 'IN_PROGRESS'" (click)="onChangeStatus(application, 'FINISHED')">
           {{'finish' | translate}}
         </button>
         <button md-button color="warn" *ngIf="application.status === 'WAITING'"
-                (click)="onChangeStatus(room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
+                (click)="onChangeStatus(application, room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
           {{'cancel' | translate}}
         </button>
         <button md-button color="accent"

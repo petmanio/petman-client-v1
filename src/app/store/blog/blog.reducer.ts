@@ -20,7 +20,7 @@ export function reducer(state = initialState, action: blogAction.Actions): State
     /**
      * List
      */
-    case blogAction.ActionTypes.LIST_COMPLETE: {
+    case blogAction.ActionTypes.LIST_SUCCESS: {
       const res: IBlogListResponse = action.payload;
       return assign({}, state, { list: { list: res.list, total: res.total }});
     }
@@ -38,7 +38,7 @@ export function reducer(state = initialState, action: blogAction.Actions): State
     /**
      * List Load More
      */
-    case blogAction.ActionTypes.LIST_LOAD_MORE_COMPLETE: {
+    case blogAction.ActionTypes.LIST_LOAD_MORE_SUCCESS: {
       const res: IBlogListResponse = action.payload;
       return assign({}, state, { list: { list: state.list.list.concat(res.list), total: res.total }});
     }

@@ -27,35 +27,41 @@ import * as roomAction from '../../store/room/room.actions';
  */
 
 interface IRoomEffects {
-  getById$: Observable<Action>,
-  deleteById$: Observable<Action>,
+  load$: Observable<Action>,
+  loadSuccess$: Observable<Action>,
+  delete$: Observable<Action>,
   list$: Observable<Action>,
+  applicationList$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>,
-  updateApplication$: Observable<Action>,
-  applicationMessageList$: Observable<Action>,
-  applicationMessageCreate$: Observable<Action>,
-  shareOnFacebook$: Observable<Action>
+  updateApplicationStatus$: Observable<Action>,
 }
 
 @Injectable()
 export class RoomEffects implements IRoomEffects {
-  @Effect() getById$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.GET_BY_ID)
-    .map((action: roomAction.GetByIdAction) => action.payload)
+  @Effect() load$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.LOAD)
+    .map((action: roomAction.LoadAction) => action.payload)
     .switchMap(options => {
       return this._roomService.getById(options)
-        .map(response => new roomAction.GetByIdCompleteAction(response))
-        .catch(err => of(new roomAction.GetByIdErrorAction(err)))
+        .map(response => new roomAction.LoadSuccessAction(response))
+        .catch(err => of(new roomAction.LoadErrorAction(err)))
     });
 
-  @Effect() deleteById$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.DELETE_BY_ID)
-    .map((action: roomAction.DeleteByIdAction) => action.payload)
+  @Effect() loadSuccess$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.LOAD_SUCCESS)
+    .map((action: roomAction.LoadSuccessAction) => action.payload)
+    .map(options => {
+      return new roomAction.ApplicationListAction({roomId: options.id})
+    });
+
+  @Effect() delete$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.DELETE)
+    .map((action: roomAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._roomService.deleteById(options)
-        .map(response => new roomAction.DeleteByIdCompleteAction(response))
-        .catch(err => of(new roomAction.DeleteByIdErrorAction(err)))
+        .map(response => new roomAction.DeleteSuccessAction({roomId: options.roomId}))
+        .catch(err => of(new roomAction.DeleteErrorAction(err)))
     });
 
   @Effect() list$: Observable<Action> = this._actions$
@@ -63,8 +69,20 @@ export class RoomEffects implements IRoomEffects {
     .map((action: roomAction.ListAction) => action.payload)
     .switchMap(options => {
       return this._roomService.list(options)
-        .map(response => new roomAction.ListCompleteAction(response))
+        .map(response => new roomAction.ListSuccessAction(response))
         .catch(err => of(new roomAction.ListErrorAction(err)))
+    });
+
+  @Effect() applicationList$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.APPLICATION_LIST)
+    .map((action: roomAction.ApplicationListAction) => action.payload)
+    .switchMap(options => {
+      return this._roomService.applicationList(options)
+        .map(response => {
+          response.roomId = options.roomId;
+          return new roomAction.ApplicationListSuccessAction(response)
+        })
+        .catch(err => of(new roomAction.ApplicationListErrorAction(err)))
     });
 
   @Effect() create$: Observable<Action> = this._actions$
@@ -72,7 +90,7 @@ export class RoomEffects implements IRoomEffects {
     .map((action: roomAction.CreateAction) => action.payload)
     .switchMap(options => {
       return this._roomService.create(options)
-        .map(response => new roomAction.CreateCompleteAction(response))
+        .map(response => new roomAction.CreateSuccessAction(response))
         .catch(err => of(new roomAction.CreateErrorAction(err)))
     });
 
@@ -81,44 +99,19 @@ export class RoomEffects implements IRoomEffects {
     .map((action: roomAction.ApplyAction) => action.payload)
     .switchMap(options => {
       return this._roomService.apply(options)
-        .map(response => new roomAction.ApplyCompleteAction(response))
+        .map(response => new roomAction.ApplySuccessAction(response))
         .catch(err => of(new roomAction.ApplyErrorAction(err)))
     });
 
-  @Effect() updateApplication$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.UPDATE_APPLICATION)
-    .map((action: roomAction.UpdateApplicationAction) => action.payload)
+  @Effect() updateApplicationStatus$: Observable<Action> = this._actions$
+    .ofType(roomAction.ActionTypes.UPDATE_APPLICATION_STATUS)
+    .map((action: roomAction.UpdateApplicationStatusAction) => action.payload)
     .switchMap(options => {
-      return this._roomService.updateApplication(options)
-        .map(response => new roomAction.UpdateApplicationCompleteAction(response))
-        .catch(err => of(new roomAction.UpdateApplicationErrorAction(err)))
+      return this._roomService.updateApplicationStatus(options)
+        .map(response => new roomAction.UpdateApplicationStatusSuccessAction(options))
+        .catch(err => of(new roomAction.UpdateApplicationStatusErrorAction(err)))
     });
 
-  @Effect() applicationMessageList$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_LIST)
-    .map((action: roomAction.ApplicationMessageListAction) => action.payload)
-    .switchMap(options => {
-      return this._roomService.getApplicationMessageList(options)
-        .map(response => new roomAction.ApplicationMessageListCompleteAction(response))
-        .catch(err => of(new roomAction.ApplicationMessageListErrorAction(err)))
-    });
-
-  @Effect() applicationMessageCreate$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.APPLICATION_MESSAGE_CREATE)
-    .map((action: roomAction.ApplicationMessageCreateAction) => action.payload)
-    .switchMap(options => {
-      // TODO: check complete action
-      return this._roomService.applicationMessageCreate(options)
-    });
-
-  @Effect() shareOnFacebook$: Observable<Action> = this._actions$
-    .ofType(roomAction.ActionTypes.SHARE_ON_FACEBOOK)
-    .map((action: roomAction.ShareOnFacebookAction) => action.payload)
-    .switchMap(options => {
-      return this._roomService.shareOnFacebook(options)
-        .map(response => new roomAction.ShareOnFacebookCompleteAction(response))
-        .catch(err => of(new roomAction.ShareOnFacebookErrorAction(err)))
-    });
 
   constructor(private _actions$: Actions,
               private _roomService: RoomService) {}
