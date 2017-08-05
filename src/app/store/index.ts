@@ -7,6 +7,7 @@ export { LostFoundEffects } from './lostFound/lostFound.effects';
 export { QuestionEffects } from './question/question.effects';
 export { NotificationEffects } from './notification/notification.effects';
 export { LocationEffects } from './location/location.effects';
+export { MessageEffects } from './message/message.effects';
 
 import { EffectsModule } from '@ngrx/effects';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -58,6 +59,7 @@ import * as fromAdopt from './adopt/adopt.reducer';
 import * as fromLostFound from './lostFound/lostFound.reducer';
 import * as fromQuestion from './question/question.reducer';
 import * as fromNotification from './notification/notification.reducer';
+import * as fromMessages from './message/message.reducer';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -73,6 +75,7 @@ export interface State {
   lostFound: fromLostFound.State,
   question: fromQuestion.State,
   notification: fromNotification.State,
+  messages: fromMessages.State,
   layout: fromLayout.State,
   router: fromRouter.RouterState,
 }
@@ -95,6 +98,7 @@ const reducers = {
   lostFound: fromLostFound.reducer,
   question: fromQuestion.reducer,
   notification: fromNotification.reducer,
+  messages: fromMessages.reducer,
   layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
@@ -212,6 +216,7 @@ export const getNotificationList = createSelector(getNotificationState, fromNoti
  * ```
  */
 export const getRoomsState = (state: State) => state.rooms;
+export const getMessagesState = (state: State) => state.messages;
 
 /**
  * Every reducer module exports selector functions, however child reducers
@@ -235,6 +240,14 @@ export const getSelectedRoom = createSelector(getRoomsState, fromRooms.getSelect
 export const getSelectedRoomApplications = createSelector(getRoomsState, fromRooms.getSelectedApplications);
 export const getSelectedRoomReviews = createSelector(getRoomsState, fromRooms.getSelectedReviews);
 export const getRoomApplicationEntities = createSelector(getRoomsState, fromRooms.getApplicationEntities);
+
+
+/**
+ * Message
+ * @type {Reselect.Selector<State, IMessage[]>}
+ */
+export const getMessagesConversations = createSelector(getMessagesState, fromMessages.getConversations);
+export const getMessagesTotalConversations = createSelector(getMessagesState, fromMessages.getTotalConversations);
 
 /**
  * Mixed

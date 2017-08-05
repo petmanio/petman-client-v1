@@ -8,7 +8,6 @@ import {
   IWalkerUpdateApplicationRequest
 } from '../../models/api';
 import * as walkerAction from './walker.actions';
-import { stat } from 'fs';
 
 export interface State {
   walker: IWalkerGetByIdResponse,

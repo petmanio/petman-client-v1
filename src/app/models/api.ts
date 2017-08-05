@@ -287,6 +287,15 @@ export interface INotification {
   seen: boolean,
   createdAt: string
 }
+
+export interface IMessage {
+  id: number,
+  from: number | IUser,
+  to: number | IUser,
+  text: string,
+  seen: boolean,
+  createdAt: string
+}
 /**
  * Auth
  */
@@ -431,44 +440,6 @@ export interface IRoomRateApplicationResponse {
   applicationId?: number // only for front
   roomId?: number // only for front
 }
-
-
-export interface IRoomApplicationMessageListRequest {
-  applicationId: number
-}
-
-export interface IRoomApplicationMessageListResponse {
-  count: number,
-  list: IRoomApplicationMessage[]
-}
-
-export interface IRoomApplicationMessageJoinRequest {
-  applicationId: number,
-  'x-auth-token'?: string
-}
-
-export interface IRoomApplicationMessageCreateRequest {
-  applicationId: number,
-  message: string
-}
-
-// TODO: add IRoomApplicationMessageCreateResponse interface
-
-export interface IRoomApplicationMessageCreateEventResponse extends IRoomApplicationMessage {
-
-}
-
-export interface IRoomShareOnFacebookRequest {
-  method?: string,
-  name?: string,
-  link?: string,
-  caption?: string,
-  picture?: string,
-  description?: string
-}
-
-export interface IRoomShareOnFacebookResponse {}
-
 
 /**
  * Walker
@@ -732,4 +703,32 @@ export interface INotificationSeenRequest {
 
 export interface INotificationSeenResponse {
   notifications: number[]
+}
+
+/**
+ * Message
+ */
+export interface IMessageConversationsRequest {
+}
+
+export interface IMessageConversationsResponse {
+  list: IMessage[],
+  total: number
+}
+
+export interface IMessageConversationRequest {
+  userEntityId: number
+}
+
+export interface IMessageConversationResponse {
+  list: IMessage[],
+  total: number
+}
+
+export interface IMessageCreateRequest {
+  userEntityId: number,
+  text: string
+}
+
+export interface IMessageCreateResponse extends IMessage {
 }

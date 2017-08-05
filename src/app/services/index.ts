@@ -8,4 +8,5 @@ export { AdoptService } from './adopt/adopt.service';
 export { LostFoundService } from './lostFound/lostFound.service';
 export { QuestionService } from './question/question.service';
 export { NotificationService } from './notification/notification.service';
+export { MessageService } from './message/message.service';
 export { UtilService } from './util/util.service';

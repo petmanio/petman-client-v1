@@ -56,6 +56,7 @@ import {
   BlogComponent,
   JoinComponent,
   LocationsComponent,
+  MessagesComponent,
   RoomsComponent,
   RoomAddComponent,
   RoomDetailsComponent,
@@ -116,7 +117,8 @@ import {
   AdoptService,
   LostFoundService,
   QuestionService,
-  NotificationService
+  NotificationService,
+  MessageService
 } from './services';
 import {
   AuthEffects,
@@ -127,9 +129,10 @@ import {
   AdoptEffects,
   QuestionEffects,
   NotificationEffects,
-  LostFoundEffects
+  LostFoundEffects,
+  MessageEffects
 } from './store';
-import { AuthGuard, RoomExists } from './guards';
+import { AuthGuard, RoomExistsGuard, MessagesExistsGuard } from './guards';
 
 import { reducer } from './store';
 import { appRoutes } from './app.routes';
@@ -148,6 +151,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     BlogComponent,
     JoinComponent,
     LocationsComponent,
+    MessagesComponent,
     RoomsComponent,
     RoomAddComponent,
     RoomDetailsComponent,
@@ -250,12 +254,14 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     EffectsModule.run(LostFoundEffects),
     // EffectsModule.run(QuestionEffects),
     EffectsModule.run(NotificationEffects),
+    EffectsModule.run(MessageEffects),
     // DBModule.provideDB(schema),
   ],
   providers: [
     // { provide: RequestOptions, useClass: CustomRequestOptions },
     AuthGuard,
-    RoomExists,
+    RoomExistsGuard,
+    MessagesExistsGuard,
     AuthService,
     BlogService,
     LocationService,
@@ -265,6 +271,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     LostFoundService,
     QuestionService,
     NotificationService,
+    MessageService,
     UtilService
   ],
   bootstrap: [AppComponent]

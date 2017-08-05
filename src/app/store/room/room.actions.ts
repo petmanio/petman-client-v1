@@ -1,11 +1,22 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  IRoomApplyRequest, IRoomApplyResponse,
-  IRoomCreateRequest, IRoomCreateResponse, IRoomDeleteRequest, IRoomDeleteResponse,
-  IRoomGetByIdRequest, IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse, IRoomApplicationListRequest, IRoomApplicationListResponse,
-  IRoomUpdateApplicationStatusRequest, IRoomUpdateApplicationStatusResponse, IRoomRateApplicationRequest, IRoomRateApplicationResponse
-
+  IRoomApplicationListRequest,
+  IRoomApplicationListResponse,
+  IRoomApplyRequest,
+  IRoomApplyResponse,
+  IRoomCreateRequest,
+  IRoomCreateResponse,
+  IRoomDeleteRequest,
+  IRoomDeleteResponse,
+  IRoomGetByIdRequest,
+  IRoomGetByIdResponse,
+  IRoomListRequest,
+  IRoomListResponse,
+  IRoomRateApplicationRequest,
+  IRoomRateApplicationResponse,
+  IRoomUpdateApplicationStatusRequest,
+  IRoomUpdateApplicationStatusResponse
 } from '../../models/api';
 
 /**

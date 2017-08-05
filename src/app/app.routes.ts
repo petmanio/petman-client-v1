@@ -4,6 +4,7 @@ import {
   BlogComponent,
   JoinComponent,
   LocationsComponent,
+  MessagesComponent,
   RoomsComponent,
   RoomAddComponent,
   RoomDetailsComponent,
@@ -21,7 +22,7 @@ import {
   // QuestionsComponent
 } from './containers';
 
-import { AuthGuard, RoomExists } from './guards';
+import { AuthGuard, RoomExistsGuard, MessagesExistsGuard } from './guards';
 
 export const appRoutes: Routes = [
   {
@@ -41,6 +42,11 @@ export const appRoutes: Routes = [
     component: LocationsComponent,
   },
   {
+    path: 'messages',
+    component: MessagesComponent,
+    canActivate: [ MessagesExistsGuard ],
+  },
+  {
     path: 'rooms',
     component: RoomsComponent,
   },
@@ -52,7 +58,7 @@ export const appRoutes: Routes = [
   {
     path: 'rooms/:roomId/details',
     component: RoomDetailsComponent,
-    canActivate: [ RoomExists ],
+    canActivate: [ RoomExistsGuard ],
   },
   {
     path: 'walkers',

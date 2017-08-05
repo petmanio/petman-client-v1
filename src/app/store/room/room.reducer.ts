@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import { IRoom, IRoomApplication } from '../../models/api';
 import * as room from './room.actions';
 import { assign, cloneDeep, find, omit } from 'lodash';
-import { stat } from 'fs';
 
 export interface State {
   ids: string[],

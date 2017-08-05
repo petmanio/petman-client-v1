@@ -131,6 +131,10 @@ export class UtilService implements IUtilService {
     });
   }
 
+  static uniqueNumberFromNumbers(a: number, b: number): number {
+    return ((a + b) / 2) * (a + b + 1) + b;
+  }
+
   constructor(private _sailsService: SailsService,
               private _store: Store<fromRoot.State>,
               private _meta: Meta,

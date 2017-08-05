@@ -60,7 +60,7 @@
           <div><i class="pm-font-12 pm-color-gray">{{application.review}}</i></div>
         </div>
         <button md-button>
-          {{'open_conversation' | translate}}
+          {{'chat' | translate}}
         </button>
         <button md-button *ngIf="application.status === 'WAITING'
           && room.isOwner" (click)="onChangeStatus(application, 'IN_PROGRESS')">
