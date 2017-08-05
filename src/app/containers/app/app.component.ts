@@ -321,9 +321,10 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   onNotificationClick(notification: INotification): void {
-    if (notification.roomApplicationCreate || notification.roomApplicationMessageCreate || notification.roomApplicationStatusUpdate) {
+    console.log(notification)
+    if (notification.roomApplicationCreate || notification.roomApplicationRate || notification.roomApplicationStatusUpdate) {
       const id = (notification.roomApplicationCreate
-      || notification.roomApplicationMessageCreate
+      || notification.roomApplicationRate
       || notification.roomApplicationStatusUpdate)['room'];
       this._router.navigate(['rooms', id, 'details'])
     } else if (notification.walkerApplicationCreate || notification.walkerApplicationMessageCreate
@@ -383,18 +384,17 @@ export class AppComponent implements OnInit, IAppComponent {
     this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
 
     // Room Events
-    // this._sailsService.on('roomApplicationMessage').subscribe(message => {
-    //   this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction(message))
-    // });
-    //
+    this._sailsService.on('roomApplicationCreate').subscribe(application => {
+      this._store.dispatch(new roomAction.ApplySuccessAction(application));
+    });
+
     this._sailsService.on('roomApplicationStatusUpdate').subscribe(update => {
       this._store.dispatch(new roomAction.UpdateApplicationStatusSuccessAction(update))
     });
 
-    // TODO: use another action for adding new application
-    // this._sailsService.on('roomApplicationCreate').subscribe(application => {
-    //   this._store.dispatch(new roomAction.GetByIdAction({roomId: application.room}));
-    // });
+    this._sailsService.on('roomApplicationRate').subscribe(update => {
+      this._store.dispatch(new roomAction.RateApplicationSuccessAction(update))
+    });
 
     // Walker Events
     this._sailsService.on('walkerApplicationMessage').subscribe(message => {

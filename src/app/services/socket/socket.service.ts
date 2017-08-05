@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as fromRoot from '../../store';
 import { Store } from '@ngrx/store';
-import * as roomAction from '../../store/room/room.actions';
 
 export interface ISocketConnectOptions {
   reconnection?: boolean,
@@ -34,11 +33,9 @@ export class SocketService implements ISocketService {
   }
 
   connect(url: string, options: ISocketConnectOptions = {}): Observable<any> {
-    console.log(1, this.io.socket)
     const subject = new Subject();
     this.io.sails = extend(this.io.sails, options);
     this.io.sails.connect(url);
-    console.log(this.io.socket)
     this.io.socket.on('connect', () => subject.next());
     return subject;
   }
@@ -56,9 +53,7 @@ export class SocketService implements ISocketService {
   }
 
   get(url: string, data: any): Observable<any> {
-    console.log(1, this.io.socket)
     const subject = new Subject();
-    console.log(this.io)
     // this.io.socket.get(url, data, res => subject.next(data));
     return subject;
   }
@@ -70,20 +65,8 @@ export class SocketService implements ISocketService {
   }
 
   listenRoomApplicationMessage(): void {
-    // this.on('roomApplicationMessage')
-    //   .subscribe($event => {
-    //     if ($event) {
-    //       this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
-    //     }
-    //   });
   }
 }
-
-
-// window['io'].sails.reconnection = true;
-// window['io'].sails.useCORSRouteToGetCookie = false;
-// window['io'].sails.environment = environment.production ? 'production' : 'development';
-// window['io'].sails.rejectUnauthorized = false;
 
 // const connect = () => {
 //   // TODO: why opts not working

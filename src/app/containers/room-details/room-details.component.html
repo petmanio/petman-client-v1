@@ -41,7 +41,7 @@
                   [required]="true"
                   [float]="true"
                   [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-          <button md-button class="pm-room-action-apply-edit" (click)="onRatingRowClick()"
+          <button md-button class="pm-room-action-apply-edit" (click)="onApplyClick()"
                   *ngIf="!(room$ | async)?.isOwner">
             <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
           </button>

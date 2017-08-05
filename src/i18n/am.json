@@ -48,6 +48,7 @@
   "select_images": "Ընտրել նկարներ",
   "new_request_from": "{{name}}֊ը նոր հայտ է ուղարկել",
   "application_status_update": "{{name}}֊ը փոխել է հայտի կարգավիճակը",
+  "application_rate": "<TRANSLATE>",
   "new_message_from": "Նոր նամակ {{name}}֊ից",
   "new_comment_from": "Նոր մեկնաբանություն {{name}}֊ից",
   "log_out": "Ելք",

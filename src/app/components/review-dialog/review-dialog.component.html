@@ -1,0 +1,26 @@
+<div class="walker-review-dialog">
+  <div class="columns">
+    <div class="column">
+      <md-input-container>
+        <input mdInput type="text" autocomplete="off" [placeholder]="'review' | translate" [(ngModel)]="reviewOptions.review">
+      </md-input-container>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column pm-review-rating">
+      <rating [(ngModel)]="reviewOptions.rating"
+              [max]="5"
+              fullIcon="★"
+              emptyIcon="☆"
+              [readonly]="false"
+              [disabled]="false"
+              [required]="true"
+              [float]="false"
+              [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+    </div>
+  </div>
+  <div class="column">
+    <button (click)="close()" md-button>{{'close' | translate}}</button>
+    <button md-button (click)="apply()" [disabled]="!reviewOptions.rating">{{'save' | translate}}</button>
+  </div>
+</div>

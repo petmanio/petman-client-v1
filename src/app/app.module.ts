@@ -11,9 +11,24 @@ import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MdButtonModule, MdCheckboxModule, MdCardModule, MdMenuModule, MdSidenavModule, MdInputModule, MdChipsModule, MdSlideToggleModule,
-  MdToolbarModule, MdIconModule, MdListModule, MdProgressBarModule, MdTabsModule, MdSnackBarModule, MdDialogModule, MdRadioModule,
-  MdSelectModule, MdPaginatorModule
+  MdButtonModule,
+  MdCardModule,
+  MdCheckboxModule,
+  MdChipsModule,
+  MdDialogModule,
+  MdIconModule,
+  MdInputModule,
+  MdListModule,
+  MdMenuModule,
+  MdPaginatorModule,
+  MdProgressBarModule,
+  MdRadioModule,
+  MdSelectModule,
+  MdSidenavModule,
+  MdSlideToggleModule,
+  MdSnackBarModule,
+  MdTabsModule,
+  MdToolbarModule
 } from '@angular/material';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
@@ -65,6 +80,7 @@ import {
   BlogItemComponent,
   LocationItemComponent,
   ReviewListComponent,
+  ReviewDialogComponent,
   RoomComponent,
   RoomReviewsListDialogComponent,
   RoomApplicationsListComponent,
@@ -157,6 +173,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     BlogItemComponent,
     LocationItemComponent,
     ReviewListComponent,
+    ReviewDialogComponent,
     RoomComponent,
     RoomReviewsListDialogComponent,
     RoomApplicationsListComponent,
@@ -191,6 +208,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     ShareDialogComponent,
     ConfirmDialogComponent,
     RoomReviewsListDialogComponent,
+    ReviewDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { IRoom, IRoomApplication } from '../../models/api';
-import { MdDialog } from '@angular/material';
+import { IRoom, IRoomApplication, IUser } from '../../models/api';
+import { MdDialog, MdSnackBar } from '@angular/material';
 import 'rxjs/add/operator/map';
 import '@ngrx/core/add/operator/select';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
@@ -14,6 +14,7 @@ import * as fromRoot from '../../store';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { Subject } from 'rxjs/Subject';
 import { Actions } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IRoomDetailsComponent {
   onShareClick(): void,
@@ -28,29 +29,38 @@ export interface IRoomDetailsComponent {
 })
 export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComponent {
   room$: Observable<IRoom>;
+  currentUser$: Observable<IUser>;
   applications$: Observable<{total: number, list: IRoomApplication[]}>;
   room: IRoom;
+  currentUser: IUser;
   applications: {total: number, list: IRoomApplication[]};
   private _destroyed$ = new Subject<boolean>();
   private _actionsSubscription: Subscription;
   private _roomSubscription: Subscription;
+  private _currentUserSubscription: Subscription;
   private _applicationsSubscription: Subscription;
 
   constructor(private _store: Store<fromRoot.State>,
               private _route: ActivatedRoute,
               private _dialog: MdDialog,
               private _router: Router,
-              private _actions$: Actions) {
+              private _actions$: Actions,
+              private _snackBar: MdSnackBar,
+              private _translateService: TranslateService) {
     this._actionsSubscription = _route.params
       .select<string>('roomId')
       .map(id => new roomAction.SelectAction(id))
       .subscribe(_store);
+
+    this.room$ = this._store.select(fromRoot.getSelectedRoom);
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.applications$ = this._store.select(fromRoot.getSelectedRoomMyApplications);
+    this._roomSubscription = this.room$.subscribe(room => this.room = room);
+    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._applicationsSubscription = this.applications$.subscribe(applications => this.applications = applications);
   }
 
   ngOnInit() {
-    this.room$ = this._store.select(fromRoot.getSelectedRoom);
-    this.applications$ = this._store.select(fromRoot.getSelectedRoomMyApplications);
-    this._roomSubscription = this.room$.subscribe(room => this.room = room);
   }
 
   ngOnDestroy() {
@@ -98,18 +108,20 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   }
 
   onApplyClick(): void {
-    // if (this.inProgressApplications.some(application => application.status === 'WAITING')) {
-    //   this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
-    //     duration: 3000
-    //   });
-    // } else if (!this.currentUser) {
-    //   this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
-    //     duration: 3000
-    //   })
-    //     .onAction()
-    //     .subscribe($event => this._router.navigate(['/join']))
-    // } else {
-    //   this._store.dispatch(new roomAction.ApplyAction({roomId: this._roomId}));
-    // }
+    if (this.currentUser) {
+      if (this.applications.list.some(application => application.status === 'WAITING')) {
+        this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
+          duration: 3000
+        });
+      } else {
+        this._store.dispatch(new roomAction.ApplyAction({roomId: this.room.id}));
+      }
+    } else {
+      this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
+        duration: 3000
+      })
+        .onAction()
+        .subscribe($event => this._router.navigate(['/join']))
+    }
   }
 }

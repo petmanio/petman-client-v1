@@ -13,7 +13,7 @@
            [ngClass]="{active: checkApplicationsStatus(application, 'WAITING')}"
            [style.background-image]="checkApplicationsStatus(application, 'WAITING') ?
            'url(' + application.consumer.userData.avatar + ')' : null">
-        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+        <span class="pm-font-20"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
       </div>
     </li>
     <li class="in-progress">
@@ -21,7 +21,7 @@
            [ngClass]="{active: checkApplicationsStatus(application, 'IN_PROGRESS')}"
            [style.background-image]="checkApplicationsStatus(application, 'IN_PROGRESS') ?
            'url(' + application.consumer.userData.avatar + ')' : null">
-        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+        <span class="pm-font-20"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
       </div>
     </li>
     <li class="finished">
@@ -29,10 +29,11 @@
            [ngClass]="{active: checkApplicationsStatus(application, 'FINISHED')}"
            [style.background-image]="checkApplicationsStatus(application, 'FINISHED') ?
            'url(' + application.consumer.userData.avatar + ')' : null">
-        <span class="pm-font-25"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
+        <span class="pm-font-20"><i class="mdi mdi-check-circle-outline pm-color-white"></i></span>
       </div>
     </li>
   </ul>
+  <div class="pm-font-12 pm-color-gray pm-application-date">{{application.createdAt | appFormatDate}}</div>
   <div class="details" [hidden]="activeApplicationId !== application.id">
     <div class="columns">
       <div class="column is-4 pm-text-center">
@@ -46,6 +47,18 @@
         </div>
       </div>
       <div class="column is-8 pm-text-center">
+        <div *ngIf="application.rating" class="pm-rating">
+          <rating [ngModel]="application.rating"
+                  [max]="5"
+                  fullIcon="★"
+                  emptyIcon="☆"
+                  [readonly]="true"
+                  [disabled]="false"
+                  [required]="true"
+                  [float]="true"
+                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+          <div><i class="pm-font-12 pm-color-gray">{{application.review}}</i></div>
+        </div>
         <button md-button>
           {{'open_conversation' | translate}}
         </button>
@@ -61,16 +74,10 @@
           {{'cancel' | translate}}
         </button>
         <button md-button color="accent"
-                *ngIf="application.status === 'FINISHED' && !room.isOwner && !room.rating"
+                *ngIf="application.status === 'FINISHED' && !room.isOwner && !application.rating"
                 (click)="onRateClick(application)">
           {{'rate' | translate}}
         </button>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <div class="clearfix"></div>
-        <div class="pm-font-12 pm-color-gray pm-text-right">{{application.createdAt | appFormatDate}}</div>
       </div>
     </div>
   </div>

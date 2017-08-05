@@ -6,9 +6,6 @@ import { environment } from '../../../environments/environment';
 import {
   IRoomApplicationListRequest,
   IRoomApplicationListResponse,
-  IRoomApplicationMessageCreateRequest,
-  IRoomApplicationMessageListRequest,
-  IRoomApplicationMessageListResponse,
   IRoomApplyRequest,
   IRoomApplyResponse,
   IRoomCreateRequest,
@@ -19,6 +16,8 @@ import {
   IRoomGetByIdResponse,
   IRoomListRequest,
   IRoomListResponse,
+  IRoomRateApplicationRequest,
+  IRoomRateApplicationResponse,
   IRoomShareOnFacebookRequest,
   IRoomUpdateApplicationStatusRequest,
   IRoomUpdateApplicationStatusResponse,
@@ -34,8 +33,7 @@ export interface IRoomService {
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse>,
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse>,
   updateApplicationStatus(options: IRoomUpdateApplicationStatusRequest): Observable<IRoomUpdateApplicationStatusResponse>,
-  getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse>,
-  applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any>,
+  rateApplication(options: IRoomRateApplicationRequest): Observable<IRoomRateApplicationResponse>,
   shareOnFacebook(options: IRoomShareOnFacebookRequest): Observable<any>
 }
 
@@ -147,23 +145,12 @@ export class RoomService implements IRoomService {
       .map(response => response.ok);
   }
 
-  getApplicationMessageList(options: IRoomApplicationMessageListRequest): Observable<IRoomApplicationMessageListResponse> {
+  rateApplication(options: IRoomRateApplicationRequest): Observable<IRoomRateApplicationResponse> {
     const headers = new Headers();
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/message/list`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
-  }
-
-  applicationMessageCreate(options: IRoomApplicationMessageCreateRequest): Observable<any> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    return this._http
-      .post(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/message/create`, options,
+      .put(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/rate`, options,
         { headers, withCredentials: true }
       )
       .map(response => response.ok);
@@ -174,7 +161,7 @@ export class RoomService implements IRoomService {
     FB.ui(options, response => {
       if (response && response.post_id) {
         subject.next(response);
-      }else {
+      } else {
         subject.error(new Error());
       }
     });

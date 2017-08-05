@@ -48,6 +48,7 @@
   "select_images": "Select images",
   "new_request_from": "New request from {{name}}",
   "application_status_update": "{{name}} has updated application status",
+  "application_rate": "<TRANSLATE>",
   "new_message_from": "New message from {{name}}",
   "new_comment_from": "New comment from {{name}}",
   "log_out": "Log out",

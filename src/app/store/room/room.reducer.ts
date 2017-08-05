@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
 import { IRoom, IRoomApplication } from '../../models/api';
 import * as room from './room.actions';
-import { assign, omit, find, cloneDeep } from 'lodash';
-import { getCurrentUser } from '../auth/auth.reducer';
-import { getAuthCurrentUser } from '../index';
+import { assign, cloneDeep, find, omit } from 'lodash';
+import { stat } from 'fs';
 
 export interface State {
   ids: string[],
@@ -93,6 +92,24 @@ export function reducer(state = initialState, action: room.Actions): State {
     }
 
     /**
+     * Apply
+     */
+    case room.ActionTypes.APPLY_SUCCESS: {
+      const application = action.payload;
+      const applications = cloneDeep(state.applicationEntities[application.room]);
+      if (applications) {
+        applications.list.unshift(application);
+        applications.total++;
+        return assign({}, state, {
+          applicationEntities: assign({}, state.applicationEntities, {
+            [application.room]: applications
+          })
+        });
+      }
+      return state;
+    }
+
+    /**
      * Update Application status
      */
     case room.ActionTypes.UPDATE_APPLICATION_STATUS_SUCCESS: {
@@ -114,6 +131,29 @@ export function reducer(state = initialState, action: room.Actions): State {
       return state;
     }
 
+    /**
+     * Rate Application
+     */
+    case room.ActionTypes.RATE_APPLICATION_SUCCESS: {
+      const roomId = action.payload.roomId;
+      const applicationId = action.payload.applicationId;
+      const rating = action.payload.rating;
+      const review = action.payload.review;
+      const applications = cloneDeep(state.applicationEntities[roomId]);
+      if (applications) {
+        const match = find(applications.list, item => item.id === applicationId);
+        if (match) {
+          match.rating = rating;
+          match.review = review;
+          return assign({}, state, {
+            applicationEntities: assign({}, state.applicationEntities, {
+              [roomId]: applications
+            })
+          });
+        }
+      }
+      return state;
+    }
 
     /**
      * Delete

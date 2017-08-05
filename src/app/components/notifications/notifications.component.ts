@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 export interface INotificationsComponent {
   formatDate(date): string,
+
   getApplicationStatus(appStatus): string
 }
 
@@ -12,8 +13,8 @@ export interface INotificationsComponent {
   template: `
     <ul>
       <li *ngFor="let notification of notifications;" class="pm-cursor-pointer"
-                    [ngClass]="{'selected': !notification.seen}"
-                    (click)="onNotificationClick.emit(notification)">
+          [ngClass]="{'selected': !notification.seen}"
+          (click)="onNotificationClick.emit(notification)">
         <div class="columns is-mobile pm-notification-row">
           <div class="column is-2">
             <div md-card-avatar class="pm-cart-avatar"
@@ -34,9 +35,10 @@ export interface INotificationsComponent {
               </span>
             </div>
 
-            <div *ngIf="notification.roomApplicationMessageCreate">
-               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
-                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+            <div *ngIf="notification.roomApplicationRate">
+              <span class="pm-font-12 pm-color-gray pm-room-notification-status">
+                <!--TODO: add review text and rating-->
+      {{'application_rate' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
@@ -73,7 +75,7 @@ export interface INotificationsComponent {
                 {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
-            
+
             <div class="pm-font-12 pm-color-gray pm-room-notification-status">{{formatDate(notification.createdAt)}}</div>
           </div>
         </div>
@@ -84,7 +86,7 @@ export interface INotificationsComponent {
     :host {
       display: block;
     }
-    
+
     .pm-notification-row {
       width: 100%;
       height: 65px;
@@ -112,6 +114,7 @@ export interface INotificationsComponent {
 export class NotificationsComponent implements OnInit, OnChanges, INotificationsComponent {
   @Input() notifications: INotification[];
   @Output() onNotificationClick = new EventEmitter();
+
   constructor() {
 
   }

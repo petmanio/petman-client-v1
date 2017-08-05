@@ -30,7 +30,6 @@ export interface IUser {
   id: number,
   email: string,
   userData?: IUserData,
-  isSitter?: boolean
   authProviders?: IAuthProvider[]
 }
 
@@ -238,10 +237,11 @@ export interface INotificationRoomApplicationCreate {
   application: number | IRoomApplication,
 }
 
-export interface INotificationRoomApplicationMessageCreate {
+export interface INotificationRoomApplicationRate {
   room: number | IRoom,
   application: number | IRoomApplication,
-  message: number | IRoomApplicationMessage,
+  rating: number,
+  review: string
 }
 
 export interface INotificationWalkerApplicationStatusUpdate {
@@ -278,7 +278,7 @@ export interface INotification {
   to: number | IUser,
   roomApplicationCreate: number | INotificationRoomApplicationCreate,
   roomApplicationStatusUpdate: number | INotificationRoomApplicationStatusUpdate,
-  roomApplicationMessageCreate: number | INotificationRoomApplicationMessageCreate,
+  roomApplicationRate: number | INotificationRoomApplicationRate,
   walkerApplicationCreate: number | INotificationWalkerApplicationCreate,
   walkerApplicationStatusUpdate: number | INotificationWalkerApplicationStatusUpdate,
   walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
@@ -403,8 +403,7 @@ export interface IRoomApplyRequest {
   roomId: number
 }
 
-export interface IRoomApplyResponse {
-  roomId?: number // only for front
+export interface IRoomApplyResponse extends IRoomApplication {
 }
 
 export interface IRoomUpdateApplicationStatusRequest {
@@ -418,6 +417,21 @@ export interface IRoomUpdateApplicationStatusResponse {
   applicationId?: number // only for front
   roomId?: number // only for front
 }
+
+export interface IRoomRateApplicationRequest {
+  rating: number,
+  review?: string,
+  applicationId: number,
+  roomId?: number // only for front
+}
+
+export interface IRoomRateApplicationResponse {
+  rating?: number, // only for front
+  review?: string // only for front
+  applicationId?: number // only for front
+  roomId?: number // only for front
+}
+
 
 export interface IRoomApplicationMessageListRequest {
   applicationId: number

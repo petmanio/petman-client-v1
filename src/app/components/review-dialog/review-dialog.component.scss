@@ -1,0 +1,11 @@
+.walker-review-dialog {
+  overflow: hidden;
+}
+
+.pm-review-rating {
+  text-align: center;
+}
+
+/deep/ .pm-review-rating .star-icon {
+  font-size: 35px !important;
+}

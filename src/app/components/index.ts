@@ -4,6 +4,7 @@ export { LocationItemComponent } from './location/location.component';
 export { SidenavComponent } from './sidenav/sidenav.component';
 export { ToolbarComponent } from './toolbar/toolbar.component';
 export { ReviewListComponent } from './review-list/review-list.component';
+export { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 
 export { RoomComponent } from './room/room.component';
 export { RoomReviewsListDialogComponent } from './room-reviews-list-dialog/room-reviews-list-dialog.component';

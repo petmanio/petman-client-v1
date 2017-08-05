@@ -4,7 +4,7 @@ import {
   IRoomApplyRequest, IRoomApplyResponse,
   IRoomCreateRequest, IRoomCreateResponse, IRoomDeleteRequest, IRoomDeleteResponse,
   IRoomGetByIdRequest, IRoomGetByIdResponse, IRoomListRequest, IRoomListResponse, IRoomApplicationListRequest, IRoomApplicationListResponse,
-  IRoomUpdateApplicationStatusRequest, IRoomUpdateApplicationStatusResponse
+  IRoomUpdateApplicationStatusRequest, IRoomUpdateApplicationStatusResponse, IRoomRateApplicationRequest, IRoomRateApplicationResponse
 
 } from '../../models/api';
 
@@ -45,7 +45,11 @@ export const ActionTypes = {
 
   UPDATE_APPLICATION_STATUS: type('[Room] Update Application Status'),
   UPDATE_APPLICATION_STATUS_SUCCESS: type('[Room] Update Application Status Success'),
-  UPDATE_APPLICATION_STATUS_ERROR: type('[Room] Update Application Status Error')
+  UPDATE_APPLICATION_STATUS_ERROR: type('[Room] Update Application Status Error'),
+
+  RATE_APPLICATION: type('[Room] Rate Application'),
+  RATE_APPLICATION_SUCCESS: type('[Room] Rate Application Success'),
+  RATE_APPLICATION_ERROR: type('[Room] Rate Application Error')
 };
 
 /**
@@ -213,6 +217,27 @@ export class UpdateApplicationStatusErrorAction implements Action {
   constructor(public payload: any) { }
 }
 
+/**
+ * Rate Application
+ */
+export class RateApplicationAction implements Action {
+  type = ActionTypes.RATE_APPLICATION;
+
+  constructor(public payload: IRoomRateApplicationRequest) { }
+}
+
+export class RateApplicationSuccessAction implements Action {
+  type = ActionTypes.RATE_APPLICATION_SUCCESS;
+
+  constructor(public payload: IRoomRateApplicationResponse) { }
+}
+
+export class RateApplicationErrorAction implements Action {
+  type = ActionTypes.RATE_APPLICATION_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 
 /**
  * Export a type alias of all actions in this action group
@@ -234,5 +259,8 @@ export type Actions
   | UpdateApplicationStatusAction
   | UpdateApplicationStatusSuccessAction
   | UpdateApplicationStatusErrorAction
+  | RateApplicationAction
+  | RateApplicationSuccessAction
+  | RateApplicationErrorAction
   | SelectAction
 

@@ -3,6 +3,8 @@ import { IRoom, IRoomApplication } from '../../models/api';
 import { Store } from '@ngrx/store';
 import * as roomAction from '../../store/room/room.actions'
 import * as fromRoot from '../../store';
+import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
+import { MdDialog } from '@angular/material';
 
 export interface IRoomApplicationsListComponent {
   checkApplicationsStatus(application: IRoomApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean,
@@ -20,7 +22,7 @@ export class RoomApplicationsListComponent implements OnInit, IRoomApplicationsL
   @Input() applications: IRoomApplication[];
   @Input() room: IRoom;
   activeApplicationId: number;
-  constructor(private _store: Store<fromRoot.State>) {
+  constructor(private _store: Store<fromRoot.State>, private _dialog: MdDialog) {
 
   }
 
@@ -52,6 +54,18 @@ export class RoomApplicationsListComponent implements OnInit, IRoomApplicationsL
   }
 
   onRateClick(application: IRoomApplication): void {
-
+    const _dialogRef = this._dialog.open(ReviewDialogComponent);
+    _dialogRef.afterClosed().subscribe(reviewOptions => {
+      if (reviewOptions) {
+        // TODO: try to user without <any> type
+        const roomId: any = application.room;
+        this._store.dispatch(new roomAction.RateApplicationAction({
+          roomId,
+          applicationId: application.id,
+          rating: reviewOptions.rating,
+          review: reviewOptions.review
+        }));
+      }
+    });
   }
 }
