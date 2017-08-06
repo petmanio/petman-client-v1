@@ -7,12 +7,15 @@ export { LocationsComponent } from './locations/locations.component';
 export { WelcomeComponent } from './welcome/welcome.component';
 export { MessagesComponent } from './messages/messages.component';
 export { MessageComponent } from './message/message.component';
+
 export { RoomsComponent } from './rooms/rooms.component';
 export { RoomAddComponent } from './room-add/room-add.component';
 export { RoomDetailsComponent } from './room-details/room-details.component';
+
 export { WalkersComponent } from './walkers/walkers.component';
 export { WalkerAddComponent } from './walker-add/walker-add.component';
 export { WalkerDetailsComponent } from './walker-details/walker-details.component';
+
 export { AdoptListComponent } from './adopt-list/adopt-list.component';
 export { AdoptAddComponent } from './adopt-add/adopt-add.component';
 export { AdoptDetailsComponent } from './adopt-details/adopt-details.component';

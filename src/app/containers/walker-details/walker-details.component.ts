@@ -1,247 +1,73 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MdDialog, MdSnackBar } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import { clone } from 'lodash';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import * as fromRoot from '../../store';
-import * as walkerAction from '../../store/walker/walker.actions';
-import { Subject } from 'rxjs/Subject';
-import { UtilService } from '../../services/util/util.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { IWalker, IWalkerApplication, IUser } from '../../models/api';
-import { WalkerApplicationsListComponent } from '../../components/walker-applications-list/walker-applications-list.component';
-import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
-import { WalkerReviewDialogComponent } from '../../components/walker-review-dialog/walker-review-dialog.component';
+import { MdDialog, MdSnackBar } from '@angular/material';
+import 'rxjs/add/operator/map';
+import '@ngrx/core/add/operator/select';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
-import { TranslateService } from '@ngx-translate/core';
+import { WalkerReviewsListDialogComponent } from '../../components/walker-reviews-list-dialog/walker-reviews-list-dialog.component';
+import * as walkerAction from '../../store/walker/walker.actions'
+import * as fromRoot from '../../store';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { Subject } from 'rxjs/Subject';
+import { Actions } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface IWalkerDetailsComponent {
-  onRatingRowClick(): void,
-  onDeleteClick(): void,
-  onApplicationSelect(application: IWalkerApplication): void,
-  onActionClick(status: string): void,
   onShareClick(): void,
-  formatDate(date): string
+  onSeeReviewsClick(): void,
+  onDeleteClick(): void
 }
 
 @Component({
   selector: 'app-walker-details',
-  template: `
-    <md-card *ngIf="walkerWalker$ | async">
-      <md-card-content>
-        <div class="columns">
-          <div class="column is-10 is-offset-1">
-            <md-card-header>
-              <div md-card-avatar class="pm-cart-avatar"
-                   [ngStyle]="{'background-image': 'url(' + (walkerWalker$ | async)?.user.userData.avatar + ')'}"></div>
-              <md-card-title>
-                {{(walkerWalker$ | async)?.user.userData.firstName}} {{(walkerWalker$ | async)?.user.userData.lastName}}</md-card-title>
-              <md-card-subtitle>
-              <span class="pm-font-12 pm-color-gray">
-                {{formatDate((walkerWalker$ | async)?.createdAt)}}
-              </span>
-              </md-card-subtitle>
-            </md-card-header>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column column is-10 is-offset-1">
-            <div class="pm-details-actions">
-              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
-                {{ 'price_per_day' | translate:{price: (walkerWalker$ | async)?.cost} }}</span>&nbsp;
-              <rating [ngModel]="averageRating"
-                      [max]="5"
-                      fullIcon="★"
-                      emptyIcon="☆"
-                      [readonly]="true"
-                      [disabled]="false"
-                      [required]="true"
-                      [float]="true"
-                      [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
-              <button md-button class="pm-walker-action-apply-edit" (click)="onRatingRowClick()" *ngIf="!(walkerWalker$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
-              </button>
-              <button md-button class="pm-walker-action-apply-edit" color="warn" (click)="onDeleteClick()"
-                      *ngIf="(walkerWalker$ | async)?.isOwner">
-                <span class="pm-font-14 pm-color-red">{{'delete' | translate}} &nbsp;<i class="mdi mdi-delete"></i></span>
-              </button>
-              &nbsp;&nbsp;
-              <button md-icon-button (click)="onShareClick()">
-                <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
-              </button>
-            </div>
-            <br/>
-            <md-divider></md-divider>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-8 is-offset-2">
-            <span class="pm-color-gray pm-font-16">{{(walkerWalker$ | async)?.description}}</span>
-          </div>
-        </div>
-        <div class="columns">
-          <!--<div class="column column is-4 is-offset-1">-->
-          <!--<div class="pm-font-16 pm-color-gray pm-history-label">Review statistics</div>-->
-          <!--<app-walker-statistics [applications]="finishedApplications"></app-walker-statistics>-->
-          <!--</div>-->
-          <div class="column is-6 is-offset-1">
-            <div class="pm-font-16 pm-color-gray pm-history-label">{{'history' | translate}} <i class="mdi mdi-history"></i></div>
-            <app-walker-reviews-list [applications]="finishedApplications" [walker]="walkerWalker$ | async"></app-walker-reviews-list>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-4-desktop is-5-tablet is-offset-1">
-            <span class="pm-font-16 pm-color-gray">
-              {{(walkerWalker$ | async)?.isOwner ? ('application_requests' | translate) : ('my_applications' | translate)}} 
-              <i class="mdi mdi-application"></i></span>
-            <app-walker-applications-list [applications]="inProgressApplications"
-                                        [walker]="walkerWalker$ | async"
-                                        (onApplicationClick)="onApplicationSelect($event)"></app-walker-applications-list>
-          </div>
-          <div class="column is-6-desktop is-5-tablet pm-application-info-window" *ngIf="selectedApplication">
-            <div class="pm-font-16 pm-color-gray pm-action-label">{{'status' | translate}} <i class="mdi mdi-check-all"></i></div>
-            <app-walker-application-actions [walker]="walkerWalker$ | async"
-                                          [application]="selectedApplication"
-                                          (onActionClick)="onActionClick($event)"></app-walker-application-actions>
-            <div class="pm-font-16 pm-color-gray pm-message-label">{{'chat_history' | translate}} <i class="mdi mdi-wechat"></i></div>
-            <app-walker-application-messages [walker]="walkerWalker$ | async"
-                                           [application]="selectedApplication"></app-walker-application-messages>
-          </div>
-        </div>
-      </md-card-content>
-    </md-card>
-  `,
-  styles: [`
-    app-walker-application-actions {
-      /*margin-top: 25px;*/
-    }
-    app-walker-applications-list {
-      max-height: 640px;
-      overflow-x: auto;
-    }
-
-    app-walker-application-messages {
-      /*min-height: 200px;*/
-      max-height: 500px;
-      overflow-x: auto;
-    }
-
-    app-walker-reviews-list {
-      max-height: 500px;
-      overflow-x: auto;
-    }
-
-    .pm-message-label {
-      margin-top: 20px;
-      padding-right: 10px;
-      text-align: right;
-    }
-
-    .pm-action-label {
-      margin-top: 0;
-      text-align: right;
-      padding-right: 10px;
-      margin-bottom: 15px;
-    }
-
-    .pm-history-label {
-      margin-top: 25px;
-      text-align: left;
-      padding-right: 10px;
-      margin-bottom: 15px;
-    }
-
-    .pm-details-actions {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    .pm-walker-action-apply-edit {
-      margin-left: auto;
-    }
-
-  `]
+  templateUrl: './walker-details.component.html',
+  styleUrls: ['./walker-details.component.scss']
 })
 export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetailsComponent {
-  @ViewChild(WalkerApplicationsListComponent) _walkerApplicationList;
-  // TODO: update attribute name
-  walkerWalker$: Observable<any>;
-  currentUser$: Observable<any>;
-  currentUser: IUser;
-  averageRating: number;
-  selectedApplication: IWalkerApplication;
-  inProgressApplications: IWalkerApplication[];
-  finishedApplications: IWalkerApplication[];
+  walker$: Observable<IWalker>;
+  currentUser$: Observable<IUser>;
+  applications$: Observable<{total: number, list: IWalkerApplication[]}>;
   walker: IWalker;
-  private _walkerId: number;
+  currentUser: IUser;
+  applications: {total: number, list: IWalkerApplication[]};
   private _destroyed$ = new Subject<boolean>();
-  private _walkerListener;
-  private _routeListener;
+  private _actionsSubscription: Subscription;
+  private _walkerSubscription: Subscription;
+  private _currentUserSubscription: Subscription;
+  private _applicationsSubscription: Subscription;
+
   constructor(private _store: Store<fromRoot.State>,
-              private _activatedRoute: ActivatedRoute,
+              private _route: ActivatedRoute,
               private _dialog: MdDialog,
-              private _snackBar: MdSnackBar,
-              private _utilService: UtilService,
               private _router: Router,
-              private _translateService: TranslateService,
-              private _actions$: Actions) {
-    this.walkerWalker$ = _store.select(fromRoot.getWalkerWalker);
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+              private _actions$: Actions,
+              private _snackBar: MdSnackBar,
+              private _translateService: TranslateService) {
+    this._actionsSubscription = _route.params
+      .select<string>('walkerId')
+      .map(id => new walkerAction.SelectAction(id))
+      .subscribe(_store);
+
+    this.walker$ = this._store.select(fromRoot.getSelectedWalker);
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.applications$ = this._store.select(fromRoot.getSelectedWalkerMyApplications);
+    this._walkerSubscription = this.walker$.subscribe(walker => this.walker = walker);
+    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._applicationsSubscription = this.applications$.subscribe(applications => this.applications = applications);
   }
 
-  ngOnInit(): void {
-    // TODO: remove listener on destroy
-    this._routeListener = this._activatedRoute.params.subscribe((params: Params) => {
-      this._walkerId = parseInt(params['walkerId'], 10);
-      if (!this._walkerId) {
-        // TODO: use global error handling
-        // throw new Error('WalkerDetailsComponent: walkerId is not defined');
-      }
-      return this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
-    });
-
-    this._walkerListener = this.walkerWalker$.subscribe($event => {
-      if ($event) {
-        this.walker = $event;
-        this.inProgressApplications = this.walker.applications.filter(application => application.status !== 'FINISHED');
-        this.finishedApplications = this.walker.applications.filter(application => application.status === 'FINISHED');
-        // if (this.inProgressApplications.length) {
-        //   this.selectedApplication = this.inProgressApplications[0];
-        //   this._walkerApplicationList.selected = 0;
-        // } else {
-        //   this.selectedApplication = null;
-        // }
-        this.averageRating = UtilService.countAverage(this.walker.applications.filter(application => application.status === 'FINISHED'));
-      }
-    });
-
-    this.currentUser$.subscribe($event => this.currentUser = $event);
-
-    // TODO: load data from server after complete using data from server, push application inside reducer, change socket part also
-    // this._actions$
-    //   .ofType(walkerAction.ActionTypes.APPLY_SUCCESS)
-    //   .takeUntil(this._destroyed$)
-    //   .do(() => {
-    //     this._store.dispatch(new walkerAction.GetByIdAction({walkerId: this._walkerId}));
-    //   })
-    //   .subscribe();
-
-    this._actions$
-      .ofType(walkerAction.ActionTypes.GET_BY_ID_ERROR)
-      .takeUntil(this._destroyed$)
-      .do((action) => {
-        this._router.navigate(['404']);
-      })
-      .subscribe();
+  ngOnInit() {
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this._destroyed$.next(true);
-    this._walkerListener.unsubscribe();
-    this._routeListener.unsubscribe();
+    this._actionsSubscription.unsubscribe();
+    this._walkerSubscription.unsubscribe();
+    this._applicationsSubscription.unsubscribe();
   }
 
   onShareClick(): void {
@@ -250,30 +76,21 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
       if (shareOptions) {
         // TODO: create url via router
         if (shareOptions === 'facebook') {
-          // const fbShareOptions = {
-          //   method: 'share_open_graph',
-          //   action_type: 'og.shares',
-          //   action_properties: JSON.stringify({
-          //     object : {
-          //       'og:url': `${location.origin}/walkers/${this.walker.id}/details`,
-          //       'og:title': 'Petman',
-          //       'og:description': this.walker.description
-          //     }
-          //   })
-          // };
-
           const fbShareOptions = {
             method: 'share',
             href: `${location.origin}/walkers/${this.walker.id}/details`,
             hashtag: '#Petman'
           };
 
-          // TODO: shate using dispatch
-          // this._store.dispatch(new walkerAction.ShareOnFacebookAction(fbShareOptions));
           FB.ui(fbShareOptions, response => {});
         }
       }
     });
+  }
+
+  onSeeReviewsClick(): void {
+    const _dialogRef = this._dialog.open(WalkerReviewsListDialogComponent);
+    _dialogRef.componentInstance.walkerId = this.walker.id
   }
 
   onDeleteClick(): void {
@@ -290,52 +107,21 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     });
   }
 
-  onRatingRowClick(): void {
-    if (this.inProgressApplications.some(application => application.status === 'WAITING')) {
-      this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
-        duration: 3000
-      });
-    } else if (!this.currentUser) {
+  onApplyClick(): void {
+    if (this.currentUser) {
+      if (this.applications.list.some(application => application.status === 'WAITING')) {
+        this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
+          duration: 3000
+        });
+      } else {
+        this._store.dispatch(new walkerAction.ApplyAction({walkerId: this.walker.id}));
+      }
+    } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {
         duration: 3000
       })
         .onAction()
         .subscribe($event => this._router.navigate(['/join']))
-    } else {
-      this._store.dispatch(new walkerAction.ApplyAction({walkerId: this._walkerId}));
     }
   }
-
-  onApplicationSelect(application: IWalkerApplication): void {
-    this.selectedApplication = application;
-  }
-
-  onActionClick(status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'IN_PROGRESS' | 'FINISHED'): void {
-    const application = clone<IWalkerApplication>(this.selectedApplication);
-    application.status = status;
-
-    if (application.status === 'FINISHED') {
-      if (this.walker.isOwner) {
-        this._store.dispatch(new walkerAction.UpdateApplicationAction(application));
-      } else  {
-        const _dialogRef = this._dialog.open(WalkerReviewDialogComponent);
-        _dialogRef.afterClosed().subscribe(reviewOptions => {
-          if (reviewOptions) {
-            application.rating = reviewOptions.rating;
-            application.review = reviewOptions.review;
-            this._store.dispatch(new walkerAction.UpdateApplicationAction(application));
-          }
-        });
-      }
-
-    } else {
-      this._store.dispatch(new walkerAction.UpdateApplicationAction(application));
-    }
-  }
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
-  }
-
 }

@@ -58,14 +58,15 @@ export interface INotificationsComponent {
 
             <div *ngIf="notification.walkerApplicationStatusUpdate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-               <!--TODO: add status text-->
+                <!--TODO: add status text-->
       {{'application_status_update' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 
-            <div *ngIf="notification.walkerApplicationMessageCreate">
-               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+            <div *ngIf="notification.walkerApplicationRate">
+              <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
+                <!--TODO: add review text and rating-->
+      {{'application_rate' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
               </span>
             </div>
 

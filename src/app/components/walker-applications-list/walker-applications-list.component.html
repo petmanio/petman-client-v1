@@ -60,22 +60,22 @@
           <div><i class="pm-font-12 pm-color-gray">{{application.review}}</i></div>
         </div>
         <button md-button
-                [routerLink]="['/messages', room.isOwner ? application.consumer.id : application.provider.id]">
+                [routerLink]="['/messages', walker.isOwner ? application.consumer.id : application.provider.id]">
           {{'chat' | translate}}
         </button>
         <button md-button *ngIf="application.status === 'WAITING'
-          && room.isOwner" (click)="onChangeStatus(application, 'IN_PROGRESS')">
+          && walker.isOwner" (click)="onChangeStatus(application, 'IN_PROGRESS')">
           {{'confirm' | translate}}
         </button>
         <button md-button *ngIf="application.status === 'IN_PROGRESS'" (click)="onChangeStatus(application, 'FINISHED')">
           {{'finish' | translate}}
         </button>
         <button md-button color="warn" *ngIf="application.status === 'WAITING'"
-                (click)="onChangeStatus(application, room.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
+                (click)="onChangeStatus(application, walker.isOwner ? 'CANCELED_BY_PROVIDER' : 'CANCELED_BY_CONSUMER')">
           {{'cancel' | translate}}
         </button>
         <button md-button color="accent"
-                *ngIf="application.status === 'FINISHED' && !room.isOwner && !application.rating"
+                *ngIf="application.status === 'FINISHED' && !walker.isOwner && !application.rating"
                 (click)="onRateClick(application)">
           {{'rate' | translate}}
         </button>

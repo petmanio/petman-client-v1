@@ -27,26 +27,33 @@ import * as walkerAction from '../../store/walker/walker.actions';
  */
 
 interface IWalkerEffects {
-  getById$: Observable<Action>,
+  load$: Observable<Action>,
+  loadSuccess$: Observable<Action>,
   delete$: Observable<Action>,
   list$: Observable<Action>,
+  applicationList$: Observable<Action>,
   create$: Observable<Action>,
   apply$: Observable<Action>,
-  updateApplication$: Observable<Action>,
-  applicationMessageList$: Observable<Action>,
-  applicationMessageCreate$: Observable<Action>,
-  shareOnFacebook$: Observable<Action>
+  updateApplicationStatus$: Observable<Action>,
+  rateApplication$: Observable<Action>,
 }
 
 @Injectable()
 export class WalkerEffects implements IWalkerEffects {
-  @Effect() getById$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.GET_BY_ID)
-    .map((action: walkerAction.GetByIdAction) => action.payload)
+  @Effect() load$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.LOAD)
+    .map((action: walkerAction.LoadAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.getById(options)
-        .map(response => new walkerAction.GetByIdSuccessAction(response))
-        .catch(err => of(new walkerAction.GetByIdErrorAction(err)))
+        .map(response => new walkerAction.LoadSuccessAction(response))
+        .catch(err => of(new walkerAction.LoadErrorAction(err)))
+    });
+
+  @Effect() loadSuccess$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.LOAD_SUCCESS)
+    .map((action: walkerAction.LoadSuccessAction) => action.payload)
+    .map(options => {
+      return new walkerAction.ApplicationListAction({walkerId: options.id})
     });
 
   @Effect() delete$: Observable<Action> = this._actions$
@@ -54,7 +61,7 @@ export class WalkerEffects implements IWalkerEffects {
     .map((action: walkerAction.DeleteAction) => action.payload)
     .switchMap(options => {
       return this._walkerService.deleteById(options)
-        .map(response => new walkerAction.DeleteSuccessAction(response))
+        .map(response => new walkerAction.DeleteSuccessAction({walkerId: options.walkerId}))
         .catch(err => of(new walkerAction.DeleteErrorAction(err)))
     });
 
@@ -65,6 +72,18 @@ export class WalkerEffects implements IWalkerEffects {
       return this._walkerService.list(options)
         .map(response => new walkerAction.ListSuccessAction(response))
         .catch(err => of(new walkerAction.ListErrorAction(err)))
+    });
+
+  @Effect() applicationList$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.APPLICATION_LIST)
+    .map((action: walkerAction.ApplicationListAction) => action.payload)
+    .switchMap(options => {
+      return this._walkerService.applicationList(options)
+        .map(response => {
+          response.walkerId = options.walkerId;
+          return new walkerAction.ApplicationListSuccessAction(response)
+        })
+        .catch(err => of(new walkerAction.ApplicationListErrorAction(err)))
     });
 
   @Effect() create$: Observable<Action> = this._actions$
@@ -85,40 +104,24 @@ export class WalkerEffects implements IWalkerEffects {
         .catch(err => of(new walkerAction.ApplyErrorAction(err)))
     });
 
-  @Effect() updateApplication$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.UPDATE_APPLICATION)
-    .map((action: walkerAction.UpdateApplicationAction) => action.payload)
+  @Effect() updateApplicationStatus$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.UPDATE_APPLICATION_STATUS)
+    .map((action: walkerAction.UpdateApplicationStatusAction) => action.payload)
     .switchMap(options => {
-      return this._walkerService.updateApplication(options)
-        .map(response => new walkerAction.UpdateApplicationSuccessAction(response))
-        .catch(err => of(new walkerAction.UpdateApplicationErrorAction(err)))
+      return this._walkerService.updateApplicationStatus(options)
+        .map(response => new walkerAction.UpdateApplicationStatusSuccessAction(options))
+        .catch(err => of(new walkerAction.UpdateApplicationStatusErrorAction(err)))
     });
 
-  @Effect() applicationMessageList$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST)
-    .map((action: walkerAction.ApplicationMessageListAction) => action.payload)
+  @Effect() rateApplication$: Observable<Action> = this._actions$
+    .ofType(walkerAction.ActionTypes.RATE_APPLICATION)
+    .map((action: walkerAction.RateApplicationAction) => action.payload)
     .switchMap(options => {
-      return this._walkerService.getApplicationMessageList(options)
-        .map(response => new walkerAction.ApplicationMessageListSuccessAction(response))
-        .catch(err => of(new walkerAction.ApplicationMessageListErrorAction(err)))
+      return this._walkerService.rateApplication(options)
+        .map(response => new walkerAction.RateApplicationSuccessAction(options))
+        .catch(err => of(new walkerAction.RateApplicationErrorAction(err)))
     });
 
-  @Effect() applicationMessageCreate$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.APPLICATION_MESSAGE_CREATE)
-    .map((action: walkerAction.ApplicationMessageCreateAction) => action.payload)
-    .switchMap(options => {
-      // TODO: check complete action
-      return this._walkerService.applicationMessageCreate(options)
-    });
-
-  @Effect() shareOnFacebook$: Observable<Action> = this._actions$
-    .ofType(walkerAction.ActionTypes.SHARE_ON_FACEBOOK)
-    .map((action: walkerAction.ShareOnFacebookAction) => action.payload)
-    .switchMap(options => {
-      return this._walkerService.shareOnFacebook(options)
-        .map(response => new walkerAction.ShareOnFacebookSuccessAction(response))
-        .catch(err => of(new walkerAction.ShareOnFacebookErrorAction(err)))
-    });
 
   constructor(private _actions$: Actions,
               private _walkerService: WalkerService) {}

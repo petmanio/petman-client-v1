@@ -31,7 +31,16 @@ export interface IWalkerComponent {
       </md-card-header>
       <md-divider></md-divider><br/>
       <md-card-content [routerLink]="['/walkers', walker.id, 'details']" class="pm-cursor-pointer">
+        <img md-card-image [src]="walker.images[0] && walker.images[0].src">
         <div class="pm-walker-description pm-font-16 pm-color-gray">{{walker.description | appEllipsis:100}}</div>
+        <!--<div class="swiper-container" *ngIf="walker.images.length" [swiper]="swiperOptions">-->
+          <!--<div class="swiper-wrapper">-->
+            <!--<div *ngFor="let image of walker.images" class="swiper-slide">-->
+              <!--<img class="pm-carousel-image-card" [src]="image.src">-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="swiper-pagination"></div>-->
+        <!--</div>-->
       </md-card-content>
       <md-card-actions>
         <div class="pm-walker-footer">
@@ -59,7 +68,7 @@ export interface IWalkerComponent {
     md-card-title {
       margin-top: 10px;
     }
-
+    
     .pm-walker-description {
       margin-bottom: 25px;
     }
@@ -67,7 +76,7 @@ export interface IWalkerComponent {
     .pm-carousel-image {
       height: 300px;
     }
-
+    
     .swiper-container {
       width: calc(100% + 48px);
       margin: 0 -24px 16px -24px;
@@ -79,7 +88,7 @@ export interface IWalkerComponent {
         margin: 16px -16px;
       }
     }
-
+    
     .pm-walker-action-open, .pm-walker-action-share {
       margin-left: auto;
     }
@@ -118,7 +127,8 @@ export class WalkerComponent implements OnChanges, IWalkerComponent {
           //     object : {
           //       'og:url': `${location.origin}/walkers/${this.walker.id}/details`,
           //       'og:title': 'Petman',
-          //       'og:description': this.walker.description
+          //       'og:description': this.walker.description,
+          //       'og:image': this.walker.images[0].src
           //     }
           //   })
           // };

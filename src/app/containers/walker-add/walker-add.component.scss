@@ -1,0 +1,17 @@
+.pm-walker-add-container {
+  margin-top: 15px;
+}
+
+md-input-container {
+  width: 100%;
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .pm-walker-add-container {
+    padding-top: 0;
+  }
+
+  /deep/ .drag-box-message {
+    display: none !important;
+  }
+}

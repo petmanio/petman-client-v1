@@ -327,11 +327,10 @@ export class AppComponent implements OnInit, IAppComponent {
       || notification.roomApplicationRate
       || notification.roomApplicationStatusUpdate)['room'];
       this._router.navigate(['rooms', id, 'details'])
-    } else if (notification.walkerApplicationCreate || notification.walkerApplicationMessageCreate
-      || notification.walkerApplicationStatusUpdate) {
+    } else if (notification.walkerApplicationCreate || notification.walkerApplicationRate || notification.walkerApplicationStatusUpdate) {
       const id = (notification.walkerApplicationCreate
-      || notification.walkerApplicationMessageCreate
-      || notification.walkerApplicationStatusUpdate)['walker'];
+        || notification.walkerApplicationRate
+        || notification.walkerApplicationStatusUpdate)['walker'];
       this._router.navigate(['walkers', id, 'details'])
     } else if (notification.adoptCommentCreate) {
       const id = notification.adoptCommentCreate['adopt'];
@@ -405,17 +404,16 @@ export class AppComponent implements OnInit, IAppComponent {
     });
 
     // Walker Events
-    this._sailsService.on('walkerApplicationMessage').subscribe(message => {
-      this._store.dispatch(new walkerAction.ApplicationMessageCreateEventAction(message))
-    });
-
-    this._sailsService.on('walkerApplicationUpdate').subscribe(update => {
-      this._store.dispatch(new walkerAction.UpdateApplicationSuccessAction(update))
-    });
-
-    // TODO: use another action for adding new application
     this._sailsService.on('walkerApplicationCreate').subscribe(application => {
-      this._store.dispatch(new walkerAction.GetByIdAction({walkerId: application.walker}));
+      this._store.dispatch(new walkerAction.ApplySuccessAction(application));
+    });
+
+    this._sailsService.on('walkerApplicationStatusUpdate').subscribe(update => {
+      this._store.dispatch(new walkerAction.UpdateApplicationStatusSuccessAction(update))
+    });
+
+    this._sailsService.on('walkerApplicationRate').subscribe(update => {
+      this._store.dispatch(new walkerAction.RateApplicationSuccessAction(update))
     });
 
     this._sailsService.on('adoptComment').subscribe(comment => {

@@ -1,0 +1,63 @@
+<md-card>
+  <md-card-content>
+    <div class="columns">
+      <div class="column is-10 is-offset-1">
+        <md-card-header>
+          <div md-card-avatar class="pm-cart-avatar"
+               [ngStyle]="{'background-image': 'url(' + (walker$ | async)?.user.userData.avatar + ')'}"></div>
+          <md-card-title>
+            {{(walker$ | async)?.user.userData.firstName}} {{(walker$ | async)?.user.userData.lastName}}</md-card-title>
+          <md-card-subtitle>
+              <span class="pm-font-12 pm-color-gray">
+                {{(walker$ | async)?.createdAt | appFormatDate}}
+              </span>
+          </md-card-subtitle>
+        </md-card-header>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column column is-10 is-offset-1">
+        <div class="pm-details-actions">
+              <span class="pm-font-14 pm-color-gray"><i class="mdi mdi-cash-usd"></i>
+                {{ 'price_per_day' | translate:{price: (walker$ | async)?.cost} }}</span>&nbsp;
+          <rating [ngModel]="(walker$ | async)?.averageRating"
+                  [max]="5"
+                  fullIcon="★"
+                  emptyIcon="☆"
+                  [readonly]="true"
+                  [disabled]="false"
+                  [required]="true"
+                  [float]="true"
+                  [titles]="['Poor', 'Fair', 'Good', 'Very good', 'Excellent']"></rating>
+          <button md-button class="pm-walker-action-apply-edit" (click)="onApplyClick()"
+                  *ngIf="!(walker$ | async)?.isOwner">
+            <span class="pm-font-14 pm-color-gray">{{'apply' | translate}} &nbsp;<i class="mdi mdi-plus"></i></span>
+          </button>
+          <button md-button class="pm-walker-action-apply-edit" color="warn" (click)="onDeleteClick()"
+                  *ngIf="(walker$ | async)?.isOwner">
+            <span class="pm-font-14 pm-color-red">{{'delete' | translate}} &nbsp;<i class="mdi mdi-delete"></i></span>
+          </button>
+          <button md-icon-button (click)="onShareClick()">
+            <md-icon class="pm-font-16 pm-color-gray">share</md-icon>
+          </button>
+        </div>
+        <div class="pm-details-actions">
+          <button color="accent" md-button (click)="onSeeReviewsClick()">
+            <span class="pm-font-14 pm-color-gray">{{'see_reviews' | translate}}</span>
+          </button>
+        </div>
+        <br/>
+        <md-divider></md-divider>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column column is-10 is-offset-1">
+           <span class="pm-font-16 pm-color-gray">
+              {{(walker$ | async)?.isOwner ? ('application_requests' | translate) : ('my_applications' | translate)}}
+              <i class="mdi mdi-application"></i></span>
+        <app-walker-applications-list
+          [applications]="(applications$ | async)?.list" [walker]="walker$ | async"></app-walker-applications-list>
+      </div>
+    </div>
+  </md-card-content>
+</md-card>

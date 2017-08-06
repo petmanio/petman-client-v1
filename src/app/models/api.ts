@@ -160,22 +160,21 @@ export interface IWalkerApplication {
   status: 'WAITING' | 'CANCELED_BY_PROVIDER' | 'CANCELED_BY_CONSUMER' | 'IN_PROGRESS' | 'FINISHED',
   startedAt: string
   endedAt: string
-  finsihedAt: string
+  finishedAt: string
 }
 
 export interface IWalkerApplicationMessage {
   to: number | IUser
   from: number | IUser,
-  isOwner: boolean,
   application: number | IWalkerApplication,
   walker: number | IWalker,
+  isOwner: boolean,
   message: string,
   createdAt: string
 }
 
 export interface IWalker {
   id: number,
-  // name: string,
   description: string,
   cost: number,
   limit?: number,
@@ -183,7 +182,8 @@ export interface IWalker {
   applications: IWalkerApplication[]
   isOwner?: boolean,
   user?: IUser,
-  createdAt: string
+  createdAt: string,
+  averageRating: number
 }
 
 export interface IQuestion {
@@ -256,10 +256,11 @@ export interface INotificationWalkerApplicationCreate {
   application: number | IWalkerApplication,
 }
 
-export interface INotificationWalkerApplicationMessageCreate {
+export interface INotificationWalkerApplicationRate {
   walker: number | IWalker,
   application: number | IWalkerApplication,
-  message: number | IWalkerApplicationMessage,
+  rating: number,
+  review: string
 }
 
 export interface INotificationAdoptComment {
@@ -285,7 +286,7 @@ export interface INotification {
   roomApplicationRate: number | INotificationRoomApplicationRate,
   walkerApplicationCreate: number | INotificationWalkerApplicationCreate,
   walkerApplicationStatusUpdate: number | INotificationWalkerApplicationStatusUpdate,
-  walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
+  walkerApplicationRate: number | INotificationWalkerApplicationRate,
   adoptCommentCreate: number | INotificationAdoptComment,
   lostFoundCommentCreate: number | INotificationLostFoundComment,
   messageCreate: number | INotificationMessageCreate,
@@ -456,21 +457,28 @@ export interface IWalkerListRequest {
 
 export interface IWalkerListResponse {
   list: IWalker[],
-  count: number
+  total: number
+}
+
+export interface IWalkerApplicationListRequest {
+  walkerId: number
+}
+
+export interface IWalkerApplicationListResponse {
+  list: IWalkerApplication[],
+  total: number,
+  walkerId?: number // only for front
 }
 
 export interface IWalkerCreateRequest {
-  name: string,
   description: string,
-  cost: number,
-  limit: number,
-  images: File[],
+  cost: number
 }
 
 export interface IWalkerCreateResponse extends IWalker {}
 
 export interface IWalkerGetByIdRequest {
-  walkerId: number
+  walkerId: number | string
 }
 
 export interface IWalkerGetByIdResponse extends IWalker {}
@@ -479,53 +487,42 @@ export interface IWalkerDeleteRequest {
   walkerId: number
 }
 
-export interface IWalkerDeleteResponse {}
+export interface IWalkerDeleteResponse {
+  walkerId?: number // only for front
+}
 
 export interface IWalkerApplyRequest {
   walkerId: number
 }
 
-export interface IWalkerApplyResponse {}
-
-export interface IWalkerUpdateApplicationRequest extends IWalkerApplication {}
-
-export interface IWalkerUpdateApplicationResponse extends IWalkerApplication {}
-
-export interface IWalkerApplicationMessageListRequest {
-  applicationId: number
+export interface IWalkerApplyResponse extends IWalkerApplication {
 }
 
-export interface IWalkerApplicationMessageListResponse {
-  count: number,
-  list: IWalkerApplicationMessage[]
-}
-
-export interface IWalkerApplicationMessageJoinRequest {
+export interface IWalkerUpdateApplicationStatusRequest {
   applicationId: number,
-  'x-auth-token'?: string
+  status: string,
+  walkerId?: number // only for front
 }
 
-export interface IWalkerApplicationMessageCreateRequest {
+export interface IWalkerUpdateApplicationStatusResponse {
+  status?: string // only for front
+  applicationId?: number // only for front
+  walkerId?: number // only for front
+}
+
+export interface IWalkerRateApplicationRequest {
+  rating: number,
+  review?: string,
   applicationId: number,
-  message: string
+  walkerId?: number // only for front
 }
 
-// TODO: add IWalkerApplicationMessageCreateResponse interface
-
-export interface IWalkerApplicationMessageCreateEventResponse extends IWalkerApplicationMessage {
-
+export interface IWalkerRateApplicationResponse {
+  rating?: number, // only for front
+  review?: string // only for front
+  applicationId?: number // only for front
+  walkerId?: number // only for front
 }
-
-export interface IWalkerShareOnFacebookRequest {
-  method?: string,
-  name?: string,
-  link?: string,
-  caption?: string,
-  picture?: string,
-  description?: string
-}
-
-export interface IWalkerShareOnFacebookResponse {}
 
 /**
  * Adopt

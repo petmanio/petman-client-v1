@@ -23,7 +23,7 @@ import {
   // QuestionsComponent
 } from './containers';
 
-import { AuthGuard, RoomExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
+import { AuthGuard, RoomExistsGuard, WalkerExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
 
 export const appRoutes: Routes = [
   {
@@ -73,10 +73,12 @@ export const appRoutes: Routes = [
   {
     path: 'walkers/add',
     component: WalkerAddComponent,
+    // canActivate: [ AuthGuard ],
   },
   {
     path: 'walkers/:walkerId/details',
     component: WalkerDetailsComponent,
+    canActivate: [ WalkerExistsGuard ],
   },
   {
     path: 'adopt',

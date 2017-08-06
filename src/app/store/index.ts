@@ -54,7 +54,7 @@ import * as fromAuth from './auth/auth.reducer';
 import * as fromBlog from './blog/blog.reducer';
 import * as fromLocation from './location/location.reducer';
 import * as fromRooms from './room/room.reducer';
-import * as fromWalker from './walker/walker.reducer';
+import * as fromWalkers from './walker/walker.reducer';
 import * as fromAdopt from './adopt/adopt.reducer';
 import * as fromLostFound from './lostFound/lostFound.reducer';
 import * as fromQuestion from './question/question.reducer';
@@ -70,7 +70,7 @@ export interface State {
   blog: fromBlog.State,
   location: fromLocation.State,
   rooms: fromRooms.State,
-  walker: fromWalker.State,
+  walkers: fromWalkers.State,
   adopt: fromAdopt.State,
   lostFound: fromLostFound.State,
   question: fromQuestion.State,
@@ -93,7 +93,7 @@ const reducers = {
   blog: fromBlog.reducer,
   location: fromLocation.reducer,
   rooms: fromRooms.reducer,
-  walker: fromWalker.reducer,
+  walkers: fromWalkers.reducer,
   adopt: fromAdopt.reducer,
   lostFound: fromLostFound.reducer,
   question: fromQuestion.reducer,
@@ -160,15 +160,6 @@ export const getLocationFilters = createSelector(getLocationState, fromLocation.
 export const getLocationPins = createSelector(getLocationState, fromLocation.getPins);
 
 /**
- * Walker Reducers
- */
-export const getWalkerState = (state: State) => state.walker;
-export const getWalkerList = createSelector(getWalkerState, fromWalker.getList);
-// TODO: update method and store item names
-export const getWalkerWalker = createSelector(getWalkerState, fromWalker.getWalker);
-export const getWalkerApplicationMessageList = createSelector(getWalkerState, fromWalker.getApplicationMessageList);
-
-/**
  * Adopt Reducers
  */
 export const getAdoptState = (state: State) => state.adopt;
@@ -216,6 +207,7 @@ export const getNotificationList = createSelector(getNotificationState, fromNoti
  * ```
  */
 export const getRoomsState = (state: State) => state.rooms;
+export const getWalkersState = (state: State) => state.walkers;
 export const getMessagesState = (state: State) => state.messages;
 
 /**
@@ -241,6 +233,17 @@ export const getSelectedRoomApplications = createSelector(getRoomsState, fromRoo
 export const getSelectedRoomReviews = createSelector(getRoomsState, fromRooms.getSelectedReviews);
 export const getRoomApplicationEntities = createSelector(getRoomsState, fromRooms.getApplicationEntities);
 
+/**
+ * Walker
+ * @type {Reselect.Selector<State, {[p: string]: IWalker}>}
+ */
+export const getWalkerEntities = createSelector(getWalkersState, fromWalkers.getEntities);
+export const getWalkerIds = createSelector(getWalkersState, fromWalkers.getIds);
+export const getSelectedWalkerId = createSelector(getWalkersState, fromWalkers.getSelectedId);
+export const getSelectedWalker = createSelector(getWalkersState, fromWalkers.getSelected);
+export const getSelectedWalkerApplications = createSelector(getWalkersState, fromWalkers.getSelectedApplications);
+export const getSelectedWalkerReviews = createSelector(getWalkersState, fromWalkers.getSelectedReviews);
+export const getWalkerApplicationEntities = createSelector(getWalkersState, fromWalkers.getApplicationEntities);
 
 /**
  * Message
@@ -265,3 +268,13 @@ export const getSelectedRoomMyApplications = createSelector(getAuthCurrentUser, 
     }
     return filtered;
   });
+export const getSelectedWalkerMyApplications = createSelector(getAuthCurrentUser, getSelectedWalkerApplications, (currentUser, apps) => {
+  let filtered = { total: null, list: [] };
+  if (currentUser && apps) {
+    const list = apps.list.filter(application => {
+      return application.consumer.id === currentUser.id || application.provider.id === currentUser.id
+    });
+    filtered = { total: list.length, list }
+  }
+  return filtered;
+});

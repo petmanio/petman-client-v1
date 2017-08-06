@@ -1,137 +1,175 @@
-import { assign, clone, findIndex, pick, cloneDeep } from 'lodash';
-import {
-  IWalkerApplication,
-  IWalkerApplicationMessageCreateEventResponse,
-  IWalkerApplicationMessageListResponse,
-  IWalkerGetByIdResponse,
-  IWalkerListResponse,
-  IWalkerUpdateApplicationRequest
-} from '../../models/api';
-import * as walkerAction from './walker.actions';
+import { createSelector } from 'reselect';
+import { IWalker, IWalkerApplication } from '../../models/api';
+import * as walker from './walker.actions';
+import { assign, cloneDeep, find, omit } from 'lodash';
 
 export interface State {
-  walker: IWalkerGetByIdResponse,
-  list: IWalkerListResponse,
-  applicationMessageList: IWalkerApplicationMessageListResponse
+  ids: string[],
+  entities: { [id: string]: IWalker },
+  selectedWalkerId: string,
+  applicationEntities: { [id: string]: { total: number, list: IWalkerApplication[]} },
 }
 
-// TODO: split room and user new state childs like messages, selectedRoom, etc.
-const initialState: State = {
-  list: {
-    list: [],
-    count: null
-  },
-  walker: null,
-  applicationMessageList: {
-    list: [],
-    count: null
-  }
+export const initialState: State = {
+  ids: [],
+  entities: {},
+  selectedWalkerId: null,
+  applicationEntities: {},
 };
 
-export function reducer(state = initialState, action: walkerAction.Actions): State {
+export function reducer(state = initialState, action: walker.Actions): State {
   switch (action.type) {
     /**
      * List
      */
-    // TODO: use another action for loading more
-    case walkerAction.ActionTypes.LIST_SUCCESS: {
-      const res: IWalkerListResponse = action.payload;
-      return assign({}, state, { list: { list: state.list.list.concat(res.list), count: res.count }});
-    }
+    case walker.ActionTypes.LIST_SUCCESS: {
+      const walkers = action.payload.list;
+      const total = action.payload.total;
+      const newWalkers = walkers.filter(walker => !state.entities[walker.id]);
 
-    case walkerAction.ActionTypes.LIST_ERROR: {
-      const error: any = action.payload;
-      return assign({}, state, { list: { list: [], count: null }});
-    }
+      const newWalkerIds = newWalkers.map(walker => walker.id);
+      const newWalkerEntities = newWalkers.reduce((entities: { [id: string]: IWalker }, walker: IWalker) => {
+        return assign(entities, {
+          [walker.id]: walker
+        });
+      }, {});
 
-    // TODO: use another action for loading more
-    case walkerAction.ActionTypes.LIST_CLEAR: {
-      return assign({}, state, { list: { list: [], count: null }});
-    }
+      const update = {
+        ids: [ ...state.ids, ...newWalkerIds ],
+        entities: Object.assign({}, state.entities, newWalkerEntities),
+        total
+      };
 
-    /**
-     * Get By Id
-     */
-    case walkerAction.ActionTypes.GET_BY_ID_SUCCESS: {
-      const res: IWalkerGetByIdResponse = action.payload;
-      // TODO: use object assign
-      return Object.assign({}, state, {walker: res});
-    }
-
-    case walkerAction.ActionTypes.GET_BY_ID_ERROR: {
-      const error: any = action.payload;
-      return Object.assign({}, state, {walker: null})
+      return assign({}, state, update);
     }
 
     /**
-     * Application Apply
-     * TODO: get walker application separately, store into applications
+     * Applications list
      */
-    case walkerAction.ActionTypes.APPLY_SUCCESS: {
-      const res: IWalkerApplication = action.payload;
-      if (res.walker !== state.walker.id) {
-        return state
-      } else {
-        const walker = cloneDeep(state.walker);
-        walker.applications.unshift(res);
-        return Object.assign({}, state, { walker });
+    case walker.ActionTypes.APPLICATION_LIST_SUCCESS: {
+      return assign({}, state, { applicationEntities: { [action.payload.walkerId]: omit(action.payload, 'walkerId') } })
+    }
+
+    /**
+     * Load
+     */
+    case walker.ActionTypes.LOAD_SUCCESS: {
+      const walker = action.payload;
+
+      if (state.ids.indexOf(walker.id) > -1) {
+        return state;
       }
+
+      const update = {
+        ids: [ ...state.ids, walker.id ],
+        entities: assign({}, state.entities, {
+          [walker.id]: walker
+        })
+      };
+
+      return assign({}, state, update);
     }
 
     /**
-     * Update Application
+     * Create
      */
-    case walkerAction.ActionTypes.UPDATE_APPLICATION_SUCCESS: {
-      const res: IWalkerUpdateApplicationRequest = action.payload;
-      const applicationIndex = findIndex(state.walker.applications, (application) => application.id === res.id);
-      // TODO: without clone
-      const applications = clone(state.walker.applications);
-      if (applicationIndex !== -1) {
-        // TODO: merge full object
-        applications[applicationIndex] = assign({}, state.walker.applications[applicationIndex], pick(res,
-          ['status', 'review', 'rating', 'finishedAt']));
+    case walker.ActionTypes.CREATE_SUCCESS: {
+      const walker = action.payload;
+
+      if (state.ids.indexOf(walker.id) > -1) {
+        return state;
       }
-      const walker = Object.assign({}, state.walker, { applications });
-      return Object.assign({}, state, { walker: walker })
-    }
 
-    case walkerAction.ActionTypes.UPDATE_APPLICATION_ERROR: {
-      const error: any = action.payload;
-      return Object.assign({}, state, {})
+      const update = {
+        ids: [ ...state.ids, walker.id ],
+        entities: assign({}, state.entities, {
+          [walker.id]: walker
+        })
+      };
+
+      return assign({}, state, update);
     }
 
     /**
-     * Application Message List
+     * Apply
      */
-    // TODO: use another action for loading more
-    case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_SUCCESS: {
-      const res: IWalkerApplicationMessageListResponse = action.payload;
-      if (res.list.length && state.walker.id === res.list[0].walker) {
-        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat(res.list), count: res.count }});
+    case walker.ActionTypes.APPLY_SUCCESS: {
+      const application = action.payload;
+      const applications = cloneDeep(state.applicationEntities[application.walker]);
+      if (applications) {
+        applications.list.unshift(application);
+        applications.total++;
+        return assign({}, state, {
+          applicationEntities: assign({}, state.applicationEntities, {
+            [application.walker]: applications
+          })
+        });
+      }
+      return state;
+    }
+
+    /**
+     * Update Application status
+     */
+    case walker.ActionTypes.UPDATE_APPLICATION_STATUS_SUCCESS: {
+      const walkerId = action.payload.walkerId;
+      const applicationId = action.payload.applicationId;
+      const status = action.payload.status;
+      const applications = cloneDeep(state.applicationEntities[walkerId]);
+      if (applications) {
+        const match = find(applications.list, item => item.id === applicationId);
+        if (match) {
+          match.status = status;
+          return assign({}, state, {
+            applicationEntities: assign({}, state.applicationEntities, {
+              [walkerId]: applications
+            })
+          });
+        }
       }
       return state;
     }
 
-    case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_ERROR: {
-      const error: any = action.payload;
-      return assign({}, state, { applicationMessageList: { list: [], count: null }});
-    }
-
-    // TODO: use another action for loading more
-    case walkerAction.ActionTypes.APPLICATION_MESSAGE_LIST_CLEAR: {
-      return assign({}, state, { applicationMessageList: { list: [], count: null }});
+    /**
+     * Rate Application
+     */
+    case walker.ActionTypes.RATE_APPLICATION_SUCCESS: {
+      const walkerId = action.payload.walkerId;
+      const applicationId = action.payload.applicationId;
+      const rating = action.payload.rating;
+      const review = action.payload.review;
+      const applications = cloneDeep(state.applicationEntities[walkerId]);
+      if (applications) {
+        const match = find(applications.list, item => item.id === applicationId);
+        if (match) {
+          match.rating = rating;
+          match.review = review;
+          return assign({}, state, {
+            applicationEntities: assign({}, state.applicationEntities, {
+              [walkerId]: applications
+            })
+          });
+        }
+      }
+      return state;
     }
 
     /**
-     * Application Message Create Event
+     * Delete
      */
-    // TODO: refactor and use walker state for keeping messages
-    case walkerAction.ActionTypes.APPLICATION_MESSAGE_CREATE_EVENT: {
-      const res: IWalkerApplicationMessageCreateEventResponse = action.payload;
-      if (state.walker.id === res.walker) {
-        return assign({}, state, { applicationMessageList: { list: state.applicationMessageList.list.concat([res]), count: null }});
-      }
-      return state;
+    case walker.ActionTypes.DELETE_SUCCESS: {
+      return assign({}, state, {
+        entities: omit(state.entities, action.payload.walkerId)
+      });
+    }
+
+    /**
+     * Select
+     */
+    case walker.ActionTypes.SELECT: {
+      return assign({}, state, {
+        selectedWalkerId: action.payload
+      });
     }
 
     default: {
@@ -149,7 +187,27 @@ export function reducer(state = initialState, action: walkerAction.Actions): Sta
  * use-case.
  */
 
-export const getList = (state: State) => state.list;
-export const getWalker = (state: State) => state.walker;
-export const getApplicationMessageList = (state: State) => state.applicationMessageList;
+export const getEntities = (state: State) => state.entities;
 
+export const getIds = (state: State) => state.ids;
+
+export const getSelectedId = (state: State) => state.selectedWalkerId;
+
+export const getSelected = createSelector(getEntities, getSelectedId, (entities, selectedId) => {
+  return entities[selectedId];
+});
+
+export const getAll = createSelector(getEntities, getIds, (entities, ids) => {
+  return ids.map(id => entities[id]);
+});
+
+export const getApplicationEntities = (state: State) => state.applicationEntities;
+
+export const getSelectedApplications = createSelector(getApplicationEntities, getSelectedId, (applicationEntities, selectedId) => {
+  return applicationEntities[selectedId] || { total: null, list: [] };
+});
+
+export const getSelectedReviews = createSelector(getSelectedApplications, (applicationList) => {
+  const list = applicationList.list.filter(application => application.review);
+  return { total: list.length, list };
+});

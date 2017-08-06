@@ -87,13 +87,8 @@ import {
   RoomReviewsListDialogComponent,
   RoomApplicationsListComponent,
   WalkerComponent,
-  WalkerApplyDialogComponent,
-  WalkerApplicationActionsComponent,
-  WalkerApplicationMessagesComponent,
-  WalkerApplicationMessageComponent,
+  WalkerReviewsListDialogComponent,
   WalkerApplicationsListComponent,
-  WalkerReviewsListComponent,
-  WalkerReviewDialogComponent,
   AdoptCardComponent,
   AdoptCommentsComponent,
   AdoptCommentComponent,
@@ -133,7 +128,7 @@ import {
   LostFoundEffects,
   MessageEffects
 } from './store';
-import { AuthGuard, RoomExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
+import { AuthGuard, RoomExistsGuard, WalkerExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
 
 import { reducer } from './store';
 import { appRoutes } from './app.routes';
@@ -184,13 +179,8 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     RoomReviewsListDialogComponent,
     RoomApplicationsListComponent,
     WalkerComponent,
-    WalkerApplyDialogComponent,
-    WalkerApplicationActionsComponent,
-    WalkerApplicationMessagesComponent,
-    WalkerApplicationMessageComponent,
+    WalkerReviewsListDialogComponent,
     WalkerApplicationsListComponent,
-    WalkerReviewsListComponent,
-    WalkerReviewDialogComponent,
     AdoptCardComponent,
     AdoptCommentsComponent,
     AdoptCommentComponent,
@@ -210,11 +200,10 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     FromNowPipe
   ],
   entryComponents: [
-    WalkerApplyDialogComponent,
-    WalkerReviewDialogComponent,
     ShareDialogComponent,
     ConfirmDialogComponent,
     RoomReviewsListDialogComponent,
+    WalkerReviewsListDialogComponent,
     ReviewDialogComponent
   ],
   imports: [
@@ -264,6 +253,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     // { provide: RequestOptions, useClass: CustomRequestOptions },
     AuthGuard,
     RoomExistsGuard,
+    WalkerExistsGuard,
     MessagesExistsGuard,
     MessagesConversationExistsGuard,
     AuthService,

@@ -11,9 +11,9 @@ import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { RoomService } from '../../services/room/room.service';
+import { WalkerService } from '../../services/walker/walker.service';
 import * as fromRoot from '../../store';
-import * as roomAction from '../../store/room/room.actions';
+import * as walkerAction from '../../store/walker/walker.actions';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
@@ -21,31 +21,31 @@ import * as roomAction from '../../store/room/room.actions';
  * to activate this route. Guards must return an observable of true or false.
  */
 @Injectable()
-export class RoomExistsGuard implements CanActivate {
+export class WalkerExistsGuard implements CanActivate {
   constructor(private _router: Router,
               private _store: Store<fromRoot.State>,
-              private _roomService: RoomService) { }
+              private _walkerService: WalkerService) { }
 
 
   /**
-   * This method checks if a room with the given ID is already registered
+   * This method checks if a walker with the given ID is already registered
    * in the Store
    */
-  hasRoomInStore(id: string): Observable<boolean> {
-    return this._store.select(fromRoot.getRoomEntities)
+  hasWalkerInStore(id: string): Observable<boolean> {
+    return this._store.select(fromRoot.getWalkerEntities)
       .map(entities => !!entities[id])
       .take(1);
   }
 
   /**
-   * This method loads a room with the given ID from the API and caches
+   * This method loads a walker with the given ID from the API and caches
    * it in the store, returning `true` or `false` if it was found.
    */
-  hasRoomInApi(id: string): Observable<boolean> {
-    return this._roomService.getById({ roomId: id })
-      .map(roomEntity => new roomAction.LoadSuccessAction(roomEntity))
-      .do((action: roomAction.LoadSuccessAction) => this._store.dispatch(action))
-      .map(room => !!room)
+  hasWalkerInApi(id: string): Observable<boolean> {
+    return this._walkerService.getById({ walkerId: id })
+      .map(walkerEntity => new walkerAction.LoadSuccessAction(walkerEntity))
+      .do((action: walkerAction.LoadSuccessAction) => this._store.dispatch(action))
+      .map(walker => !!walker)
       .catch(() => {
         this._router.navigate(['/404']);
         return of(false);
@@ -53,18 +53,18 @@ export class RoomExistsGuard implements CanActivate {
   }
 
   /**
-   * `hasRoom` composes `hasRoomInStore` and `hasRoomInApi`. It first checks
-   * if the room is in store, and if not it then checks if it is in the
+   * `hasWalker` composes `hasWalkerInStore` and `hasWalkerInApi`. It first checks
+   * if the walker is in store, and if not it then checks if it is in the
    * API.
    */
-  hasRoom(id: string): Observable<boolean> {
-    return this.hasRoomInStore(id)
+  hasWalker(id: string): Observable<boolean> {
+    return this.hasWalkerInStore(id)
       .switchMap(inStore => {
         if (inStore) {
           return of(inStore);
         }
 
-        return this.hasRoomInApi(id);
+        return this.hasWalkerInApi(id);
       });
   }
 
@@ -72,7 +72,7 @@ export class RoomExistsGuard implements CanActivate {
    * This is the actual method the router will call when our guard is run.
    *
    * Our guard waits for the collection to load, then it checks if we need
-   * to request a room from the API or if we already have it in our cache.
+   * to request a walker from the API or if we already have it in our cache.
    * If it finds it in the cache or in the API, it returns an Observable
    * of `true` and the route is rendered successfully.
    *
@@ -82,6 +82,6 @@ export class RoomExistsGuard implements CanActivate {
    * to the 404 page.
    */
   canActivate(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.hasRoom(route.params['roomId']);
+    return this.hasWalker(route.params['walkerId']);
   }
 }

@@ -4,9 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import {
-  IWalkerApplicationMessageCreateRequest,
-  IWalkerApplicationMessageListRequest,
-  IWalkerApplicationMessageListResponse,
+  IWalkerApplicationListRequest,
+  IWalkerApplicationListResponse,
   IWalkerApplyRequest,
   IWalkerApplyResponse,
   IWalkerCreateRequest,
@@ -17,29 +16,27 @@ import {
   IWalkerGetByIdResponse,
   IWalkerListRequest,
   IWalkerListResponse,
-  IWalkerShareOnFacebookRequest,
-  IWalkerUpdateApplicationRequest,
-  IWalkerUpdateApplicationResponse
+  IWalkerRateApplicationRequest,
+  IWalkerRateApplicationResponse,
+  IWalkerUpdateApplicationStatusRequest,
+  IWalkerUpdateApplicationStatusResponse,
 } from '../../models/api';
-import { SailsService } from 'angular2-sails';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface IWalkerService {
   getById(options: IWalkerGetByIdRequest): Observable<IWalkerGetByIdResponse>,
   deleteById(options: IWalkerDeleteRequest): Observable<IWalkerDeleteResponse>,
   list(options: IWalkerListRequest): Observable<IWalkerListResponse>,
+  applicationList(options: IWalkerApplicationListRequest): Observable<IWalkerApplicationListResponse>,
   create(options: IWalkerCreateRequest): Observable<IWalkerCreateResponse>,
   apply(options: IWalkerApplyRequest): Observable<IWalkerApplyResponse>,
-  updateApplication(options: IWalkerUpdateApplicationRequest): Observable<IWalkerUpdateApplicationResponse>,
-  getApplicationMessageList(options: IWalkerApplicationMessageListRequest): Observable<IWalkerApplicationMessageListResponse>,
-  applicationMessageCreate(options: IWalkerApplicationMessageCreateRequest): Observable<any>,
-  shareOnFacebook(options: IWalkerShareOnFacebookRequest): Observable<any>
+  updateApplicationStatus(options: IWalkerUpdateApplicationStatusRequest): Observable<IWalkerUpdateApplicationStatusResponse>,
+  rateApplication(options: IWalkerRateApplicationRequest): Observable<IWalkerRateApplicationResponse>,
 }
 
 @Injectable()
 export class WalkerService implements IWalkerService {
 
-  constructor(private _http: Http, private _sailsService: SailsService) {
+  constructor(private _http: Http) {
   }
 
   getById(options: IWalkerGetByIdRequest): Observable<IWalkerGetByIdResponse> {
@@ -85,23 +82,28 @@ export class WalkerService implements IWalkerService {
       .map(response => response.json());
   }
 
+  applicationList(options: IWalkerApplicationListRequest): Observable<IWalkerApplicationListResponse> {
+    const headers = new Headers();
+    const params: URLSearchParams = new URLSearchParams();
+
+    headers.append('Content-Type', 'application/json');
+    headers.append('x-auth-token', localStorage.getItem('token'));
+
+    return this._http
+      .get(`${environment.apiEndpoint}/api/walker/${options.walkerId}/applications`,
+        { headers, withCredentials: true, search: params }
+      )
+      .map(response => response.json());
+  }
+
   create(options: IWalkerCreateRequest): Observable<IWalkerCreateResponse> {
     const headers = new Headers();
     const formData: FormData = new FormData();
 
     headers.append('x-auth-token', localStorage.getItem('token'));
 
-    formData.append('name', options.name);
     formData.append('description', options.description);
     formData.append('cost', options.cost);
-    // TODO: functionality for future
-    // formData.append('limit', options.limit);
-
-    if (options.images && options.images.length) {
-      options.images.forEach(file => {
-        formData.append('images', file, file.name);
-      });
-    }
 
     return this._http
       .post(`${environment.apiEndpoint}/api/walker/create`,
@@ -122,49 +124,25 @@ export class WalkerService implements IWalkerService {
       .map(response => response.json());
   }
 
-  updateApplication(options: IWalkerUpdateApplicationRequest): Observable<IWalkerUpdateApplicationResponse> {
+  updateApplicationStatus(options: IWalkerUpdateApplicationStatusRequest): Observable<IWalkerUpdateApplicationStatusResponse> {
     const headers = new Headers();
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this._http
-      .put(`${environment.apiEndpoint}/api/walker/application/${options.id}`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
-  }
-
-  getApplicationMessageList(options: IWalkerApplicationMessageListRequest): Observable<IWalkerApplicationMessageListResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    return this._http
-      .get(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/message/list`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
-  }
-
-  applicationMessageCreate(options: IWalkerApplicationMessageCreateRequest): Observable<any> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    return this._http
-      .post(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/message/create`, options,
+      .put(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/status`, options,
         { headers, withCredentials: true }
       )
       .map(response => response.ok);
   }
 
-  shareOnFacebook(options: IWalkerShareOnFacebookRequest): Observable<any> {
-    const subject = new ReplaySubject(1);
-    FB.ui(options, response => {
-      if (response && response.post_id) {
-        subject.next(response);
-      }else {
-        subject.error(new Error());
-      }
-    });
+  rateApplication(options: IWalkerRateApplicationRequest): Observable<IWalkerRateApplicationResponse> {
+    const headers = new Headers();
+    headers.append('x-auth-token', localStorage.getItem('token'));
 
-    return subject;
+    return this._http
+      .put(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/rate`, options,
+        { headers, withCredentials: true }
+      )
+      .map(response => response.ok);
   }
 }

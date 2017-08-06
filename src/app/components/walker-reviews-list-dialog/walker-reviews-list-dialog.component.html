@@ -1,0 +1,15 @@
+<div class="walker-reviews-list-dialog">
+  <header></header>
+  <section>
+    <div class="pm-font-14 pm-color-gray pm-text-center" *ngIf="!reviewList.total">{{'no_reviews_yet' | translate}}</div>
+    <app-review-list *ngIf="reviewList.total" [reviews]="currentPageData"></app-review-list>
+  </section>
+  <footer>
+    <md-paginator
+      *ngIf="reviewList.total"
+      [length]="reviewList.total"
+      [pageSize]="limit"
+      (page)="skip = $event.pageIndex * limit; setPageData()">
+    </md-paginator>
+  </footer>
+</div>

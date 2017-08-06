@@ -1,0 +1,21 @@
+md-card-title {
+  display: flex;
+  justify-content: center;
+}
+
+.pm-walker-items {
+  overflow: auto;
+  width: 100%;
+  height: calc(100vh - 125px);
+  height: -webkit-calc(100vh - 125px);
+  height: -moz-calc(100vh - 125px);
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  /* TODO: make flexible */
+  .pm-walker-items {
+    height: calc(100vh - 60px);
+    height: -webkit-calc(100vh - 60px);
+    height: -moz-calc(100vh - 60px);
+  }
+}

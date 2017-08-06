@@ -1,70 +1,28 @@
-import { Component, Input, OnChanges, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IWalker, IWalkerApplication } from '../../models/api';
-import { UtilService } from '../../services/util/util.service';
+import { Store } from '@ngrx/store';
+import * as walkerAction from '../../store/walker/walker.actions'
+import * as fromRoot from '../../store';
+import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
+import { MdDialog } from '@angular/material';
 
 export interface IWalkerApplicationsListComponent {
-  getApplicationStatus(application: IWalkerApplication): string,
-  formatDate(date): string
+  checkApplicationsStatus(application: IWalkerApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean,
+  onChangeStatus(application: IWalkerApplication, status: string): void,
+  onRateClick(application: IWalkerApplication): void
 }
 
 @Component({
   selector: 'app-walker-applications-list',
-  template: `
-    <ul>
-      <li *ngFor="let application of applications; let i = index;" class="pm-cursor-pointer"
-          [ngClass]="{'selected': i === selected}"
-          (click)="onApplicationClick.emit(application); selected = i">
-        <div class="columns is-mobile pm-application-row">
-          <div class="column is-2">
-            <div md-card-avatar class="pm-cart-avatar"
-                 [ngStyle]="{'background-image': 'url(' + application.consumer.userData.avatar + ')'}"></div>&nbsp;
-          </div>
-          <div class="column is-10">
-            <div>
-              <span class="pm-font-14 pm-color-gray pm-walker-application-status">
-                {{application.consumer.userData.firstName}} {{application.consumer.userData.lastName}}
-              </span><br/>
-              <span class="pm-font-12 pm-color-gray pm-walker-application-status">
-                 {{application.status | translate}}
-              </span>
-            </div>
-            <div class="pm-font-12 pm-color-gray pm-walker-application-status">{{formatDate(application.createdAt)}}</div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
+  templateUrl: './walker-applications-list.component.html',
+  styleUrls: ['./walker-applications-list.component.scss']
 
-    .pm-application-row {
-      width: 100%;
-      height: 65px;
-    }
-
-    .pm-walker-application-status {
-      text-align: right;
-    }
-
-    li.selected {
-      background-color: #f8f8f8;
-    }
-
-    ul {
-      height: auto;
-      list-style: none;
-      padding-left: 5px;
-    }
-  `]
 })
-export class WalkerApplicationsListComponent implements OnInit, OnChanges, IWalkerApplicationsListComponent {
-  @Input() walker: IWalker;
+export class WalkerApplicationsListComponent implements OnInit, IWalkerApplicationsListComponent {
   @Input() applications: IWalkerApplication[];
-  @Output() onApplicationClick = new EventEmitter();
-  selected;
-  constructor() {
+  @Input() walker: IWalker;
+  activeApplicationId: number;
+  constructor(private _store: Store<fromRoot.State>, private _dialog: MdDialog) {
 
   }
 
@@ -72,38 +30,42 @@ export class WalkerApplicationsListComponent implements OnInit, OnChanges, IWalk
 
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
-
-  getApplicationStatus(application: IWalkerApplication): string {
-    // TODO: update canceled translation
-    let status: string = UtilService.capitalizeFirstChar(application.status);
-    if (application.status === 'WAITING') {
-      status = 'In progress';
-    }
-    if (this.walker.isOwner) {
-      if (application.status === 'CANCELED_BY_PROVIDER') {
-        status = `Canceled by you`;
-      }
-      if (application.status === 'CANCELED_BY_CONSUMER') {
-        status = `Canceled by ${application.consumer.userData.firstName} ${application.consumer.userData.lastName}`;
-      }
-
-    } else {
-      if (application.status === 'CANCELED_BY_PROVIDER') {
-        status = `Canceled by ${this.walker.user.userData.firstName} ${this.walker.user.userData.lastName}`;
-      }
-      if (application.status === 'CANCELED_BY_CONSUMER') {
-        status = `Canceled by you`;
-      }
+  checkApplicationsStatus(application: IWalkerApplication, condition: 'IN_PROGRESS' | 'FINISHED' | 'WAITING'): boolean {
+    let status = false;
+    switch (condition) {
+      case 'IN_PROGRESS':
+        status = application.status === 'IN_PROGRESS';
+        break;
+      case 'WAITING':
+        status = application.status === 'WAITING';
+        break;
+      case 'FINISHED':
+        status = ['CANCELED_BY_PROVIDER', 'CANCELED_BY_CONSUMER', 'FINISHED'].indexOf(application.status) !== -1;
+        break;
     }
 
     return status;
   }
 
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
+  onChangeStatus(application: IWalkerApplication, status: string): void {
+    // TODO: try to user without <any> type
+    const walkerId: any = application.walker;
+    this._store.dispatch(new walkerAction.UpdateApplicationStatusAction({walkerId, status, applicationId: application.id}));
+  }
+
+  onRateClick(application: IWalkerApplication): void {
+    const _dialogRef = this._dialog.open(ReviewDialogComponent);
+    _dialogRef.afterClosed().subscribe(reviewOptions => {
+      if (reviewOptions) {
+        // TODO: try to user without <any> type
+        const walkerId: any = application.walker;
+        this._store.dispatch(new walkerAction.RateApplicationAction({
+          walkerId,
+          applicationId: application.id,
+          rating: reviewOptions.rating,
+          review: reviewOptions.review
+        }));
+      }
+    });
   }
 }
