@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { UtilService } from '../../services/util/util.service';
-import { IUser } from '../../models/api';
+import { IWalker, IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface IWalkersComponent {
   onScroll(): void,
@@ -20,9 +22,14 @@ export interface IWalkersComponent {
   styleUrls: ['./walkers.component.scss']
 })
 export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
-  walkerList$: Observable<any>;
-  currentUser$: Observable<any>;
+  walkers$: Observable<IWalker[]>;
+  currentUser$: Observable<IUser>;
+  walkers: IWalker[];
   currentUser: IUser;
+  private _destroyed$ = new Subject<boolean>();
+  private _walkersSubscription: Subscription;
+  private _currentUserSubscription: Subscription;
+
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -30,8 +37,10 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
-    // this.walkerList$ = _store.select(fromRoot.getWalkerList);
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.walkers$ = this._store.select(fromRoot.getWalkerAll);
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this._walkersSubscription = this.walkers$.subscribe(walkers => this.walkers = walkers);
+    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
   }
 
   ngOnInit(): void {
@@ -39,6 +48,9 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   }
 
   ngOnDestroy(): void {
+    this._destroyed$.next(true);
+    this._walkersSubscription.unsubscribe();
+    this._currentUserSubscription.unsubscribe();
   }
 
   onScroll(): void {

@@ -226,6 +226,8 @@ export const getMessagesState = (state: State) => state.messages;
  * @type {Reselect.Selector<State, {[p: string]: IRoom}>}
  */
 export const getRoomEntities = createSelector(getRoomsState, fromRooms.getEntities);
+export const getRoomTotalEntities = createSelector(getRoomsState, fromRooms.getTotalEntities);
+export const getRoomAll = createSelector(getRoomsState, fromRooms.getAll);
 export const getRoomIds = createSelector(getRoomsState, fromRooms.getIds);
 export const getSelectedRoomId = createSelector(getRoomsState, fromRooms.getSelectedId);
 export const getSelectedRoom = createSelector(getRoomsState, fromRooms.getSelected);
@@ -238,6 +240,8 @@ export const getRoomApplicationEntities = createSelector(getRoomsState, fromRoom
  * @type {Reselect.Selector<State, {[p: string]: IWalker}>}
  */
 export const getWalkerEntities = createSelector(getWalkersState, fromWalkers.getEntities);
+export const getWalkerTotalEntities = createSelector(getWalkersState, fromWalkers.getTotalEntities);
+export const getWalkerAll = createSelector(getWalkersState, fromWalkers.getAll);
 export const getWalkerIds = createSelector(getWalkersState, fromWalkers.getIds);
 export const getSelectedWalkerId = createSelector(getWalkersState, fromWalkers.getSelectedId);
 export const getSelectedWalker = createSelector(getWalkersState, fromWalkers.getSelected);

@@ -1,29 +1,36 @@
 import { Routes } from '@angular/router';
 import {
-  HomeComponent,
-  BlogComponent,
-  JoinComponent,
-  LocationsComponent,
-  MessagesComponent,
-  MessageComponent,
-  RoomsComponent,
-  RoomAddComponent,
-  RoomDetailsComponent,
-  WalkersComponent,
-  WalkerAddComponent,
-  WalkerDetailsComponent,
-  AdoptListComponent,
+  AboutUsComponent,
   AdoptAddComponent,
   AdoptDetailsComponent,
-  LostFoundListComponent,
+  AdoptListComponent,
+  BlogComponent,
+  HomeComponent,
+  JoinComponent,
+  LocationsComponent,
   LostFoundAddComponent,
   LostFoundDetailsComponent,
-  AboutUsComponent,
+  LostFoundListComponent,
+  MessageComponent,
+  MessagesComponent,
   NotFoundComponent,
-  // QuestionsComponent
+  RoomAddComponent,
+  RoomDetailsComponent,
+  RoomsComponent,
+  WalkerAddComponent,
+  WalkerDetailsComponent,
+  WalkersComponent,
 } from './containers';
 
-import { AuthGuard, RoomExistsGuard, WalkerExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
+import {
+  AuthGuard,
+  MessagesConversationExistsGuard,
+  MessagesExistsGuard,
+  RoomExistsGuard,
+  RoomsExistsGuard,
+  WalkerExistsGuard,
+  WalkersExistsGuard
+} from './guards';
 
 export const appRoutes: Routes = [
   {
@@ -55,6 +62,7 @@ export const appRoutes: Routes = [
   {
     path: 'rooms',
     component: RoomsComponent,
+    canActivate: [ AuthGuard, RoomsExistsGuard ],
   },
   {
     path: 'rooms/add',
@@ -69,6 +77,7 @@ export const appRoutes: Routes = [
   {
     path: 'walkers',
     component: WalkersComponent,
+    canActivate: [ AuthGuard, WalkersExistsGuard ]
   },
   {
     path: 'walkers/add',

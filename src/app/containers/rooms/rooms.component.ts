@@ -5,9 +5,11 @@ import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { UtilService } from '../../services/util/util.service';
-import { IUser } from '../../models/api';
+import { IRoom, IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface IRoomsComponent {
   onScroll(): void,
@@ -20,9 +22,14 @@ export interface IRoomsComponent {
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
-  roomList$: Observable<any>;
-  currentUser$: Observable<any>;
+  rooms$: Observable<IRoom[]>;
+  currentUser$: Observable<IUser>;
+  rooms: IRoom[];
   currentUser: IUser;
+  private _destroyed$ = new Subject<boolean>();
+  private _roomsSubscription: Subscription;
+  private _currentUserSubscription: Subscription;
+
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -30,8 +37,10 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
-    // this.roomList$ = _store.select(fromRoot.getRoomList);
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.rooms$ = this._store.select(fromRoot.getRoomAll);
+    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this._roomsSubscription = this.rooms$.subscribe(rooms => this.rooms = rooms);
+    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
   }
 
   ngOnInit(): void {
@@ -39,6 +48,9 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   }
 
   ngOnDestroy(): void {
+    this._destroyed$.next(true);
+    this._roomsSubscription.unsubscribe();
+    this._currentUserSubscription.unsubscribe();
   }
 
   onScroll(): void {

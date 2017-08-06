@@ -67,6 +67,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     this._destroyed$.next(true);
     this._actionsSubscription.unsubscribe();
     this._walkerSubscription.unsubscribe();
+    this._currentUserSubscription.unsubscribe();
     this._applicationsSubscription.unsubscribe();
   }
 

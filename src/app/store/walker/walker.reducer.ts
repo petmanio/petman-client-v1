@@ -6,6 +6,7 @@ import { assign, cloneDeep, find, omit } from 'lodash';
 export interface State {
   ids: string[],
   entities: { [id: string]: IWalker },
+  totalEntities: number,
   selectedWalkerId: string,
   applicationEntities: { [id: string]: { total: number, list: IWalkerApplication[]} },
 }
@@ -13,6 +14,7 @@ export interface State {
 export const initialState: State = {
   ids: [],
   entities: {},
+  totalEntities: null,
   selectedWalkerId: null,
   applicationEntities: {},
 };
@@ -37,7 +39,7 @@ export function reducer(state = initialState, action: walker.Actions): State {
       const update = {
         ids: [ ...state.ids, ...newWalkerIds ],
         entities: Object.assign({}, state.entities, newWalkerEntities),
-        total
+        totalEntities: total
       };
 
       return assign({}, state, update);
@@ -189,6 +191,8 @@ export function reducer(state = initialState, action: walker.Actions): State {
 
 export const getEntities = (state: State) => state.entities;
 
+export const getTotalEntities = (state: State) => state.totalEntities;
+
 export const getIds = (state: State) => state.ids;
 
 export const getSelectedId = (state: State) => state.selectedWalkerId;
@@ -208,6 +212,6 @@ export const getSelectedApplications = createSelector(getApplicationEntities, ge
 });
 
 export const getSelectedReviews = createSelector(getSelectedApplications, (applicationList) => {
-  const list = applicationList.list.filter(application => application.review);
+  const list = applicationList.list.filter(application => application.rating);
   return { total: list.length, list };
 });

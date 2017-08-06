@@ -37,7 +37,7 @@
             </md-card-header>
           </md-card>
         </masonry-brick>
-        <masonry-brick *ngFor="let walker of (walkerList$ | async)?.list"
+        <masonry-brick *ngFor="let walker of walkers$ | async"
                        class="column is-4-desktop is-6-tablet">
           <app-walker [walker]="walker"></app-walker>
         </masonry-brick>

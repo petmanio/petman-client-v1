@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http, RequestOptions } from '@angular/http';
-import { RouterModule, Routes } from '@angular/router';
+import { Http, HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterStoreModule } from '@ngrx/router-store';
@@ -36,9 +36,96 @@ import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { MasonryModule } from 'angular2-masonry';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { environment } from '../environments/environment';
+import {
+  AboutUsComponent,
+  AdoptAddComponent,
+  AdoptDetailsComponent,
+  AdoptListComponent,
+  AppComponent,
+  BlogComponent,
+  HomeComponent,
+  JoinComponent,
+  LayoutComponent,
+  LocationsComponent,
+  LostFoundAddComponent,
+  LostFoundDetailsComponent,
+  LostFoundListComponent,
+  MessageComponent,
+  MessagesComponent,
+  NotFoundComponent,
+  RoomAddComponent,
+  RoomDetailsComponent,
+  RoomsComponent,
+  WalkerAddComponent,
+  WalkerDetailsComponent,
+  WalkersComponent,
+} from './containers';
+
+import {
+  AdoptCardComponent,
+  AdoptCommentComponent,
+  AdoptCommentsComponent,
+  BlogItemComponent,
+  ConfirmDialogComponent,
+  LocationItemComponent,
+  LostFoundCardComponent,
+  LostFoundCommentComponent,
+  LostFoundCommentsComponent,
+  MapComponent,
+  NavItemComponent,
+  NotificationsComponent,
+  ReviewDialogComponent,
+  ReviewListComponent,
+  RoomApplicationsListComponent,
+  RoomComponent,
+  RoomReviewsListDialogComponent,
+  ShareDialogComponent,
+  SidenavComponent,
+  ToolbarComponent,
+  WalkerApplicationsListComponent,
+  WalkerComponent,
+  WalkerReviewsListDialogComponent
+} from './components';
+import { FitContentsDirective } from './directives';
+
+import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, KeysOrderPipe, KeysPipe } from './pipes';
+import {
+  AdoptService,
+  AuthService,
+  BlogService,
+  LocationService,
+  LostFoundService,
+  MessageService,
+  NotificationService,
+  QuestionService,
+  RoomService,
+  UtilService,
+  WalkerService
+} from './services';
+import {
+  AdoptEffects,
+  AuthEffects,
+  BlogEffects,
+  LocationEffects,
+  LostFoundEffects,
+  MessageEffects,
+  NotificationEffects,
+  reducer,
+  RoomEffects,
+  WalkerEffects
+} from './store';
+import {
+  AuthGuard,
+  MessagesConversationExistsGuard,
+  MessagesExistsGuard,
+  RoomExistsGuard,
+  RoomsExistsGuard,
+  WalkerExistsGuard,
+  WalkersExistsGuard
+} from './guards';
+import { appRoutes } from './app.routes';
 
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, 'i18n/', '.json');
@@ -48,91 +135,6 @@ export function HttpLoaderFactory(http: Http) {
 // import { ImageUploadModule } from 'ng2-imageupload';
 // TODO: create fake module and export all modules from material
 // TODO: https://github.com/benjaminbrandmeier/angular2-image-gallery use this library for gallery
-
-import {
-  AppComponent,
-  LayoutComponent,
-  HomeComponent,
-  BlogComponent,
-  JoinComponent,
-  LocationsComponent,
-  MessagesComponent,
-  MessageComponent,
-  RoomsComponent,
-  RoomAddComponent,
-  RoomDetailsComponent,
-  WalkersComponent,
-  WalkerAddComponent,
-  WalkerDetailsComponent,
-  AdoptListComponent,
-  AdoptAddComponent,
-  AdoptDetailsComponent,
-  LostFoundListComponent,
-  LostFoundAddComponent,
-  LostFoundDetailsComponent,
-  AboutUsComponent,
-  NotFoundComponent,
-  // QuestionsComponent
-} from './containers';
-
-import {
-  NavItemComponent,
-  SidenavComponent,
-  ToolbarComponent,
-  BlogItemComponent,
-  LocationItemComponent,
-  ReviewListComponent,
-  ReviewDialogComponent,
-  RoomComponent,
-  RoomReviewsListDialogComponent,
-  RoomApplicationsListComponent,
-  WalkerComponent,
-  WalkerReviewsListDialogComponent,
-  WalkerApplicationsListComponent,
-  AdoptCardComponent,
-  AdoptCommentsComponent,
-  AdoptCommentComponent,
-  LostFoundCardComponent,
-  LostFoundCommentsComponent,
-  LostFoundCommentComponent,
-  NotificationsComponent,
-  ShareDialogComponent,
-  MapComponent,
-  ConfirmDialogComponent
-} from './components';
-import { FitContentsDirective } from './directives';
-
-import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe, FormatDatePipe, FromNowPipe } from './pipes';
-import {
-  AuthService,
-  BlogService,
-  UtilService,
-  LocationService,
-  RoomService,
-  WalkerService,
-  AdoptService,
-  LostFoundService,
-  QuestionService,
-  NotificationService,
-  MessageService
-} from './services';
-import {
-  AuthEffects,
-  BlogEffects,
-  LocationEffects,
-  RoomEffects,
-  WalkerEffects,
-  AdoptEffects,
-  QuestionEffects,
-  NotificationEffects,
-  LostFoundEffects,
-  MessageEffects
-} from './store';
-import { AuthGuard, RoomExistsGuard, WalkerExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
-
-import { reducer } from './store';
-import { appRoutes } from './app.routes';
-import { CustomRequestOptions } from './helpers/CustomRequestOptions';
 
 // import { schema } from './db';
 
@@ -253,7 +255,9 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     // { provide: RequestOptions, useClass: CustomRequestOptions },
     AuthGuard,
     RoomExistsGuard,
+    RoomsExistsGuard,
     WalkerExistsGuard,
+    WalkersExistsGuard,
     MessagesExistsGuard,
     MessagesConversationExistsGuard,
     AuthService,

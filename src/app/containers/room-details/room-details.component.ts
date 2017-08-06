@@ -67,6 +67,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this._destroyed$.next(true);
     this._actionsSubscription.unsubscribe();
     this._roomSubscription.unsubscribe();
+    this._currentUserSubscription.unsubscribe();
     this._applicationsSubscription.unsubscribe();
   }
 

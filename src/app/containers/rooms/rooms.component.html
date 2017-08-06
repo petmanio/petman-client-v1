@@ -37,7 +37,7 @@
             </md-card-header>
           </md-card>
         </masonry-brick>
-        <masonry-brick *ngFor="let room of (roomList$ | async)?.list"
+        <masonry-brick *ngFor="let room of rooms$ | async"
                        class="column is-4-desktop is-6-tablet">
           <app-room [room]="room"></app-room>
         </masonry-brick>
