@@ -63,7 +63,7 @@
               </button>
             </div>
             <div class="column">
-              <button md-button *ngIf="!room.isOwner && currentUser"
+              <button md-button *ngIf="!room.isOwner && !!currentUser"
                       [routerLink]="['/messages', room.user.id]">
                 <span class="pm-font-14 pm-color-gray">{{'open_conversation' | translate}}</span>
               </button>

@@ -51,7 +51,7 @@
               </button>
             </div>
             <div class="column">
-              <button md-button *ngIf="!walker.isOwner && currentUser"
+              <button md-button *ngIf="!walker.isOwner && !!currentUser"
                       [routerLink]="['/messages', walker.user.id]">
                 <span class="pm-font-14 pm-color-gray">{{'open_conversation' | translate}}</span>
               </button>
