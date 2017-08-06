@@ -22,10 +22,8 @@ export class MessagesComponent implements OnInit, OnDestroy, IMessagesComponent 
   currentUser$: Observable<IUser>;
   conversations$: Observable<IMessage[]>;
   currentUser: IUser;
-  conversations: IMessage[] = [];
   private _destroyed$ = new Subject<boolean>();
   private _currentUserSubscription: Subscription;
-  private _conversationsSubscription: Subscription;
 
   constructor(private _store: Store<fromRoot.State>,
               private _route: ActivatedRoute) {
@@ -33,7 +31,6 @@ export class MessagesComponent implements OnInit, OnDestroy, IMessagesComponent 
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
     this.conversations$ = this._store.select(fromRoot.getMessageConversations);
     this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
-    this._conversationsSubscription = this.conversations$.subscribe(conversations => this.conversations = conversations);
   }
 
   ngOnInit() {
@@ -42,7 +39,6 @@ export class MessagesComponent implements OnInit, OnDestroy, IMessagesComponent 
   ngOnDestroy() {
     this._destroyed$.next(true);
     this._currentUserSubscription.unsubscribe();
-    this._conversationsSubscription.unsubscribe();
   }
 
   isMessageOwner(message: IMessage): boolean {

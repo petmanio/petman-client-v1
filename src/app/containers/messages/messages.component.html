@@ -1,7 +1,7 @@
 <div class="columns">
   <div class="column is-10 is-offset-1">
     <ul class="pm-message-list">
-      <li *ngFor="let message of conversations">
+      <li *ngFor="let message of conversations$ | async">
         <div class="columns is-mobile pm-message-row"
              *ngIf="isMessageOwner(message)"
              [routerLink]="['/messages', message.to.id]">
@@ -12,6 +12,9 @@
           <div class="column is-3 pm-text-center">
             <span class="pm-font-12 pm-color-gray">{{message.to.userData.firstName}}</span><br>
             <span class="pm-font-10 pm-color-gray">{{message.createdAt | appFormatDate}}</span>
+          </div>
+          <div class="column pm-text-center">
+            <div class="pm-font-12 pm-color-gray pm-message-text">{{message.text | appEllipsis}}</div><br>
           </div>
         </div>
         <div class="columns is-mobile pm-message-row"
@@ -24,6 +27,9 @@
           <div class="column is-3 pm-text-center">
             <span class="pm-font-12 pm-color-gray">{{message.from.userData.firstName}}</span><br>
             <span class="pm-font-10 pm-color-gray">{{message.createdAt | appFormatDate}}</span>
+          </div>
+          <div class="column pm-text-center">
+            <div class="pm-font-12 pm-color-gray pm-message-text">{{message.text | appEllipsis}}</div><br>
           </div>
         </div>
       </li>
