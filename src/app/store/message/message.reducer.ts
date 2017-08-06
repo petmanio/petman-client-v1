@@ -1,8 +1,7 @@
 import { createSelector } from 'reselect';
 import { IMessage, IUser } from '../../models/api';
 import * as message from './message.actions';
-import { assign, cloneDeep, find, omit } from 'lodash';
-import { UtilService } from '../../services/util/util.service';
+import { assign } from 'lodash';
 
 export interface State {
   entities: { [uniqueId: string]: { total: number, list: IMessage[], userEntity: IUser } },
@@ -33,7 +32,6 @@ export function reducer(state = initialState, action: message.Actions): State {
           userEntity: conversation.userEntity,
           list: [message].concat(conversation.list)
         };
-        console.log(update);
         return assign({}, state, { entities: {[uid]: update}});
       }
       return state

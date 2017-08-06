@@ -13,6 +13,7 @@ import { INotification } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
+import * as messageAction from '../../store/message/message.actions';
 import * as walkerAction from '../../store/walker/walker.actions';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
@@ -321,7 +322,6 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   onNotificationClick(notification: INotification): void {
-    console.log(notification)
     if (notification.roomApplicationCreate || notification.roomApplicationRate || notification.roomApplicationStatusUpdate) {
       const id = (notification.roomApplicationCreate
       || notification.roomApplicationRate
@@ -339,6 +339,9 @@ export class AppComponent implements OnInit, IAppComponent {
     } else if (notification.lostFoundCommentCreate) {
       const id = notification.lostFoundCommentCreate['lostFound'];
       this._router.navigate(['lost-found', id, 'details'])
+    } else if (notification.messageCreate) {
+      const id = notification.from['id'];
+      this._router.navigate(['messages', id])
     }
   }
 
@@ -382,6 +385,11 @@ export class AppComponent implements OnInit, IAppComponent {
       environment: environment.production ? 'production' : 'development'
     };
     this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
+
+    // Message Events
+    this._sailsService.on('messageCreate').subscribe(update => {
+      this._store.dispatch(new messageAction.CreateSuccessAction(update))
+    });
 
     // Room Events
     this._sailsService.on('roomApplicationCreate').subscribe(application => {

@@ -272,6 +272,10 @@ export interface INotificationLostFoundComment {
   adopt: number | ILostFound
 }
 
+export interface INotificationMessageCreate {
+  message: number | IMessage
+}
+
 export interface INotification {
   id: number,
   from: number | IUser,
@@ -284,6 +288,7 @@ export interface INotification {
   walkerApplicationMessageCreate: number | INotificationWalkerApplicationMessageCreate,
   adoptCommentCreate: number | INotificationAdoptComment,
   lostFoundCommentCreate: number | INotificationLostFoundComment,
+  messageCreate: number | INotificationMessageCreate,
   seen: boolean,
   createdAt: string
 }

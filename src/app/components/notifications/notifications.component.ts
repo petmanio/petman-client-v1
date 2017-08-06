@@ -21,7 +21,14 @@ export interface INotificationsComponent {
                  [ngStyle]="{'background-image': 'url(' + notification.from.userData.avatar + ')'}"></div>&nbsp;
           </div>
           <div class="column is-10">
-            <!--Sitter-->
+            <!--Message-->
+            <div *ngIf="notification.messageCreate">
+               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
+                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+              </span>
+            </div>
+            
+            <!--Room-->
             <div *ngIf="notification.roomApplicationCreate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
                 {{'new_request_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
