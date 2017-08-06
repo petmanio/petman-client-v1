@@ -29,7 +29,7 @@ import * as authAction from '../../store/auth/auth.actions';
 interface IAuthEffects {
   fbLogin$: Observable<Action>,
   fbLoginComplete$: Observable<void>,
-  login$: Observable<Action>,
+  login$: any,
   logout$: Observable<Action>,
   getCurrentUser$: Observable<Action>,
 }
@@ -52,13 +52,24 @@ export class AuthEffects implements IAuthEffects {
     .map((action: authAction.FbLoginSuccessAction) => action.payload)
     .switchMap((options: any) => of(new authAction.LoginAction({fb: options})));
 
+  // @Effect()
+  // public login$: Observable<Action> = this._actions$
+  //   .ofType(authAction.ActionTypes.LOGIN)
+  //   .map((action: authAction.LoginAction) => action.payload)
+  //   .switchMap(options => {
+  //     return this._authService.login(options)
+  //       .map(response => new authAction.LoginSuccessAction(response))
+  //       .catch(err => of(new authAction.LoginErrorAction(err)))
+  //   });
+
+  // TODO: use only store system
   @Effect()
-  public login$: Observable<Action> = this._actions$
+  public login$ = this._actions$
     .ofType(authAction.ActionTypes.LOGIN)
     .map((action: authAction.LoginAction) => action.payload)
     .switchMap(options => {
       return this._authService.login(options)
-        .map(response => new authAction.LoginSuccessAction(response))
+        .map(response => location.reload())
         .catch(err => of(new authAction.LoginErrorAction(err)))
     });
 

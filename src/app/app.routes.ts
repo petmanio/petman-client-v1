@@ -62,7 +62,7 @@ export const appRoutes: Routes = [
   {
     path: 'rooms',
     component: RoomsComponent,
-    canActivate: [ AuthGuard, RoomsExistsGuard ],
+    canActivate: [ RoomsExistsGuard ],
   },
   {
     path: 'rooms/add',
@@ -77,7 +77,7 @@ export const appRoutes: Routes = [
   {
     path: 'walkers',
     component: WalkersComponent,
-    canActivate: [ AuthGuard, WalkersExistsGuard ]
+    canActivate: [ WalkersExistsGuard ]
   },
   {
     path: 'walkers/add',

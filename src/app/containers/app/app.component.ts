@@ -361,12 +361,10 @@ export class AppComponent implements OnInit, IAppComponent {
     // this._store.dispatch(new auth.LogoutAction());
     // TODO: use complete action
     // TODO: use dispatch
+    // TODO: clear storage
     localStorage.removeItem('token');
-    setTimeout(() => {
-      this._router.navigate(['/']);
-      this._store.dispatch(new auth.LogoutSuccessAction({}));
-    }, 300);
-    // location.h_ref = '/';
+    localStorage.removeItem('userId');
+    location.href = '/'
   }
 
   initSocket(): void {
