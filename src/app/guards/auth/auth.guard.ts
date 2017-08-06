@@ -43,11 +43,7 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<any> {
     // TODO: first check from state
     return this._authService.getCurrentUser()
-      .map((user: IAuthCurrentUserResponse) => {
-        this._store.dispatch(new authAction.GetCurrentUserSuccessAction(user));
-        this._router.navigate(['/']);
-        return true;
-      })
+      .map(user => !!user)
       .catch(() => {
         this._router.navigate(['/join']);
         return of(false);

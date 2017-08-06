@@ -45,12 +45,12 @@ export const appRoutes: Routes = [
   {
     path: 'messages',
     component: MessagesComponent,
-    canActivate: [ MessagesExistsGuard ],
+    canActivate: [ AuthGuard, MessagesExistsGuard ],
   },
   {
     path: 'messages/:userEntityId',
     component: MessageComponent,
-    canActivate: [ MessagesConversationExistsGuard ],
+    canActivate: [ AuthGuard, MessagesConversationExistsGuard ],
   },
   {
     path: 'rooms',
@@ -59,7 +59,7 @@ export const appRoutes: Routes = [
   {
     path: 'rooms/add',
     component: RoomAddComponent,
-    // canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard ],
   },
   {
     path: 'rooms/:roomId/details',
@@ -73,7 +73,7 @@ export const appRoutes: Routes = [
   {
     path: 'walkers/add',
     component: WalkerAddComponent,
-    // canActivate: [ AuthGuard ],
+    canActivate: [ AuthGuard ],
   },
   {
     path: 'walkers/:walkerId/details',
@@ -87,6 +87,7 @@ export const appRoutes: Routes = [
   {
     path: 'adopt/add',
     component: AdoptAddComponent,
+    canActivate: [ AuthGuard ]
   },
   {
     path: 'adopt/:adoptId/details',
@@ -99,6 +100,7 @@ export const appRoutes: Routes = [
   {
     path: 'lost-found/add',
     component: LostFoundAddComponent,
+    canActivate: [ AuthGuard ],
   },
   {
     path: 'lost-found/:lostFoundId/details',

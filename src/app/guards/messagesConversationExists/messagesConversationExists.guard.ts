@@ -24,7 +24,6 @@ import { UtilService } from '../../services/util/util.service';
  */
 @Injectable()
 export class MessagesConversationExistsGuard implements CanActivate {
-  currentUserId: number;
   constructor(private _router: Router,
               private _store: Store<fromRoot.State>,
               private _messageService: MessageService) { }

@@ -6,11 +6,8 @@ import { Actions } from '@ngrx/effects';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
 import { Subject } from 'rxjs/Subject';
-import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { IRoom, IRoomCreateRequest } from '../../models/api';
-
-const smartcrop = require('smartcrop');
+import { IRoomCreateRequest } from '../../models/api';
 
 export interface IRoomAddComponent {
   onImageUploaded($event: FileHolder): void,

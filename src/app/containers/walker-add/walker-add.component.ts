@@ -1,16 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FileHolder, ImageUploadComponent } from 'angular2-image-upload/lib/image-upload/image-upload.component';
-import { clone, remove } from 'lodash';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
 import { Subject } from 'rxjs/Subject';
-import { MdSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { IWalker, IWalkerCreateRequest } from '../../models/api';
-
-const smartcrop = require('smartcrop');
+import { IWalkerCreateRequest } from '../../models/api';
 
 export interface IWalkerAddComponent {
   onSaveWalker(): void
