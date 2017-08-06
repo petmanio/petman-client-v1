@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
-import { IUser, IWalker } from '../../models/api';
+import { IWalker, IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
@@ -24,21 +24,32 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   walkers$: Observable<IWalker[]>;
   currentUser$: Observable<IUser>;
   walkers: IWalker[];
+  total$: Observable<number>;
+  total: number;
   currentUser: IUser;
   private _destroyed$ = new Subject<boolean>();
   private _walkersSubscription: Subscription;
   private _currentUserSubscription: Subscription;
+  private _totalSubscription: Subscription;
 
   private _skip = 0;
   private _limit = 6;
-  private _count: number = null;
   constructor(private _store: Store<fromRoot.State>,
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.walkers$ = this._store.select(fromRoot.getWalkerAll);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
-    this._walkersSubscription = this.walkers$.subscribe(walkers => this.walkers = walkers);
+    this.total$ = this._store.select(fromRoot.getWalkerTotalEntities);
+    this._walkersSubscription = this.walkers$.subscribe(walkers => {
+      this.walkers = walkers;
+      if (!this._skip && walkers.length) {
+        this._skip = walkers.length - 1;
+      } else {
+        this._skip = 0;
+      }
+    });
+    this._totalSubscription = this.total$.subscribe(total => this.total = total);
     this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
   }
 
@@ -49,11 +60,12 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   ngOnDestroy(): void {
     this._destroyed$.next(true);
     this._walkersSubscription.unsubscribe();
+    this._totalSubscription.unsubscribe();
     this._currentUserSubscription.unsubscribe();
   }
 
   onScroll(): void {
-    if (this._skip + this._limit < this._count) {
+    if (this._skip + this._limit < this.total) {
       this._skip += this._limit;
       this._store.dispatch(new walkerAction.ListAction({ limit: this._limit, skip: this._skip }));
     }

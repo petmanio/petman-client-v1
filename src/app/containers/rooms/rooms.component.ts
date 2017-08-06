@@ -24,21 +24,32 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   rooms$: Observable<IRoom[]>;
   currentUser$: Observable<IUser>;
   rooms: IRoom[];
+  total$: Observable<number>;
+  total: number;
   currentUser: IUser;
   private _destroyed$ = new Subject<boolean>();
   private _roomsSubscription: Subscription;
   private _currentUserSubscription: Subscription;
+  private _totalSubscription: Subscription;
 
   private _skip = 0;
   private _limit = 6;
-  private _count: number = null;
   constructor(private _store: Store<fromRoot.State>,
               private _router: Router,
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.rooms$ = this._store.select(fromRoot.getRoomAll);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
-    this._roomsSubscription = this.rooms$.subscribe(rooms => this.rooms = rooms);
+    this.total$ = this._store.select(fromRoot.getRoomTotalEntities);
+    this._roomsSubscription = this.rooms$.subscribe(rooms => {
+      this.rooms = rooms;
+      if (!this._skip && rooms.length) {
+        this._skip = rooms.length - 1;
+      } else {
+        this._skip = 0;
+      }
+    });
+    this._totalSubscription = this.total$.subscribe(total => this.total = total);
     this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
   }
 
@@ -49,11 +60,12 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   ngOnDestroy(): void {
     this._destroyed$.next(true);
     this._roomsSubscription.unsubscribe();
+    this._totalSubscription.unsubscribe();
     this._currentUserSubscription.unsubscribe();
   }
 
   onScroll(): void {
-    if (this._skip + this._limit < this._count) {
+    if (this._skip + this._limit < this.total) {
       this._skip += this._limit;
       this._store.dispatch(new roomAction.ListAction({ limit: this._limit, skip: this._skip }));
     }
