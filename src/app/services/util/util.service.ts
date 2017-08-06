@@ -161,14 +161,7 @@ export class UtilService implements IUtilService {
         environment: environment.production ? 'production' : 'development'
       };
       this._sailsService.connect(opts)
-        .subscribe(() => {
-          this._sailsService.on('roomApplicationMessage')
-            .subscribe($event => {
-              if ($event) {
-                // this._store.dispatch(new roomAction.ApplicationMessageCreateEventAction($event));
-              }
-            });
-        });
+        .subscribe(() => {});
     };
 
     connect();

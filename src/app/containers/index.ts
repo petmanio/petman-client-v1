@@ -4,7 +4,6 @@ export { HomeComponent } from './home/home.component';
 export { JoinComponent } from './join/join.component';
 export { LayoutComponent } from './layout/layout.component';
 export { LocationsComponent } from './locations/locations.component';
-export { WelcomeComponent } from './welcome/welcome.component';
 export { MessagesComponent } from './messages/messages.component';
 export { MessageComponent } from './message/message.component';
 
@@ -24,4 +23,3 @@ export { NotFoundComponent } from './not-found/not-found.component';
 export { LostFoundListComponent } from './lost-found-list/lost-found-list.component';
 export { LostFoundAddComponent } from './lost-found-add/lost-found-add.component';
 export { LostFoundDetailsComponent } from './lost-found-details/lost-found-details.component';
-export { QuestionsComponent } from './questions/questions.component';

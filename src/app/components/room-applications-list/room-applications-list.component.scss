@@ -37,8 +37,10 @@ ul {
       list-style: none;
       margin-right: 20px;
       text-align: center;
+      font-size: 10px;
       @include desktop {
         margin-right: 20%;
+        font-size: 14px;
       }
       &:last-child {
         margin-right: 0;

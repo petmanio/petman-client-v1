@@ -1,4 +1,9 @@
+@import "../../scss/mixins";
+
 .room-reviews-list-dialog {
   overflow: hidden;
-  min-width: 400px;
+  width: 70vw;
+  @include desktop {
+    width: 400px;
+  }
 }

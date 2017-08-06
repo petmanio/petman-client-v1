@@ -54,9 +54,19 @@
           </button>
         </div>
         <div class="pm-details-actions">
-          <button color="accent" md-button (click)="onSeeReviewsClick()">
-            <span class="pm-font-14 pm-color-gray">{{'see_reviews' | translate}}</span>
-          </button>
+          <div class="columns">
+            <div class="column">
+              <button color="accent" md-button (click)="onSeeReviewsClick()">
+                <span class="pm-font-14 pm-color-gray">{{'see_reviews' | translate}}</span>
+              </button>
+            </div>
+            <div class="column">
+              <button md-button *ngIf="!room.isOwner"
+                      [routerLink]="['/messages', room.user.id]">
+                <span class="pm-font-14 pm-color-gray">{{'open_conversation' | translate}}</span>
+              </button>
+            </div>
+          </div>
         </div>
         <br/>
         <md-divider></md-divider>
