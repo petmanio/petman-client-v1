@@ -31,7 +31,7 @@ export class MessagesComponent implements OnInit, OnDestroy, IMessagesComponent 
               private _route: ActivatedRoute) {
 
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
-    this.conversations$ = this._store.select(fromRoot.getMessagesConversations);
+    this.conversations$ = this._store.select(fromRoot.getMessageConversations);
     this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
     this._conversationsSubscription = this.conversations$.subscribe(conversations => this.conversations = conversations);
   }
@@ -46,6 +46,9 @@ export class MessagesComponent implements OnInit, OnDestroy, IMessagesComponent 
   }
 
   isMessageOwner(message: IMessage): boolean {
+    if (!this.currentUser) {
+      return false;
+    }
     return this.currentUser.id === message.from['id'];
   }
 }

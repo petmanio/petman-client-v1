@@ -29,6 +29,8 @@ export const ActionTypes = {
   CONVERSATIONS: type('[Message] Conversations'),
   CONVERSATIONS_SUCCESS: type('[Message] Conversations Success'),
   CONVERSATIONS_ERROR: type('[Message] Conversations Error'),
+
+  SELECT_UNIQUE_ID: type('[Message] Select Unique Id'),
 };
 
 /**
@@ -103,6 +105,16 @@ export class ConversationsErrorAction implements Action {
 }
 
 /**
+ * Select Unique Id
+ */
+export class SelectUniqueIdAction implements Action {
+  readonly type = ActionTypes.SELECT_UNIQUE_ID;
+
+  constructor(public payload: string) { }
+}
+
+
+/**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
@@ -116,3 +128,4 @@ export type Actions
   | ConversationsAction
   | ConversationsSuccessAction
   | ConversationsErrorAction
+  | SelectUniqueIdAction

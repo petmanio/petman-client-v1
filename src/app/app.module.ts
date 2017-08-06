@@ -57,6 +57,7 @@ import {
   JoinComponent,
   LocationsComponent,
   MessagesComponent,
+  MessageComponent,
   RoomsComponent,
   RoomAddComponent,
   RoomDetailsComponent,
@@ -106,7 +107,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 
-import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe, FormatDatePipe } from './pipes';
+import { EllipsisPipe, KeysPipe, KeysOrderPipe, ChunkPipe, FormatDatePipe, FromNowPipe } from './pipes';
 import {
   AuthService,
   BlogService,
@@ -132,7 +133,7 @@ import {
   LostFoundEffects,
   MessageEffects
 } from './store';
-import { AuthGuard, RoomExistsGuard, MessagesExistsGuard } from './guards';
+import { AuthGuard, RoomExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
 
 import { reducer } from './store';
 import { appRoutes } from './app.routes';
@@ -152,6 +153,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     JoinComponent,
     LocationsComponent,
     MessagesComponent,
+    MessageComponent,
     RoomsComponent,
     RoomAddComponent,
     RoomDetailsComponent,
@@ -204,7 +206,8 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     KeysPipe,
     KeysOrderPipe,
     ChunkPipe,
-    FormatDatePipe
+    FormatDatePipe,
+    FromNowPipe
   ],
   entryComponents: [
     WalkerApplyDialogComponent,
@@ -262,6 +265,7 @@ import { CustomRequestOptions } from './helpers/CustomRequestOptions';
     AuthGuard,
     RoomExistsGuard,
     MessagesExistsGuard,
+    MessagesConversationExistsGuard,
     AuthService,
     BlogService,
     LocationService,

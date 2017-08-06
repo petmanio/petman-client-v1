@@ -717,12 +717,13 @@ export interface IMessageConversationsResponse {
 }
 
 export interface IMessageConversationRequest {
-  userEntityId: number
+  userEntityId: number | string
 }
 
 export interface IMessageConversationResponse {
   list: IMessage[],
   total: number
+  userEntity: IUser
 }
 
 export interface IMessageCreateRequest {

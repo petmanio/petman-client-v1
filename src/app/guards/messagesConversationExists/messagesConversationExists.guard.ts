@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/let';
+import 'rxjs/add/operator/mergeMap';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
@@ -14,6 +15,7 @@ import { of } from 'rxjs/observable/of';
 import { MessageService } from '../../services/message/message.service';
 import * as fromRoot from '../../store';
 import * as messageAction from '../../store/message/message.actions';
+import { UtilService } from '../../services/util/util.service';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
@@ -21,7 +23,8 @@ import * as messageAction from '../../store/message/message.actions';
  * to activate this route. Guards must return an observable of true or false.
  */
 @Injectable()
-export class MessagesExistsGuard implements CanActivate {
+export class MessagesConversationExistsGuard implements CanActivate {
+  currentUserId: number;
   constructor(private _router: Router,
               private _store: Store<fromRoot.State>,
               private _messageService: MessageService) { }
@@ -31,21 +34,24 @@ export class MessagesExistsGuard implements CanActivate {
    * This method checks if a message with the given ID is already registered
    * in the Store
    */
-  hasMessagesInStore(): Observable<boolean> {
-    return this._store.select(fromRoot.getMessageTotalConversations)
-      .map(total => typeof total === 'number')
-      .take(1)
+  hasMessagesInStore(id: string): Observable<boolean> {
+    return this._store.select(fromRoot.getMessageEntities)
+      .map(entities => {
+        return !!entities[[localStorage.getItem('userId'), id].sort().join('_')]
+      })
+      .take(1);
+
   }
 
   /**
    * This method loads a message with the given ID from the API and caches
    * it in the store, returning `true` or `false` if it was found.
    */
-  hasMessagesInApi(): Observable<boolean> {
-    return this._messageService.getConversations({})
-      .map(conversations => new messageAction.ConversationsSuccessAction(conversations))
-      .do((action: messageAction.ConversationsSuccessAction) => this._store.dispatch(action))
-      .map(conversations => !!conversations)
+  hasMessagesInApi(id: string): Observable<boolean> {
+    return this._messageService.getConversation({ userEntityId: id })
+      .map(conversations => new messageAction.ConversationSuccessAction(conversations))
+      .do((action: messageAction.ConversationSuccessAction) => this._store.dispatch(action))
+      .map(conversation => !!conversation)
       .catch(() => {
         this._router.navigate(['/404']);
         return of(false);
@@ -57,14 +63,14 @@ export class MessagesExistsGuard implements CanActivate {
    * if the message is in store, and if not it then checks if it is in the
    * API.
    */
-  hasMessages(): Observable<boolean> {
-    return this.hasMessagesInStore()
+  hasMessages(id: string): Observable<boolean> {
+    return this.hasMessagesInStore(id)
       .switchMap(inStore => {
         if (inStore) {
           return of(inStore);
         }
 
-        return this.hasMessagesInApi();
+        return this.hasMessagesInApi(id);
       });
   }
 
@@ -82,6 +88,6 @@ export class MessagesExistsGuard implements CanActivate {
    * to the 404 page.
    */
   canActivate(route: ActivatedRouteSnapshot): Observable<any> {
-    return this.hasMessages();
+    return this.hasMessages(route.params['userEntityId']);
   }
 }

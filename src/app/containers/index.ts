@@ -6,6 +6,7 @@ export { LayoutComponent } from './layout/layout.component';
 export { LocationsComponent } from './locations/locations.component';
 export { WelcomeComponent } from './welcome/welcome.component';
 export { MessagesComponent } from './messages/messages.component';
+export { MessageComponent } from './message/message.component';
 export { RoomsComponent } from './rooms/rooms.component';
 export { RoomAddComponent } from './room-add/room-add.component';
 export { RoomDetailsComponent } from './room-details/room-details.component';

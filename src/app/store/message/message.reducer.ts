@@ -1,21 +1,21 @@
 import { createSelector } from 'reselect';
-import { IMessage } from '../../models/api';
+import { IMessage, IUser } from '../../models/api';
 import * as message from './message.actions';
 import { assign, cloneDeep, find, omit } from 'lodash';
 import { UtilService } from '../../services/util/util.service';
 
 export interface State {
-  entities: { [userEntity: string]: IMessage[] },
-  conversationsEntities: { [userEntity: string]: IMessage },
+  entities: { [uniqueId: string]: { total: number, list: IMessage[], userEntity: IUser } },
+  conversationsEntities: { [uniqueId: string]: IMessage },
   totalConversations: number,
-  selectedUserEntityId: string
+  selectedUniqueId: string
 }
 
 export const initialState: State = {
   entities: {},
   conversationsEntities: {},
   totalConversations: null,
-  selectedUserEntityId: null,
+  selectedUniqueId: null,
 };
 
 export function reducer(state = initialState, action: message.Actions): State {
@@ -23,33 +23,46 @@ export function reducer(state = initialState, action: message.Actions): State {
     /**
      * Create
      */
-    // case message.ActionTypes.CREATE_SUCCESS: {
-    //   const message = action.payload;
-    //   const userMessages = state.entities[message];
-    //   const update = {
-    //     entities: en
-    //   };
-    //
-    // }
+    case message.ActionTypes.CREATE_SUCCESS: {
+      const message = action.payload;
+      const uid = [message.from.id, message.to.id].sort().join('_');
+      const conversation = state.entities[uid];
+      if (conversation) {
+        const update = {
+          total: conversation.total + 1,
+          userEntity: conversation.userEntity,
+          list: [message].concat(conversation.list)
+        };
+        console.log(update);
+        return assign({}, state, { entities: {[uid]: update}});
+      }
+      return state
+    }
 
     case message.ActionTypes.CONVERSATIONS_SUCCESS: {
       const conversations = action.payload;
       const conversationsEntities = conversations.list.reduce((map, obj) => {
-        map[UtilService.uniqueNumberFromNumbers(obj.from.id, obj.to.id)] = obj;
+        map[[obj.from.id, obj.to.id].sort().join('_')] = obj;
         return map;
       }, {});
 
       return assign({}, state, { conversationsEntities, totalConversations: conversations.total });
     }
 
-    // /**
-    //  * Select
-    //  */
-    // case message.ActionTypes.SELECT: {
-    //   return assign({}, state, {
-    //     selectedUserEntityId: action.payload
-    //   });
-    // }
+    case message.ActionTypes.CONVERSATION_SUCCESS: {
+      const conversation = action.payload;
+      const uid = [localStorage.getItem('userId'), conversation.userEntity.id].sort().join('_');
+      return assign({}, state, { entities: {[uid]: conversation} });
+    }
+
+    /**
+     * Select
+     */
+    case message.ActionTypes.SELECT_UNIQUE_ID: {
+      return assign({}, state, {
+        selectedUniqueId: action.payload
+      });
+    }
 
     default: {
       return state;
@@ -76,8 +89,8 @@ export const getConversations = createSelector(getConversationsEntities, (entiti
   return Object.keys(entities).map((key) => entities[key]);
 });
 
-export const getSelectedUserEntityId = (state: State) => state.selectedUserEntityId;
+export const getSelectedUniqueId = (state: State) => state.selectedUniqueId;
 
-export const getSelected = createSelector(getEntities, getSelectedUserEntityId, (entities, selectedId) => {
+export const getSelectedConversation = createSelector(getEntities, getSelectedUniqueId, (entities, selectedId) => {
   return entities[selectedId];
 });

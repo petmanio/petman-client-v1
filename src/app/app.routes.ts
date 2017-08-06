@@ -5,6 +5,7 @@ import {
   JoinComponent,
   LocationsComponent,
   MessagesComponent,
+  MessageComponent,
   RoomsComponent,
   RoomAddComponent,
   RoomDetailsComponent,
@@ -22,7 +23,7 @@ import {
   // QuestionsComponent
 } from './containers';
 
-import { AuthGuard, RoomExistsGuard, MessagesExistsGuard } from './guards';
+import { AuthGuard, RoomExistsGuard, MessagesExistsGuard, MessagesConversationExistsGuard } from './guards';
 
 export const appRoutes: Routes = [
   {
@@ -45,6 +46,11 @@ export const appRoutes: Routes = [
     path: 'messages',
     component: MessagesComponent,
     canActivate: [ MessagesExistsGuard ],
+  },
+  {
+    path: 'messages/:userEntityId',
+    component: MessageComponent,
+    canActivate: [ MessagesConversationExistsGuard ],
   },
   {
     path: 'rooms',

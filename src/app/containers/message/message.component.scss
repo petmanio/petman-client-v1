@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.pm-message-list {
+  height: auto;
+  list-style: none;
+  padding-left: 5px;
+}
+
+.pm-message-row {
+  width: 100%;
+}
+
+.pm-message-block {
+  position: relative;
+}
+.pm-message-text {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  // TODO: add same for descriptions
+  white-space: pre-line;
+}
+
+.pm-message-time {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
+
+.pm-my-message {
+  .pm-message-time {
+    left: 20px;
+    right: auto;
+  }
+}
+
+li {
+  border: 1px solid #f1f0f0;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.pm-cart-avatar {
+  display: inline-block;
+}
+
+
+.pm-user-info {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border: solid 1px #f1f0f0;
+  text-align: center;
+  .pm-cart-avatar {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+}
+
+md-input-container {
+  width: 100%;
+}

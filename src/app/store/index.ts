@@ -246,8 +246,10 @@ export const getRoomApplicationEntities = createSelector(getRoomsState, fromRoom
  * Message
  * @type {Reselect.Selector<State, IMessage[]>}
  */
-export const getMessagesConversations = createSelector(getMessagesState, fromMessages.getConversations);
-export const getMessagesTotalConversations = createSelector(getMessagesState, fromMessages.getTotalConversations);
+export const getMessageConversations = createSelector(getMessagesState, fromMessages.getConversations);
+export const getMessageTotalConversations = createSelector(getMessagesState, fromMessages.getTotalConversations);
+export const getMessageSelectedConversation = createSelector(getMessagesState, fromMessages.getSelectedConversation);
+export const getMessageEntities = createSelector(getMessagesState, fromMessages.getEntities);
 
 /**
  * Mixed

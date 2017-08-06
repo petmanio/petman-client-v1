@@ -49,6 +49,7 @@ export class AuthService implements IAuthService {
 
   logout(): Observable<boolean> {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     return Observable.of(true);
   }
 
@@ -59,7 +60,11 @@ export class AuthService implements IAuthService {
 
     return this.http
       .get(`${environment.apiEndpoint}/api/auth/current-user`, { headers, withCredentials: true })
-      .map(response => response.json());
+      .map(response => {
+        const body = response.json();
+        localStorage.setItem('userId', body.id);
+        return body
+      });
   }
 
 }

@@ -2,7 +2,9 @@
   <div class="column is-10 is-offset-1">
     <ul class="pm-message-list">
       <li *ngFor="let message of conversations">
-        <div class="columns is-mobile pm-message-row" *ngIf="isMessageOwner(message)">
+        <div class="columns is-mobile pm-message-row"
+             *ngIf="isMessageOwner(message)"
+             [routerLink]="['/messages', message.to.id]">
           <div class="column is-2 pm-text-right">
                 <span md-card-avatar class="pm-cart-avatar"
                       [ngStyle]="{'background-image': 'url(' + message.to.userData.avatar + ')'}"></span>&nbsp;
@@ -12,7 +14,9 @@
             <span class="pm-font-10 pm-color-gray">{{message.createdAt | appFormatDate}}</span>
           </div>
         </div>
-        <div class="columns is-mobile pm-message-row" *ngIf="!isMessageOwner(message)">
+        <div class="columns is-mobile pm-message-row"
+             *ngIf="!isMessageOwner(message)"
+             [routerLink]="['/messages', message.from.id]">
           <div class="column is-2 pm-text-right">
                 <span md-card-avatar class="pm-cart-avatar"
                       [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;

@@ -31,7 +31,7 @@ export class MessageService implements IMessageService {
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this._http
-      .post(`${environment.apiEndpoint}/api/massage/user/${options.userEntityId}/create`,
+      .post(`${environment.apiEndpoint}/api/massage/user/${options.userEntityId}/create`, options,
         { headers, withCredentials: true }
       )
       .map(response => response.json());
