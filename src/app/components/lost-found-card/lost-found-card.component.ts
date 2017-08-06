@@ -6,6 +6,7 @@ import { MdDialog } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';
+
 // TODO: fix stars on mobile firefox
 export interface ILostFoundCardComponent {
   formatDate(date): string,

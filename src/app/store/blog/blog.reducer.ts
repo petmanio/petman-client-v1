@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import { IBlogListResponse } from '../../models/api';
 import * as blogAction from './blog.actions';
 import { assign } from 'lodash';

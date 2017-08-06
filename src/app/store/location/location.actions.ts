@@ -1,7 +1,11 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  ILocationFiltersRequest, ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsRequest,
+  ILocationFiltersRequest,
+  ILocationFiltersResponse,
+  ILocationListRequest,
+  ILocationListResponse,
+  ILocationPinsRequest,
   ILocationPinsResponse
 } from '../../models/api';
 

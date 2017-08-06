@@ -15,7 +15,6 @@ import { of } from 'rxjs/observable/of';
 import { MessageService } from '../../services/message/message.service';
 import * as fromRoot from '../../store';
 import * as messageAction from '../../store/message/message.actions';
-import { UtilService } from '../../services/util/util.service';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity

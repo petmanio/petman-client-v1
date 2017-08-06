@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Headers, Http, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
-import { UtilService } from '../util/util.service';
 import {
-  ILocationFiltersRequest, ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsRequest,
+  ILocationFiltersRequest,
+  ILocationFiltersResponse,
+  ILocationListRequest,
+  ILocationListResponse,
+  ILocationPinsRequest,
   ILocationPinsResponse
 } from '../../models/api';
 

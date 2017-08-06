@@ -1,5 +1,10 @@
 import { assign } from 'lodash';
-import { ILostFoundCommentCreateEventResponse, ILostFoundCommentListResponse, ILostFoundGetByIdResponse, ILostFoundListResponse } from '../../models/api';
+import {
+  ILostFoundCommentCreateEventResponse,
+  ILostFoundCommentListResponse,
+  ILostFoundGetByIdResponse,
+  ILostFoundListResponse
+} from '../../models/api';
 import * as lostFoundAction from './lostFound.actions';
 
 export interface State {

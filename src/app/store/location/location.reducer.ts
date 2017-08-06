@@ -1,6 +1,5 @@
-import { createSelector } from 'reselect';
 import { assign } from 'lodash';
-import { ILocationFiltersResponse, ILocationListRequest, ILocationListResponse, ILocationPinsResponse } from '../../models/api';
+import { ILocationFiltersResponse, ILocationListResponse, ILocationPinsResponse } from '../../models/api';
 import * as locationAction from './location.actions';
 
 export interface State {

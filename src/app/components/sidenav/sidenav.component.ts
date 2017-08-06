@@ -1,9 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Router , NavigationStart, NavigationEnd } from '@angular/router';
-import { IUser } from '../../models/api';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import * as applicationAction from '../../store/notification/notification.actions';
 import * as fromRoot from '../../store';
 
 interface ISidenavComponent {

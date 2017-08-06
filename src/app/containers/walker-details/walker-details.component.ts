@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { IWalker, IWalkerApplication, IUser } from '../../models/api';
+import { IUser, IWalker, IWalkerApplication } from '../../models/api';
 import { MdDialog, MdSnackBar } from '@angular/material';
 import 'rxjs/add/operator/map';
 import '@ngrx/core/add/operator/select';

@@ -1,5 +1,3 @@
-import { FileHolder } from 'angular2-image-upload/lib/image-upload/image-upload.component';
-
 export interface IPaginatorEvent {
   length: number,
   pageIndex: number,

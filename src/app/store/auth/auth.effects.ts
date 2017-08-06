@@ -5,14 +5,11 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/takeUntil';
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
-import { Store } from '@ngrx/store';
 import { AuthService } from '../../services/auth/auth.service';
-import * as fromRoot from '../../store';
 import * as authAction from '../../store/auth/auth.actions';
 
 /**

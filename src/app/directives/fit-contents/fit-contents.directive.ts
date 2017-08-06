@@ -1,5 +1,5 @@
-import { Directive, Input, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { LatLngBounds, LatLng, MapsAPILoader } from 'angular2-google-maps/core';
+import { AfterViewInit, Directive, Input, OnDestroy, OnInit } from '@angular/core';
+import { LatLng, LatLngBounds, MapsAPILoader } from 'angular2-google-maps/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 

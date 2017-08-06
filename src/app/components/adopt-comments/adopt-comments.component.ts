@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { IAdopt, IAdoptComment, IAdoptCommentListResponse, IUser } from '../../models/api';
+import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store';

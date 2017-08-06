@@ -13,8 +13,6 @@ import { of } from 'rxjs/observable/of';
 
 import { AuthService } from '../../services/auth/auth.service';
 import * as fromRoot from '../../store';
-import * as authAction from '../../store/auth/auth.actions';
-import { IAuthCurrentUserResponse } from '../../models/api';
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity

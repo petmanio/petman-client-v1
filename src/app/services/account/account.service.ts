@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Http } from '@angular/http';
 import { UtilService } from '../util/util.service';
 
 export interface IAccountService {

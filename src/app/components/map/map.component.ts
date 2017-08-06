@@ -1,11 +1,12 @@
-import { Component, AfterViewChecked, Input, OnChanges, SimpleChanges } from '@angular/core';
-const GoogleMapsLoader = require('google-maps');
-const MarkerClusterer = require('node-js-marker-clusterer');
+import { AfterViewChecked, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { UtilService } from '../../services/util/util.service';
 import * as lodash from 'lodash';
 import { IPin } from '../../models/api';
 import { markerClustererOptions } from '../../../util';
+
+const GoogleMapsLoader = require('google-maps');
+const MarkerClusterer = require('node-js-marker-clusterer');
 // TODO: use map style from map component
 GoogleMapsLoader.KEY = environment.mapApiKey;
 

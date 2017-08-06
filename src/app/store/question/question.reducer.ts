@@ -1,8 +1,5 @@
 import { assign } from 'lodash';
-import {
-  IQuestionGetByIdResponse,
-  IQuestionListResponse
-} from '../../models/api';
+import { IQuestionGetByIdResponse, IQuestionListResponse } from '../../models/api';
 import * as questionAction from './question.actions';
 
 export interface State {

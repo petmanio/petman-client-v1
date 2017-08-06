@@ -1,7 +1,10 @@
 import { Action } from '@ngrx/store';
 import { type } from '../../../util';
 import {
-  INotification, INotificationListRequest, INotificationListResponse, INotificationSeenRequest,
+  INotification,
+  INotificationListRequest,
+  INotificationListResponse,
+  INotificationSeenRequest,
   INotificationSeenResponse
 } from '../../models/api';
 

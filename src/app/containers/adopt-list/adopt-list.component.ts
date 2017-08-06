@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
-import { UtilService } from '../../services/util/util.service';
 import { IUser } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';

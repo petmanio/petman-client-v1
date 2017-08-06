@@ -1,4 +1,3 @@
-import { TestBed } from '@angular/core/testing';
 import { KeysPipe } from './keys.pipe';
 
 describe('Pipe: Keys', () => {
