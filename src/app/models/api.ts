@@ -103,7 +103,8 @@ export interface IRoom {
   images?: IRoomImage[],
   user?: IUser,
   createdAt: string,
-  averageRating: number
+  averageRating: number,
+  applicationsLoaded: boolean  // only for front
 }
 
 export interface IAdoptImage {
@@ -183,7 +184,8 @@ export interface IWalker {
   isOwner?: boolean,
   user?: IUser,
   createdAt: string,
-  averageRating: number
+  averageRating: number,
+  applicationsLoaded: boolean  // only for front
 }
 
 export interface IQuestion {

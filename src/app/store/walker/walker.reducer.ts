@@ -49,7 +49,12 @@ export function reducer(state = initialState, action: walker.Actions): State {
      * Applications list
      */
     case walker.ActionTypes.APPLICATION_LIST_SUCCESS: {
-      return assign({}, state, { applicationEntities: { [action.payload.walkerId]: omit(action.payload, 'walkerId') } })
+      return assign({}, state, {
+        applicationEntities: {
+          [action.payload.walkerId]: omit(action.payload, 'walkerId')
+        },
+        entities: assign({}, state.entities, state.entities[action.payload.walkerId], { applicationsLoaded: true })
+      })
     }
 
     /**

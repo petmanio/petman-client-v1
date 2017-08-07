@@ -55,7 +55,13 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this.room$ = this._store.select(fromRoot.getSelectedRoom);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
     this.applications$ = this._store.select(fromRoot.getSelectedRoomMyApplications);
-    this._roomSubscription = this.room$.subscribe(room => this.room = room);
+    this._roomSubscription = this.room$.subscribe(room => {
+      this.room = room;
+      // TODO: check using resolvers
+      if (!this.room.applicationsLoaded) {
+        this._store.dispatch(new roomAction.ApplicationListAction({roomId: this.room.id}));
+      }
+    });
     this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
     this._applicationsSubscription = this.applications$.subscribe(applications => this.applications = applications);
   }

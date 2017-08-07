@@ -49,7 +49,12 @@ export function reducer(state = initialState, action: room.Actions): State {
      * Applications list
      */
     case room.ActionTypes.APPLICATION_LIST_SUCCESS: {
-      return assign({}, state, { applicationEntities: { [action.payload.roomId]: omit(action.payload, 'roomId') } })
+      return assign({}, state, {
+        applicationEntities: {
+          [action.payload.roomId]: omit(action.payload, 'roomId')
+        },
+        entities: assign({}, state.entities, state.entities[action.payload.roomId], { applicationsLoaded: true })
+      })
     }
 
     /**
