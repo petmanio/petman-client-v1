@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: message.Actions): State {
       const message = action.payload;
       const uid = [message.from.id, message.to.id].sort().join('_');
       const conversation = state.entities[uid];
-      if (conversation) {
+      if (conversation && !message.fromSocket) {
         const update = {
           total: conversation.total + 1,
           userEntity: conversation.userEntity,

@@ -302,7 +302,8 @@ export interface IMessage {
   to: number | IUser,
   text: string,
   seen: boolean,
-  createdAt: string
+  createdAt: string,
+  fromSocket: boolean // only for front
 }
 /**
  * Auth

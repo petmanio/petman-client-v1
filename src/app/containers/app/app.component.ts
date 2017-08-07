@@ -387,8 +387,9 @@ export class AppComponent implements OnInit, IAppComponent {
     this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
 
     // Message Events
-    this._sailsService.on('messageCreate').subscribe(update => {
-      this._store.dispatch(new messageAction.CreateSuccessAction(update))
+    this._sailsService.on('messageCreate').subscribe(message => {
+      message.fromSocket = true;
+      this._store.dispatch(new messageAction.CreateSuccessAction(message))
     });
 
     // Room Events
