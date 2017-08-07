@@ -1,6 +1,7 @@
 <div class="columns">
   <div class="column is-10 is-offset-1">
-    <ul class="pm-message-list">
+    <div class="pm-text-center pm-color-gray pm-no-messages">{{'no_messages_yet' | translate}}</div>
+    <ul class="pm-message-list" *ngIf="conversations$ | async">
       <li *ngFor="let message of conversations$ | async">
         <div class="columns is-mobile pm-message-row"
              *ngIf="isMessageOwner(message)"

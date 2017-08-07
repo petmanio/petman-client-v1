@@ -41,7 +41,7 @@ export interface IAppComponent {
         <div class="cssload-whirlpool"></div>
       </div>
     </div>
-    <!--<md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>-->
+    <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
     <app-layout>
       <!--TODO: update layout, sideNav containers container-->
       <app-toolbar (toggleMenu)="toggleSidenav($event)">
@@ -84,6 +84,9 @@ export interface IAppComponent {
                 {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
             </div>
           </md-menu>
+          <button md-icon-button routerLink="messages">
+            <md-icon>message</md-icon>
+          </button>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
                [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
           <md-menu #menu="mdMenu" [overlapTrigger]="false"

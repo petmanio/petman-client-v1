@@ -73,5 +73,6 @@
   "rate": "Rate",
   "open_conversation": "Open conversation",
   "chat": "Chat",
-  "send": "Send"
+  "send": "Send",
+  "no_messages_yet": "No messages yet"
 }

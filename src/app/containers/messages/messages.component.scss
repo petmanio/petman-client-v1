@@ -1,7 +1,16 @@
+@import "../../scss/mixins";
+
 :host {
   display: block;
 }
 
+.pm-no-messages {
+  font-size: 14px;
+  margin-top: 20px;
+  @include desktop {
+    font-size: 20px;
+  }
+}
 .pm-message-list {
   height: auto;
   list-style: none;
