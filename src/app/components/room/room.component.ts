@@ -13,7 +13,7 @@ export interface IRoomComponent {
 @Component({
   selector: 'app-room',
   template: `
-    <md-card>
+    <md-card *ngIf="room">
       <md-card-header>
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + room.user.userData.avatar + ')'}"></div>
         <md-card-title>{{room.user.userData.firstName}} {{room.user.userData.lastName}}</md-card-title>

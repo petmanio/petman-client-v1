@@ -34,21 +34,21 @@
             <ul class="pm-message-list">
               <li *ngFor="let message of (conversation$ | async).list">
                 <div class="columns is-mobile pm-message-row pm-background-lightest-gray pm-my-message" *ngIf="isMessageOwner(message)">
-                  <div class="column is-10 pm-message-block">
+                  <div class="column is-10-desktop is-10-tablet is-9-mobile pm-message-block">
                     <div class="pm-font-12 pm-color-gray pm-message-text pm-text-right">{{message.text}}</div>
                     <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
                   </div>
-                  <div class="column is-2 pm-text-left">
+                  <div class="column is-2-desktop is-2-tablet is-3-mobile pm-text-left">
                     <span md-card-avatar class="pm-cart-avatar"
                           [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
                   </div>
                 </div>
                 <div class="columns is-mobile pm-message-row" *ngIf="!isMessageOwner(message)">
-                  <div class="column is-2 pm-text-right">
+                  <div class="column is-2-desktop is-2-tablet is-3-mobile pm-text-right">
                     <span md-card-avatar class="pm-cart-avatar"
                           [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
                   </div>
-                  <div class="column is-10 pm-message-block">
+                  <div class="column is-10-desktop is-10-tablet is-9-mobile pm-message-block">
                     <div class="pm-font-12 pm-color-gray pm-message-text">{{message.text}}</div>
                     <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
                   </div>

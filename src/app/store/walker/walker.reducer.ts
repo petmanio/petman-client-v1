@@ -161,7 +161,8 @@ export function reducer(state = initialState, action: walker.Actions): State {
      */
     case walker.ActionTypes.DELETE_SUCCESS: {
       return assign({}, state, {
-        entities: omit(state.entities, action.payload.walkerId)
+        entities: omit(state.entities, action.payload.walkerId),
+        totalEntities: state.totalEntities ? state.totalEntities - 1 : state.totalEntities
       });
     }
 

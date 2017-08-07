@@ -13,7 +13,7 @@ export interface IWalkerComponent {
 @Component({
   selector: 'app-walker',
   template: `
-    <md-card>
+    <md-card *ngIf="walker">
       <md-card-header>
         <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + walker.user.userData.avatar + ')'}"></div>
         <md-card-title>{{walker.user.userData.firstName}} {{walker.user.userData.lastName}}</md-card-title>

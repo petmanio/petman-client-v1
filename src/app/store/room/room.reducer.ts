@@ -161,7 +161,8 @@ export function reducer(state = initialState, action: room.Actions): State {
      */
     case room.ActionTypes.DELETE_SUCCESS: {
       return assign({}, state, {
-        entities: omit(state.entities, action.payload.roomId)
+        entities: omit(state.entities, action.payload.roomId),
+        totalEntities: state.totalEntities ? state.totalEntities - 1 : state.totalEntities
       });
     }
 
