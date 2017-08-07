@@ -1,20 +1,18 @@
 <div class="columns">
   <div class="column is-10 is-offset-1">
-    <div class="columns is-mobile pm-chart-actions">
-      <div class="column is-10 is-offset-1">
+    <div class="columns pm-chart-actions">
+      <div class="column is-4">
+        <div class="pm-user-info">
+          <div md-card-avatar class="pm-cart-avatar"
+               [ngStyle]="{'background-image': 'url(' + (conversation$ | async).userEntity.userData.avatar + ')'}"></div>
+          <div class="pm-font-14 pm-color-gray pm-font-bold">{{(conversation$ | async).userEntity.userData.firstName}} {{(conversation$ | async).userEntity.userData.lastName}}</div><br>
+        </div>
+      </div>
+      <div class="column is-8">
         <div class="columns">
-          <div class="column is-4">
-            <div class="pm-user-info">
-              <div md-card-avatar class="pm-cart-avatar"
-                    [ngStyle]="{'background-image': 'url(' + (conversation$ | async).userEntity.userData.avatar + ')'}"></div>
-              <div class="pm-font-14 pm-color-gray pm-font-bold">{{(conversation$ | async).userEntity.userData.firstName}} {{(conversation$ | async).userEntity.userData.lastName}}</div><br>
-            </div>
-          </div>
+          <div class="column is-4"></div>
           <div class="column is-8">
-            <div class="columns">
-              <div class="column is-4"></div>
-              <div class="column is-8">
-                <md-input-container>
+            <md-input-container>
                   <textarea mdInput
                             [placeholder]="'type_a_message' | translate"
                             name="message"
@@ -22,41 +20,39 @@
                             autocomplete="off"
                             [(ngModel)]="message"
                             rows="2"></textarea>
-                    </md-input-container>
-                <button md-button class="pm-message-send pm-fr" color="accent"
-                        (click)="onSendClick()"
-                        [disabled]="!message">
-                  <span class="pm-font-14 pm-color-gray">{{'send' | translate}} &nbsp;<i class="mdi mdi-send"></i></span>
-                </button>
-                <div class="clearfix"></div>
-              </div>
-            </div>
-            <ul class="pm-message-list">
-              <li *ngFor="let message of (conversation$ | async).list">
-                <div class="columns is-mobile pm-message-row pm-background-lightest-gray pm-my-message" *ngIf="isMessageOwner(message)">
-                  <div class="column is-10-desktop is-10-tablet is-9-mobile pm-message-block">
-                    <div class="pm-font-12 pm-color-gray pm-message-text pm-text-right">{{message.text}}</div>
-                    <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
-                  </div>
-                  <div class="column is-2-desktop is-2-tablet is-3-mobile pm-text-left">
-                    <span md-card-avatar class="pm-cart-avatar"
-                          [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
-                  </div>
-                </div>
-                <div class="columns is-mobile pm-message-row" *ngIf="!isMessageOwner(message)">
-                  <div class="column is-2-desktop is-2-tablet is-3-mobile pm-text-right">
-                    <span md-card-avatar class="pm-cart-avatar"
-                          [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
-                  </div>
-                  <div class="column is-10-desktop is-10-tablet is-9-mobile pm-message-block">
-                    <div class="pm-font-12 pm-color-gray pm-message-text">{{message.text}}</div>
-                    <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+            </md-input-container>
+            <button md-button class="pm-message-send pm-fr" color="accent"
+                    (click)="onSendClick()"
+                    [disabled]="!message">
+              <span class="pm-font-14 pm-color-gray">{{'send' | translate}} &nbsp;<i class="mdi mdi-send"></i></span>
+            </button>
+            <div class="clearfix"></div>
           </div>
         </div>
+        <ul class="pm-message-list">
+          <li *ngFor="let message of (conversation$ | async).list">
+            <div class="columns is-mobile pm-message-row pm-background-lightest-gray pm-my-message" *ngIf="isMessageOwner(message)">
+              <div class="column is-11-desktop is-10-tablet is-9-mobile pm-message-block">
+                <div class="pm-font-12 pm-color-gray pm-message-text pm-text-right">{{message.text}}</div>
+                <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
+              </div>
+              <div class="column is-1-desktop is-2-tablet is-3-mobile pm-text-left">
+                    <span md-card-avatar class="pm-cart-avatar"
+                          [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
+              </div>
+            </div>
+            <div class="columns is-mobile pm-message-row" *ngIf="!isMessageOwner(message)">
+              <div class="column is-1-desktop is-2-tablet is-3-mobile pm-text-right">
+                    <span md-card-avatar class="pm-cart-avatar"
+                          [ngStyle]="{'background-image': 'url(' + message.from.userData.avatar + ')'}"></span>&nbsp;
+              </div>
+              <div class="column is-11-desktop is-10-tablet is-9-mobile pm-message-block">
+                <div class="pm-font-12 pm-color-gray pm-message-text">{{message.text}}</div>
+                <div class="pm-font-10 pm-color-gray pm-message-time">{{message.createdAt | appFromNow}}</div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
