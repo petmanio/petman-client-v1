@@ -386,6 +386,7 @@ export class AppComponent implements OnInit, IAppComponent {
     };
     this._sailsService.connect(opts).subscribe(connection => socketConnection = connection);
 
+    // TODO: reload data after socket connect
     // Message Events
     this._sailsService.on('messageCreate').subscribe(message => {
       message.fromSocket = true;
