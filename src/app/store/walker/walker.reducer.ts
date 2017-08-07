@@ -103,7 +103,7 @@ export function reducer(state = initialState, action: walker.Actions): State {
     case walker.ActionTypes.APPLY_SUCCESS: {
       const application = action.payload;
       const applications = cloneDeep(state.applicationEntities[application.walker]);
-      if (applications && !application.fromSocket) {
+      if (applications || !application.fromSocket) {
         applications.list.unshift(application);
         applications.total++;
         return assign({}, state, {
