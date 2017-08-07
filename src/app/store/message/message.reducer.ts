@@ -32,7 +32,10 @@ export function reducer(state = initialState, action: message.Actions): State {
           userEntity: conversation.userEntity,
           list: [message].concat(conversation.list)
         };
-        return assign({}, state, { entities: {[uid]: update}, conversationsEntities: {[uid]: message}});
+        return assign({}, state, {
+          entities: {[uid]: update},
+          conversationsEntities: assign({}, state.conversationsEntities, {[uid]: message})
+        });
       }
       return assign({}, state, { conversationsEntities: assign({}, state.conversationsEntities, {[uid]: message})});
     }
