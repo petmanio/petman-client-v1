@@ -61,6 +61,9 @@ export interface IAppComponent {
                 *ngIf="!(currentUser$ | async)">{{'join_us' | translate}}</button>
         <!--TODO: find better solution-->
         <div class="pm-toolbar-actions" *ngIf="(currentUser$ | async)">
+          <button md-icon-button routerLink="messages">
+            <md-icon>message</md-icon>
+          </button>
           <button md-icon-button
                   [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
             <md-icon *ngIf="unseenNotificationsCount">notifications</md-icon>
@@ -84,9 +87,6 @@ export interface IAppComponent {
                 {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
             </div>
           </md-menu>
-          <button md-icon-button routerLink="messages">
-            <md-icon>message</md-icon>
-          </button>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
                [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
           <md-menu #menu="mdMenu" [overlapTrigger]="false"
