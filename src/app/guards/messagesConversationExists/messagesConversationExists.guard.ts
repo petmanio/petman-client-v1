@@ -16,6 +16,7 @@ import { MessageService } from '../../services/message/message.service';
 import * as fromRoot from '../../store';
 import * as messageAction from '../../store/message/message.actions';
 
+// TODO: use resolvers
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
  * to inform the router's navigation process whether the route should continue

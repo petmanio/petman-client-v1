@@ -14,6 +14,7 @@ import { of } from 'rxjs/observable/of';
 import { RoomService } from '../../services/room/room.service';
 import * as fromRoot from '../../store';
 import * as roomAction from '../../store/room/room.actions';
+// TODO: use resolvers
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity

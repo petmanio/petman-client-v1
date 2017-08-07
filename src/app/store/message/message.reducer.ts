@@ -34,9 +34,12 @@ export function reducer(state = initialState, action: message.Actions): State {
         };
         return assign({}, state, { entities: {[uid]: update}, conversationsEntities: {[uid]: message}});
       }
-      return assign({}, state, { conversationsEntities: {[uid]: message}});
+      return assign({}, state, { conversationsEntities: assign({}, state.conversationsEntities, {[uid]: message})});
     }
 
+    /**
+     * Conversations
+     */
     case message.ActionTypes.CONVERSATIONS_SUCCESS: {
       const conversations = action.payload;
       const conversationsEntities = conversations.list.reduce((map, obj) => {
@@ -47,6 +50,9 @@ export function reducer(state = initialState, action: message.Actions): State {
       return assign({}, state, { conversationsEntities, totalConversations: conversations.total });
     }
 
+    /**
+     * Conversation
+     */
     case message.ActionTypes.CONVERSATION_SUCCESS: {
       const conversation = action.payload;
       const uid = [localStorage.getItem('userId'), conversation.userEntity.id].sort().join('_');

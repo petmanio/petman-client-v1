@@ -14,6 +14,7 @@ import { of } from 'rxjs/observable/of';
 import { WalkerService } from '../../services/walker/walker.service';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
+// TODO: use resolvers
 
 /**
  * Guards are hooks into the route resolution process, providing an opportunity
