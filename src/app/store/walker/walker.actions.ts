@@ -114,7 +114,7 @@ export class ListErrorAction implements Action {
 }
 
 /**
- * Review list
+ * Application list
  */
 export class ApplicationListAction implements Action {
   type = ActionTypes.APPLICATION_LIST;

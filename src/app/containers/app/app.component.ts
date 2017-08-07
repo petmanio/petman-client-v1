@@ -393,6 +393,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
     // Room Events
     this._sailsService.on('roomApplicationCreate').subscribe(application => {
+      application.fromSocket = true;
       this._store.dispatch(new roomAction.ApplySuccessAction(application));
     });
 
@@ -406,6 +407,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
     // Walker Events
     this._sailsService.on('walkerApplicationCreate').subscribe(application => {
+      application.fromSocket = true;
       this._store.dispatch(new walkerAction.ApplySuccessAction(application));
     });
 

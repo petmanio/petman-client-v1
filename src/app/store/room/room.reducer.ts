@@ -98,7 +98,7 @@ export function reducer(state = initialState, action: room.Actions): State {
     case room.ActionTypes.APPLY_SUCCESS: {
       const application = action.payload;
       const applications = cloneDeep(state.applicationEntities[application.room]);
-      if (applications) {
+      if (applications && !application.fromSocket) {
         applications.list.unshift(application);
         applications.total++;
         return assign({}, state, {
