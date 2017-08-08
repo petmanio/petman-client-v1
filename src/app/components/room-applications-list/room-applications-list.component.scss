@@ -3,16 +3,25 @@
 .pm-application-row {
   background-color: #f8f8f8;
   margin-bottom: 2px;
+  position: relative;
   &.active {
     background-color: #8b59e4;
     .pm-application-date {
       color: #ffffff;
     }
+    .pm-row-arrow {
+      color: #ffffff;
+      .pm-arrow-right {
+        display: none;
+      }
+      .pm-arrow-down {
+        display: block;
+      }
+    }
   }
   .pm-rating {
     display: inline-block;
   }
-  position: relative;
   .pm-application-date {
     position: absolute;
     right: 5px;
@@ -22,6 +31,29 @@
       top: 40px;
       right: 10px;
       font-size: 12px;
+    }
+  }
+  .pm-row-arrow {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #484848;
+    display: none;
+    .pm-arrow-right {
+      display: block;
+    }
+    .pm-arrow-down {
+      display: none;
+    }
+    @include desktop {
+      display: block;
+    }
+    @include tablet {
+      display: block;
+    }
+    @include mobileL {
+      display: block;
+      right: 5px;
     }
   }
 }
