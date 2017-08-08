@@ -70,12 +70,20 @@
             </div>
           </div>
         </div>
+        <div class="columns">
+          <div class="column">
+            <span class="pm-font-16 pm-color-gray">
+              <i class="mdi mdi-note-text"></i>
+              {{(room$ | async)?.description}}
+            </span>
+          </div>
+        </div>
         <br/>
         <md-divider></md-divider>
       </div>
     </div>
     <div class="columns">
-      <div class="column column is-10 is-offset-1">
+      <div class="column is-10 is-offset-1">
            <span class="pm-font-16 pm-color-gray">
               {{(room$ | async)?.isOwner ? ('application_requests' | translate) : ('my_applications' | translate)}}
               <i class="mdi mdi-application"></i></span>
