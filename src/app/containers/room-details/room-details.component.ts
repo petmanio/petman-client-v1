@@ -58,7 +58,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
     this._roomSubscription = this.room$.subscribe(room => {
       this.room = room;
       // TODO: check using resolvers
-      if (!this.room.applicationsLoaded) {
+      if (this.room && !this.room.applicationsLoaded) {
         this._store.dispatch(new roomAction.ApplicationListAction({roomId: this.room.id}));
       }
     });

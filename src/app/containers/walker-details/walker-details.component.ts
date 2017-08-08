@@ -58,7 +58,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     this._walkerSubscription = this.walker$.subscribe(walker => {
       this.walker = walker;
       // TODO: check using resolvers
-      if (!this.walker.applicationsLoaded) {
+      if (this.walker && !this.walker.applicationsLoaded) {
         this._store.dispatch(new walkerAction.ApplicationListAction({walkerId: this.walker.id}));
       }
     });
