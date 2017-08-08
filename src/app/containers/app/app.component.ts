@@ -367,7 +367,7 @@ export class AppComponent implements OnInit, IAppComponent {
     // TODO: clear storage
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    location.href = '/'
+    location.reload();
   }
 
   initSocket(): void {
