@@ -34,10 +34,10 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { RatingModule } from 'ngx-rating';
 import { ImageUploadModule } from 'angular2-image-upload';
 import { SailsModule } from 'angular2-sails';
-import { SwiperModule } from 'ngx-swiper-wrapper';
 import { MasonryModule } from 'angular2-masonry';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { NgxGalleryModule } from 'ngx-gallery';
 import {
   AboutUsComponent,
   AdoptAddComponent,
@@ -90,7 +90,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 
-import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, KeysOrderPipe, KeysPipe } from './pipes';
+import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, KeysOrderPipe, KeysPipe, GalleryImagesPipe } from './pipes';
 import {
   AdoptService,
   AuthService,
@@ -196,6 +196,7 @@ export function HttpLoaderFactory(http: Http) {
     FitContentsDirective,
     EllipsisPipe,
     KeysPipe,
+    GalleryImagesPipe,
     KeysOrderPipe,
     ChunkPipe,
     FormatDatePipe,
@@ -226,7 +227,6 @@ export function HttpLoaderFactory(http: Http) {
     RatingModule,
     ImageUploadModule.forRoot(),
     SailsModule.forRoot(),
-    SwiperModule.forRoot({}),
     MasonryModule,
     TranslateModule.forRoot({
       loader: {
@@ -235,10 +235,10 @@ export function HttpLoaderFactory(http: Http) {
         deps: [Http]
       }
     }),
+    NgxGalleryModule,
     // ImageCropperModule,
     // ImageUploadModule,
     // NgxSiemaModule,
-    // SwiperModule,
     EffectsModule.run(AuthEffects),
     EffectsModule.run(BlogEffects),
     EffectsModule.run(LocationEffects),

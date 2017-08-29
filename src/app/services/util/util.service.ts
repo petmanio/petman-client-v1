@@ -11,6 +11,8 @@ import { DomSanitizer, Meta } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MdIconRegistry } from '@angular/material';
 import { IReview } from '../../models/api';
+import { NgxGalleryAnimation } from 'ngx-gallery/lib/ngx-gallery-animation.model';
+import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
 
 export interface IUtilService {
   initSocket(): void,
@@ -22,6 +24,27 @@ export interface IUtilService {
 @Injectable()
 export class UtilService implements IUtilService {
   private _notificationSound = new Audio('/assets/trembling.mp3');
+
+  static galleryOptions(): NgxGalleryOptions[] {
+    return [
+      {
+        // layout: 'thumbnails-top',
+        imageSize: 'contain',
+        width: '100%',
+        height: UtilService.getCurrentDevice() === 'MOBILE' ? '300px' : '600px',
+        thumbnailsColumns: 4,
+        thumbnails: UtilService.getCurrentDevice() !== 'MOBILE',
+        imageAnimation: NgxGalleryAnimation.Slide
+      },
+      {
+        breakpoint: 800,
+        imagePercent: 80,
+        thumbnailsPercent: 20,
+        thumbnailsMargin: 20,
+        thumbnailMargin: 20
+      },
+    ];
+  }
 
   static initScripts() {
     (<any>window).fbAsyncInit = () => {

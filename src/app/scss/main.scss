@@ -1,6 +1,15 @@
 :focus { outline:none; }
 ::-moz-focus-inner { border:0; }
 
+// TODO: tmp for gallery
+.mat-sidenav-container, .mat-sidenav-content, .mat-tab-body-content {
+  transform: none !important;
+}
+
+.ngx-gallery-icon {
+  color: #fcdd7f !important;
+}
+
 .columns {
   margin: 0 !important;
 }
@@ -199,10 +208,6 @@
 
 date-input-polyfill {
   z-index: 1010;
-}
-
-.swiper-pagination-bullet-active {
-  background: #fcdd7f;
 }
 
 @media (max-width: 600px) and (orientation: portrait) {

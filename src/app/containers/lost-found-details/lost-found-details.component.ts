@@ -9,10 +9,10 @@ import * as lostFoundAction from '../../store/lostFound/lostFound.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
 import { ILostFound, ILostFoundCommentListResponse } from '../../models/api';
-import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { LostFoundService } from '../../services/lostFound/lostFound.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
 
 export interface ILostFoundDetailsComponent {
   onDeleteClick(): void,
@@ -47,15 +47,9 @@ export interface ILostFoundDetailsComponent {
           </div>
         </div>
         <div class="columns">
-          <div class="column is-10 is-offset-1">
-            <div class="swiper-container" *ngIf="(lostFoundLostFound$ | async)?.images.length" [swiper]="swiperOptions">
-              <div class="swiper-wrapper">
-                <div *ngFor="let image of (lostFoundLostFound$ | async)?.images" class="swiper-slide">
-                  <img class="pm-carousel-image" [src]="image.src">
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
+          <div class="column is-10 is-offset-1 pm-text-center">
+            <ngx-gallery *ngIf="(lostFoundLostFound$ | async)?.images.length" [options]="galleryOptions"
+                         [images]="(lostFoundLostFound$ | async)?.images | addGalleryImages"></ngx-gallery>
           </div>
         </div>
         <div class="columns">
@@ -119,13 +113,7 @@ export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundD
   lostFoundLostFound$: Observable<any>;
   comments$: Observable<ILostFoundCommentListResponse>;
   lostFound: ILostFound;
-  swiperOptions: SwiperConfigInterface = {
-    direction: 'horizontal',
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    autoplay: 3000,
-    loop: false
-  };
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
   private _lostFoundId: number;
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;

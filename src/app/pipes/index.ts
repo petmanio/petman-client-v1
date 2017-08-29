@@ -4,3 +4,4 @@ export { KeysPipe } from './keys/keys.pipe';
 export { KeysOrderPipe } from './keys-order/keys-oder.pipe';
 export { FormatDatePipe } from './format-date/format-date.pipe';
 export { FromNowPipe } from './from-now/from-now.pipe';
+export { GalleryImagesPipe } from './gallery-images/gallery-images.pipe';

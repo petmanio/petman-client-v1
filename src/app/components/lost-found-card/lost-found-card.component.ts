@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ILostFound } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
-import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MdDialog } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
@@ -37,14 +36,6 @@ export interface ILostFoundCardComponent {
       <md-card-content [routerLink]="['/lost-found', lostFound.id, 'details']" class="pm-cursor-pointer">
         <img md-card-image [src]="lostFound.images[0] && lostFound.images[0].src">
         <div class="pm-lostFound-description pm-font-16 pm-color-gray">{{lostFound.description | appEllipsis:100}}</div>
-        <!--<div class="swiper-container" *ngIf="lostFound.images.length" [swiper]="swiperOptions">-->
-          <!--<div class="swiper-wrapper">-->
-            <!--<div *ngFor="let image of lostFound.images" class="swiper-slide">-->
-              <!--<img class="pm-carousel-image" [src]="image.src">-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="swiper-pagination"></div>-->
-        <!--</div>-->
       </md-card-content>
       <md-card-actions>
         <div class="pm-lostFound-footer">
@@ -76,18 +67,6 @@ export interface ILostFoundCardComponent {
       height: 300px;
     }
 
-    .swiper-container {
-      width: calc(100% + 48px);
-      margin: 0 -24px 16px -24px;
-    }
-
-    @media (max-width: 600px) {
-      .swiper-container {
-        width: calc(100% + 32px);
-        margin: 16px -16px;
-      }
-    }
-
     .pm-lostFound-action-open, .pm-lostFound-action-share {
       margin-left: auto;
     }
@@ -102,13 +81,6 @@ export interface ILostFoundCardComponent {
 export class LostFoundCardComponent implements OnChanges, ILostFoundCardComponent {
   @Input() lostFound: ILostFound;
   averageRating: number;
-  swiperOptions: SwiperConfigInterface = {
-    direction: 'horizontal',
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    autoplay: 2800 + (Math.random() * 500),
-    loop: false
-  };
   constructor(private _dialog: MdDialog, private _store: Store<fromRoot.State>) {
 
   }

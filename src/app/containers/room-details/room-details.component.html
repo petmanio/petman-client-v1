@@ -16,15 +16,9 @@
       </div>
     </div>
     <div class="columns">
-      <div class="column is-10 is-offset-1">
-        <div class="swiper-container" *ngIf="(room$ | async)?.images.length" [swiper]="swiperOptions">
-          <div class="swiper-wrapper">
-            <div *ngFor="let image of (room$ | async)?.images" class="swiper-slide">
-              <img class="pm-carousel-image" [src]="image.src">
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
+      <div class="column is-10 is-offset-1 pm-text-center">
+        <ngx-gallery *ngIf="(room$ | async)?.images.length" [options]="galleryOptions"
+                     [images]="(room$ | async)?.images | addGalleryImages"></ngx-gallery>
       </div>
     </div>
     <div class="columns">

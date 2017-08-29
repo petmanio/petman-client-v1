@@ -15,6 +15,8 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
 import { Subject } from 'rxjs/Subject';
 import { Actions } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
+import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
+import { UtilService } from '../../services/util/util.service';
 
 export interface IRoomDetailsComponent {
   onShareClick(): void,
@@ -34,6 +36,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   room: IRoom;
   currentUser: IUser;
   applications: {total: number, list: IRoomApplication[]};
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
   private _destroyed$ = new Subject<boolean>();
   private _actionsSubscription: Subscription;
   private _roomSubscription: Subscription;

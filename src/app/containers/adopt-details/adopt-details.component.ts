@@ -9,10 +9,10 @@ import * as adoptAction from '../../store/adopt/adopt.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
 import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
-import { SwiperConfigInterface } from 'ngx-swiper-wrapper/dist';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { AdoptService } from '../../services/adopt/adopt.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
 
 export interface IAdoptDetailsComponent {
   onDeleteClick(): void,
@@ -42,15 +42,9 @@ export interface IAdoptDetailsComponent {
           </div>
         </div>
         <div class="columns">
-          <div class="column is-10 is-offset-1">
-            <div class="swiper-container" *ngIf="(adoptAdopt$ | async)?.images.length" [swiper]="swiperOptions">
-              <div class="swiper-wrapper">
-                <div *ngFor="let image of (adoptAdopt$ | async)?.images" class="swiper-slide">
-                  <img class="pm-carousel-image" [src]="image.src">
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
+          <div class="column is-10 is-offset-1 pm-text-center">
+            <ngx-gallery *ngIf="(adoptAdopt$ | async)?.images.length" [options]="galleryOptions" 
+                         [images]="(adoptAdopt$ | async)?.images | addGalleryImages"></ngx-gallery>
           </div>
         </div>
         <div class="columns">
@@ -110,13 +104,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
   adoptAdopt$: Observable<any>;
   comments$: Observable<IAdoptCommentListResponse>;
   adopt: IAdopt;
-  swiperOptions: SwiperConfigInterface = {
-    direction: 'horizontal',
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    autoplay: 3000,
-    loop: false
-  };
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
   private _adoptId: number;
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;
