@@ -36,7 +36,7 @@ export class RoomDetailsComponent implements OnInit, OnDestroy, IRoomDetailsComp
   room: IRoom;
   currentUser: IUser;
   applications: {total: number, list: IRoomApplication[]};
-  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions;
   private _destroyed$ = new Subject<boolean>();
   private _actionsSubscription: Subscription;
   private _roomSubscription: Subscription;

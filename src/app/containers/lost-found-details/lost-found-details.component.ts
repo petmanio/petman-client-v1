@@ -113,7 +113,7 @@ export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundD
   lostFoundLostFound$: Observable<any>;
   comments$: Observable<ILostFoundCommentListResponse>;
   lostFound: ILostFound;
-  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions;
   private _lostFoundId: number;
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;

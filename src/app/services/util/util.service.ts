@@ -23,28 +23,28 @@ export interface IUtilService {
 
 @Injectable()
 export class UtilService implements IUtilService {
-  private _notificationSound = new Audio('/assets/trembling.mp3');
+  static galleryOptions: NgxGalleryOptions[] = [
+    {
+      imageSize: 'contain',
+      width: '1200px',
+      height: '600px',
+      thumbnailsColumns: 4,
+      imageAnimation: NgxGalleryAnimation.Zoom,
+      imagePercent: 80,
+      thumbnailsPercent: 40,
+      thumbnailsMargin: 40,
+      thumbnailMargin: 40,
+      previewCloseOnEsc: true,
+      previewKeyboardNavigation: true
+    },
+    { breakpoint: 1700, width: '800px', height: '400px', thumbnailsColumns: 4 },
+    { breakpoint: 1300, width: '600px', height: '300px', thumbnailsColumns: 4 },
+    { breakpoint: 1000, width: '400px', height: '200px', thumbnailsColumns: 3 },
+    { breakpoint: 480, width: '100%', height: '200px', thumbnails: false },
+    { breakpoint: 360, thumbnails: false }
+  ];
 
-  static galleryOptions(): NgxGalleryOptions[] {
-    return [
-      {
-        // layout: 'thumbnails-top',
-        imageSize: 'contain',
-        width: '100%',
-        height: UtilService.getCurrentDevice() === 'MOBILE' ? '300px' : '600px',
-        thumbnailsColumns: 4,
-        thumbnails: UtilService.getCurrentDevice() !== 'MOBILE',
-        imageAnimation: NgxGalleryAnimation.Slide
-      },
-      {
-        breakpoint: 800,
-        imagePercent: 80,
-        thumbnailsPercent: 20,
-        thumbnailsMargin: 20,
-        thumbnailMargin: 20
-      },
-    ];
-  }
+  private _notificationSound = new Audio('/assets/trembling.mp3');
 
   static initScripts() {
     (<any>window).fbAsyncInit = () => {

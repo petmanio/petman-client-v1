@@ -104,7 +104,7 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
   adoptAdopt$: Observable<any>;
   comments$: Observable<IAdoptCommentListResponse>;
   adopt: IAdopt;
-  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions();
+  galleryOptions: NgxGalleryOptions[] = UtilService.galleryOptions;
   private _adoptId: number;
   private _destroyed$ = new Subject<boolean>();
   private _routeListener;
