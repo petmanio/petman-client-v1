@@ -29,12 +29,12 @@ export class LocationService implements ILocationService {
   }
 
   list(options: ILocationListRequest): Observable<ILocationListResponse> {
-    const params = (new HttpParams())
+    let params = (new HttpParams())
       .set('skip', options.skip.toString())
       .set('limit', options.limit.toString());
 
     if (options.categories) {
-      options.categories.forEach(c => params.append('categories', c.toString()))
+      options.categories.forEach(c => params = params.append('categories', c.toString()))
     }
 
     return this._http
@@ -42,10 +42,10 @@ export class LocationService implements ILocationService {
   }
 
   pins(options: ILocationPinsRequest): Observable<ILocationPinsResponse[]> {
-    const params = new HttpParams();
+    let params = new HttpParams();
 
     if (options.categories) {
-      options.categories.forEach(c => params.append('categories', c.toString()))
+      options.categories.forEach(c => params = params.append('categories', c.toString()))
     }
 
     return this._http
