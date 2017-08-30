@@ -496,16 +496,11 @@ export class AppComponent implements OnInit, IAppComponent {
       this._store.dispatch(new notificationAction.NewEventAction(notification));
       this._utilsService.playNotificationSound();
     });
-    // TODO: reconnect on connection lost
 
-    this.currentUser$.subscribe(($event) => {
-      if ($event) {
-        this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
-      }
-      // TODO: fix disconnect
-      // else if (!$event && socketConnection && socketConnection.connected) {
-      //   this._sailsService.disconnect();
-      // }
+    // TODO: reconnect on connection lost
+    this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, {
+      'x-auth-token':  localStorage.getItem('token'),
+      'x-selected-user':  localStorage.getItem('selectedUserId')
     });
   }
 
