@@ -29,15 +29,10 @@ export interface IAdoptDetailsComponent {
         <div class="columns">
           <div class="column is-10 is-offset-1">
             <md-card-header>
-              <div *ngIf=" (adoptAdopt$ | async)?.user" md-card-avatar class="pm-cart-avatar"
+              <div md-card-avatar class="pm-cart-avatar"
                    [ngStyle]="{'background-image': 'url(' + (adoptAdopt$ | async)?.user.userData.avatar + ')'}"></div>
-              <md-card-title *ngIf=" (adoptAdopt$ | async)?.user">
+              <md-card-title>
                 {{(adoptAdopt$ | async)?.user.userData.firstName}} {{(adoptAdopt$ | async)?.user.userData.lastName}}</md-card-title>
-
-              <div *ngIf="(adoptAdopt$ | async)?.internalUser" md-card-avatar class="pm-cart-avatar"
-                   [ngStyle]="{'background-image': 'url(' + (adoptAdopt$ | async)?.internalUser.avatar + ')'}"></div>
-              <md-card-title *ngIf="(adoptAdopt$ | async)?.internalUser">
-                {{(adoptAdopt$ | async)?.internalUser.firstName}} {{(adoptAdopt$ | async)?.internalUser.lastName}}</md-card-title>
               <md-card-subtitle>
               <span class="pm-font-12 pm-color-gray">
                 {{formatDate((adoptAdopt$ | async)?.createdAt)}}
