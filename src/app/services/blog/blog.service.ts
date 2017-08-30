@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { IBlogListRequest, IBlogListResponse } from '../../models/api';
@@ -12,24 +12,16 @@ export interface IBlogService {
 @Injectable()
 export class BlogService implements IBlogService {
 
-  constructor(private http: Http) {
+  constructor(private _http: HttpClient) {
 
   }
 
   list(options: IBlogListRequest): Observable<IBlogListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
+    const params = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
-
-    return this.http
-      .get(`${environment.apiEndpoint}/api/blog/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+    return this._http
+      .get<IBlogListResponse>(`${environment.apiEndpoint}/api/blog/list`, { params });
   }
 }

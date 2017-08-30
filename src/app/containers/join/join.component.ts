@@ -43,15 +43,15 @@ export interface IJoinComponent {
   `]
 })
 export class JoinComponent implements OnInit, OnDestroy, IJoinComponent {
-  currentUser$: Observable<any>;
+  selectedUser$: Observable<any>;
   private _destroyed$ = new Subject<boolean>();
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _actions$: Actions) {
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
   }
 
   public ngOnInit(): void {
     // TODO: use canDisabled
-    this.currentUser$.subscribe($event => {
+    this.selectedUser$.subscribe($event => {
       if ($event) {
         this._router.navigate(['/']);
       }

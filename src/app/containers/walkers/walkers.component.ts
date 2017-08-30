@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import * as fromRoot from '../../store';
 import * as walkerAction from '../../store/walker/walker.actions';
-import { IWalker, IUser } from '../../models/api';
+import { IUser, IWalker } from '../../models/api';
 import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
@@ -22,14 +22,14 @@ export interface IWalkersComponent {
 })
 export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   walkers$: Observable<IWalker[]>;
-  currentUser$: Observable<IUser>;
+  selectedUser$: Observable<IUser>;
   walkers: IWalker[];
   total$: Observable<number>;
   total: number;
-  currentUser: IUser;
+  selectedUser: IUser;
   private _destroyed$ = new Subject<boolean>();
   private _walkersSubscription: Subscription;
-  private _currentUserSubscription: Subscription;
+  private _selectedUserSubscription: Subscription;
   private _totalSubscription: Subscription;
 
   private _skip = 0;
@@ -39,7 +39,7 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.walkers$ = this._store.select(fromRoot.getWalkerAll);
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
     this.total$ = this._store.select(fromRoot.getWalkerTotalEntities);
     this._walkersSubscription = this.walkers$.subscribe(walkers => {
       this.walkers = walkers;
@@ -50,7 +50,7 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
       }
     });
     this._totalSubscription = this.total$.subscribe(total => this.total = total);
-    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._selectedUserSubscription = this.selectedUser$.subscribe(user => this.selectedUser = user);
   }
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
     this._destroyed$.next(true);
     this._walkersSubscription.unsubscribe();
     this._totalSubscription.unsubscribe();
-    this._currentUserSubscription.unsubscribe();
+    this._selectedUserSubscription.unsubscribe();
   }
 
   onScroll(): void {
@@ -72,7 +72,7 @@ export class WalkersComponent implements OnInit, OnDestroy, IWalkersComponent {
   }
 
   onFabClick(): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       this._router.navigate(['/walkers/add'])
     } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {

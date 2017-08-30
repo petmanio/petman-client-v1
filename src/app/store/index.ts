@@ -130,6 +130,8 @@ export const getAuthState = (state: State) => state.auth;
  * Auth Reducers
  */
 export const getAuthCurrentUser = createSelector(getAuthState, fromAuth.getCurrentUser);
+export const getAuthSelectedUserId = createSelector(getAuthState, fromAuth.getSelectedUserId);
+export const getAuthSelectedUser = createSelector(getAuthState, fromAuth.getSelectedUser);
 // TODO: remove error from state
 
 /**

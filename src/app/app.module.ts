@@ -90,7 +90,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 
-import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, KeysOrderPipe, KeysPipe, GalleryImagesPipe } from './pipes';
+import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, GalleryImagesPipe, KeysOrderPipe, KeysPipe } from './pipes';
 import {
   AdoptService,
   AuthService,
@@ -128,6 +128,7 @@ import {
 import { CustomHeadersInterceptor } from './interceptors';
 import { appRoutes } from './app.routes';
 
+// TODO: use HttpClient
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, 'i18n/', '.json');
 }

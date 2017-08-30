@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { assign } from 'lodash';
@@ -52,7 +52,7 @@ export class AdoptService implements IAdoptService {
   }
 
   list(options: IAdoptListRequest): Observable<IAdoptListResponse> {
-    const params: HttpParams = (new HttpParams())
+    const params = (new HttpParams())
       .set('skip', options.skip.toString())
       .set('limit', options.limit.toString());
 
@@ -76,7 +76,7 @@ export class AdoptService implements IAdoptService {
   }
 
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse> {
-    const params: HttpParams = (new HttpParams())
+    const params = (new HttpParams())
       .set('skip', options.skip.toString())
       .set('limit', options.limit.toString());
 

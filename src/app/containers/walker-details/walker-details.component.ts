@@ -29,15 +29,15 @@ export interface IWalkerDetailsComponent {
 })
 export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetailsComponent {
   walker$: Observable<IWalker>;
-  currentUser$: Observable<IUser>;
+  selectedUser$: Observable<IUser>;
   applications$: Observable<{total: number, list: IWalkerApplication[]}>;
   walker: IWalker;
-  currentUser: IUser;
+  selectedUser: IUser;
   applications: {total: number, list: IWalkerApplication[]};
   private _destroyed$ = new Subject<boolean>();
   private _actionsSubscription: Subscription;
   private _walkerSubscription: Subscription;
-  private _currentUserSubscription: Subscription;
+  private _selectedUserSubscription: Subscription;
   private _applicationsSubscription: Subscription;
 
   constructor(private _store: Store<fromRoot.State>,
@@ -53,7 +53,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
       .subscribe(_store);
 
     this.walker$ = this._store.select(fromRoot.getSelectedWalker);
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
     this.applications$ = this._store.select(fromRoot.getSelectedWalkerMyApplications);
     this._walkerSubscription = this.walker$.subscribe(walker => {
       this.walker = walker;
@@ -62,7 +62,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
         this._store.dispatch(new walkerAction.ApplicationListAction({walkerId: this.walker.id}));
       }
     });
-    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._selectedUserSubscription = this.selectedUser$.subscribe(user => this.selectedUser = user);
     this._applicationsSubscription = this.applications$.subscribe(applications => this.applications = applications);
   }
 
@@ -73,7 +73,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
     this._destroyed$.next(true);
     this._actionsSubscription.unsubscribe();
     this._walkerSubscription.unsubscribe();
-    this._currentUserSubscription.unsubscribe();
+    this._selectedUserSubscription.unsubscribe();
     this._applicationsSubscription.unsubscribe();
   }
 
@@ -115,7 +115,7 @@ export class WalkerDetailsComponent implements OnInit, OnDestroy, IWalkerDetails
   }
 
   onApplyClick(): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       if (this.applications.list.some(application => application.status === 'WAITING')) {
         this._snackBar.open(this._translateService.instant('sorry_you_have_unfinished_application'), null, {
           duration: 3000

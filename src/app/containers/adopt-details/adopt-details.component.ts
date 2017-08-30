@@ -8,7 +8,7 @@ import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IAdopt, IAdoptCommentListResponse, IUser } from '../../models/api';
+import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { AdoptService } from '../../services/adopt/adopt.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';

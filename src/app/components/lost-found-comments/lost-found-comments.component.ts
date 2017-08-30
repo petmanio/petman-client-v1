@@ -14,7 +14,7 @@ export interface ILostFoundCommentsComponent {
   template: `
     <div class="columns is-mobile pm-chat-actions">
       <div class="column is-10 is-offset-1">
-          <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
+          <span class="pm-color-gray pm-font-10" *ngIf="!(selectedUser$ | async)">
             {{'please_login' | translate}}
           </span>
         <md-input-container>
@@ -23,7 +23,7 @@ export interface ILostFoundCommentsComponent {
                  name="message"
                  type="text"
                  autocomplete="off"
-                 [disabled]="!(currentUser$ | async)"
+                 [disabled]="!(selectedUser$ | async)"
                  [(ngModel)]="comment"
                  (keyup.enter)="onSendComment()"/>
         </md-input-container>
@@ -71,10 +71,10 @@ export class LostFoundCommentsComponent implements OnInit, OnChanges, ILostFound
   @Input() lostFound: ILostFound;
   @Input() comments: ILostFoundCommentListResponse;
   @Output() loadMore = new EventEmitter();
-  currentUser$: Observable<any>;
+  selectedUser$: Observable<any>;
   comment = '';
   constructor(private _store: Store<fromRoot.State>) {
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = _store.select(fromRoot.getAuthSelectedUser);
   }
 
   ngOnInit(): void {

@@ -24,21 +24,12 @@ export interface IAuthProvider {
   accessToken: string
 }
 
-export interface IInternalUser {
-  id: number,
-  avatar: string,
-  firstName: string,
-  lastName: string,
-  createdAt: string,
-  updatedAt: string,
-}
-
 export interface IUser {
   id: number,
   email: string,
   userData?: IUserData,
   authProviders?: IAuthProvider[],
-  internalUsers?: IInternalUser[]
+  internalUsers?: IUser[]
 }
 
 export interface IBlog {
@@ -134,7 +125,6 @@ export interface IAdopt {
   images?: IAdoptImage[],
   comments?: IAdoptComment[],
   user?: IUser,
-  internalUser?: IInternalUser,
   createdAt: string,
 }
 

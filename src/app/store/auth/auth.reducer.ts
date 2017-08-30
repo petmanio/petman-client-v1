@@ -1,13 +1,16 @@
+import { createSelector } from 'reselect';
+import { assign, find } from 'lodash';
 import { IAuthCurrentUserResponse, ILoginResponse } from '../../models/api';
-import { assign } from 'lodash';
 import * as authAction from './auth.actions';
 
 export interface State {
   user?: IAuthCurrentUserResponse,
+  selectedUserId: number
 }
 
 const initialState: State = {
   user: null,
+  selectedUserId: null
 };
 
 export function reducer(state = initialState, action: authAction.Actions): State {
@@ -31,6 +34,10 @@ export function reducer(state = initialState, action: authAction.Actions): State
       return assign({}, state, { user: null });
     }
 
+    case authAction.ActionTypes.CHANGE_CURRENT_USER: {
+      return assign({}, state, { selectedUserId: action.payload});
+    }
+
     default: {
       return state;
     }
@@ -47,3 +54,8 @@ export function reducer(state = initialState, action: authAction.Actions): State
  */
 
 export const getCurrentUser = (state: State) => state.user;
+export const getSelectedUserId = (state: State) => state.selectedUserId;
+export const getSelectedUser = createSelector(getCurrentUser, getSelectedUserId, (user, userId) => {
+  const internalUser = find(user ? user.internalUsers : [], {id: userId});
+  return internalUser || user;
+});

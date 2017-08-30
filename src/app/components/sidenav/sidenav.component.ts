@@ -29,8 +29,8 @@ interface ISidenavComponent {
           <!--<app-nav-item (activate)="onItemActivate.emit()" svgIcon="pet_health" routerLink="/questions"-->
                         <!--routerLinkActive="is-active">-->
             <!--{{'wet_consultant' | translate}}</app-nav-item>-->
-          <app-nav-item (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" 
-                        routerLinkActive="is-active">{{'blog' | translate}}</app-nav-item>
+          <!--<app-nav-item (activate)="onItemActivate.emit()" icon="public" routerLink="/blog" -->
+                        <!--routerLinkActive="is-active">{{'blog' | translate}}</app-nav-item>-->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="account_circle">Profile</app-nav-item>-->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="settings">Settings</app-nav-item> -->
           <!--<app-nav-item (activate)="onItemActivate.emit()" icon="contact_mail">Help/Contact us</app-nav-item>-->
@@ -74,9 +74,9 @@ export class SidenavComponent implements ISidenavComponent, OnInit {
   @Output() onClose = new EventEmitter();
   isHomeActive;
   // TODO: add observable type for all components
-  currentUser$: Observable<any>;
+  selectedUser$: Observable<any>;
   constructor(private _router: Router, private _store: Store<fromRoot.State>) {
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
   }
 
   ngOnInit(): void {

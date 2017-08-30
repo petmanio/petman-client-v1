@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { assign } from 'lodash';
@@ -33,57 +33,31 @@ export interface ILostFoundService {
 @Injectable()
 export class LostFoundService implements ILostFoundService {
 
-  constructor(private _http: Http, private _sailsService: SailsService) {
+  constructor(private _http: HttpClient, private _sailsService: SailsService) {
   }
 
   getById(options: ILostFoundGetByIdRequest): Observable<ILostFoundGetByIdResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .get<ILostFoundGetByIdResponse>(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}`);
   }
 
   deleteById(options: ILostFoundDeleteRequest): Observable<ILostFoundDeleteResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .delete(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .delete<ILostFoundDeleteResponse>(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}`)
+      .map(response => true);
   }
 
   list(options: ILostFoundListRequest): Observable<ILostFoundListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/lost-found/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get<ILostFoundListResponse>(`${environment.apiEndpoint}/api/lost-found/list`, { params });
   }
 
   create(options: ILostFoundCreateRequest): Observable<ILostFoundCreateResponse> {
-    const headers = new Headers();
     const formData: FormData = new FormData();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
 
     formData.append('description', options.description);
     formData.append('type', options.type);
@@ -95,38 +69,24 @@ export class LostFoundService implements ILostFoundService {
     }
 
     return this._http
-      .post(`${environment.apiEndpoint}/api/lost-found/create`,
-        formData,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post<ILostFoundCreateResponse>(`${environment.apiEndpoint}/api/lost-found/create`, formData);
   }
 
   getCommentList(options: ILostFoundCommentListRequest): Observable<ILostFoundCommentListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params: HttpParams = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}/comment/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get<ILostFoundCommentListResponse>(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}/comment/list`,
+        { params }
+      );
   }
 
   commentCreate(options: ILostFoundCommentCreateRequest): Observable<any> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .post(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}/comment/create`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .post<any>(`${environment.apiEndpoint}/api/lost-found/${options.lostFoundId}/comment/create`, options)
+      .map(response => true);
   }
 
   // TODO: think about using action or not

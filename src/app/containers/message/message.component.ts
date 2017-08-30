@@ -21,26 +21,26 @@ export interface IMessageComponent {
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit, OnDestroy, IMessageComponent {
-  currentUser$: Observable<IUser>;
+  selectedUser$: Observable<IUser>;
   conversation$: Observable<IMessageConversationResponse>;
-  currentUser: IUser;
+  selectedUser: IUser;
   conversation: IMessageConversationResponse;
   message: string;
   private _destroyed$ = new Subject<boolean>();
   private _actionsSubscription: Subscription;
-  private _currentUserSubscription: Subscription;
+  private _selectedUserSubscription: Subscription;
   private _conversationSubscription: Subscription;
 
   constructor(private _store: Store<fromRoot.State>,
               private _route: ActivatedRoute) {
     this._actionsSubscription = _route.params
       .select<string>('userEntityId')
-      .map(id => new messageAction.SelectUniqueIdAction([localStorage.getItem('userId'), id].sort().join('_')))
+      .map(id => new messageAction.SelectUniqueIdAction([localStorage.getItem('selectedUserId'), id].sort().join('_')))
       .subscribe(_store);
 
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
     this.conversation$ = this._store.select(fromRoot.getMessageSelectedConversation);
-    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._selectedUserSubscription = this.selectedUser$.subscribe(user => this.selectedUser = user);
     this._conversationSubscription = this.conversation$.subscribe(conversation => this.conversation = conversation);
   }
 
@@ -50,15 +50,15 @@ export class MessageComponent implements OnInit, OnDestroy, IMessageComponent {
   ngOnDestroy() {
     this._destroyed$.next(true);
     this._actionsSubscription.unsubscribe();
-    this._currentUserSubscription.unsubscribe();
+    this._selectedUserSubscription.unsubscribe();
     this._conversationSubscription.unsubscribe();
   }
 
   isMessageOwner(message: IMessage): boolean {
-    if (!this.currentUser) {
+    if (!this.selectedUser) {
       return false;
     }
-    return this.currentUser.id === message.from['id'];
+    return this.selectedUser.id === message.from['id'];
   }
 
   onSendClick(): void {
