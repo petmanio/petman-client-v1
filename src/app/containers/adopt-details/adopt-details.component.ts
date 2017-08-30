@@ -8,7 +8,7 @@ import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import { Subject } from 'rxjs/Subject';
 import { UtilService } from '../../services/util/util.service';
-import { IAdopt, IAdoptCommentListResponse } from '../../models/api';
+import { IAdopt, IAdoptCommentListResponse, IUser } from '../../models/api';
 import { ShareDialogComponent } from '../../components/share-dialog/share-dialog.component';
 import { AdoptService } from '../../services/adopt/adopt.service';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
@@ -29,10 +29,15 @@ export interface IAdoptDetailsComponent {
         <div class="columns">
           <div class="column is-10 is-offset-1">
             <md-card-header>
-              <div md-card-avatar class="pm-cart-avatar"
+              <div *ngIf=" (adoptAdopt$ | async)?.user" md-card-avatar class="pm-cart-avatar"
                    [ngStyle]="{'background-image': 'url(' + (adoptAdopt$ | async)?.user.userData.avatar + ')'}"></div>
-              <md-card-title>
+              <md-card-title *ngIf=" (adoptAdopt$ | async)?.user">
                 {{(adoptAdopt$ | async)?.user.userData.firstName}} {{(adoptAdopt$ | async)?.user.userData.lastName}}</md-card-title>
+
+              <div *ngIf="(adoptAdopt$ | async)?.internalUser" md-card-avatar class="pm-cart-avatar"
+                   [ngStyle]="{'background-image': 'url(' + (adoptAdopt$ | async)?.internalUser.avatar + ')'}"></div>
+              <md-card-title *ngIf="(adoptAdopt$ | async)?.internalUser">
+                {{(adoptAdopt$ | async)?.internalUser.firstName}} {{(adoptAdopt$ | async)?.internalUser.lastName}}</md-card-title>
               <md-card-subtitle>
               <span class="pm-font-12 pm-color-gray">
                 {{formatDate((adoptAdopt$ | async)?.createdAt)}}

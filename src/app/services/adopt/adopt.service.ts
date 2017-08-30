@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { assign } from 'lodash';
@@ -33,20 +33,11 @@ export interface IAdoptService {
 @Injectable()
 export class AdoptService implements IAdoptService {
 
-  constructor(private _http: Http, private _sailsService: SailsService) {
+  constructor(private _http: HttpClient, private _sailsService: SailsService) {
   }
 
   getById(options: IAdoptGetByIdRequest): Observable<IAdoptGetByIdResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    return this._http
-      .get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+    return this._http.get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}`);
   }
 
   deleteById(options: IAdoptDeleteRequest): Observable<IAdoptDeleteResponse> {
@@ -56,34 +47,21 @@ export class AdoptService implements IAdoptService {
     headers.append('x-auth-token', localStorage.getItem('token'));
 
     return this._http
-      .delete(`${environment.apiEndpoint}/api/adopt/${options.adoptId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .delete(`${environment.apiEndpoint}/api/adopt/${options.adoptId}`)
+      .map(response => true);
   }
 
   list(options: IAdoptListRequest): Observable<IAdoptListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params: HttpParams = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/adopt/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get(`${environment.apiEndpoint}/api/adopt/list`, { params });
   }
 
   create(options: IAdoptCreateRequest): Observable<IAdoptCreateResponse> {
-    const headers = new Headers();
     const formData: FormData = new FormData();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
 
     formData.append('description', options.description);
 
@@ -94,38 +72,23 @@ export class AdoptService implements IAdoptService {
     }
 
     return this._http
-      .post(`${environment.apiEndpoint}/api/adopt/create`,
-        formData,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post(`${environment.apiEndpoint}/api/adopt/create`, formData);
   }
 
   getCommentList(options: IAdoptCommentListRequest): Observable<IAdoptCommentListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params: HttpParams = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/list`, { params });
   }
 
   commentCreate(options: IAdoptCommentCreateRequest): Observable<any> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
       .post(`${environment.apiEndpoint}/api/adopt/${options.adoptId}/comment/create`, options,
-        { headers, withCredentials: true }
       )
-      .map(response => response.ok);
+      .map(response => true);
   }
 
   // TODO: think about using action or not

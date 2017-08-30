@@ -2,6 +2,7 @@ import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { find } from 'lodash';
 import { Store } from '@ngrx/store';
 import { UtilService } from '../../services/util/util.service';
 
@@ -9,7 +10,7 @@ import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
 import * as auth from '../../store/auth/auth.actions';
 import * as authAction from '../../store/auth/auth.actions';
-import { INotification } from '../../models/api';
+import { INotification, IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
@@ -29,7 +30,9 @@ export interface IAppComponent {
   logOut(): void,
   initSocket(): void,
   onJoinClick(): void,
-  onLanguageChange($event): void
+  onLanguageChange($event): void,
+  onSelectedUserChange($event): void,
+  getCurrentUserAvatar(): string
 }
 
 @Component({
@@ -88,7 +91,7 @@ export interface IAppComponent {
             </div>
           </md-menu>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
-               [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+               [ngStyle]="{'background-image': 'url(' + getCurrentUserAvatar() + ')'}"></div>
           <md-menu #menu="mdMenu" [overlapTrigger]="false"
                    yPosition="above" xPosition="before">
             <!--<button md-menu-item>-->
@@ -100,6 +103,13 @@ export interface IAppComponent {
               <span>{{'log_out' | translate}}</span>
             </button>
           </md-menu>
+          <div class="pm-change-user" *ngIf="(currentUser$ | async)?.internalUsers.length">
+            <md-select (change)="onSelectedUserChange($event)" [(ngModel)]="selectedUserId">
+              <md-option [value]="(currentUser$ | async)?.id.toString()">{{(currentUser$ | async)?.userData.firstName}}</md-option>
+              <md-option *ngFor="let internalUser of (currentUser$ | async)?.internalUsers"
+                         [value]="'internal:' + internalUser.id">{{ internalUser.firstName }} {{ internalUser.lastName}}</md-option>
+            </md-select>
+          </div>
         </div>
       </app-toolbar>
       <!--TODO: pass items-->
@@ -141,6 +151,10 @@ export interface IAppComponent {
       margin: 0 auto;
     }
     
+    /deep/ app-toolbar .mat-select {
+      padding-top: 0;
+    }
+    
     /deep/ .pm-language .mat-select-trigger {
        min-width: 50px;
        width: 50px;
@@ -151,6 +165,32 @@ export interface IAppComponent {
      }
 
     /deep/ .pm-language .mat-select-arrow {
+      color: #ffffff;
+    }
+
+    .pm-change-user {
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      margin-left: 5px;
+    }
+
+    .pm-change-user md-select {
+      margin: 0 auto;
+    }
+
+    /deep/ .pm-change-user .mat-select-trigger {
+      min-width: 50px;
+      width: 100px;
+    }
+
+    /deep/ .pm-change-user .mat-select-value {
+      color: #ffffff;
+    }
+
+    /deep/ .pm-change-user .mat-select-arrow {
       color: #ffffff;
     }
 
@@ -202,9 +242,9 @@ export interface IAppComponent {
 })
 export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
-  // TODO: import model
-  currentUser$: Observable<any>;
+  currentUser$: Observable<IUser>;
   notifications$: Observable<any>;
+  currentUser: IUser;
   notifications: INotification[];
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
@@ -215,6 +255,7 @@ export class AppComponent implements OnInit, IAppComponent {
   // TODO: read from store
   xhrListener: Observable<boolean> = UtilService.XHRListener();
   lang: string;
+  selectedUserId: string;
   private _skip = 0;
   private _limit = 10;
   private _count: number = null;
@@ -242,12 +283,19 @@ export class AppComponent implements OnInit, IAppComponent {
     }, 500);
     let notificationListReceived;
     this.currentUser$.subscribe(($event) => {
-      if ($event && !notificationListReceived) {
+      this.currentUser = $event;
+      // TODO: merge if checks into one
+      if (this.currentUser && !notificationListReceived) {
         this._store.dispatch(new notificationAction.ListAction({skip: this._skip, limit: this._limit}));
         notificationListReceived = true;
-      } else if (!$event) {
+      } else if (!this.currentUser) {
         this._store.dispatch(new notificationAction.ListClearAction({}));
         notificationListReceived = false;
+      }
+
+      if (this.currentUser) {
+        this.selectedUserId = localStorage.getItem('selectedUserId') || this.currentUser.id.toString();
+        localStorage.setItem('selectedUserId', this.selectedUserId);
       }
     });
 
@@ -324,6 +372,10 @@ export class AppComponent implements OnInit, IAppComponent {
     localStorage.setItem('lang', this.lang);
   }
 
+  onSelectedUserChange($event): void {
+    localStorage.setItem('selectedUserId', this.selectedUserId);
+  }
+
   onNotificationClick(notification: INotification): void {
     if (notification.roomApplicationCreate || notification.roomApplicationRate || notification.roomApplicationStatusUpdate) {
       const id = (notification.roomApplicationCreate
@@ -349,6 +401,19 @@ export class AppComponent implements OnInit, IAppComponent {
 
   closeSidenav(): void {
     this._store.dispatch(new layout.CloseSidenavAction());
+  }
+
+  // TODO: meake directive
+  getCurrentUserAvatar(): string {
+    let avatar = this.currentUser.userData.avatar;
+    if (this.selectedUserId.match(/internal/)) {
+      const id = parseInt(this.selectedUserId.replace('internal:', ''), 0);
+      const internalUser = find(this.currentUser.internalUsers, {id});
+      if (internalUser) {
+        avatar = internalUser.avatar;
+      }
+    }
+    return avatar;
   }
 
   toggleSidenav($event: Event): void {

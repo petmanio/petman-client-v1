@@ -17,8 +17,12 @@ export interface IAdoptCardComponent {
   template: `
     <md-card>
       <md-card-header>
-        <div md-card-avatar class="pm-cart-avatar"  [ngStyle]="{'background-image': 'url(' + adopt.user.userData.avatar + ')'}"></div>
-        <md-card-title>{{adopt.user.userData.firstName}} {{adopt.user.userData.lastName}}</md-card-title>
+        <div md-card-avatar class="pm-cart-avatar" *ngIf="adopt.internalUser" 
+             [ngStyle]="{'background-image': 'url(' + adopt.internalUser.avatar + ')'}"></div>
+        <div md-card-avatar class="pm-cart-avatar" *ngIf="adopt.user"
+             [ngStyle]="{'background-image': 'url(' + adopt.user.userData.avatar + ')'}"></div>
+        <md-card-title *ngIf="adopt.internalUser">{{adopt.internalUser.firstName}} {{adopt.internalUser.lastName}}</md-card-title>
+        <md-card-title *ngIf="adopt.user">{{adopt.user.userData.firstName}} {{adopt.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
             {{formatDate(adopt.createdAt)}}

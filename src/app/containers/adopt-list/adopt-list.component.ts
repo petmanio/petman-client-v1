@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { find } from 'lodash';
 import * as fromRoot from '../../store';
 import * as adoptAction from '../../store/adopt/adopt.actions';
 import { IUser } from '../../models/api';
@@ -10,7 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 export interface IAdoptListComponent {
   onScroll(): void,
-  onFabClick(): void
+  onFabClick(): void,
+  getCurrentUserAvatar(): string
 }
 
 @Component({
@@ -39,7 +41,7 @@ export interface IAdoptListComponent {
                 <md-card-header>
                   <div md-card-avatar class="pm-cart-avatar"
                        *ngIf="currentUser$ | async"
-                       [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                       [ngStyle]="{'background-image': 'url(' + getCurrentUserAvatar() + ')'}"></div>
                   <div md-card-avatar class="pm-cart-avatar"
                        *ngIf="!(currentUser$ | async)"
                        [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
@@ -99,6 +101,7 @@ export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponen
   adoptList$: Observable<any>;
   currentUser$: Observable<any>;
   currentUser: IUser;
+  selectedUserId: string;
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -116,11 +119,30 @@ export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponen
       this._count = $event.count;
     });
 
-    this.currentUser$.subscribe($event => this.currentUser = $event);
+    // TODO: destroy subscription listeners for whole application
+    this.currentUser$.subscribe(($event) => {
+      this.currentUser = $event;
+      if (this.currentUser) {
+        this.selectedUserId = localStorage.getItem('selectedUserId') || this.currentUser.id.toString();
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this._store.dispatch(new adoptAction.ListClearAction({}));
+  }
+
+  // TODO: meake directive
+  getCurrentUserAvatar(): string {
+    let avatar = this.currentUser.userData.avatar;
+    if (this.selectedUserId.match(/internal/)) {
+      const id = parseInt(this.selectedUserId.replace('internal:', ''), 0);
+      const internalUser = find(this.currentUser.internalUsers, {id});
+      if (internalUser) {
+        avatar = internalUser.avatar;
+      }
+    }
+    return avatar;
   }
 
   onScroll(): void {
