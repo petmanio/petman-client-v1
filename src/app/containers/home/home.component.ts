@@ -53,13 +53,13 @@ export interface IHomeComponent {
             <span class="pm-font-16">{{'sitters_intro' | translate}}</span>
           </span>
       </div>
-      <div class="column pm-home-card pm-home-card-blog" routerLink="/blog">
-        <div class="pm-home-card-overlay"></div>
-        <span>
-            <span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'blog' | translate}}</span><br><br>
-            <span class="pm-font-16">{{'blog_intro' | translate}}</span>
-          </span>
-      </div>
+      <!--<div class="column pm-home-card pm-home-card-blog" routerLink="/blog">-->
+        <!--<div class="pm-home-card-overlay"></div>-->
+        <!--<span>-->
+            <!--<span class="pm-font-bold pm-font-20 pm-font-uppercase">{{'blog' | translate}}</span><br><br>-->
+            <!--<span class="pm-font-16">{{'blog_intro' | translate}}</span>-->
+          <!--</span>-->
+      <!--</div>-->
     </div>
   `,
   styles: [`
@@ -144,15 +144,15 @@ export interface IHomeComponent {
   `]
 })
 export class HomeComponent implements OnInit, OnDestroy, IHomeComponent {
-  currentUser$: Observable<any>;
+  selectedUser$: Observable<any>;
   private _destroyed$ = new Subject<boolean>();
   constructor(private _store: Store<fromRoot.State>, private _router: Router, private _actions$: Actions) {
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
   }
 
   public ngOnInit(): void {
     // TODO: use canDisabled
-    this.currentUser$.subscribe($event => {
+    this.selectedUser$.subscribe($event => {
       if ($event) {
         this._router.navigate(['/']);
       }

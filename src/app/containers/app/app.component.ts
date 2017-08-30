@@ -3,13 +3,13 @@ import { Observable } from 'rxjs/Observable';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { find } from 'lodash';
 import { UtilService } from '../../services/util/util.service';
 
 import * as fromRoot from '../../store';
 import * as layout from '../../store/layout/layout.actions';
-import * as auth from '../../store/auth/auth.actions';
 import * as authAction from '../../store/auth/auth.actions';
-import { INotification } from '../../models/api';
+import { INotification, IUser } from '../../models/api';
 import { SailsService } from 'angular2-sails';
 import { environment } from '../../../environments/environment';
 import * as roomAction from '../../store/room/room.actions';
@@ -29,7 +29,8 @@ export interface IAppComponent {
   logOut(): void,
   initSocket(): void,
   onJoinClick(): void,
-  onLanguageChange($event): void
+  onLanguageChange($event): void,
+  onSelectedUserChange($event): void
 }
 
 @Component({
@@ -87,8 +88,15 @@ export interface IAppComponent {
                 {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
             </div>
           </md-menu>
+          <div class="pm-change-user" *ngIf="(currentUser$ | async)?.internalUsers.length">
+            <md-select (change)="onSelectedUserChange($event)" [ngModel]="(selectedUser$ | async)?.id">
+              <md-option [value]="(currentUser$ | async)?.id">{{(currentUser$ | async)?.userData.firstName}}</md-option>
+              <md-option *ngFor="let internalUser of (currentUser$ | async)?.internalUsers"
+                         [value]="internalUser.id">{{ internalUser.userData.firstName }}</md-option>
+            </md-select>
+          </div>
           <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
-               [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+               [ngStyle]="{'background-image': 'url(' + (selectedUser$ | async)?.userData.avatar + ')'}"></div>
           <md-menu #menu="mdMenu" [overlapTrigger]="false"
                    yPosition="above" xPosition="before">
             <!--<button md-menu-item>-->
@@ -141,6 +149,10 @@ export interface IAppComponent {
       margin: 0 auto;
     }
     
+    /deep/ app-toolbar .mat-select {
+      padding-top: 0;
+    }
+    
     /deep/ .pm-language .mat-select-trigger {
        min-width: 50px;
        width: 50px;
@@ -151,6 +163,32 @@ export interface IAppComponent {
      }
 
     /deep/ .pm-language .mat-select-arrow {
+      color: #ffffff;
+    }
+
+    .pm-change-user {
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      margin-right: 5px;
+    }
+
+    .pm-change-user md-select {
+      margin: 0 auto;
+    }
+
+    /deep/ .pm-change-user .mat-select-trigger {
+      min-width: 50px;
+      width: 100px;
+    }
+
+    /deep/ .pm-change-user .mat-select-value {
+      color: #ffffff;
+    }
+
+    /deep/ .pm-change-user .mat-select-arrow {
       color: #ffffff;
     }
 
@@ -202,9 +240,10 @@ export interface IAppComponent {
 })
 export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
-  // TODO: import model
-  currentUser$: Observable<any>;
+  selectedUser$: Observable<IUser>;
+  currentUser$: Observable<IUser>;
   notifications$: Observable<any>;
+  currentUser: IUser;
   notifications: INotification[];
   toolbarRightButtons: string[] = [];
   sideNavMode = 'side';
@@ -229,6 +268,7 @@ export class AppComponent implements OnInit, IAppComponent {
     UtilService.initScripts();
     this.showSidenav$ = this._store.select(fromRoot.getShowSidenav);
     this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
     this.notifications$ = this._store.select(fromRoot.getNotificationList);
     this._translate.setDefaultLang('en');
     this._utilsService.registerNewIcons();
@@ -242,12 +282,27 @@ export class AppComponent implements OnInit, IAppComponent {
     }, 500);
     let notificationListReceived;
     this.currentUser$.subscribe(($event) => {
-      if ($event && !notificationListReceived) {
+      this.currentUser = $event;
+      // TODO: merge if checks into one
+      if (this.currentUser && !notificationListReceived) {
         this._store.dispatch(new notificationAction.ListAction({skip: this._skip, limit: this._limit}));
         notificationListReceived = true;
-      } else if (!$event) {
+      } else if (!this.currentUser) {
         this._store.dispatch(new notificationAction.ListClearAction({}));
         notificationListReceived = false;
+      }
+
+      if (this.currentUser) {
+        let selectedUserId = localStorage.getItem('selectedUserId');
+        if (selectedUserId) {
+          if (!find(this.currentUser.internalUsers, {id: parseInt(selectedUserId, 0)})) {
+            localStorage.removeItem('selectedUserId');
+          }
+        } else {
+          selectedUserId = this.currentUser.id.toString()
+        }
+        this._store.dispatch(new authAction.ChangeCurrentUserAction(parseInt(selectedUserId, 0)));
+        localStorage.setItem('selectedUserId', selectedUserId);
       }
     });
 
@@ -322,6 +377,13 @@ export class AppComponent implements OnInit, IAppComponent {
   onLanguageChange($event): void {
     this._translate.use(this.lang);
     localStorage.setItem('lang', this.lang);
+  }
+
+  onSelectedUserChange($event): void {
+    const selectedUserId = $event.value;
+    // this._store.dispatch(new authAction.ChangeCurrentUserAction(selectedUserId));
+    localStorage.setItem('selectedUserId', selectedUserId.toString());
+    location.reload();
   }
 
   onNotificationClick(notification: INotification): void {
@@ -434,16 +496,11 @@ export class AppComponent implements OnInit, IAppComponent {
       this._store.dispatch(new notificationAction.NewEventAction(notification));
       this._utilsService.playNotificationSound();
     });
-    // TODO: reconnect on connection lost
 
-    this.currentUser$.subscribe(($event) => {
-      if ($event) {
-        this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, { 'x-auth-token':  localStorage.getItem('token') });
-      }
-      // TODO: fix disconnect
-      // else if (!$event && socketConnection && socketConnection.connected) {
-      //   this._sailsService.disconnect();
-      // }
+    // TODO: reconnect on connection lost
+    this._sailsService.put(`${environment.apiEndpoint}/api/user/store-socket-id`, {
+      'x-auth-token':  localStorage.getItem('token'),
+      'x-selected-user':  localStorage.getItem('selectedUserId')
     });
   }
 

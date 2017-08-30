@@ -28,7 +28,8 @@ export interface IUser {
   id: number,
   email: string,
   userData?: IUserData,
-  authProviders?: IAuthProvider[]
+  authProviders?: IAuthProvider[],
+  internalUsers?: IUser[]
 }
 
 export interface IBlog {

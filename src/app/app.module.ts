@@ -1,7 +1,7 @@
-import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Http, HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -90,7 +90,7 @@ import {
 } from './components';
 import { FitContentsDirective } from './directives';
 
-import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, KeysOrderPipe, KeysPipe, GalleryImagesPipe } from './pipes';
+import { ChunkPipe, EllipsisPipe, FormatDatePipe, FromNowPipe, GalleryImagesPipe, KeysOrderPipe, KeysPipe } from './pipes';
 import {
   AdoptService,
   AuthService,
@@ -125,8 +125,10 @@ import {
   WalkerExistsGuard,
   WalkersExistsGuard
 } from './guards';
+import { CustomHeadersInterceptor } from './interceptors';
 import { appRoutes } from './app.routes';
 
+// TODO: use HttpClient
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, 'i18n/', '.json');
 }
@@ -213,6 +215,7 @@ export function HttpLoaderFactory(http: Http) {
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { useHash: false }),
@@ -252,7 +255,11 @@ export function HttpLoaderFactory(http: Http) {
     // DBModule.provideDB(schema),
   ],
   providers: [
-    // { provide: RequestOptions, useClass: CustomRequestOptions },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHeadersInterceptor,
+      multi: true
+    },
     AuthGuard,
     RoomExistsGuard,
     RoomsExistsGuard,

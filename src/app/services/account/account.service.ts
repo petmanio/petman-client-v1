@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { UtilService } from '../util/util.service';
 
 export interface IAccountService {
@@ -8,5 +8,5 @@ export interface IAccountService {
 @Injectable()
 export class AccountService implements IAccountService {
 
-  constructor(private http: Http, private utilService: UtilService) { }
+  constructor(private _http: HttpClient, private _utilService: UtilService) { }
 }

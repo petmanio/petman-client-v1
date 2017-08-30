@@ -13,14 +13,14 @@ export interface IShareDialogComponent {
   selector: 'app-room-share-dialog',
   template: `
     <div class="room-share-dialog">
-      <span class="pm-color-gray pm-font-10" *ngIf="!(currentUser$ | async)">
+      <span class="pm-color-gray pm-font-10" *ngIf="!(selectedUser$ | async)">
         {{'please_login_to_share' | translate}}
       </span>
       <p class="pm-color-gray pm-font-16">
         {{'share_with' | translate}}
       </p>
       <div (click)="onShare('facebook')" 
-           [class]="(currentUser$ | async) ? 'pm-cursor-pointer' : 'disabled'">
+           [class]="(selectedUser$ | async) ? 'pm-cursor-pointer' : 'disabled'">
         <button md-icon-button>
           <i class="mdi mdi-facebook pm-color-facebook pm-font-20"></i>
         </button>
@@ -39,18 +39,18 @@ export interface IShareDialogComponent {
   `]
 })
 export class ShareDialogComponent implements OnInit, IShareDialogComponent {
-  currentUser$: Observable<any>;
-  currentUser: IUser;
+  selectedUser$: Observable<any>;
+  selectedUser: IUser;
   constructor(public dialogRef: MdDialogRef<ShareDialogComponent>, private _store: Store<fromRoot.State>) {
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = _store.select(fromRoot.getAuthSelectedUser);
   }
 
   ngOnInit(): void {
-    this.currentUser$.subscribe($event => this.currentUser = $event);
+    this.selectedUser$.subscribe($event => this.selectedUser = $event);
   }
 
   onShare(network: string): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       setTimeout(() => this.dialogRef.close(network), 300);
     }
   }

@@ -58,7 +58,7 @@ export function reducer(state = initialState, action: message.Actions): State {
      */
     case message.ActionTypes.CONVERSATION_SUCCESS: {
       const conversation = action.payload;
-      const uid = [localStorage.getItem('userId'), conversation.userEntity.id].sort().join('_');
+      const uid = [localStorage.getItem('selectedUserId'), conversation.userEntity.id].sort().join('_');
       return assign({}, state, { entities: {[uid]: conversation} });
     }
 

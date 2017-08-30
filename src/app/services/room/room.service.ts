@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
@@ -36,72 +36,36 @@ export interface IRoomService {
 @Injectable()
 export class RoomService implements IRoomService {
 
-  constructor(private _http: Http) {
+  constructor(private _http: HttpClient) {
   }
 
   getById(options: IRoomGetByIdRequest): Observable<IRoomGetByIdResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/room/${options.roomId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .get<IRoomGetByIdResponse>(`${environment.apiEndpoint}/api/room/${options.roomId}`);
   }
 
   deleteById(options: IRoomDeleteRequest): Observable<IRoomDeleteResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .delete(`${environment.apiEndpoint}/api/room/${options.roomId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .delete<IRoomDeleteResponse>(`${environment.apiEndpoint}/api/room/${options.roomId}`)
+      .map(response => true);
   }
 
   list(options: IRoomListRequest): Observable<IRoomListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/room/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get(`${environment.apiEndpoint}/api/room/list`, { params });
   }
 
   applicationList(options: IRoomApplicationListRequest): Observable<IRoomApplicationListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/room/${options.roomId}/applications`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get<IRoomApplicationListResponse>(`${environment.apiEndpoint}/api/room/${options.roomId}/applications`);
   }
 
   create(options: IRoomCreateRequest): Observable<IRoomCreateResponse> {
-    const headers = new Headers();
     const formData: FormData = new FormData();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     formData.append('description', options.description);
     formData.append('cost', options.cost);
 
@@ -112,43 +76,23 @@ export class RoomService implements IRoomService {
     }
 
     return this._http
-      .post(`${environment.apiEndpoint}/api/room/create`,
-        formData,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post<IRoomCreateResponse>(`${environment.apiEndpoint}/api/room/create`, formData);
   }
 
   apply(options: IRoomApplyRequest): Observable<IRoomApplyResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .post(`${environment.apiEndpoint}/api/room/${options.roomId}/apply`, {},
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post<IRoomApplyResponse>(`${environment.apiEndpoint}/api/room/${options.roomId}/apply`, {});
   }
 
   updateApplicationStatus(options: IRoomUpdateApplicationStatusRequest): Observable<IRoomUpdateApplicationStatusResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .put(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/status`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .put<IRoomUpdateApplicationStatusResponse>(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/status`, options)
+      .map(response => true);
   }
 
   rateApplication(options: IRoomRateApplicationRequest): Observable<IRoomRateApplicationResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .put(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/rate`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .put<IRoomRateApplicationResponse>(`${environment.apiEndpoint}/api/room/application/${options.applicationId}/rate`, options)
+      .map(response => true);
   }
 }

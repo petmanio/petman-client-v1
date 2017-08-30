@@ -35,13 +35,13 @@ export interface ILostFoundListComponent {
             <!--TODO: fix, without ngRepeat brick does not work-->
             <masonry-brick *ngFor="let _ of [0]"
                            class="column is-4-desktop is-6-tablet">
-              <md-card [routerLink]="[currentUser ? '/lost-found/add' : '/join']" class="pm-cursor-pointer">
+              <md-card [routerLink]="[selectedUser ? '/lost-found/add' : '/join']" class="pm-cursor-pointer">
                 <md-card-header>
                   <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="currentUser$ | async"
-                       [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                       *ngIf="selectedUser$ | async"
+                       [ngStyle]="{'background-image': 'url(' + (selectedUser$ | async)?.userData.avatar + ')'}"></div>
                   <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="!(currentUser$ | async)"
+                       *ngIf="!(selectedUser$ | async)"
                        [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
                   <md-card-title></md-card-title>
                   <md-card-subtitle>
@@ -97,8 +97,8 @@ export interface ILostFoundListComponent {
 })
 export class LostFoundListComponent implements OnInit, OnDestroy, ILostFoundListComponent {
   lostFoundList$: Observable<any>;
-  currentUser$: Observable<any>;
-  currentUser: IUser;
+  selectedUser$: Observable<any>;
+  selectedUser: IUser;
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -107,7 +107,7 @@ export class LostFoundListComponent implements OnInit, OnDestroy, ILostFoundList
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.lostFoundList$ = _store.select(fromRoot.getLostFoundList);
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = _store.select(fromRoot.getAuthSelectedUser);
   }
 
   ngOnInit(): void {
@@ -116,7 +116,7 @@ export class LostFoundListComponent implements OnInit, OnDestroy, ILostFoundList
       this._count = $event.count;
     });
 
-    this.currentUser$.subscribe($event => this.currentUser = $event);
+    this.selectedUser$.subscribe($event => this.selectedUser = $event);
   }
 
   ngOnDestroy(): void {
@@ -131,7 +131,7 @@ export class LostFoundListComponent implements OnInit, OnDestroy, ILostFoundList
   }
 
   onFabClick(): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       this._router.navigate(['/lost-found/add'])
     } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
 import { IAuthCurrentUserRequest, IAuthCurrentUserResponse, ILoginRequest, ILoginResponse } from '../../models/api';
@@ -16,7 +16,7 @@ export interface IAuthService {
 @Injectable()
 export class AuthService implements IAuthService {
 
-  constructor(private http: Http) {}
+  constructor(private _http: HttpClient) {}
 
   fbLogin(): Observable<any> {
     const subject = new ReplaySubject(1);
@@ -32,19 +32,12 @@ export class AuthService implements IAuthService {
   }
 
   login(options: ILoginRequest): Observable<ILoginResponse> {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    return this.http
-      .post(`${environment.apiEndpoint}/api/auth/login`,
-        options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json())
-      .map(body => {
-        localStorage.setItem('token', body.token);
-        localStorage.setItem('userId', body.user.id);
-        return body;
+    return this._http
+      .post<ILoginResponse>(`${environment.apiEndpoint}/api/auth/login`, options)
+      .map(response => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        return response;
       })
   }
 
@@ -56,16 +49,11 @@ export class AuthService implements IAuthService {
   }
 
   getCurrentUser(options?: IAuthCurrentUserRequest): Observable<IAuthCurrentUserResponse> {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    return this.http
-      .get(`${environment.apiEndpoint}/api/auth/current-user`, { headers, withCredentials: true })
+    return this._http
+      .get<IAuthCurrentUserResponse>(`${environment.apiEndpoint}/api/auth/current-user`)
       .map(response => {
-        const body = response.json();
-        localStorage.setItem('userId', body.id);
-        return body
+        localStorage.setItem('user', JSON.stringify(response));
+        return response
       });
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
@@ -36,113 +36,58 @@ export interface IWalkerService {
 @Injectable()
 export class WalkerService implements IWalkerService {
 
-  constructor(private _http: Http) {
+  constructor(private _http: HttpClient) {
   }
 
   getById(options: IWalkerGetByIdRequest): Observable<IWalkerGetByIdResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/walker/${options.walkerId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .get<IWalkerGetByIdResponse>(`${environment.apiEndpoint}/api/walker/${options.walkerId}`);
   }
 
   deleteById(options: IWalkerDeleteRequest): Observable<IWalkerDeleteResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .delete(`${environment.apiEndpoint}/api/walker/${options.walkerId}`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .delete<IWalkerDeleteResponse>(`${environment.apiEndpoint}/api/walker/${options.walkerId}`)
+      .map(response => true);
   }
 
   list(options: IWalkerListRequest): Observable<IWalkerListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
-    params.set('skip', options.skip.toString());
-    params.set('limit', options.limit.toString());
+    const params = (new HttpParams())
+      .set('skip', options.skip.toString())
+      .set('limit', options.limit.toString());
 
     return this._http
-      .get(`${environment.apiEndpoint}/api/walker/list`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get<IWalkerListResponse>(`${environment.apiEndpoint}/api/walker/list`, { params });
   }
 
   applicationList(options: IWalkerApplicationListRequest): Observable<IWalkerApplicationListResponse> {
-    const headers = new Headers();
-    const params: URLSearchParams = new URLSearchParams();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/walker/${options.walkerId}/applications`,
-        { headers, withCredentials: true, search: params }
-      )
-      .map(response => response.json());
+      .get<IWalkerApplicationListResponse>(`${environment.apiEndpoint}/api/walker/${options.walkerId}/applications`);
   }
 
   create(options: IWalkerCreateRequest): Observable<IWalkerCreateResponse> {
-    const headers = new Headers();
     const formData: FormData = new FormData();
-
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     formData.append('description', options.description);
     formData.append('cost', options.cost);
 
     return this._http
-      .post(`${environment.apiEndpoint}/api/walker/create`,
-        formData,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post(`${environment.apiEndpoint}/api/walker/create`, formData);
   }
 
   apply(options: IWalkerApplyRequest): Observable<IWalkerApplyResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .post(`${environment.apiEndpoint}/api/walker/${options.walkerId}/apply`, {},
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post<IWalkerApplyResponse>(`${environment.apiEndpoint}/api/walker/${options.walkerId}/apply`, {});
   }
 
   updateApplicationStatus(options: IWalkerUpdateApplicationStatusRequest): Observable<IWalkerUpdateApplicationStatusResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .put(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/status`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .put<IWalkerUpdateApplicationStatusResponse>(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/status`,
+        options)
+      .map(response => true);
   }
 
   rateApplication(options: IWalkerRateApplicationRequest): Observable<IWalkerRateApplicationResponse> {
-    const headers = new Headers();
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .put(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/rate`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.ok);
+      .put(`${environment.apiEndpoint}/api/walker/application/${options.applicationId}/rate`, options)
+      .map(response => true);
   }
 }

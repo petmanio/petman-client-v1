@@ -15,6 +15,8 @@ export const ActionTypes = {
   LOGIN_SUCCESS: type('[Auth] Login Success'),
   LOGIN_ERROR: type('[Auth] Login Error'),
 
+  CHANGE_CURRENT_USER: type('[Auth] Change Current User'),
+
   FB_LOGIN: type('[Auth] Fb Login'),
   FB_LOGIN_SUCCESS: type('[Auth] Fb Login Success'),
   FB_LOGIN_ERROR: type('[Auth] Fb Login Error'),
@@ -51,6 +53,12 @@ export class LoginErrorAction implements Action {
   type = ActionTypes.LOGIN_ERROR;
 
   constructor(public payload: any) { }
+}
+
+export class ChangeCurrentUserAction implements Action {
+  type = ActionTypes.CHANGE_CURRENT_USER;
+
+  constructor(public payload: number) { }
 }
 
 export class FbLoginAction implements Action {
@@ -116,6 +124,7 @@ export type Actions
   = LoginAction
   | LoginSuccessAction
   | LoginErrorAction
+  | ChangeCurrentUserAction
   | FbLoginAction
   | FbLoginSuccessAction
   | FbLoginErrorAction

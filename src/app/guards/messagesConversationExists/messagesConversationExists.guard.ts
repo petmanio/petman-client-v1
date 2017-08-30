@@ -36,7 +36,7 @@ export class MessagesConversationExistsGuard implements CanActivate {
   hasMessagesInStore(id: string): Observable<boolean> {
     return this._store.select(fromRoot.getMessageEntities)
       .map(entities => {
-        return !!entities[[localStorage.getItem('userId'), id].sort().join('_')]
+        return !!entities[[localStorage.getItem('selectedUserId'), id].sort().join('_')]
       })
       .take(1);
 

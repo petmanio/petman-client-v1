@@ -35,13 +35,14 @@ export interface IAdoptListComponent {
             <!--TODO: fix, without ngRepeat brick does not work-->
             <masonry-brick *ngFor="let _ of [0]"
                            class="column is-4-desktop is-6-tablet">
-              <md-card [routerLink]="[currentUser ? '/adopt/add' : '/join']" class="pm-cursor-pointer">
+              <md-card [routerLink]="[selectedUser
+ ? '/adopt/add' : '/join']" class="pm-cursor-pointer">
                 <md-card-header>
                   <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="currentUser$ | async"
-                       [ngStyle]="{'background-image': 'url(' + (currentUser$ | async)?.userData.avatar + ')'}"></div>
+                       *ngIf="selectedUser$ | async"
+                       [ngStyle]="{'background-image': 'url(' + (selectedUser$ | async)?.userData.avatar + ')'}"></div>
                   <div md-card-avatar class="pm-cart-avatar"
-                       *ngIf="!(currentUser$ | async)"
+                       *ngIf="!(selectedUser$ | async)"
                        [ngStyle]="{'background-image': 'url(/assets/logo.png)'}"></div>
                   <md-card-title></md-card-title>
                   <md-card-subtitle>
@@ -97,8 +98,9 @@ export interface IAdoptListComponent {
 })
 export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponent {
   adoptList$: Observable<any>;
-  currentUser$: Observable<any>;
-  currentUser: IUser;
+  selectedUser$: Observable<IUser>;
+  selectedUser: IUser;
+  selectedUserId: string;
   private _skip = 0;
   private _limit = 6;
   private _count: number = null;
@@ -107,7 +109,7 @@ export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponen
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.adoptList$ = _store.select(fromRoot.getAdoptList);
-    this.currentUser$ = _store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = _store.select(fromRoot.getAuthSelectedUser);
   }
 
   ngOnInit(): void {
@@ -116,7 +118,8 @@ export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponen
       this._count = $event.count;
     });
 
-    this.currentUser$.subscribe($event => this.currentUser = $event);
+    // TODO: destroy subscription listeners for whole application
+    this.selectedUser$.subscribe(($event) => this.selectedUser = $event);
   }
 
   ngOnDestroy(): void {
@@ -131,7 +134,7 @@ export class AdoptListComponent implements OnInit, OnDestroy, IAdoptListComponen
   }
 
   onFabClick(): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       this._router.navigate(['/adopt/add'])
     } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {

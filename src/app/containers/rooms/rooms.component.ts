@@ -22,14 +22,14 @@ export interface IRoomsComponent {
 })
 export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   rooms$: Observable<IRoom[]>;
-  currentUser$: Observable<IUser>;
+  selectedUser$: Observable<IUser>;
   rooms: IRoom[];
   total$: Observable<number>;
   total: number;
-  currentUser: IUser;
+  selectedUser: IUser;
   private _destroyed$ = new Subject<boolean>();
   private _roomsSubscription: Subscription;
-  private _currentUserSubscription: Subscription;
+  private _selectedUserSubscription: Subscription;
   private _totalSubscription: Subscription;
 
   private _skip = 0;
@@ -39,7 +39,7 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
               private _snackBar: MdSnackBar,
               private _translateService: TranslateService) {
     this.rooms$ = this._store.select(fromRoot.getRoomAll);
-    this.currentUser$ = this._store.select(fromRoot.getAuthCurrentUser);
+    this.selectedUser$ = this._store.select(fromRoot.getAuthSelectedUser);
     this.total$ = this._store.select(fromRoot.getRoomTotalEntities);
     this._roomsSubscription = this.rooms$.subscribe(rooms => {
       this.rooms = rooms;
@@ -50,7 +50,7 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
       }
     });
     this._totalSubscription = this.total$.subscribe(total => this.total = total);
-    this._currentUserSubscription = this.currentUser$.subscribe(user => this.currentUser = user);
+    this._selectedUserSubscription = this.selectedUser$.subscribe(user => this.selectedUser = user);
   }
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
     this._destroyed$.next(true);
     this._roomsSubscription.unsubscribe();
     this._totalSubscription.unsubscribe();
-    this._currentUserSubscription.unsubscribe();
+    this._selectedUserSubscription.unsubscribe();
   }
 
   onScroll(): void {
@@ -72,7 +72,7 @@ export class RoomsComponent implements OnInit, OnDestroy, IRoomsComponent {
   }
 
   onFabClick(): void {
-    if (this.currentUser) {
+    if (this.selectedUser) {
       this._router.navigate(['/rooms/add'])
     } else {
       this._snackBar.open(this._translateService.instant('please_login'), this._translateService.instant('login'), {

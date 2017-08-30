@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import { environment } from '../../../environments/environment';
@@ -21,45 +21,21 @@ export interface IMessageService {
 @Injectable()
 export class MessageService implements IMessageService {
 
-  constructor(private _http: Http) {
+  constructor(private _http: HttpClient) {
   }
 
   create(options: IMessageCreateRequest): Observable<IMessageCreateResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .post(`${environment.apiEndpoint}/api/massage/user/${options.userEntityId}/create`, options,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .post<IMessageCreateResponse>(`${environment.apiEndpoint}/api/massage/user/${options.userEntityId}/create`, options);
   }
 
   getConversation(options: IMessageConversationRequest): Observable<IMessageConversationResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/message/user/${options.userEntityId}/conversation`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .get<IMessageConversationResponse>(`${environment.apiEndpoint}/api/message/user/${options.userEntityId}/conversation`);
   }
 
   getConversations(options: IMessageConversationsRequest): Observable<IMessageConversationsResponse> {
-    const headers = new Headers();
-
-    headers.append('Content-Type', 'application/json');
-    headers.append('x-auth-token', localStorage.getItem('token'));
-
     return this._http
-      .get(`${environment.apiEndpoint}/api/message/conversations`,
-        { headers, withCredentials: true }
-      )
-      .map(response => response.json());
+      .get<IMessageConversationsResponse>(`${environment.apiEndpoint}/api/message/conversations`);
   }
 }
