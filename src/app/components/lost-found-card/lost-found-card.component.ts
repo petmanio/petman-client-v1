@@ -8,7 +8,6 @@ import * as fromRoot from '../../store';
 
 // TODO: fix stars on mobile firefox
 export interface ILostFoundCardComponent {
-  formatDate(date): string,
   onShareClick(): void
 }
 
@@ -21,7 +20,7 @@ export interface ILostFoundCardComponent {
         <md-card-title>{{lostFound.user.userData.firstName}} {{lostFound.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
-            {{formatDate(lostFound.createdAt)}}
+            {{lostFound.createdAt | appFormatDate}}
           </span>
         </md-card-subtitle>
         <a md-icon-button class="pm-lostFound-action-open" [routerLink]="['/lost-found', lostFound.id, 'details']">
@@ -119,9 +118,4 @@ export class LostFoundCardComponent implements OnChanges, ILostFoundCardComponen
   }
 
   ngOnChanges(changes: SimpleChanges): void {}
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
-  }
 }

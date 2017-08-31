@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { INotification } from '../../models/api';
-import * as moment from 'moment';
 
 export interface INotificationsComponent {
-  formatDate(date): string,
-
   getApplicationStatus(appStatus): string
 }
 
@@ -24,67 +21,67 @@ export interface INotificationsComponent {
             <!--Message-->
             <div *ngIf="notification.messageCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                {{'new_message_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'new_message_from' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
-            
+
             <!--Room-->
             <div *ngIf="notification.roomApplicationCreate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
-                {{'new_request_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'new_request_from' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <div *ngIf="notification.roomApplicationStatusUpdate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
                 <!--TODO: add status text-->
-      {{'application_status_update' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'application_status_update' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <div *ngIf="notification.roomApplicationRate">
               <span class="pm-font-12 pm-color-gray pm-room-notification-status">
                 <!--TODO: add review text and rating-->
-      {{'application_rate' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'application_rate' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <!--Walker-->
             <div *ngIf="notification.walkerApplicationCreate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                {{'new_request_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'new_request_from' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <div *ngIf="notification.walkerApplicationStatusUpdate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
                 <!--TODO: add status text-->
-      {{'application_status_update' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'application_status_update' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <div *ngIf="notification.walkerApplicationRate">
               <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
                 <!--TODO: add review text and rating-->
-      {{'application_rate' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'application_rate' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <!--Adopt-->
             <div *ngIf="notification.adoptCommentCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'new_comment_from' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
             <!--LostFound-->
             <div *ngIf="notification.lostFoundCommentCreate">
                <span class="pm-font-12 pm-color-gray pm-walker-notification-status">
-                {{'new_comment_from' | translate:{name: notification.from.userData.firstName + ' ' + notification.from.userData.lastName} }}
+                {{'new_comment_from' | translate:{name: notification.from.userData.firstName} }}
               </span>
             </div>
 
-            <div class="pm-font-12 pm-color-gray pm-room-notification-status">{{formatDate(notification.createdAt)}}</div>
+            <div class="pm-font-12 pm-color-gray pm-room-notification-status">{{notification.createdAt | appFromNow}}</div>
           </div>
         </div>
       </li>
@@ -133,11 +130,6 @@ export class NotificationsComponent implements OnInit, OnChanges, INotifications
 
   ngOnChanges(changes: SimpleChanges): void {
 
-  }
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return moment(date).fromNow();
   }
 
   getApplicationStatus(appStatus): string {

@@ -16,7 +16,6 @@ import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
 
 export interface IAdoptDetailsComponent {
   onDeleteClick(): void,
-  formatDate(date): string,
   onShareClick(): void,
   onLoadMoreClick(): void
 }
@@ -35,7 +34,7 @@ export interface IAdoptDetailsComponent {
                 {{(adoptAdopt$ | async)?.user.userData.firstName}} {{(adoptAdopt$ | async)?.user.userData.lastName}}</md-card-title>
               <md-card-subtitle>
               <span class="pm-font-12 pm-color-gray">
-                {{formatDate((adoptAdopt$ | async)?.createdAt)}}
+                {{(adoptAdopt$ | async)?.createdAt | appFormatDate}}
               </span>
               </md-card-subtitle>
             </md-card-header>
@@ -211,10 +210,5 @@ export class AdoptDetailsComponent implements OnInit, OnDestroy, IAdoptDetailsCo
           .subscribe();
       }
     });
-  }
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
   }
 }

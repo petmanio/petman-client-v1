@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { IAdopt } from '../../models/api';
-import { UtilService } from '../../services/util/util.service';
 import { MdDialog } from '@angular/material';
 import { ShareDialogComponent } from '../share-dialog/share-dialog.component';
 import { Store } from '@ngrx/store';
@@ -8,7 +7,6 @@ import * as fromRoot from '../../store';
 
 // TODO: fix stars on mobile firefox
 export interface IAdoptCardComponent {
-  formatDate(date): string,
   onShareClick(): void
 }
 
@@ -21,7 +19,7 @@ export interface IAdoptCardComponent {
         <md-card-title>{{adopt.user.userData.firstName}} {{adopt.user.userData.lastName}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
-            {{formatDate(adopt.createdAt)}}
+            {{adopt.createdAt | appFormatDate}}
           </span>
         </md-card-subtitle>
         <a md-icon-button class="pm-adopt-action-open" [routerLink]="['/adopt', adopt.id, 'details']">
@@ -109,9 +107,4 @@ export class AdoptCardComponent implements OnChanges, IAdoptCardComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {}
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
-  }
 }

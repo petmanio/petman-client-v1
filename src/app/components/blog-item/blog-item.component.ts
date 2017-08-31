@@ -3,7 +3,6 @@ import { IBlog } from '../../models/api';
 import { UtilService } from '../../services/util/util.service';
 
 export interface IBlogItemComponent {
-  formatDate(date): string
 }
 
 @Component({
@@ -15,7 +14,7 @@ export interface IBlogItemComponent {
         <md-card-title>{{blog.source}}</md-card-title>
         <md-card-subtitle>
           <span class="pm-font-12 pm-color-gray">
-            {{formatDate(blog.sourceCreatedAt || blog.createdAt)}}
+            {{(blog.sourceCreatedAt || blog.createdAt) | appFormatDate}}
           </span>
         </md-card-subtitle>
         <a md-icon-button class="pm-blog-action-open" target="_blank" [href]="blog.link">
@@ -52,9 +51,4 @@ export interface IBlogItemComponent {
 export class BlogItemComponent implements IBlogItemComponent {
   @Input() blog: IBlog;
   constructor() {}
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date, 'MMM Y');
-  }
 }

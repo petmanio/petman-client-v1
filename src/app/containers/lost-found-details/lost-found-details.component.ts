@@ -16,7 +16,6 @@ import { NgxGalleryOptions } from 'ngx-gallery/lib/ngx-gallery-options.model';
 
 export interface ILostFoundDetailsComponent {
   onDeleteClick(): void,
-  formatDate(date): string,
   onShareClick(): void,
   onLoadMoreClick(): void
 }
@@ -36,7 +35,7 @@ export interface ILostFoundDetailsComponent {
               </md-card-title>
               <md-card-subtitle>
               <span class="pm-font-12 pm-color-gray">
-                {{formatDate((lostFoundLostFound$ | async)?.createdAt)}}
+                {{(lostFoundLostFound$ | async)?.createdAt | appFormatDate}}
               </span>
               </md-card-subtitle>
               <md-chip-list *ngIf="(lostFoundLostFound$ | async)?.type">
@@ -221,10 +220,5 @@ export class LostFoundDetailsComponent implements OnInit, OnDestroy, ILostFoundD
           .subscribe();
       }
     });
-  }
-
-  formatDate(date): string {
-    // TODO: use angular date filter
-    return UtilService.formatDate(date);
   }
 }
