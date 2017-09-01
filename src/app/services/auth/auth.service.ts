@@ -43,7 +43,8 @@ export class AuthService implements IAuthService {
 
   logout(): Observable<boolean> {
     localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
+    localStorage.removeItem('selectedUserId');
     location.reload();
     return Observable.of(true);
   }

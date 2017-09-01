@@ -428,7 +428,8 @@ export class AppComponent implements OnInit, IAppComponent {
     // TODO: use dispatch
     // TODO: clear storage
     localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
+    localStorage.removeItem('selectedUserId');
     location.reload();
   }
 
