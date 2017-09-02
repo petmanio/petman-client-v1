@@ -98,9 +98,12 @@ export class AuthEffects implements IAuthEffects {
     .ofType(authAction.ActionTypes.CHANGE_CURRENT_USER)
     .map((action: authAction.ChangeCurrentUserAction) => action.payload)
     .do((selectedUserId) => {
-      if (selectedUserId.toString() !== localStorage.getItem('selectedUserId')) {
+      const storedSelectedId = localStorage.getItem('selectedUserId');
+      if (selectedUserId.toString() !== storedSelectedId) {
         localStorage.setItem('selectedUserId', selectedUserId.toString());
-        location.reload();
+        if (storedSelectedId) {
+          location.reload();
+        }
       }
     });
 
