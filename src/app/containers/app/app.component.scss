@@ -1,0 +1,119 @@
+@import "../../scss/mixins";
+
+.home {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+md-progress-bar {
+  position: fixed;
+  z-index: 10;
+}
+
+.pm-toolbar-actions {
+  display: flex;
+}
+
+.pm-language {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.pm-language md-select {
+  margin: 0 auto;
+}
+
+/deep/ app-toolbar .mat-select {
+  padding-top: 0;
+}
+
+/deep/ .pm-language .mat-select-trigger {
+  min-width: 50px;
+  width: 50px;
+}
+
+/deep/ .pm-language .mat-select-value {
+  color: #ffffff;
+}
+
+/deep/ .pm-language .mat-select-arrow {
+  color: #ffffff;
+}
+
+.pm-change-user {
+  display: none;
+  @include tablet  {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    margin-right: 5px;
+  }
+}
+
+.pm-change-user md-select {
+  margin: 0 auto;
+}
+
+/deep/ .pm-change-user .mat-select-trigger {
+  min-width: 50px;
+  width: 100px;
+}
+
+/deep/ .pm-change-user .mat-select-value {
+  color: #ffffff;
+}
+
+/deep/ .pm-change-user .mat-select-arrow {
+  color: #ffffff;
+}
+
+/deep/ .mat-menu-panel.pm-notification-menu {
+  width: 380px;
+  max-width: 380px;
+  margin-left: -100px;
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  /deep/ .mat-menu-panel.pm-notification-menu {
+    margin-left: auto;
+    width: 280px;
+    max-width: 280px;
+  }
+
+  .pm-notification-list {
+    width: 260px !important;
+  }
+}
+
+.pm-unseen-count {
+  position: absolute;
+  right: 5px;
+  font-size: 12px;
+  top: 0;
+  padding: 1px 3px;
+  background: #fc6f6f;
+  line-height: initial;
+  opacity: 0.8;
+  border-radius: 3px;
+}
+
+.pm-notification-list {
+  width: 380px;
+  padding: 0;
+  margin: 0;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.pm-no-notifications {
+  margin-top: 20px;
+}

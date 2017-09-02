@@ -1,0 +1,41 @@
+@import "../../scss/mixins";
+
+md-sidenav {
+  width: 300px;
+  background-color: #f8f8f8 !important;
+  box-shadow: -10px 0 50px #acacac;
+}
+md-sidenav-container {
+  height: calc(100% - 64px);
+  height: -webkit-calc(100% - 64px);
+  height: -moz-calc(100% - 64px);
+  overflow: hidden;
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  md-sidenav-container {
+    height: calc(100% - 56px);
+    height: -webkit-calc(100% - 56px);
+    height: -moz-calc(100% - 56px);
+  }
+}
+
+.disabled {
+  display: block;
+  opacity: 0.5;
+}
+
+.pm-change-user-sidenav {
+  text-align: center;
+  @include tablet {
+    display: none;
+  }
+
+}
+
+/deep/ .pm-change-user-sidenav .mat-select-value {
+  color: inherit;
+}
+
+/deep/ .pm-change-user-sidenav .mat-select-arrow {
+  color: inherit;
+}

@@ -32,6 +32,7 @@ interface IAuthEffects {
   login$: any,
   logout$: Observable<Action>,
   getCurrentUser$: Observable<Action>,
+  currentUserChange$: Observable<number>
 }
 
 @Injectable()
@@ -90,6 +91,17 @@ export class AuthEffects implements IAuthEffects {
       return this._authService.getCurrentUser()
         .map(response => new authAction.GetCurrentUserSuccessAction(response))
         .catch(err => of(new authAction.GetCurrentUserErrorAction(err)))
+    });
+
+  @Effect()
+  public currentUserChange$: Observable<number> = this._actions$
+    .ofType(authAction.ActionTypes.CHANGE_CURRENT_USER)
+    .map((action: authAction.ChangeCurrentUserAction) => action.payload)
+    .do((selectedUserId) => {
+      if (selectedUserId.toString() !== localStorage.getItem('selectedUserId')) {
+        localStorage.setItem('selectedUserId', selectedUserId.toString());
+        location.reload();
+      }
     });
 
   constructor(private _actions$: Actions, private _authService: AuthService) { }

@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { find } from 'lodash';
@@ -35,208 +35,8 @@ export interface IAppComponent {
 
 @Component({
   selector: 'app-root',
-  template: `
-    <div id="page-loader">
-      <!--<div class="cssload-loader"></div>-->
-      <div class="cssload-container">
-        <div class="cssload-whirlpool"></div>
-      </div>
-    </div>
-    <md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
-    <app-layout>
-      <!--TODO: update layout, sideNav containers container-->
-      <app-toolbar (toggleMenu)="toggleSidenav($event)">
-        <!--TODO: use route config for main route-->
-        <span class="home" [routerLink]="'/'">Petman <span class="pm-font-9">beta</span></span>
-        <span class="toolbar-spacer"></span>
-        <div class="pm-language">
-          <md-select (change)="onLanguageChange($event)" [(ngModel)]="lang">
-            <md-option value="en">En</md-option>
-            <md-option value="am">Am</md-option>
-          </md-select>
-        </div>
-        <button md-raised-button
-                color="accent"
-                class="pm-accent-color-white"
-                routerLink="/join"
-                *ngIf="!(currentUser$ | async)">{{'join_us' | translate}}</button>
-        <!--TODO: find better solution-->
-        <div class="pm-toolbar-actions" *ngIf="(currentUser$ | async)">
-          <button md-icon-button routerLink="messages">
-            <md-icon>message</md-icon>
-          </button>
-          <button md-icon-button
-                  [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
-            <md-icon *ngIf="unseenNotificationsCount">notifications</md-icon>
-            <span *ngIf="unseenNotificationsCount" class="pm-unseen-count">{{unseenNotificationsCount}}</span>
-            <md-icon *ngIf="!unseenNotificationsCount">notifications_none</md-icon>
-          </button>
-          <md-menu #notification="mdMenu" [overlapTrigger]="false"
-                   yPosition="above" xPosition="before" class="pm-notification-menu">
-            <div class="pm-notification-list" infinite-scroll
-                 (scrolled)="onScroll()"
-                 [infiniteScrollDistance]="2"
-                 [infiniteScrollThrottle]="300"
-                 [scrollWindow]="false">
-              <div *ngIf="!(notifications$ | async)?.list.length" class="pm-font-14 pm-color-gray pm-text-center pm-no-notifications">
-                {{'no_notifications_yet' | translate}}</div>
-              <app-notifications [notifications]="(notifications$ | async)?.list" 
-                                 (onNotificationClick)="onNotificationClick($event)"></app-notifications>
-              <div *ngIf="(notifications$ | async)?.count > (notifications$ | async)?.list.length"
-                   class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
-                   (click)="onScroll(); $event.stopPropagation()">
-                {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
-            </div>
-          </md-menu>
-          <div class="pm-change-user" *ngIf="(currentUser$ | async)?.internalUsers.length">
-            <md-select (change)="onSelectedUserChange($event)" [ngModel]="(selectedUser$ | async)?.id">
-              <md-option [value]="(currentUser$ | async)?.id">{{(currentUser$ | async)?.userData.firstName}}</md-option>
-              <md-option *ngFor="let internalUser of (currentUser$ | async)?.internalUsers"
-                         [value]="internalUser.id">{{ internalUser.userData.firstName }}</md-option>
-            </md-select>
-          </div>
-          <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
-               [ngStyle]="{'background-image': 'url(' + (selectedUser$ | async)?.userData.avatar + ')'}"></div>
-          <md-menu #menu="mdMenu" [overlapTrigger]="false"
-                   yPosition="above" xPosition="before">
-            <!--<button md-menu-item>-->
-              <!--<md-icon>account_circle</md-icon>-->
-              <!--<span>Account</span>-->
-            <!--</button>-->
-            <button md-menu-item (click)="logOut()">
-              <md-icon>power_settings_new</md-icon>
-              <span>{{'log_out' | translate}}</span>
-            </button>
-          </md-menu>
-        </div>
-      </app-toolbar>
-      <!--TODO: pass items-->
-      <app-sidenav [open]="currentSideNavState"
-                   (onClose)="closeSidenav()"
-                   [mode]="sideNavMode">
-        <router-outlet></router-outlet>
-      </app-sidenav>
-    </app-layout>
-  `,
-  styles: [`
-    .home {
-      cursor: pointer;
-      padding: 5px;
-    }
-
-    .toolbar-spacer {
-      flex: 1 1 auto;
-    }
-
-    md-progress-bar {
-      position: fixed;
-      z-index: 10;
-    }
-
-    .pm-toolbar-actions {
-      display: flex;
-    }
-
-    .pm-language {
-      display: flex;
-      align-content: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .pm-language md-select {
-      margin: 0 auto;
-    }
-    
-    /deep/ app-toolbar .mat-select {
-      padding-top: 0;
-    }
-    
-    /deep/ .pm-language .mat-select-trigger {
-       min-width: 50px;
-       width: 50px;
-    }
-
-    /deep/ .pm-language .mat-select-value {
-       color: #ffffff;
-     }
-
-    /deep/ .pm-language .mat-select-arrow {
-      color: #ffffff;
-    }
-
-    .pm-change-user {
-      display: flex;
-      align-content: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      margin-right: 5px;
-    }
-
-    .pm-change-user md-select {
-      margin: 0 auto;
-    }
-
-    /deep/ .pm-change-user .mat-select-trigger {
-      min-width: 50px;
-      width: 100px;
-    }
-
-    /deep/ .pm-change-user .mat-select-value {
-      color: #ffffff;
-    }
-
-    /deep/ .pm-change-user .mat-select-arrow {
-      color: #ffffff;
-    }
-
-
-    /deep/ .mat-menu-panel.pm-notification-menu {
-       width: 380px;
-       max-width: 380px;
-       margin-left: -100px;
-    }
-
-    @media (max-width: 600px) and (orientation: portrait) {
-      /deep/ .mat-menu-panel.pm-notification-menu {
-        margin-left: auto;
-        width: 280px;
-        max-width: 280px;
-      }
-
-      .pm-notification-list {
-        width: 260px !important;
-      }
-    }
-    
-    .pm-unseen-count {
-      position: absolute;
-      right: 5px;
-      font-size: 12px;
-      top: 0;
-      padding: 1px 3px;
-      background: #fc6f6f;
-      line-height: initial;
-      opacity: 0.8;
-      border-radius: 3px;
-    }
-    
-    .pm-notification-list {
-      width: 380px;
-      padding: 0;
-      margin: 0;
-      max-height: 500px;
-      overflow: auto;
-    }
-    
-    .pm-no-notifications {
-      margin-top: 20px;
-    }
-
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, IAppComponent {
   showSidenav$: Observable<boolean>;
@@ -294,7 +94,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
       if (this.currentUser) {
         let selectedUserId = localStorage.getItem('selectedUserId');
-        if (selectedUserId) {
+        if (selectedUserId && selectedUserId !== this.currentUser.id.toString()) {
           if (!find(this.currentUser.internalUsers, {id: parseInt(selectedUserId, 0)})) {
             localStorage.removeItem('selectedUserId');
           }
@@ -314,23 +114,19 @@ export class AppComponent implements OnInit, IAppComponent {
 
     // FIXME: find better way
     this._router.events.subscribe((event: any) => {
-      if (event instanceof NavigationStart) {} else if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationStart) {
+      } else if (event instanceof NavigationEnd) {
         if (UtilService.getCurrentDevice() !== 'DESKTOP') {
           this._store.dispatch(new layout.CloseSidenavAction());
         }
-        // this._zone.run(() => {
-        //   this.toolbarRightButtons = this.getRouteDataByKey('toolbarRightButtons') || [];
-        //   const showSideNav = this.getRouteDataByKey('showSidenav');
-        //   if (typeof showSideNav !== 'undefined') {
-        //     if (showSideNav && UtilService.getCurrentDevice() === 'DESKTOP') {
-        //       this._store.dispatch(new layout.OpenSidenavAction());
-        //     } else {
-        //       this._store.dispatch(new layout.CloseSidenavAction());
-        //     }
+        // const showSidenav = UtilService.getRouteDataByKey(this._activatedRoute, 'showSidenav');
+        // if (typeof showSidenav !== 'undefined') {
+        //   if (showSidenav && UtilService.getCurrentDevice() === 'DESKTOP') {
+        //     this._store.dispatch(new layout.OpenSidenavAction());
+        //   } else {
+        //     this._store.dispatch(new layout.CloseSidenavAction());
         //   }
-        //   this._ref.markForCheck();
-        // })
-
+        // }
       }
     });
 
@@ -342,6 +138,7 @@ export class AppComponent implements OnInit, IAppComponent {
 
     this.initSocket();
 
+    // TODO: fix on tablet view
     if (UtilService.getCurrentDevice() === 'MOBILE') {
       this.sideNavMode = 'push';
     }
@@ -380,10 +177,7 @@ export class AppComponent implements OnInit, IAppComponent {
   }
 
   onSelectedUserChange($event): void {
-    const selectedUserId = $event.value;
-    // this._store.dispatch(new authAction.ChangeCurrentUserAction(selectedUserId));
-    localStorage.setItem('selectedUserId', selectedUserId.toString());
-    location.reload();
+    this._store.dispatch(new authAction.ChangeCurrentUserAction($event.value));
   }
 
   onNotificationClick(notification: INotification): void {

@@ -1,0 +1,85 @@
+<div id="page-loader">
+  <!--<div class="cssload-loader"></div>-->
+  <div class="cssload-container">
+    <div class="cssload-whirlpool"></div>
+  </div>
+</div>
+<md-progress-bar mode="indeterminate" *ngIf="xhrListener | async"></md-progress-bar>
+<app-layout>
+  <!--TODO: update layout, sideNav containers container-->
+  <app-toolbar (toggleMenu)="toggleSidenav($event)">
+    <!--TODO: use route config for main route-->
+    <span class="home" [routerLink]="'/'">Petman <span class="pm-font-9">beta</span></span>
+    <span class="toolbar-spacer"></span>
+    <div class="pm-language">
+      <md-select (change)="onLanguageChange($event)" [(ngModel)]="lang">
+        <md-option value="en">En</md-option>
+        <md-option value="am">Am</md-option>
+      </md-select>
+    </div>
+    <button md-raised-button
+            color="accent"
+            class="pm-accent-color-white"
+            routerLink="/join"
+            *ngIf="!(currentUser$ | async)">{{'join_us' | translate}}
+    </button>
+    <!--TODO: find better solution-->
+    <div class="pm-toolbar-actions" *ngIf="(currentUser$ | async)">
+      <button md-icon-button routerLink="messages">
+        <md-icon>message</md-icon>
+      </button>
+      <button md-icon-button
+              [mdMenuTriggerFor]="notification" (onMenuOpen)="onNotificationMenuOpen()">
+        <md-icon *ngIf="unseenNotificationsCount">notifications</md-icon>
+        <span *ngIf="unseenNotificationsCount" class="pm-unseen-count">{{unseenNotificationsCount}}</span>
+        <md-icon *ngIf="!unseenNotificationsCount">notifications_none</md-icon>
+      </button>
+      <md-menu #notification="mdMenu" [overlapTrigger]="false"
+               yPosition="above" xPosition="before" class="pm-notification-menu">
+        <div class="pm-notification-list" infinite-scroll
+             (scrolled)="onScroll()"
+             [infiniteScrollDistance]="2"
+             [infiniteScrollThrottle]="300"
+             [scrollWindow]="false">
+          <div *ngIf="!(notifications$ | async)?.list.length"
+               class="pm-font-14 pm-color-gray pm-text-center pm-no-notifications">
+            {{'no_notifications_yet' | translate}}
+          </div>
+          <app-notifications [notifications]="(notifications$ | async)?.list"
+                             (onNotificationClick)="onNotificationClick($event)"></app-notifications>
+          <div *ngIf="(notifications$ | async)?.count > (notifications$ | async)?.list.length"
+               class="pm-font-14 pm-color-gray pm-load-more pm-cursor-pointer"
+               (click)="onScroll(); $event.stopPropagation()">
+            {{'load_more' | translate}} <i class="mdi mdi-dots-horizontal"></i></div>
+        </div>
+      </md-menu>
+      <div class="pm-change-user" *ngIf="(currentUser$ | async)?.internalUsers.length">
+        <md-select (change)="onSelectedUserChange($event)" [ngModel]="(selectedUser$ | async)?.id">
+          <md-option [value]="(currentUser$ | async)?.id">{{(currentUser$ | async)?.userData.firstName}}</md-option>
+          <md-option *ngFor="let internalUser of (currentUser$ | async)?.internalUsers"
+                     [value]="internalUser.id">{{ internalUser.userData.firstName }}
+          </md-option>
+        </md-select>
+      </div>
+      <div md-card-avatar class="pm-cart-avatar pm-cursor-pointer" [mdMenuTriggerFor]="menu"
+           [ngStyle]="{'background-image': 'url(' + (selectedUser$ | async)?.userData.avatar + ')'}"></div>
+      <md-menu #menu="mdMenu" [overlapTrigger]="false"
+               yPosition="above" xPosition="before">
+        <!--<button md-menu-item>-->
+        <!--<md-icon>account_circle</md-icon>-->
+        <!--<span>Account</span>-->
+        <!--</button>-->
+        <button md-menu-item (click)="logOut()">
+          <md-icon>power_settings_new</md-icon>
+          <span>{{'log_out' | translate}}</span>
+        </button>
+      </md-menu>
+    </div>
+  </app-toolbar>
+  <!--TODO: pass items-->
+  <app-sidenav [open]="currentSideNavState"
+               (onClose)="closeSidenav()"
+               [mode]="sideNavMode">
+    <router-outlet></router-outlet>
+  </app-sidenav>
+</app-layout>
